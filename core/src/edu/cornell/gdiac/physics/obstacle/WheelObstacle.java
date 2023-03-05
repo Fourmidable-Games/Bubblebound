@@ -27,7 +27,13 @@ public class WheelObstacle extends SimpleObstacle {
 	protected CircleShape shape;
 	/** A cache value for the fixture (for resizing) */
 	private Fixture geometry;
-	
+
+	private boolean selected;
+
+	public void setSelected(boolean b){
+		selected = b;
+	}
+
 	/**
 	 * Returns the radius of this circle
 	 *
@@ -46,6 +52,7 @@ public class WheelObstacle extends SimpleObstacle {
 		shape.setRadius(value);
 		markDirty(true);
 	}
+
 	
 	/**
 	 * Creates a new circle at the origin.
@@ -75,6 +82,7 @@ public class WheelObstacle extends SimpleObstacle {
 		super(x,y);
 		shape = new CircleShape();
 		shape.setRadius(radius);
+
 	}
 	
 	/**
@@ -93,8 +101,10 @@ public class WheelObstacle extends SimpleObstacle {
 		fixture.shape = shape;
 		geometry = body.createFixture(fixture);
 		markDirty(false);
+		body.setGravityScale(0f);
 	}
-	
+
+
 	/**
 	 * Release the fixtures for this body, reseting the shape
 	 *
@@ -119,7 +129,11 @@ public class WheelObstacle extends SimpleObstacle {
 	}
 	@Override
 	public void sdraw(GameCanvas canvas){
-		 canvas.shape.setColor(Color.GREEN);
+		 if(selected){
+			 canvas.shape.setColor(Color.YELLOW);
+		 }else{
+			 canvas.shape.setColor(Color.GREEN);
+		 }
 		 canvas.shape.circle(getX()*drawScale.x,getY()*drawScale.y,getRadius()*drawScale.x);
 	}
 

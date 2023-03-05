@@ -68,6 +68,12 @@ public abstract class Obstacle {
 	protected Vector2 scaleCache = new Vector2();
 
 
+	public float grav = 1f;
+
+	public void setGrav(float g){
+		grav = g;
+	}
+
 	/// BodyDef Methods
 	/**
 	 * Returns the body type for Box2D physics
