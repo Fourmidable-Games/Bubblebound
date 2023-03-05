@@ -156,7 +156,7 @@ public class InputController {
 	 * @return true if the secondary action button was pressed.
 	 */
 	public boolean didTertiary() {
-		return tertiaryPressed;
+		return tertiaryPressed ;
 	}
 
 	/**
