@@ -16,7 +16,9 @@
  */
 package edu.cornell.gdiac.physics;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.audio.*;
@@ -415,6 +417,10 @@ public abstract class WorldController implements Screen {
 	 *
 	 * @param dt	Number of seconds since last animation frame
 	 */
+
+
+
+
 	public void postUpdate(float dt) {
 		// Add any objects created by actions
 		while (!addQueue.isEmpty()) {
@@ -440,7 +446,14 @@ public abstract class WorldController implements Screen {
 			}
 		}
 	}
-	
+
+
+	public List<Zone> zones = new ArrayList<>();
+
+	public void addZone(Zone z){
+		zones.add(z);
+	}
+
 	/**
 	 * Draw the physics objects to the canvas
 	 *
@@ -458,6 +471,11 @@ public abstract class WorldController implements Screen {
 		canvas.shape.begin(ShapeRenderer.ShapeType.Filled);
 		for(Obstacle obj : objects) {
 			obj.sdraw(canvas); ////!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		}
+		canvas.shape.end();
+		canvas.shape.begin(ShapeRenderer.ShapeType.Line);
+		for(Zone z : zones){
+			z.sDraw(canvas);
 		}
 		canvas.shape.end();
 //		canvas.end();

@@ -58,10 +58,11 @@ public class PlatformController extends WorldController implements ContactListen
 	/** Reference to the goalDoor (for collision detection) */
 	private BoxObstacle goalDoor;
 
-	public List<Zone> zones = new ArrayList<>();
 
 	/** Mark set to handle more sophisticated collision callbacks */
 	protected ObjectSet<Fixture> sensorFixtures;
+
+	private List<WheelObstacle> bubbles = new ArrayList<WheelObstacle>();
 
 	/**
 	 * Creates and initialize a new instance of the platformer game
@@ -69,7 +70,7 @@ public class PlatformController extends WorldController implements ContactListen
 	 * The game has default gravity and other settings
 	 */
 	public PlatformController() {
-		super(DEFAULT_WIDTH,DEFAULT_HEIGHT,DEFAULT_GRAVITY);
+		super(DEFAULT_WIDTH*2,DEFAULT_HEIGHT*2,DEFAULT_GRAVITY);
 		setDebug(false);
 		setComplete(false);
 		setFailure(false);
@@ -128,6 +129,9 @@ public class PlatformController extends WorldController implements ContactListen
 		// Add level goal
 		float dwidth  = goalTile.getRegionWidth()/scale.x;
 		float dheight = goalTile.getRegionHeight()/scale.y;
+		//Vector2 scale2 = new Vector2(16f, 16f);
+		//scale2.x /= 2;
+		//scale2.y /= 2;
 
 		JsonValue goal = constants.get("goal");
 		JsonValue goalpos = goal.get("pos");
@@ -165,60 +169,24 @@ public class PlatformController extends WorldController implements ContactListen
 
 
 
-		zones.add(new Zone(10, 0, 10, 6, -1.0f));
-		zones.add(new Zone(20, 0, 10, 30, -1.0f));
+		addZone(new Zone(10, 0, 10, 6, -1.0f, scale));
+		addZone(new Zone(20, 0, 10, 30, -1.0f, scale));
+
 		WheelObstacle wo = new WheelObstacle(5, 5, 1);
 		wo.setName("Bubble");
-		wo.setTexture(goalTile);
-		wo.setBodyType(BodyDef.BodyType.StaticBody);
-		wo.setDensity(10f);
-		wo.setRestitution(0f);
-		wo.setFriction(0f);
+		wo.setBodyType(BodyDef.BodyType.DynamicBody);
 		wo.setDrawScale(scale);
-		addObject(wo);
+		bubbles.add(wo);
+		addQueuedObject(wo);
 
 		WheelObstacle wo2 = new WheelObstacle(25, 15, 1);
 		wo2.setName("Bubble");
-		wo2.setTexture(goalTile);
-		wo2.setBodyType(BodyDef.BodyType.StaticBody);
-		wo2.setDensity(10f);
-		wo2.setRestitution(0f);
-		wo2.setFriction(0f);
+		wo2.setBodyType(BodyDef.BodyType.DynamicBody);
 		wo2.setDrawScale(scale);
-		addObject(wo2);
+		bubbles.add(wo2);
+		addQueuedObject(wo2);
+		JsonValue defaults = constants.get("defaults");
 
-
-
-	    String wname = "wall";
-	    JsonValue walljv = constants.get("walls");
-	    JsonValue defaults = constants.get("defaults");
-	    for (int ii = 0; ii < walljv.size; ii++) {
-	        PolygonObstacle obj;
-	    	obj = new PolygonObstacle(walljv.get(ii).asFloatArray(), 0, 0);
-			obj.setBodyType(BodyDef.BodyType.StaticBody);
-			obj.setDensity(defaults.getFloat( "density", 0.0f ));
-			obj.setFriction(defaults.getFloat( "friction", 0.0f ));
-			obj.setRestitution(defaults.getFloat( "restitution", 0.0f ));
-			obj.setDrawScale(scale);
-			obj.setTexture(earthTile);
-			obj.setName(wname+ii);
-			//addObject(obj);
-	    }
-	    
-	    String pname = "platform";
-		JsonValue platjv = constants.get("platforms");
-	    for (int ii = 0; ii < platjv.size; ii++) {
-	        PolygonObstacle obj;
-	    	obj = new PolygonObstacle(platjv.get(ii).asFloatArray(), 0, 0);
-			obj.setBodyType(BodyDef.BodyType.StaticBody);
-			obj.setDensity(defaults.getFloat( "density", 0.0f ));
-			obj.setFriction(defaults.getFloat( "friction", 0.0f ));
-			obj.setRestitution(defaults.getFloat( "restitution", 0.0f ));
-			obj.setDrawScale(scale);
-			obj.setTexture(earthTile);
-			obj.setName(pname+ii);
-			//addObject(obj);
-	    }
 
 	    // This world is heavier
 		world.setGravity( new Vector2(0,defaults.getFloat("gravity",0)) );
@@ -242,6 +210,15 @@ public class PlatformController extends WorldController implements ContactListen
 
 
 		volume = constants.getFloat("volume", 1.0f);
+	}
+
+	public void spawnBubble(Vector2 v){
+		WheelObstacle wo2 = new WheelObstacle(v.x, v.y, 1);
+		wo2.setName("Bubble");
+		wo2.setBodyType(BodyDef.BodyType.DynamicBody);
+		wo2.setDrawScale(scale);
+		bubbles.add(wo2);
+		addQueuedObject(wo2);
 	}
 	
 	/**
@@ -278,31 +255,52 @@ public class PlatformController extends WorldController implements ContactListen
 	 *
 	 * @param dt	Number of seconds since last animation frame
 	 */
+	private int wait = 10;
 	public void update(float dt) {
 		// Process actions in object model
 
 		for(int i = 0; i < objects.size(); i++){
 			Body o = objects.get(i).getBody();
-			o.setGravityScale(1.0f);
+			objects.get(i).setGrav(1.0f);
 			for(int j = 0; j < zones.size(); j++){
 				//System.out.println(o.getPosition());
 				if(zones.get(j).inBounds(o.getPosition().x, o.getPosition().y)){
-					o.setGravityScale(zones.get(j).getGrav());
 
+					objects.get(i).setGrav(zones.get(j).getGrav());
 				}
-			}
-			if(objects.get(i).getName().equals("Bubble")){
-				o.setGravityScale(0 * o.getGravityScale());
 			}
 //			if(objects.get(i).getName().equals("Avatar")){
 //				DudeModel d = (DudeModel) objects.get(i);
 //				d.swapGravity(world, o.getGravityScale());
 //			}
 		}
+		Vector2 crosshair = InputController.getInstance().getCrossHair();
+		WheelObstacle closest = bubbles.get(0);
+		float min = Float.MAX_VALUE;
+		for(int i = 0; i < bubbles.size(); i++){
+			WheelObstacle b = bubbles.get(i);
+			b.setLinearVelocity(new Vector2(0, b.grav));
+			float d = b.getPosition().dst(crosshair);
+			b.setSelected(false);
+			if(d < min){
+				closest = b;
+				min = d;
+			}
+		}
+		closest.setSelected(true);
 		avatar.setMovement(InputController.getInstance().getHorizontal() *avatar.getForce());
 		avatar.setJumping(InputController.getInstance().didPrimary());
 		avatar.setShooting(InputController.getInstance().didSecondary());
 		avatar.
+		wait++;
+
+		if(InputController.getInstance().didTertiary()){
+			if(wait > 10) {
+				spawnBubble(crosshair);
+				wait = 0;
+			}
+		}
+
 		
 		// Add a bullet if we fire
 		if (avatar.isShooting()) {

@@ -60,6 +60,8 @@ public class DudeModel extends CapsuleObstacle {
 	private boolean isGrappling;
 	/** The physics shape of this object */
 	private PolygonShape sensorShape;
+
+
 	
 	/** Cache for internal force calculations */
 	private final Vector2 forceCache = new Vector2();
@@ -319,6 +321,7 @@ public class DudeModel extends CapsuleObstacle {
 	 * This method should be called after the force attribute is set.
 	 */
 	public void applyForce() {
+		body.setGravityScale(grav);
 		if (!isActive()) {
 			return;
 		}
