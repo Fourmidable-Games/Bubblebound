@@ -71,6 +71,9 @@ public class InputController {
 	/** Whether the exit button was pressed. */
 	private boolean exitPressed;
 	private boolean exitPrevious;
+
+	private boolean bubblePressed;
+	private boolean bubblePrevious;
 	
 	/** How much did we move horizontally? */
 	private float horizontal;
@@ -203,6 +206,8 @@ public class InputController {
 	public boolean didExit() {
 		return exitPressed && !exitPrevious;
 	}
+
+	public boolean didBubble(){return bubblePressed && !bubblePrevious; }
 	
 	/**
 	 * Creates a new input controller
@@ -240,6 +245,7 @@ public class InputController {
 		resetPrevious  = resetPressed;
 		debugPrevious  = debugPressed;
 		exitPrevious = exitPressed;
+		bubblePrevious = bubblePressed;
 		nextPrevious = nextPressed;
 		prevPrevious = prevPressed;
 		
@@ -265,6 +271,7 @@ public class InputController {
 	private void readGamepad(Rectangle bounds, Vector2 scale) {
 		resetPressed = xbox.getStart();
 		exitPressed  = xbox.getBack();
+		bubblePressed = xbox.getB();
 		nextPressed  = xbox.getRBumper();
 		prevPressed  = xbox.getLBumper();
 		primePressed = xbox.getA();
@@ -308,6 +315,8 @@ public class InputController {
 		prevPressed = (secondary && prevPressed) || (Gdx.input.isKeyPressed(Input.Keys.P));
 		nextPressed = (secondary && nextPressed) || (Gdx.input.isKeyPressed(Input.Keys.N));
 		exitPressed  = (secondary && exitPressed) || (Gdx.input.isKeyPressed(Input.Keys.ESCAPE));
+
+		bubblePressed = (secondary && bubblePressed) || (Gdx.input.isKeyPressed(Input.Keys.B));
 		
 		// Directional controls
 		horizontal = (secondary ? horizontal : 0.0f);

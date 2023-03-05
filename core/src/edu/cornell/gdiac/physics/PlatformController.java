@@ -170,7 +170,7 @@ public class PlatformController extends WorldController implements ContactListen
 		WheelObstacle wo = new WheelObstacle(5, 5, 1);
 		wo.setName("Bubble");
 		wo.setTexture(goalTile);
-		wo.setBodyType(BodyDef.BodyType.DynamicBody);
+		wo.setBodyType(BodyDef.BodyType.StaticBody);
 		wo.setDensity(10f);
 		wo.setRestitution(0f);
 		wo.setFriction(0f);
@@ -180,7 +180,7 @@ public class PlatformController extends WorldController implements ContactListen
 		WheelObstacle wo2 = new WheelObstacle(25, 15, 1);
 		wo2.setName("Bubble");
 		wo2.setTexture(goalTile);
-		wo2.setBodyType(BodyDef.BodyType.DynamicBody);
+		wo2.setBodyType(BodyDef.BodyType.StaticBody);
 		wo2.setDensity(10f);
 		wo2.setRestitution(0f);
 		wo2.setFriction(0f);
@@ -292,7 +292,7 @@ public class PlatformController extends WorldController implements ContactListen
 				}
 			}
 			if(objects.get(i).getName().equals("Bubble")){
-				o.setGravityScale(-0.15f * o.getGravityScale());
+				o.setGravityScale(0 * o.getGravityScale());
 			}
 //			if(objects.get(i).getName().equals("Avatar")){
 //				DudeModel d = (DudeModel) objects.get(i);
@@ -302,6 +302,7 @@ public class PlatformController extends WorldController implements ContactListen
 		avatar.setMovement(InputController.getInstance().getHorizontal() *avatar.getForce());
 		avatar.setJumping(InputController.getInstance().didPrimary());
 		avatar.setShooting(InputController.getInstance().didSecondary());
+		avatar.
 		
 		// Add a bullet if we fire
 		if (avatar.isShooting()) {
