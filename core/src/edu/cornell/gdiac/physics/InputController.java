@@ -71,6 +71,9 @@ public class InputController {
 	/** Whether the exit button was pressed. */
 	private boolean exitPressed;
 	private boolean exitPrevious;
+
+	private boolean bubblePressed;
+	private boolean bubblePrevious;
 	
 	/** How much did we move horizontally? */
 	private float horizontal;
@@ -203,6 +206,8 @@ public class InputController {
 	public boolean didExit() {
 		return exitPressed && !exitPrevious;
 	}
+
+	public boolean didBubble(){return bubblePressed && !bubblePrevious; }
 	
 	/**
 	 * Creates a new input controller
@@ -240,6 +245,7 @@ public class InputController {
 		resetPrevious  = resetPressed;
 		debugPrevious  = debugPressed;
 		exitPrevious = exitPressed;
+		bubblePrevious = bubblePressed;
 		nextPrevious = nextPressed;
 		prevPrevious = prevPressed;
 		
@@ -265,6 +271,7 @@ public class InputController {
 	private void readGamepad(Rectangle bounds, Vector2 scale) {
 		resetPressed = xbox.getStart();
 		exitPressed  = xbox.getBack();
+		bubblePressed = xbox.getB();
 		nextPressed  = xbox.getRBumper();
 		prevPressed  = xbox.getLBumper();
 		primePressed = xbox.getA();
@@ -303,18 +310,20 @@ public class InputController {
 		// Give priority to gamepad results
 		resetPressed = (secondary && resetPressed) || (Gdx.input.isKeyPressed(Input.Keys.R));
 		debugPressed = (secondary && debugPressed) || (Gdx.input.isKeyPressed(Input.Keys.D));
-		primePressed = (secondary && primePressed) || (Gdx.input.isKeyPressed(Input.Keys.UP));
+		primePressed = (secondary && primePressed) || (Gdx.input.isKeyPressed(Input.Keys.UP) || (Gdx.input.isKeyPressed(Input.Keys.W)));
 		secondPressed = (secondary && secondPressed) || (Gdx.input.isKeyPressed(Input.Keys.SPACE));
 		prevPressed = (secondary && prevPressed) || (Gdx.input.isKeyPressed(Input.Keys.P));
 		nextPressed = (secondary && nextPressed) || (Gdx.input.isKeyPressed(Input.Keys.N));
 		exitPressed  = (secondary && exitPressed) || (Gdx.input.isKeyPressed(Input.Keys.ESCAPE));
+
+		bubblePressed = (secondary && bubblePressed) || (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT));
 		
 		// Directional controls
 		horizontal = (secondary ? horizontal : 0.0f);
-		if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+		if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D)) {
 			horizontal += 1.0f;
 		}
-		if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+		if (Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A)) {
 			horizontal -= 1.0f;
 		}
 
@@ -328,7 +337,8 @@ public class InputController {
 		}
 		
 		// Mouse results
-        tertiaryPressed = Gdx.input.isButtonPressed(Input.Buttons.LEFT);
+        tertiaryPressed = Gdx.input.isButtonPressed(Input.Buttons.RIGHT);
+				
 		crosshair.set(Gdx.input.getX(), Gdx.input.getY());
 		crosshair.scl(1/scale.x,-1/scale.y);
 		crosshair.y += bounds.height;

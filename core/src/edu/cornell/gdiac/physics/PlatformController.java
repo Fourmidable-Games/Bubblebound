@@ -38,6 +38,8 @@ public class PlatformController extends WorldController implements ContactListen
 	/** Texture asset for the bridge plank */
 	private TextureRegion bridgeTexture;
 
+	private TextureRegion barrierTexture;
+
 	/** The jump sound.  We only want to play once. */
 	private Sound jumpSound;
 	private long jumpId = -1;
@@ -49,6 +51,7 @@ public class PlatformController extends WorldController implements ContactListen
 	private long plopId = -1;
 	/** The default sound volume */
 	private float volume;
+	private RopeBridge rope;
 
 	// Physics objects for the game
 	/** Physics constants for initialization */
@@ -70,7 +73,7 @@ public class PlatformController extends WorldController implements ContactListen
 	 * The game has default gravity and other settings
 	 */
 	public PlatformController() {
-		super(DEFAULT_WIDTH*2,DEFAULT_HEIGHT*2,DEFAULT_GRAVITY);
+		super(DEFAULT_WIDTH,DEFAULT_HEIGHT,DEFAULT_GRAVITY);
 		setDebug(false);
 		setComplete(false);
 		setFailure(false);
@@ -90,7 +93,7 @@ public class PlatformController extends WorldController implements ContactListen
 		avatarTexture  = new TextureRegion(directory.getEntry("platform:dude",Texture.class));
 		bulletTexture = new TextureRegion(directory.getEntry("platform:bullet",Texture.class));
 		bridgeTexture = new TextureRegion(directory.getEntry("platform:rope",Texture.class));
-
+		barrierTexture = new TextureRegion(directory.getEntry("platform:barrier",Texture.class));
 
 		jumpSound = directory.getEntry( "platform:jump", Sound.class );
 		fireSound = directory.getEntry( "platform:pew", Sound.class );
@@ -112,6 +115,7 @@ public class PlatformController extends WorldController implements ContactListen
 			obj.deactivatePhysics(world);
 		}
 		objects.clear();
+		bubbles.clear();
 		addQueue.clear();
 		world.dispose();
 		
@@ -132,7 +136,8 @@ public class PlatformController extends WorldController implements ContactListen
 		//Vector2 scale2 = new Vector2(16f, 16f);
 		//scale2.x /= 2;
 		//scale2.y /= 2;
-
+		System.out.println(scale.x);
+		System.out.println(scale.y);
 		JsonValue goal = constants.get("goal");
 		JsonValue goalpos = goal.get("pos");
 		goalDoor = new BoxObstacle(goalpos.getFloat(0),goalpos.getFloat(1),dwidth,dheight);
@@ -175,14 +180,20 @@ public class PlatformController extends WorldController implements ContactListen
 		WheelObstacle wo = new WheelObstacle(5, 5, 1);
 		wo.setName("Bubble");
 		wo.setBodyType(BodyDef.BodyType.DynamicBody);
+		wo.setStatic(true);
 		wo.setDrawScale(scale);
+		wo.activatePhysics(world);
+		wo.setDensity(1000f);
 		bubbles.add(wo);
 		addQueuedObject(wo);
 
 		WheelObstacle wo2 = new WheelObstacle(25, 15, 1);
 		wo2.setName("Bubble");
+		wo2.setStatic(true);
 		wo2.setBodyType(BodyDef.BodyType.DynamicBody);
 		wo2.setDrawScale(scale);
+		wo2.activatePhysics(world);
+		wo2.setDensity(1000f);
 		bubbles.add(wo2);
 		addQueuedObject(wo2);
 		JsonValue defaults = constants.get("defaults");
@@ -201,13 +212,9 @@ public class PlatformController extends WorldController implements ContactListen
 		addObject(avatar);
 		avatar.setGravityScale(-1);
 		// Create rope bridge
-		dwidth  = bridgeTexture.getRegionWidth()/scale.x;
-		dheight = bridgeTexture.getRegionHeight()/scale.y;
-		RopeBridge bridge = new RopeBridge(constants.get("bridge"), dwidth, dheight);
-		bridge.setTexture(bridgeTexture);
-		bridge.setDrawScale(scale);
-		//addObject(bridge);
-
+		
+		System.out.println(wo);
+		System.out.println("change");
 
 		volume = constants.getFloat("volume", 1.0f);
 	}
@@ -217,6 +224,8 @@ public class PlatformController extends WorldController implements ContactListen
 		wo2.setName("Bubble");
 		wo2.setBodyType(BodyDef.BodyType.DynamicBody);
 		wo2.setDrawScale(scale);
+		wo2.activatePhysics(world);
+		wo2.setDensity(10000f);
 		bubbles.add(wo2);
 		addQueuedObject(wo2);
 	}
@@ -279,7 +288,12 @@ public class PlatformController extends WorldController implements ContactListen
 		float min = Float.MAX_VALUE;
 		for(int i = 0; i < bubbles.size(); i++){
 			WheelObstacle b = bubbles.get(i);
-			b.setLinearVelocity(new Vector2(0, b.grav));
+			if(b.statc){
+				b.setLinearVelocity(new Vector2(0,0));
+			}else{
+				b.setLinearVelocity(new Vector2(0, b.grav));
+			}
+
 			float d = b.getPosition().dst(crosshair);
 			b.setSelected(false);
 			if(d < min){
@@ -291,6 +305,20 @@ public class PlatformController extends WorldController implements ContactListen
 		avatar.setMovement(InputController.getInstance().getHorizontal() *avatar.getForce());
 		avatar.setJumping(InputController.getInstance().didPrimary());
 		avatar.setShooting(InputController.getInstance().didSecondary());
+		boolean destructRope = false;
+		boolean constructRope = false;
+		if(avatar.isGrappling()){
+			if(InputController.getInstance().didBubble()){
+				avatar.setGrappling(false);
+				destructRope = true;
+			}
+			
+		}else{
+			if(InputController.getInstance().didBubble() && avatar.getPosition().dst(closest.getPosition()) < 5){
+				avatar.setGrappling(true);
+				constructRope = true;
+			}
+		}
 		wait++;
 
 		if(InputController.getInstance().didTertiary()){
@@ -304,6 +332,13 @@ public class PlatformController extends WorldController implements ContactListen
 		// Add a bullet if we fire
 		if (avatar.isShooting()) {
 			createBullet();
+		}
+
+		if(constructRope){
+			rope = createGrapple(closest);
+		}
+		if(destructRope){
+			destructRope(rope);
 		}
 		
 		avatar.applyForce();
@@ -337,6 +372,16 @@ public class PlatformController extends WorldController implements ContactListen
 
 		fireId = playSound( fireSound, fireId );
 	}
+
+	private RopeBridge createGrapple(WheelObstacle bubble){
+		float dwidth  = bridgeTexture.getRegionWidth()/scale.x;
+		float dheight = bridgeTexture.getRegionHeight()/scale.y;
+		RopeBridge bridge = new RopeBridge(constants.get("bridge"), dwidth, dheight, bubble.getBody(), avatar.getBody());
+		bridge.setTexture(bridgeTexture);
+		bridge.setDrawScale(scale);
+		addQueuedObject(bridge);
+		return bridge;
+	}
 	
 	/**
 	 * Remove a new bullet from the world.
@@ -347,6 +392,11 @@ public class PlatformController extends WorldController implements ContactListen
 	    bullet.markRemoved(true);
 	    plopId = playSound( plopSound, plopId );
 	}
+
+	public void destructRope(Obstacle rope) {
+		rope.markRemoved(true);
+		avatar.setLinearVelocity(avatar.getLinearVelocity().scl(1.25f));
+}
 
 	
 	/**

@@ -1064,7 +1064,7 @@ public abstract class ComplexObstacle extends Obstacle {
 	public void sdraw(GameCanvas canvas) {
 		// Delegate to components
 		for(Obstacle obj : bodies) {
-			obj.draw(canvas);
+			obj.sdraw(canvas);
 		}
 	}
 
