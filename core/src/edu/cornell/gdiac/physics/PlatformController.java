@@ -115,6 +115,7 @@ public class PlatformController extends WorldController implements ContactListen
 			obj.deactivatePhysics(world);
 		}
 		objects.clear();
+		bubbles.clear();
 		addQueue.clear();
 		world.dispose();
 		
@@ -394,6 +395,7 @@ public class PlatformController extends WorldController implements ContactListen
 
 	public void destructRope(Obstacle rope) {
 		rope.markRemoved(true);
+		avatar.setLinearVelocity(avatar.getLinearVelocity().scl(1.25f));
 }
 
 	
