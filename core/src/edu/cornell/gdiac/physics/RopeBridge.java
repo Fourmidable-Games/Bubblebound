@@ -80,7 +80,7 @@ public class RopeBridge extends ComplexObstacle {
 	    Vector2 norm = new Vector2(dimension);
 	    norm.nor();
 	    
-	    // If too small, only make one plank.
+	    // If too small, only make one plank.;
 	    int nLinks = (int)(length / linksize);
 	    if (nLinks <= 1) {
 	        nLinks = 1;

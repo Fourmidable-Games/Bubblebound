@@ -336,7 +336,7 @@ public class DudeModel extends CapsuleObstacle {
 		
 		// Velocity too high, clamp it
 		if (Math.abs(getVX()) >= getMaxSpeed()) {
-			setVX(Math.signum(getVX())*getMaxSpeed());
+			//setVX(Math.signum(getVX())*getMaxSpeed());
 		}else if(Math.abs(getVY()) >= getMaxSpeed() * 3){
 			//setVY(Math.signum((getVX()*getMaxSpeed())));
 		}

@@ -177,7 +177,7 @@ public class PlatformController extends WorldController implements ContactListen
 		addZone(new Zone(10, 0, 10, 6, -1.0f, scale));
 		addZone(new Zone(20, 0, 10, 30, -1.0f, scale));
 
-		WheelObstacle wo = new WheelObstacle(5, 5, 1);
+		WheelObstacle wo = new WheelObstacle(5, 5, 1f);
 		wo.setName("Bubble");
 		wo.setBodyType(BodyDef.BodyType.DynamicBody);
 		wo.setStatic(true);
@@ -305,6 +305,7 @@ public class PlatformController extends WorldController implements ContactListen
 		avatar.setMovement(InputController.getInstance().getHorizontal() *avatar.getForce());
 		avatar.setJumping(InputController.getInstance().didPrimary());
 		avatar.setShooting(InputController.getInstance().didSecondary());
+		Vector2 pos = avatar.getPosition();
 		boolean destructRope = false;
 		boolean constructRope = false;
 		if(avatar.isGrappling()){
@@ -331,11 +332,12 @@ public class PlatformController extends WorldController implements ContactListen
 		
 		// Add a bullet if we fire
 		if (avatar.isShooting()) {
-			createBullet();
+			//createBullet();
 		}
 
 		if(constructRope){
 			rope = createGrapple(closest);
+			avatar.setPosition(pos);
 		}
 		if(destructRope){
 			destructRope(rope);
