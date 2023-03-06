@@ -110,18 +110,28 @@ public class PlatformController extends WorldController implements ContactListen
 	 */
 	public void reset() {
 		Vector2 gravity = new Vector2(world.getGravity() );
-		
-		for(Obstacle obj : objects) {
-			obj.deactivatePhysics(world);
+		if(rope != null){
+			destructRope(rope);
 		}
+		for(Obstacle obj : objects) {
+			if(obj.getName() !="bridge"){
+				obj.deactivatePhysics(world);
+			}
+			
+		}
+
 
 		objects.clear();
 		bubbles.clear();
+
 		addQueue.clear();
+
+		
 		world.dispose();
 		
 		world = new World(gravity,false);
 		world.setContactListener(this);
+		
 		setComplete(false);
 		setFailure(false);
 		populateLevel();
@@ -435,6 +445,7 @@ public class PlatformController extends WorldController implements ContactListen
 	public void destructRope(Obstacle rope) {
 		rope.markRemoved(true);
 		avatar.setLinearVelocity(avatar.getLinearVelocity().scl(1.0f));
+		rope = null;
 	}
 
 	
