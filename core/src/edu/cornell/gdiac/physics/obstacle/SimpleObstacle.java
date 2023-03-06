@@ -827,6 +827,7 @@ public abstract class SimpleObstacle extends Obstacle {
 	 * @return true if object allocation succeeded
 	 */
 	public boolean activatePhysics(World world) {
+		System.out.println("activate physics");
 		// Make a body, if possible
 		bodyinfo.active = true;
 		body = world.createBody(bodyinfo);
@@ -839,6 +840,7 @@ public abstract class SimpleObstacle extends Obstacle {
 		} 
 		
 		bodyinfo.active = false;
+		System.out.println(getName());
 		return false;
 	}
 	
