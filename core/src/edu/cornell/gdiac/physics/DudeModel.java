@@ -335,8 +335,14 @@ public class DudeModel extends CapsuleObstacle {
 			damp = true;
 		}
 		// Don't want to be moving. Damp out player motion
-		if (getMovement() == 0  && ((!isGrappling && isGrounded) || damp)){
-			forceCache.set(-getDamping()*getVX(),0);
+		if (getMovement() == 0  && (!isGrappling) ){
+			//System.out.println("Damping  " + getDamping());
+			if(!damp){
+				//System.out.println("hiii");
+				forceCache.set(-getDamping()*getVX()*0.05f,0);
+			}else{
+				forceCache.set(-getDamping()*getVX(),0);
+			}
 			body.applyForce(forceCache,getPosition(),true);
 		}
 		
