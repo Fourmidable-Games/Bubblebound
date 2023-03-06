@@ -114,6 +114,7 @@ public class PlatformController extends WorldController implements ContactListen
 		for(Obstacle obj : objects) {
 			obj.deactivatePhysics(world);
 		}
+
 		objects.clear();
 		bubbles.clear();
 		addQueue.clear();
@@ -125,6 +126,9 @@ public class PlatformController extends WorldController implements ContactListen
 		setFailure(false);
 		populateLevel();
 	}
+
+
+
 
 	/**
 	 * Lays out the game geography.
@@ -219,15 +223,17 @@ public class PlatformController extends WorldController implements ContactListen
 		volume = constants.getFloat("volume", 1.0f);
 	}
 
-	public void spawnBubble(Vector2 v){
+	public WheelObstacle spawnBubble(Vector2 v, boolean b){
 		WheelObstacle wo2 = new WheelObstacle(v.x, v.y, 1);
 		wo2.setName("Bubble");
+		wo2.setStatic(b);
 		wo2.setBodyType(BodyDef.BodyType.DynamicBody);
 		wo2.setDrawScale(scale);
 		wo2.activatePhysics(world);
 		wo2.setDensity(10000f);
 		bubbles.add(wo2);
 		addQueuedObject(wo2);
+		return wo2;
 	}
 	
 	/**
@@ -264,6 +270,9 @@ public class PlatformController extends WorldController implements ContactListen
 	 *
 	 * @param dt	Number of seconds since last animation frame
 	 */
+
+	boolean sbubble = false;
+	boolean betterSwinging = true;
 	private int wait = 10;
 	public void update(float dt) {
 		// Process actions in object model
@@ -283,7 +292,14 @@ public class PlatformController extends WorldController implements ContactListen
 //				d.swapGravity(world, o.getGravityScale());
 //			}
 		}
+		if(InputController.getInstance().didSecondary()){
+			sbubble = !sbubble;
+		}
 		Vector2 crosshair = InputController.getInstance().getCrossHair();
+
+
+
+
 		WheelObstacle closest = bubbles.get(0);
 		float min = Float.MAX_VALUE;
 		for(int i = 0; i < bubbles.size(); i++){
@@ -301,10 +317,25 @@ public class PlatformController extends WorldController implements ContactListen
 				min = d;
 			}
 		}
-		closest.setSelected(true);
+
 		avatar.setMovement(InputController.getInstance().getHorizontal() *avatar.getForce());
 		avatar.setJumping(InputController.getInstance().didPrimary());
 		avatar.setShooting(InputController.getInstance().didSecondary());
+
+		boolean spawned = false;
+		if(InputController.getInstance().didTertiary()){
+			if(wait > 10) {
+				closest = spawnBubble(crosshair, sbubble);
+				wait = 0;
+				spawned = true;
+			}
+		}
+
+		closest.setSelected(true);
+
+		if(InputController.getInstance().didDebug()){
+			betterSwinging = !betterSwinging;
+		}
 		Vector2 pos = avatar.getPosition();
 		boolean destructRope = false;
 		boolean constructRope = false;
@@ -313,7 +344,17 @@ public class PlatformController extends WorldController implements ContactListen
 				avatar.setGrappling(false);
 				destructRope = true;
 			}
-			
+			if(betterSwinging) {
+				//if((InputController.getInstance().didBubble() || spawned) && avatar.getPosition().dst(closest.getPosition()) < 5 && !rope.bubble.equals(closest.getBody())){
+				if (InputController.getInstance().didBubble() && avatar.getPosition().dst(closest.getPosition()) < 5 && !rope.bubble.equals(closest.getBody())) {
+//				if(spawned){
+//					System.out.println("Hi");
+//					destructRope = true;
+//				}
+					avatar.setGrappling(true);
+					constructRope = true;
+				}
+			}
 		}else{
 			if(InputController.getInstance().didBubble() && avatar.getPosition().dst(closest.getPosition()) < 5){
 				avatar.setGrappling(true);
@@ -322,26 +363,21 @@ public class PlatformController extends WorldController implements ContactListen
 		}
 		wait++;
 
-		if(InputController.getInstance().didTertiary()){
-			if(wait > 10) {
-				spawnBubble(crosshair);
-				wait = 0;
-			}
-		}
+
 
 		
 		// Add a bullet if we fire
 		if (avatar.isShooting()) {
 			//createBullet();
 		}
-
+		if(destructRope){
+			destructRope(rope);
+		}
 		if(constructRope){
 			rope = createGrapple(closest);
 			avatar.setPosition(pos);
 		}
-		if(destructRope){
-			destructRope(rope);
-		}
+
 		
 		avatar.applyForce();
 	    if (avatar.isJumping()) {
@@ -397,8 +433,8 @@ public class PlatformController extends WorldController implements ContactListen
 
 	public void destructRope(Obstacle rope) {
 		rope.markRemoved(true);
-		avatar.setLinearVelocity(avatar.getLinearVelocity().scl(1.25f));
-}
+		avatar.setLinearVelocity(avatar.getLinearVelocity().scl(1.5f));
+	}
 
 	
 	/**

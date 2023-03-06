@@ -260,7 +260,6 @@ public abstract class WorldController implements Screen {
 		active = false;
 		countdown = -1;
 	}
-	
 	/**
 	 * Dispose of all (non-static) resources allocated to this mode.
 	 */
@@ -270,6 +269,7 @@ public abstract class WorldController implements Screen {
 		}
 		objects.clear();
 		addQueue.clear();
+		zones.clear();
 		world.dispose();
 		objects = null;
 		addQueue = null;
