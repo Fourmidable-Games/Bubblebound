@@ -191,7 +191,7 @@ public class PlatformController extends WorldController implements ContactListen
 		bubbles.add(wo);
 		addQueuedObject(wo);
 
-		WheelObstacle wo2 = new WheelObstacle(25, 13, 1);
+		WheelObstacle wo2 = new WheelObstacle(25, 13, 1f);
 		wo2.setName("Bubble");
 		wo2.setStatic(true);
 		wo2.setBodyType(BodyDef.BodyType.DynamicBody);
@@ -224,7 +224,7 @@ public class PlatformController extends WorldController implements ContactListen
 	}
 
 	public WheelObstacle spawnBubble(Vector2 v, boolean b){
-		WheelObstacle wo2 = new WheelObstacle(v.x, v.y, 1);
+		WheelObstacle wo2 = new WheelObstacle(v.x, v.y, 1f);
 		wo2.setName("Bubble");
 		wo2.setStatic(b);
 		wo2.setBodyType(BodyDef.BodyType.DynamicBody);
@@ -434,7 +434,7 @@ public class PlatformController extends WorldController implements ContactListen
 
 	public void destructRope(Obstacle rope) {
 		rope.markRemoved(true);
-		avatar.setLinearVelocity(avatar.getLinearVelocity().scl(1.5f));
+		avatar.setLinearVelocity(avatar.getLinearVelocity().scl(1.0f));
 	}
 
 	
