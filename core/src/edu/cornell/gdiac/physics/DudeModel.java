@@ -57,6 +57,7 @@ public class DudeModel extends CapsuleObstacle {
 	private boolean isGrounded;
 	/** Whether we are actively shooting */
 	private boolean isShooting;
+	private boolean isGrappling;
 	/** The physics shape of this object */
 	private PolygonShape sensorShape;
 
@@ -86,6 +87,9 @@ public class DudeModel extends CapsuleObstacle {
 	 */
 	public void setMovement(float value) {
 		movement = value; 
+		if(isGrappling()){
+			movement *= 1.25;
+		}
 		// Change facing if appropriate
 		if (movement < 0) {
 			faceRight = false;
@@ -102,6 +106,8 @@ public class DudeModel extends CapsuleObstacle {
 	public boolean isShooting() {
 		return isShooting && shootCooldown <= 0;
 	}
+
+	public boolean isGrappling(){return isGrappling;}
 	
 	/**
 	 * Sets whether the dude is actively firing.
@@ -111,6 +117,8 @@ public class DudeModel extends CapsuleObstacle {
 	public void setShooting(boolean value) {
 		isShooting = value; 
 	}
+
+	public void setGrappling(boolean value){isGrappling = value;}
 
 	/**
 	 * Returns true if the dude is actively jumping.

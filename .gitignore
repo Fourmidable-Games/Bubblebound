@@ -48,7 +48,11 @@ com_crashlytics_export_strings.xml
 .loadpath
 .externalToolBuilders/
 *.launch
-
+*.dmp
+javacore.*.txt
+*/javacore.*.txt
+Snap.*.trc
+*/Snap.*.trc
 ## NetBeans
 
 /nbproject/private/

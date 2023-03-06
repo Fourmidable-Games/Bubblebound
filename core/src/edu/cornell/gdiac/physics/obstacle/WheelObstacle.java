@@ -30,6 +30,12 @@ public class WheelObstacle extends SimpleObstacle {
 
 	private boolean selected;
 
+	public boolean statc;
+
+	public void setStatic(boolean b){
+		statc = b;
+	}
+
 	public void setSelected(boolean b){
 		selected = b;
 	}
@@ -91,6 +97,7 @@ public class WheelObstacle extends SimpleObstacle {
 	 * This is the primary method to override for custom physics objects
 	 */
 	protected void createFixtures() {
+		System.out.println("create fixtures");
 		if (body == null) {
 			return;
 		}
@@ -111,7 +118,9 @@ public class WheelObstacle extends SimpleObstacle {
 	 * This is the primary method to override for custom physics objects
 	 */
 	protected void releaseFixtures() {
-	    if (geometry != null) {
+		System.out.println("release fixtures");
+		System.out.println(geometry);
+	    if (geometry != null && geometry.getBody() == body) {
 	        body.destroyFixture(geometry);
 	        geometry = null;
 	    }

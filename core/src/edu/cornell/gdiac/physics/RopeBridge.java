@@ -18,6 +18,7 @@ import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.joints.*;
+import com.badlogic.gdx.graphics.*;
 
 import com.badlogic.gdx.utils.JsonValue;
 import edu.cornell.gdiac.physics.obstacle.*;
@@ -48,6 +49,9 @@ public class RopeBridge extends ComplexObstacle {
 	/** The spacing between each link */
 	protected float spacing = 0.0f;
 
+	Body bubble;
+	Body avatar;
+
 	/**
 	 * Creates a new rope bridge with the given physics data
 	 *
@@ -58,11 +62,12 @@ public class RopeBridge extends ComplexObstacle {
 	 * @param lwidth	The plank length
 	 * @param lheight	The bridge thickness
 	 */
-	public RopeBridge(JsonValue data, float lwidth, float lheight) {
+	public RopeBridge(JsonValue data, float lwidth, float lheight, Body b, Body a) {
 		super(data.get("pos").getFloat(0),data.get("pos").getFloat(1));
 		setName("bridge");
 		this.data = data;
-
+		bubble = b;
+		avatar = a;
 		float x0 = data.get("pos").getFloat(0);
 		float y0 = data.get("pos").getFloat(1);
 		planksize = new Vector2(lwidth,lheight);
@@ -71,6 +76,7 @@ public class RopeBridge extends ComplexObstacle {
 	    // Compute the bridge length
 		dimension = new Vector2(data.getFloat("width",0),data.getFloat("height",0));
 	    float length = dimension.len();
+		length = (float)Math.sqrt(Math.pow(bubble.getPosition().x-avatar.getPosition().x,2)+ Math.pow(bubble.getPosition().y-avatar.getPosition().y,2));
 	    Vector2 norm = new Vector2(dimension);
 	    norm.nor();
 	    
@@ -94,6 +100,7 @@ public class RopeBridge extends ComplexObstacle {
 	        pos.scl(t);
 	        pos.add(x0,y0);
 	        BoxObstacle plank = new BoxObstacle(pos.x, pos.y, planksize.x, planksize.y);
+			plank.setGravityScale(0);
 	        plank.setName("plank"+ii);
 	        plank.setDensity(data.getFloat("density",0));
 	        bodies.add(plank);
@@ -121,23 +128,32 @@ public class RopeBridge extends ComplexObstacle {
 		// reasons to not add the anchor to the bodies list.
 		Vector2 pos = bodies.get(0).getPosition();
 		pos.x -= linksize / 2;
-		start = new WheelObstacle(pos.x,pos.y,data.getFloat("pin_radius", 1));
-		start.setName("pin0");
-		start.setDensity(data.getFloat("density", 0));
-		start.setBodyType(BodyDef.BodyType.StaticBody);
-		start.activatePhysics(world);
-
-		// Definition for a revolute joint
+//		start = new WheelObstacle(pos.x,pos.y,data.getFloat("pin_radius", 1));
+//		start.setName("pin0");
+//		start.setDensity(data.getFloat("density", 0));
+//		start.setBodyType(BodyDef.BodyType.StaticBody);
+//		start.activatePhysics(world);
+//
+//		// Definition for a revolute joint
 		RevoluteJointDef jointDef = new RevoluteJointDef();
-
-		// Initial joint
-		jointDef.bodyA = start.getBody();
-		jointDef.bodyB = bodies.get(0).getBody();
-		jointDef.localAnchorA.set(anchor1);
-		jointDef.localAnchorB.set(anchor2);
-		jointDef.collideConnected = false;
-		Joint joint = world.createJoint(jointDef);
-		joints.add(joint);
+//
+//		// Initial joint
+//		jointDef.bodyA = start.getBody();
+//		jointDef.bodyB = bodies.get(0).getBody();
+//		jointDef.localAnchorA.set(anchor1);
+//		jointDef.localAnchorB.set(anchor2);
+//		jointDef.collideConnected = false;
+		Joint joint;
+			jointDef.bodyA = bodies.get(0).getBody();
+			jointDef.bodyB = avatar;
+			System.out.println(bubble);
+			jointDef.localAnchorA.set(anchor2);
+			jointDef.localAnchorB.set(anchor1);
+			jointDef.collideConnected = false;
+			joint = world.createJoint(jointDef);
+			joints.add(joint);
+//		Joint joint = world.createJoint(jointDef);
+//		joints.add(joint);
 
 		// Link the planks together
 		anchor1.x = linksize / 2;
@@ -157,24 +173,20 @@ public class RopeBridge extends ComplexObstacle {
 
 		// Create the rightmost anchor
 		Obstacle last = bodies.get(bodies.size-1);
-		
-		pos = last.getPosition();
-		pos.x += linksize / 2;
-		finish = new WheelObstacle(pos.x,pos.y,data.getFloat("pin_radius", 1));
-		finish.setName("pin1");
-		finish.setDensity(data.getFloat("density", 0));
-		finish.setBodyType(BodyDef.BodyType.StaticBody);
-		finish.activatePhysics(world);
 
-		// Final joint
-		anchor2.x = 0;
-		jointDef.bodyA = last.getBody();
-		jointDef.bodyB = finish.getBody();
-		jointDef.localAnchorA.set(anchor1);
-		jointDef.localAnchorB.set(anchor2);
-		joint = world.createJoint(jointDef);
-		joints.add(joint);
-				
+		if(bubble != null) {
+			// Final joint
+			anchor2.x = 0;
+			anchor2.y = 0;
+			jointDef.bodyA = last.getBody();
+			jointDef.bodyB = bubble;
+			System.out.println(bubble);
+			jointDef.localAnchorA.set(anchor1);
+			jointDef.localAnchorB.set(anchor2);
+			jointDef.collideConnected = false;
+			joint = world.createJoint(jointDef);
+			joints.add(joint);
+		}
 		return true;
 	}
 	
@@ -216,4 +228,15 @@ public class RopeBridge extends ComplexObstacle {
 		}
 		return ((SimpleObstacle)bodies.get(0)).getTexture();
 	}
+
+	// @Override
+	// public void sdraw(GameCanvas canvas){
+	// 	for(Obstacle obj : bodies) {
+	// 		float angle = obj.getAngle();
+	// 		float x = ((BoxObstacle)obj).getWidth()*drawScale.x / 2;
+	// 		float y = ((BoxObstacle)obj).getHeight()*drawScale.y / 2;
+	// 		canvas.shape.setColor(Color.BROWN);
+	// 		canvas.shape.rect(getX()*drawScale.x-x,getY()*drawScale.y-y,((BoxObstacle)obj).getWidth()*drawScale.x,((BoxObstacle)obj).getHeight()*drawScale.y);
+	// 	}
+	// }
 }
