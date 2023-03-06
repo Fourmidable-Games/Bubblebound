@@ -30,6 +30,12 @@ public class WheelObstacle extends SimpleObstacle {
 
 	private boolean selected;
 
+	public boolean statc;
+
+	public void setStatic(boolean b){
+		statc = b;
+	}
+
 	public void setSelected(boolean b){
 		selected = b;
 	}

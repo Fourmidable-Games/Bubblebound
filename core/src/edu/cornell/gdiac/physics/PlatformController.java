@@ -178,18 +178,21 @@ public class PlatformController extends WorldController implements ContactListen
 
 		WheelObstacle wo = new WheelObstacle(5, 5, 1);
 		wo.setName("Bubble");
-		wo.setBodyType(BodyDef.BodyType.StaticBody);
+		wo.setBodyType(BodyDef.BodyType.DynamicBody);
+		wo.setStatic(true);
 		wo.setDrawScale(scale);
 		wo.activatePhysics(world);
+		wo.setDensity(1000f);
 		bubbles.add(wo);
-
 		addQueuedObject(wo);
 
 		WheelObstacle wo2 = new WheelObstacle(25, 15, 1);
 		wo2.setName("Bubble");
-		wo2.setBodyType(BodyDef.BodyType.StaticBody);
+		wo2.setStatic(true);
+		wo2.setBodyType(BodyDef.BodyType.DynamicBody);
 		wo2.setDrawScale(scale);
 		wo2.activatePhysics(world);
+		wo2.setDensity(1000f);
 		bubbles.add(wo2);
 		addQueuedObject(wo2);
 		JsonValue defaults = constants.get("defaults");
@@ -221,6 +224,7 @@ public class PlatformController extends WorldController implements ContactListen
 		wo2.setBodyType(BodyDef.BodyType.DynamicBody);
 		wo2.setDrawScale(scale);
 		wo2.activatePhysics(world);
+		wo2.setDensity(10000f);
 		bubbles.add(wo2);
 		addQueuedObject(wo2);
 	}
@@ -283,7 +287,12 @@ public class PlatformController extends WorldController implements ContactListen
 		float min = Float.MAX_VALUE;
 		for(int i = 0; i < bubbles.size(); i++){
 			WheelObstacle b = bubbles.get(i);
-			b.setLinearVelocity(new Vector2(0, b.grav));
+			if(b.statc){
+				b.setLinearVelocity(new Vector2(0,0));
+			}else{
+				b.setLinearVelocity(new Vector2(0, b.grav));
+			}
+
 			float d = b.getPosition().dst(crosshair);
 			b.setSelected(false);
 			if(d < min){
