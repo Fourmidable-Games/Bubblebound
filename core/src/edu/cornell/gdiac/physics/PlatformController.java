@@ -327,7 +327,7 @@ public class PlatformController extends WorldController implements ContactListen
 			rope = createGrapple(closest);
 		}
 		if(destructRope){
-			
+			destructRope(rope);
 		}
 		
 		avatar.applyForce();
@@ -381,6 +381,10 @@ public class PlatformController extends WorldController implements ContactListen
 	    bullet.markRemoved(true);
 	    plopId = playSound( plopSound, plopId );
 	}
+
+	public void destructRope(Obstacle rope) {
+		rope.markRemoved(true);
+}
 
 	
 	/**
