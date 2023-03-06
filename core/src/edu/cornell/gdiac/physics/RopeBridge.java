@@ -63,13 +63,15 @@ public class RopeBridge extends ComplexObstacle {
 	 * @param lheight	The bridge thickness
 	 */
 	public RopeBridge(JsonValue data, float lwidth, float lheight, Body b, Body a) {
-		super(data.get("pos").getFloat(0),data.get("pos").getFloat(1));
+		//super(data.get("pos").getFloat(0),data.get("pos").getFloat(1));
+		super(b.getPosition().x, b.getPosition().y);
+		System.out.println(getPosition());
 		setName("bridge");
 		this.data = data;
 		bubble = b;
 		avatar = a;
-		float x0 = data.get("pos").getFloat(0);
-		float y0 = data.get("pos").getFloat(1);
+		float x0 = a.getPosition().x;
+		float y0 = a.getPosition().y;
 		planksize = new Vector2(lwidth,lheight);
 		linksize = planksize.x;
 		
