@@ -76,7 +76,7 @@ public class RopeBridge extends ComplexObstacle {
 	    // Compute the bridge length
 		dimension = new Vector2(data.getFloat("width",0),data.getFloat("height",0));
 	    float length = dimension.len();
-			length = (float)Math.sqrt(Math.pow(bubble.getPosition().x-avatar.getPosition().x,2)+ Math.pow(bubble.getPosition().y-avatar.getPosition().y,2));
+		length = (float)Math.sqrt(Math.pow(bubble.getPosition().x-avatar.getPosition().x,2)+ Math.pow(bubble.getPosition().y-avatar.getPosition().y,2));
 	    Vector2 norm = new Vector2(dimension);
 	    norm.nor();
 	    

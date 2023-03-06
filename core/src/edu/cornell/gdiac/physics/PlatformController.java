@@ -135,7 +135,8 @@ public class PlatformController extends WorldController implements ContactListen
 		//Vector2 scale2 = new Vector2(16f, 16f);
 		//scale2.x /= 2;
 		//scale2.y /= 2;
-
+		System.out.println(scale.x);
+		System.out.println(scale.y);
 		JsonValue goal = constants.get("goal");
 		JsonValue goalpos = goal.get("pos");
 		goalDoor = new BoxObstacle(goalpos.getFloat(0),goalpos.getFloat(1),dwidth,dheight);
@@ -303,7 +304,7 @@ public class PlatformController extends WorldController implements ContactListen
 			}
 			
 		}else{
-			if(InputController.getInstance().didBubble()){
+			if(InputController.getInstance().didBubble() && avatar.getPosition().dst(closest.getPosition()) < 5){
 				avatar.setGrappling(true);
 				constructRope = true;
 			}

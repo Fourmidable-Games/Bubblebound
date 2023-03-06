@@ -213,7 +213,7 @@ public class BoxObstacle extends SimpleObstacle {
 		canvas.shape.setColor(Color.BROWN);
 		float angle = body.getAngle();
 		// canvas.shape.rect(getX()*drawScale.x-x,getY()*drawScale.y-y,getWidth()*drawScale.x,getHeight()*drawScale.y);
-		canvas.shape.rect(getX()*drawScale.x,getY()*drawScale.y,0,0,getWidth()*drawScale.x,getHeight()*drawScale.y,1,1,(float)Math.toDegrees(angle));
+		canvas.shape.rect(getX()*drawScale.x-x,getY()*drawScale.y-y,x,y,getWidth()*drawScale.x,getHeight()*drawScale.y,1,1,(float)Math.toDegrees(angle));
 	}
 
 }
