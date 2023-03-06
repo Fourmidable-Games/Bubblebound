@@ -191,7 +191,7 @@ public class PlatformController extends WorldController implements ContactListen
 		bubbles.add(wo);
 		addQueuedObject(wo);
 
-		WheelObstacle wo2 = new WheelObstacle(25, 15, 1);
+		WheelObstacle wo2 = new WheelObstacle(25, 13, 1);
 		wo2.setName("Bubble");
 		wo2.setStatic(true);
 		wo2.setBodyType(BodyDef.BodyType.DynamicBody);
@@ -374,8 +374,9 @@ public class PlatformController extends WorldController implements ContactListen
 			destructRope(rope);
 		}
 		if(constructRope){
+			System.out.println("B4: " + pos);
 			rope = createGrapple(closest);
-			avatar.setPosition(pos);
+			//avatar.setPosition(pos);
 		}
 
 		
