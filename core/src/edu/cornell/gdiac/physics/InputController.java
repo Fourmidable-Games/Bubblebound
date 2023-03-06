@@ -316,7 +316,7 @@ public class InputController {
 		nextPressed = (secondary && nextPressed) || (Gdx.input.isKeyPressed(Input.Keys.N));
 		exitPressed  = (secondary && exitPressed) || (Gdx.input.isKeyPressed(Input.Keys.ESCAPE));
 
-		bubblePressed = (secondary && bubblePressed) || (Gdx.input.isKeyPressed(Input.Keys.B));
+		bubblePressed = (secondary && bubblePressed) || (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT));
 		
 		// Directional controls
 		horizontal = (secondary ? horizontal : 0.0f);
@@ -337,7 +337,8 @@ public class InputController {
 		}
 		
 		// Mouse results
-        tertiaryPressed = Gdx.input.isButtonPressed(Input.Buttons.LEFT);
+        tertiaryPressed = Gdx.input.isButtonPressed(Input.Buttons.RIGHT);
+				
 		crosshair.set(Gdx.input.getX(), Gdx.input.getY());
 		crosshair.scl(1/scale.x,-1/scale.y);
 		crosshair.y += bounds.height;
