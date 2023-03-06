@@ -316,7 +316,7 @@ public class DudeModel extends CapsuleObstacle {
 
 	}
 
-
+	public boolean damp = true;
 
 	/**
 	 * Applies the force to the body of this dude
@@ -328,8 +328,14 @@ public class DudeModel extends CapsuleObstacle {
 		if (!isActive()) {
 			return;
 		}
+		if(isGrappling){
+			damp = false;
+		}
+		if(isGrounded || isJumping){
+			damp = true;
+		}
 		// Don't want to be moving. Damp out player motion
-		if (getMovement() == 0  && !isGrappling && isGrounded) {
+		if (getMovement() == 0  && ((!isGrappling && isGrounded) || damp)){
 			forceCache.set(-getDamping()*getVX(),0);
 			body.applyForce(forceCache,getPosition(),true);
 		}

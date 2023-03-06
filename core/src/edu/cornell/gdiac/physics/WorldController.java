@@ -475,7 +475,7 @@ public abstract class WorldController implements Screen {
 		canvas.shape.end();
 		canvas.shape.begin(ShapeRenderer.ShapeType.Line);
 		for(Zone z : zones){
-			canvas.shape.setColor(Color.LIME);
+			canvas.shape.setColor(Color.RED);
 			z.sDraw(canvas);
 		}
 		canvas.shape.end();
