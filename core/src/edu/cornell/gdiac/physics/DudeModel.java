@@ -305,19 +305,8 @@ public class DudeModel extends CapsuleObstacle {
 		return true;
 	}
 
-	public void swapGravity(World world, float f){
-		int i = 0;
-		if(f < 0){
-			i = 1;
-		}else{
-			i = -1;
-		}
-
-
-	}
 
 	public boolean damp = true;
-
 	/**
 	 * Applies the force to the body of this dude
 	 *
@@ -329,6 +318,7 @@ public class DudeModel extends CapsuleObstacle {
 			return;
 		}
 		if(isGrappling){
+			body.setGravityScale(grav * 2.0f);
 			damp = false;
 		}
 		if(isGrounded || isJumping){
@@ -340,12 +330,17 @@ public class DudeModel extends CapsuleObstacle {
 			if(!damp){
 				//System.out.println("hiii");
 				forceCache.set(-getDamping()*getVX()*0.05f,0);
+				//forceCache.set(-getDamping()*0.2f,0);
 			}else{
 				forceCache.set(-getDamping()*getVX(),0);
 			}
+			System.out.println(forceCache.x);
 			body.applyForce(forceCache,getPosition(),true);
 		}
-		
+
+
+
+
 		// Velocity too high, clamp it
 		if (Math.abs(getVX()) >= getMaxSpeed()) {
 			//setVX(Math.signum(getVX())*getMaxSpeed());
@@ -356,15 +351,11 @@ public class DudeModel extends CapsuleObstacle {
 			forceCache.set(getMovement(),0);
 			body.applyForce(forceCache,getPosition(),true);
 		}
-		// Jump!
-		int i = 1;
-		if(body.getGravityScale() < 0){
-			i = -1;
-		}
+
 
 		if (isJumping()) {
-			System.out.println("jump");
-			forceCache.set(0, i * jump_force);
+			forceCache.set(0, grav * jump_force);
+			forceCache.x *= 3;
 			body.applyLinearImpulse(forceCache,getPosition(),true);
 		}
 	}
