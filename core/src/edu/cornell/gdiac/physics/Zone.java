@@ -7,7 +7,8 @@ public class Zone {
 
     public float xpos;
     public float ypos;
-
+    public float xmove;
+    public float ymove;
     public float width;
     public float height;
 
@@ -21,6 +22,13 @@ public class Zone {
         height = h;
         grav = gravity;
         scale = s;
+        xmove = 0;
+        ymove = 0;
+    }
+
+    public void move(){
+        xpos += xmove;
+        ypos += ymove;
     }
 
     public float getGrav(){
@@ -38,6 +46,11 @@ public class Zone {
 
     public void sDraw(GameCanvas canvas){
         canvas.shape.rect(xpos*scale.x, ypos*scale.y, width*scale.x, height*scale.y);
+    }
+
+    public void setMove(float x, float y){
+        xmove = x;
+        ymove = y;
     }
 
 }

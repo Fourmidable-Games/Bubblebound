@@ -610,6 +610,12 @@ public abstract class WorldController implements Screen {
 		active = false;
 	}
 
+	public void moveZones(){
+		for(int i = 0; i < zones.size(); i++){
+			zones.get(i).move();
+		}
+	}
+
 	/**
 	 * Sets the ScreenListener for this mode
 	 *

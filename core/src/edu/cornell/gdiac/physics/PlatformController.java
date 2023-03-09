@@ -150,8 +150,6 @@ public class PlatformController extends WorldController implements ContactListen
 		//Vector2 scale2 = new Vector2(16f, 16f);
 		//scale2.x /= 2;
 		//scale2.y /= 2;
-		System.out.println(scale.x);
-		System.out.println(scale.y);
 		JsonValue goal = constants.get("goal");
 		JsonValue goalpos = goal.get("pos");
 		goalDoor = new BoxObstacle(goalpos.getFloat(0),goalpos.getFloat(1),dwidth,dheight);
@@ -189,7 +187,9 @@ public class PlatformController extends WorldController implements ContactListen
 
 
 		addZone(new Zone(10, 0, 10, 6, -1.0f, scale));
-		addZone(new Zone(20, 0, 10, 30, -1.0f, scale));
+		Zone z = new Zone(20, 0 ,10 ,32, -1.0f, scale);
+		//z.setMove(-0.01f, 0);
+		addZone(z);
 
 		WheelObstacle wo = new WheelObstacle(5, 5, 1f);
 		wo.setName("Bubble");
@@ -286,7 +286,7 @@ public class PlatformController extends WorldController implements ContactListen
 	private int wait = 10;
 	public void update(float dt) {
 		// Process actions in object model
-
+		moveZones();
 		for(int i = 0; i < objects.size(); i++){
 			Body o = objects.get(i).getBody();
 			objects.get(i).setGrav(1.0f);
@@ -384,11 +384,10 @@ public class PlatformController extends WorldController implements ContactListen
 			destructRope(rope);
 		}
 		if(constructRope){
-			System.out.println("B4: " + pos);
+			//System.out.println("B4: " + pos);
 			rope = createGrapple(closest);
 			//avatar.setPosition(pos);
 		}
-
 		
 		avatar.applyForce();
 	    if (avatar.isJumping()) {
@@ -444,7 +443,7 @@ public class PlatformController extends WorldController implements ContactListen
 
 	public void destructRope(Obstacle rope) {
 		rope.markRemoved(true);
-		avatar.setLinearVelocity(avatar.getLinearVelocity().scl(1.0f));
+		avatar.setLinearVelocity(avatar.getLinearVelocity().scl(1.3f));
 		rope = null;
 	}
 
