@@ -60,7 +60,7 @@ public class PlatformController extends WorldController implements ContactListen
 	private DudeModel avatar;
 	/** Reference to the goalDoor (for collision detection) */
 	private BoxObstacle goalDoor;
-
+	private final int BUBBLE_LIMIT = 10;
 
 	/** Mark set to handle more sophisticated collision callbacks */
 	protected ObjectSet<Fixture> sensorFixtures;
@@ -234,6 +234,7 @@ public class PlatformController extends WorldController implements ContactListen
 	}
 
 	public WheelObstacle spawnBubble(Vector2 v, boolean b){
+		if(bubbles.size() >= BUBBLE_LIMIT) return null;
 		WheelObstacle wo2 = new WheelObstacle(v.x, v.y, 1f);
 		wo2.setName("Bubble");
 		wo2.setStatic(b);
@@ -341,7 +342,7 @@ public class PlatformController extends WorldController implements ContactListen
 			}
 		}
 
-		closest.setSelected(true);
+		if (closest != null) closest.setSelected(true);
 
 		if(InputController.getInstance().didDebug()){
 			betterSwinging = !betterSwinging;
@@ -372,8 +373,6 @@ public class PlatformController extends WorldController implements ContactListen
 			}
 		}
 		wait++;
-
-
 
 		
 		// Add a bullet if we fire
