@@ -453,7 +453,6 @@ public abstract class WorldController implements Screen {
 	public void addZone(Zone z){
 		zones.add(z);
 	}
-
 	/**
 	 * Draw the physics objects to the canvas
 	 *
@@ -479,6 +478,19 @@ public abstract class WorldController implements Screen {
 			z.sDraw(canvas);
 		}
 		canvas.shape.end();
+		// Draw life bar
+		float life = 0.7f;
+		canvas.shape.begin(ShapeRenderer.ShapeType.Filled);
+		canvas.shape.setColor(Color.RED);
+		canvas.shape.rect(10, canvas.getHeight() - 30, 200 * life, 20);
+		canvas.shape.end();
+
+		// Draw life bar label
+		displayFont.setColor(Color.WHITE);
+		displayFont.getData().setScale(0.4f);
+		canvas.begin(); // DO NOT SCALE
+		canvas.drawText("Life Bar", displayFont, 20, canvas.getHeight() - 34);
+		canvas.end();
 //		canvas.end();
 		debug = false;
 		if (debug) {
