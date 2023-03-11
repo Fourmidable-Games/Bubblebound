@@ -137,9 +137,6 @@ public class PlatformController extends WorldController implements ContactListen
 		populateLevel();
 	}
 
-
-
-
 	/**
 	 * Lays out the game geography.
 	 */

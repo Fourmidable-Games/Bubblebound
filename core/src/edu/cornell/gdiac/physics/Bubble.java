@@ -7,6 +7,9 @@ import com.badlogic.gdx.utils.JsonValue;
 import edu.cornell.gdiac.physics.*;
 import edu.cornell.gdiac.physics.obstacle.*;
 
-public class Bubble {
+public class Bubble extends WheelObstacle{
 
+    public Bubble(float radius) {
+        super(radius);
+    }
 }

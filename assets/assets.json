@@ -42,7 +42,7 @@
         "platform:bullet":  "platform/bullet.png",
         "ragdoll:bubble": "ragdoll/bubble.png",
         "ragdoll:torso":  "ragdoll/tux_body.png",
-        "ragdoll:head":   "ragdoll/ProfWhite.png",
+        "ragdoll:head":   "ragdoll/Iris.png",
         "ragdoll:thigh":  "ragdoll/tux_thigh.png",
         "ragdoll:shin":   "ragdoll/tux_shin.png",
         "ragdoll:arm":    "ragdoll/tux_arm.png",
