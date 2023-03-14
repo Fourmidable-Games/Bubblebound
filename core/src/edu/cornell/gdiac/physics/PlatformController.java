@@ -39,7 +39,7 @@ public class PlatformController extends WorldController implements ContactListen
 	private TextureRegion bridgeTexture;
 
 	private TextureRegion barrierTexture;
-
+	private TextureRegion[] bodyTextures;
 	/** The jump sound.  We only want to play once. */
 	private Sound jumpSound;
 	private long jumpId = -1;
@@ -95,6 +95,10 @@ public class PlatformController extends WorldController implements ContactListen
 		bridgeTexture = new TextureRegion(directory.getEntry("platform:rope",Texture.class));
 		barrierTexture = new TextureRegion(directory.getEntry("platform:barrier",Texture.class));
 
+		for(int i = 0; i < IrisModel.BODY_PARTS.length; i++) {
+			bodyTextures[i] = new TextureRegion(directory.getEntry("ragdoll:" + IrisModel.BODY_PARTS[i]
+			, Texture.class));
+		}
 		jumpSound = directory.getEntry( "platform:jump", Sound.class );
 		fireSound = directory.getEntry( "platform:pew", Sound.class );
 		plopSound = directory.getEntry( "platform:plop", Sound.class );
