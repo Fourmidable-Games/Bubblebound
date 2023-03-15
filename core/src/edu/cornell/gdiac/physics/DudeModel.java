@@ -356,6 +356,7 @@ public class DudeModel extends CapsuleObstacle {
 		if (isJumping()) {
 			forceCache.set(0, grav * jump_force);
 			forceCache.x *= 3;
+			forceCache.y /= 3;
 			body.applyLinearImpulse(forceCache,getPosition(),true);
 		}
 	}
