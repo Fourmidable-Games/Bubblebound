@@ -108,6 +108,8 @@ public abstract class WorldController implements Screen {
 	/** Countdown active for winning or losing */
 	private int countdown;
 
+	public ArrayList<TextureRegion> textures = new ArrayList<TextureRegion>();
+
 	/**
 	 * Returns true if debug mode is active.
 	 *
@@ -296,6 +298,7 @@ public abstract class WorldController implements Screen {
 		displayFont = directory.getEntry( "shared:retro" ,BitmapFont.class);
 	}
 
+
 	/**
 	 *
 	 * Adds a physics object in to the insertion queue.
@@ -465,17 +468,22 @@ public abstract class WorldController implements Screen {
 	 */
 	public void draw(float dt) {
 		canvas.clear();
-
 		canvas.begin();
 		canvas.draw(background, 0, 0);
 		canvas.end();
 
 		//canvas.begin();
-		canvas.shape.begin(ShapeRenderer.ShapeType.Filled);
+		//canvas.shape.begin(ShapeRenderer.ShapeType.Filled);
+
 		for(Obstacle obj : objects) {
-			obj.sdraw(canvas); ////!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//			obj.sdraw(canvas); ////!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			obj.draw(canvas);
+
 		}
-		canvas.shape.end();
+
+
+		canvas.end();
+//		canvas.shape.end();
 		canvas.shape.begin(ShapeRenderer.ShapeType.Line);
 		for(Zone z : zones){
 			canvas.shape.setColor(Color.RED);

@@ -20,6 +20,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import edu.cornell.gdiac.assets.AssetDirectory;
 import edu.cornell.gdiac.physics.obstacle.*;
 import java.util.*;
+import java.util.logging.Level;
 
 /**
  * Gameplay specific controller for the platformer game.  
@@ -81,6 +82,14 @@ public class PlatformController extends WorldController implements ContactListen
 		sensorFixtures = new ObjectSet<Fixture>();
 	}
 
+	public List<TextureRegion> loadTexturesIntoLevelEditor() {
+		textures.add(earthTile);
+		textures.add(goalTile);
+		return textures;
+	}
+
+
+
 	/**
 	 * Gather the assets for this controller.
 	 *
@@ -101,7 +110,7 @@ public class PlatformController extends WorldController implements ContactListen
 		constants = directory.getEntry( "platform:constants", JsonValue.class );
 		super.gatherAssets(directory);
 	}
-	
+
 	/**
 	 * Resets the status of the game so that we can play again.
 	 *
@@ -160,18 +169,37 @@ public class PlatformController extends WorldController implements ContactListen
 		//addObject(goalDoor);
 
 
-		BoxObstacle box = new BoxObstacle(0, 0, 20, 2);
-		box.setTexture(earthTile);
-		box.setBodyType(BodyDef.BodyType.StaticBody);
-		box.setDensity(0);
-		box.setFriction(0);
-		box.setRestitution(0);
-		box.setDrawScale(scale);
-		box.setName("box");
-		addObject(box);
+		LevelEditor Level1 = new LevelEditor();
+		loadTexturesIntoLevelEditor();
+		Level1.readTextures(textures);
+		Level1.readJson();
+		List<BoxObstacle> BoxList = Level1.getBoxes();
+
+		//BoxObstacle box = new BoxObstacle(0, 0, 20, 2);
+		for (int i = 0; i < BoxList.size(); i++) {
+			BoxObstacle box = BoxList.get(i);
+			box.setTexture(earthTile);
+			box.setBodyType(BodyDef.BodyType.StaticBody);
+			box.setDensity(0);
+			box.setFriction(0);
+			box.setRestitution(0);
+			box.setDrawScale(scale);
+			box.setName("box");
+			addObject(box);
+		}
+
+//		BoxObstacle box = BoxList.get(0);
+//		box.setTexture(earthTile);
+//		box.setBodyType(BodyDef.BodyType.StaticBody);
+//		box.setDensity(0);
+//		box.setFriction(0);
+//		box.setRestitution(0);
+//		box.setDrawScale(scale);
+//		box.setName("box");
+//		addObject(box);
 
 
-		BoxObstacle box2 = new BoxObstacle(0, 17, 100, 1);
+		BoxObstacle box2 = new BoxObstacle(10, 10, 1, 1);
 		box2.setBodyType(BodyDef.BodyType.StaticBody);
 		box2.setDensity(0);
 		box2.setFriction(0);
@@ -194,6 +222,7 @@ public class PlatformController extends WorldController implements ContactListen
 		wo.setDrawScale(scale);
 		wo.activatePhysics(world);
 		wo.setDensity(1000f);
+		wo.setTexture(earthTile);
 		bubbles.add(wo);
 		addQueuedObject(wo);
 
@@ -204,6 +233,7 @@ public class PlatformController extends WorldController implements ContactListen
 		wo2.setDrawScale(scale);
 		wo2.activatePhysics(world);
 		wo2.setDensity(1000f);
+		wo2.setTexture(earthTile);
 		bubbles.add(wo2);
 		addQueuedObject(wo2);
 		JsonValue defaults = constants.get("defaults");
@@ -238,6 +268,7 @@ public class PlatformController extends WorldController implements ContactListen
 		wo2.setDrawScale(scale);
 		wo2.activatePhysics(world);
 		wo2.setDensity(10000f);
+		wo2.setTexture(earthTile);
 		bubbles.add(wo2);
 		addQueuedObject(wo2);
 		return wo2;

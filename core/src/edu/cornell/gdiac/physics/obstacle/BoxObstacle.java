@@ -12,12 +12,15 @@
 package edu.cornell.gdiac.physics.obstacle;
 
 import com.badlogic.gdx.graphics.g2d.PolygonRegion;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.physics.box2d.*;
 
 import edu.cornell.gdiac.physics.*;  // For GameCanvas
+
+import static com.badlogic.gdx.graphics.Texture.TextureWrap.Repeat;
 
 /**
  * Box-shaped model to support collisions.
@@ -208,12 +211,28 @@ public class BoxObstacle extends SimpleObstacle {
 
 	@Override
 	public void sdraw(GameCanvas canvas){
+
+
 		float x = getWidth()*drawScale.x / 2;
 		float y = getHeight()*drawScale.y / 2;
-		canvas.shape.setColor(Color.BROWN);
-		float angle = body.getAngle();
+
+
+//		if (getTexture() != null) {
+//			canvas.spriteBatch.begin();
+//			TextureRegion platform = getTexture();
+//			platform.getTexture().setWrap(Texture.TextureWrap.MirroredRepeat, Texture.TextureWrap.MirroredRepeat);
+//			canvas.spriteBatch.draw(platform, origin.x, origin.y, getHeight()*drawScale.y);
+//			canvas.spriteBatch.end();
+//		}
+
+
+
+//		float x = getWidth()*drawScale.x / 2;
+//		float y = getHeight()*drawScale.y / 2;
+//		canvas.shape.setColor(Color.BROWN);
+//		float angle = body.getAngle();
 		// canvas.shape.rect(getX()*drawScale.x-x,getY()*drawScale.y-y,getWidth()*drawScale.x,getHeight()*drawScale.y);
-		canvas.shape.rect(getX()*drawScale.x-x,getY()*drawScale.y-y,x,y,getWidth()*drawScale.x,getHeight()*drawScale.y,1,1,(float)Math.toDegrees(angle));
+//		canvas.shape.rect(getX()*drawScale.x-x,getY()*drawScale.y-y,x,y,getWidth()*drawScale.x,getHeight()*drawScale.y,1,1,(float)Math.toDegrees(angle));
 	}
 
 }
