@@ -468,13 +468,9 @@ public abstract class WorldController implements Screen {
 	 */
 	public void draw(float dt) {
 		canvas.clear();
-<<<<<<< Updated upstream
 		canvas.begin();
 		canvas.draw(background, 0, 0);
-		canvas.end();
 
-=======
->>>>>>> Stashed changes
 		//canvas.begin();
 		//canvas.shape.begin(ShapeRenderer.ShapeType.Filled);
 

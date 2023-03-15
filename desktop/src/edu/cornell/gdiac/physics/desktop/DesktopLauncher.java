@@ -34,13 +34,8 @@ public class DesktopLauncher {
 	 */
 	public static void main (String[] arg) {
 		GDXAppSettings config = new GDXAppSettings();
-<<<<<<< Updated upstream
-		config.width  = 1024*2;
-		config.height = 576*2;
-=======
-		config.width  = 1920;
-		config.height = 1080;
->>>>>>> Stashed changes
+		config.width  = 1820;
+		config.height = 980;
 		config.fullscreen = false;
 		config.resizable = false;
 		new GDXApp(new GDXRoot(), config);
