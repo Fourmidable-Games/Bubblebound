@@ -1,0 +1,18 @@
+{
+  "Objects": [
+    {
+      "x": 0,
+      "y": 0,
+      "width": 1,
+      "height": 1,
+      "texture": 0,
+      "Density" : "static",
+      "friction": 0,
+      "restitution": 0,
+      "scale" : "scale",
+      "repeat": 10,
+      "box name" : "box"
+    }
+  ]
+}
+

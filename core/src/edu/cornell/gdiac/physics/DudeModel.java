@@ -390,9 +390,19 @@ public class DudeModel extends CapsuleObstacle {
 	 * @param canvas Drawing context
 	 */
 	public void draw(GameCanvas canvas) {
+
+		float x = getWidth()*drawScale.x / 2;
+		float y = getHeight()*drawScale.y / 2;
+
 		float effect = faceRight ? 1.0f : -1.0f;
-		canvas.draw(texture,Color.WHITE,origin.x,origin.y,getX()*drawScale.x,getY()*drawScale.y,getAngle(),effect,1.0f);
+		canvas.draw(texture,Color.WHITE,origin.x,origin.y,getX()*drawScale.x+x,getY()*drawScale.y+y,getAngle(),effect,1.0f);
+
+
+//		float effect = faceRight ? 1.0f : -1.0f;
+//		canvas.draw(texture,Color.WHITE,origin.x,origin.y,getX()*drawScale.x,getY()*drawScale.y,getAngle(),effect,1.0f);
 	}
+
+
 	
 	/**
 	 * Draws the outline of the physics body.
