@@ -11,8 +11,41 @@
       "restitution": 0,
       "scale" : "scale",
       "repeat": 10,
+      "repeatx": 10,
+      "repeaty": 0,
       "box name" : "box"
     }
-  ]
-}
+  ],
 
+  "Bubbles": [
+    {
+      "x": 5,
+      "y": 5,
+      "radius" : 1
+    },
+    {
+      "x": 25,
+      "y": 13,
+      "radius" : 1
+    }
+  ],
+
+  "Gravity Zones" : [
+    { "x" : 10,
+      "y": 0,
+      "width" : 10,
+      "height" : 6,
+      "gravity" : -1,
+      "scale": 0
+    },
+    {
+      "x" : 20,
+      "y": 0,
+      "width" : 10,
+      "height" : 32,
+      "gravity" : -1,
+      "scale": 0
+    }
+]
+
+}

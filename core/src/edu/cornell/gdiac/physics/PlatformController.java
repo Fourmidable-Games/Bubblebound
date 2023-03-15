@@ -174,6 +174,8 @@ public class PlatformController extends WorldController implements ContactListen
 		Level1.readTextures(textures);
 		Level1.readJson();
 		List<BoxObstacle> BoxList = Level1.getBoxes();
+		List<WheelObstacle> bubbleList = Level1.getBubbles();
+		List<Zone> gravityZoneList = Level1.getGravityZones();
 
 		//BoxObstacle box = new BoxObstacle(0, 0, 20, 2);
 		for (int i = 0; i < BoxList.size(); i++) {
@@ -188,54 +190,33 @@ public class PlatformController extends WorldController implements ContactListen
 			addObject(box);
 		}
 
-//		BoxObstacle box = BoxList.get(0);
-//		box.setTexture(earthTile);
-//		box.setBodyType(BodyDef.BodyType.StaticBody);
-//		box.setDensity(0);
-//		box.setFriction(0);
-//		box.setRestitution(0);
-//		box.setDrawScale(scale);
-//		box.setName("box");
-//		addObject(box);
+		for (int i = 0; i < gravityZoneList.size(); i++) {
+
+			Zone gravZone = gravityZoneList.get(i);
+			gravZone.scale = scale;
+			addZone(gravZone);
+		}
 
 
-		BoxObstacle box2 = new BoxObstacle(10, 10, 1, 1);
-		box2.setBodyType(BodyDef.BodyType.StaticBody);
-		box2.setDensity(0);
-		box2.setFriction(0);
-		box2.setRestitution(0);
-		box2.setDrawScale(scale);
-		box2.setName("box");
-		addObject(box2);
-
-
-
-		addZone(new Zone(10, 0, 10, 6, -1.0f, scale));
-		Zone z = new Zone(20, 0 ,10 ,32, -1.0f, scale);
+//		addZone(new Zone(10, 0, 10, 6, -1.0f, scale));
+//		Zone z = new Zone(20, 0 ,10 ,32, -1.0f, scale);
 		//z.setMove(-0.01f, 0);
-		addZone(z);
+//		addZone(z);
 
-		WheelObstacle wo = new WheelObstacle(5, 5, 1f);
-		wo.setName("Bubble");
-		wo.setBodyType(BodyDef.BodyType.DynamicBody);
-		wo.setStatic(true);
-		wo.setDrawScale(scale);
-		wo.activatePhysics(world);
-		wo.setDensity(1000f);
-		wo.setTexture(earthTile);
-		bubbles.add(wo);
-		addQueuedObject(wo);
 
-		WheelObstacle wo2 = new WheelObstacle(25, 13, 1f);
-		wo2.setName("Bubble");
-		wo2.setStatic(true);
-		wo2.setBodyType(BodyDef.BodyType.DynamicBody);
-		wo2.setDrawScale(scale);
-		wo2.activatePhysics(world);
-		wo2.setDensity(1000f);
-		wo2.setTexture(earthTile);
-		bubbles.add(wo2);
-		addQueuedObject(wo2);
+		for (int i = 0; i < bubbleList.size(); i++) {
+			WheelObstacle wo = bubbleList.get(i);
+			wo.setName("Bubble");
+			wo.setBodyType(BodyDef.BodyType.DynamicBody);
+			wo.setStatic(true);
+			wo.setDrawScale(scale);
+			wo.activatePhysics(world);
+			wo.setDensity(1000f);
+			wo.setTexture(bubble);
+			bubbles.add(wo);
+			addQueuedObject(wo);
+		}
+
 		JsonValue defaults = constants.get("defaults");
 
 
@@ -243,17 +224,23 @@ public class PlatformController extends WorldController implements ContactListen
 		world.setGravity( new Vector2(0,defaults.getFloat("gravity",0)) );
 
 		// Create dude
+//		dwidth  = avatarTexture.getRegionWidth()/scale.x;
+//		dheight = avatarTexture.getRegionHeight()/scale.y;
+
+
 		dwidth  = avatarTexture.getRegionWidth()/scale.x;
 		dheight = avatarTexture.getRegionHeight()/scale.y;
+
 		avatar = new DudeModel(constants.get("dude"), dwidth, dheight);
 		avatar.setDrawScale(scale);
 		avatar.setTexture(avatarTexture);
 		avatar.setName("Avatar");
 		addObject(avatar);
 		avatar.setGravityScale(-1);
+		avatar.setDensity(0.2F);
 		// Create rope bridge
 		
-		System.out.println(wo);
+		//System.out.println(wo);
 		System.out.println("change");
 
 		volume = constants.getFloat("volume", 1.0f);
@@ -268,7 +255,7 @@ public class PlatformController extends WorldController implements ContactListen
 		wo2.setDrawScale(scale);
 		wo2.activatePhysics(world);
 		wo2.setDensity(10000f);
-		wo2.setTexture(earthTile);
+		wo2.setTexture(bubble);
 		bubbles.add(wo2);
 		addQueuedObject(wo2);
 		return wo2;

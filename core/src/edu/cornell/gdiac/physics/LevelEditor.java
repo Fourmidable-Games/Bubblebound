@@ -16,6 +16,8 @@ import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import edu.cornell.gdiac.assets.JsonValueParser;
 import edu.cornell.gdiac.physics.obstacle.BoxObstacle;
+import edu.cornell.gdiac.physics.obstacle.WheelObstacle;
+import sun.tools.jstat.Scale;
 
 public class LevelEditor {
 
@@ -23,6 +25,8 @@ public class LevelEditor {
     private JsonReader jsonReader = new JsonReader();
     public JsonValue jsonValue = jsonReader.parse(file);
     private List<BoxObstacle> boxes = new ArrayList<>();
+    private List<WheelObstacle> bubbles = new ArrayList<>();
+    private List<Zone> gravityZones = new ArrayList<>();
     private TextureRegion earthTile;
     private TextureRegion goalTile;
     private ArrayList<String> textureStrings;
@@ -39,6 +43,9 @@ public class LevelEditor {
 
 
     public void readJson() {
+
+        int xo = 0;
+        int yo = 0;
 
         for (JsonValue object : jsonValue.get("Objects")) {
             System.out.println(jsonValue);
@@ -61,9 +68,19 @@ public class LevelEditor {
                 System.out.println("Test");
                 System.out.println((object.get("repeat")).asInt());
                 for (int i = 1; i < (object.get("repeat")).asInt(); i++) {
+                    if ((object.get("repeatx")).asInt() > 1) {
+                        xo = i;
+                    }
+
+                    if ((object.get("repeaty")).asInt() > 1) {
+                        yo = i;
+
+                    }
+
+
                     BoxObstacle myObject2 = new BoxObstacle(
-                            object.get("x").asInt()+i,
-                            object.get("y").asInt(),
+                            object.get("x").asInt() + xo,
+                            object.get("y").asInt() + yo,
                             object.get("width").asInt(),
                             object.get("height").asInt()
                     );
@@ -73,6 +90,8 @@ public class LevelEditor {
                     }
 
                     boxes.add(myObject2);
+
+
                 }
 
             }
@@ -91,11 +110,49 @@ public class LevelEditor {
 
         }
 
+        for (JsonValue object : jsonValue.get("Bubbles")) {
+
+            WheelObstacle wo = new WheelObstacle(
+                    object.get("x").asInt(),
+                    object.get("y").asInt(),
+                    object.get("radius").asInt()
+            );
+
+            bubbles.add(wo);
+
+        }
+
+        for (JsonValue object : jsonValue.get("Gravity Zones")) {
+
+            Zone wo = new Zone(
+                    object.get("x").asFloat(),
+                    object.get("y").asFloat(),
+                    object.get("width").asFloat(),
+                    object.get("height").asFloat(),
+                    object.get("gravity").asFloat(),
+                    null
+            );
+
+            gravityZones.add(wo);
+
+        }
+
+
+
     }
 
     public List getBoxes() {
         return boxes;
     }
+
+    public List getBubbles() {
+        return bubbles;
+    }
+
+    public List getGravityZones() {
+        return gravityZones;
+    }
+
 
 }
 
