@@ -5,6 +5,9 @@
             "wrapU": "repeated",
             "wrapV": "repeated"
         },
+        "background:underground" : {
+            "file":  "platform/background.png"
+        },
         "shared:goal":   "shared/goaldoor.png",
         "rocket:rocket": "rocket/rocket.png",
         "rocket:main":  {

@@ -16,7 +16,7 @@ import com.badlogic.gdx.utils.ObjectMap;
 /**
  * This class parses a JSON entry into a {@link JsonValue}.
  *
- * The asset is only specified by file name.  There are no special parameters.
+ * The asset is only specified by file name. There are no special parameters.
  */
 public class JsonValueParser implements AssetParser<JsonValue> {
     /** The current JSON entry in the JSON directory */

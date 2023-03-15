@@ -40,7 +40,7 @@ public class PlatformController extends WorldController implements ContactListen
 	private TextureRegion bridgeTexture;
 
 	private TextureRegion barrierTexture;
-
+	private TextureRegion[] bodyTextures;
 	/** The jump sound.  We only want to play once. */
 	private Sound jumpSound;
 	private long jumpId = -1;
@@ -103,7 +103,6 @@ public class PlatformController extends WorldController implements ContactListen
 		bulletTexture = new TextureRegion(directory.getEntry("platform:bullet",Texture.class));
 		bridgeTexture = new TextureRegion(directory.getEntry("platform:rope",Texture.class));
 		barrierTexture = new TextureRegion(directory.getEntry("platform:barrier",Texture.class));
-
 		jumpSound = directory.getEntry( "platform:jump", Sound.class );
 		fireSound = directory.getEntry( "platform:pew", Sound.class );
 		plopSound = directory.getEntry( "platform:plop", Sound.class );
