@@ -54,6 +54,7 @@ public abstract class WorldController implements Screen {
 	/** The texture for the exit condition */
 	protected TextureRegion goalTile;
 	/** The font for giving messages to the player */
+	protected TextureRegion background;
 	protected BitmapFont displayFont;
 	
 	/** Exit code for quitting the game */
@@ -291,6 +292,7 @@ public abstract class WorldController implements Screen {
 		// Allocate the tiles
 		earthTile = new TextureRegion(directory.getEntry( "shared:earth", Texture.class ));
 		goalTile  = new TextureRegion(directory.getEntry( "shared:goal", Texture.class ));
+		background = new TextureRegion(directory.getEntry("background:underground", Texture.class));
 		displayFont = directory.getEntry( "shared:retro" ,BitmapFont.class);
 	}
 
@@ -463,7 +465,11 @@ public abstract class WorldController implements Screen {
 	 */
 	public void draw(float dt) {
 		canvas.clear();
-		
+
+		canvas.begin();
+		canvas.draw(background, 0, 0);
+		canvas.end();
+
 		//canvas.begin();
 		canvas.shape.begin(ShapeRenderer.ShapeType.Filled);
 		for(Obstacle obj : objects) {
