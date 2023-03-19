@@ -261,7 +261,7 @@ public class PlatformController extends WorldController implements ContactListen
 		bubbles.add(wo2);
 		addQueuedObject(wo2);
 
-		Enemy enemy = new Enemy(8, 1, 0.9f, 1f);
+		Enemy enemy = new Enemy(8, 1, 0.9f, 1f); //it breaks if width = height
 		enemy.setDrawScale(scale);
 		enemy.setBounds(4, 12);
 		addObject(enemy);

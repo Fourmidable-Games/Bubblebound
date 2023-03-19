@@ -469,7 +469,7 @@ public abstract class WorldController implements Screen {
 
 	public void updateCamera(float x, float y){
 		Vector2 temp = new Vector2(x + CAMERA_WIDTH*scale.x/10, y + CAMERA_HEIGHT *scale.y/5);
-		temp.sub(cameraCoords).scl(0.01f, 0.5f); //0.01 is how much it lags in terms of x (smaller means it mvoes slower)
+		temp.sub(cameraCoords).scl(0.1f, 0.5f); //0.01 is how much it lags in terms of x (smaller means it mvoes slower)
 		boolean movex = true;					       //0.5 is how much it lags in terms of y
 		boolean movey = true;
 
