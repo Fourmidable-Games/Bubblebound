@@ -284,7 +284,8 @@ public class CapsuleObstacle extends SimpleObstacle {
 	    seamEpsilon = DEFAULT_EPSILON;
 
 		// Initialize
-		resize(width, height);	
+		resize(width, height);
+
 	}
 	
 	/**
@@ -346,7 +347,7 @@ public class CapsuleObstacle extends SimpleObstacle {
         	center.height -= 2*seamEpsilon;
         	break;
         }
-        
+
 		// Make the box with the center in the center
 		vertices[0] = center.x;
 		vertices[1] = center.y;
@@ -356,9 +357,11 @@ public class CapsuleObstacle extends SimpleObstacle {
 		vertices[5] = center.y+center.height;
 		vertices[6] = center.x+center.width;
 		vertices[7] = center.y;
+
 		shape.set(vertices);
 		end1.setRadius(r);
 		end2.setRadius(r);
+
 	}
 	
 	
@@ -515,13 +518,6 @@ public class CapsuleObstacle extends SimpleObstacle {
 		}
 	}
 
-	@Override
-	public void sdraw(GameCanvas canvas){
-		float x = getWidth()*drawScale.x/2;
-		float y = getHeight()*drawScale.y/2;
-		canvas.shape.setColor(Color.CORAL);
-		canvas.shape.rect(getX()*drawScale.x-x,getY()*drawScale.y-y,
-				getWidth()*drawScale.x,getHeight()*drawScale.y);
-	}
+
 
 }

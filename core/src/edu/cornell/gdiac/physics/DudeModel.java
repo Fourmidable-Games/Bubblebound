@@ -63,6 +63,13 @@ public class DudeModel extends CapsuleObstacle {
 	private PolygonShape sensorShape;
 
 
+	public static int MAX_HEALTH = 4;
+
+	public int health;
+
+	public boolean invincible = false;
+
+	public int invincibletimer = 30;
 	
 	/** Cache for internal force calculations */
 	private final Vector2 forceCache = new Vector2();
@@ -228,7 +235,7 @@ public class DudeModel extends CapsuleObstacle {
         setDensity(data.getFloat("density", 0));
 		setFriction(data.getFloat("friction", 0));  /// HE WILL STICK TO WALLS IF YOU FORGET
 		setFixedRotation(true);
-
+		health = MAX_HEALTH;
 		maxspeed = data.getFloat("maxspeed", 0);
 		damping = data.getFloat("damping", 0);
 		force = data.getFloat("force", 0)*0.5f;
@@ -381,8 +388,27 @@ public class DudeModel extends CapsuleObstacle {
 		} else {
 			shootCooldown = Math.max(0, shootCooldown - 1);
 		}
-		
+		if(invincible){
+			invincibletimer--;
+			if(invincibletimer <= 0){
+				invincible = false;
+			}
+		}
 		super.update(dt);
+	}
+
+	public boolean isInvincible(){
+		return invincible;
+	}
+
+	public boolean isAlive(){
+		return health > 0;
+	}
+
+	public void hurt(){
+		health--;
+		invincible = true;
+		invincibletimer = 50;
 	}
 
 	/**
@@ -396,15 +422,29 @@ public class DudeModel extends CapsuleObstacle {
 		float y = getHeight()*drawScale.y / 2;
 
 		float effect = faceRight ? -1.0f : 1.0f;;
+		if(invincible && invincibletimer % 2 == 0){
+			canvas.draw(texture,Color.WHITE,origin.x,origin.y,getX()*drawScale.x+x,getY()*drawScale.y+y,getAngle(),effect,1.0f);
+		}
 
-		canvas.draw(texture,Color.WHITE,origin.x,origin.y,getX()*drawScale.x+x,getY()*drawScale.y+y,getAngle(),effect,1.0f);
 
 
 //		float effect = faceRight ? 1.0f : -1.0f;
 //		canvas.draw(texture,Color.WHITE,origin.x,origin.y,getX()*drawScale.x,getY()*drawScale.y,getAngle(),effect,1.0f);
 	}
 
+	@Override
+	public void sdraw(GameCanvas canvas){
+		float x = getWidth()*drawScale.x/2;
+		float y = getHeight()*drawScale.y/2;
+		canvas.shape.setColor(Color.CORAL);
+		if(invincible && invincibletimer % 2 == 0){
+			return;
+		}else{
+			canvas.shape.rect(getX()*drawScale.x-x,getY()*drawScale.y-y,
+					getWidth()*drawScale.x,getHeight()*drawScale.y);
+		}
 
+	}
 	
 	/**
 	 * Draws the outline of the physics body.

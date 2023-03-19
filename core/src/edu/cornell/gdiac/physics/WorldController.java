@@ -469,7 +469,7 @@ public abstract class WorldController implements Screen {
 
 	public void updateCamera(float x, float y){
 		Vector2 temp = new Vector2(x + CAMERA_WIDTH*scale.x/10, y + CAMERA_HEIGHT *scale.y/5);
-		temp.sub(cameraCoords).scl(0.05f, 0.5f); //0.05 is how much it lags in terms of x (smaller means it mvoes slower)
+		temp.sub(cameraCoords).scl(0.01f, 0.5f); //0.01 is how much it lags in terms of x (smaller means it mvoes slower)
 		boolean movex = true;					       //0.5 is how much it lags in terms of y
 		boolean movey = true;
 
@@ -491,6 +491,8 @@ public abstract class WorldController implements Screen {
 	}
 
 	public List<Zone> zones = new ArrayList<>();
+
+	float life = 1;
 
 	public void addZone(Zone z){
 		zones.add(z);
@@ -543,32 +545,33 @@ public abstract class WorldController implements Screen {
 		}
 		canvas.shape.end();
 		// Draw life bar
-		float life = 0.7f;
+
 		canvas.shape.begin(ShapeRenderer.ShapeType.Filled);
 		canvas.shape.setColor(Color.RED);
-		canvas.shape.rect(10, canvas.getHeight() - 30, 200 * life, 20);
+		canvas.shape.rect( cameraCoords.x - (canvas.getWidth() / 2) + 10, cameraCoords.y + (canvas.getHeight() / 2) - 30, 200 * life, 20);
 		canvas.shape.end();
 
 		// Draw life bar label
 		displayFont.setColor(Color.WHITE);
 		displayFont.getData().setScale(0.4f);
 		canvas.begin(); // DO NOT SCALE
-		canvas.drawText("Life", displayFont, 20, canvas.getHeight() - 34);
+		canvas.drawText("Life", displayFont, cameraCoords.x - (canvas.getWidth() / 2) + 20, cameraCoords.y + (canvas.getHeight() / 2) -  34);
 		canvas.end();
 
 		// Draw energy bar
-		float energy = 0.5f;
-		canvas.shape.begin(ShapeRenderer.ShapeType.Filled);
-		canvas.shape.setColor(Color.YELLOW);
-		canvas.shape.rect(canvas.getWidth() - 800, canvas.getHeight() - 30, 200 * energy, 20);
-		canvas.shape.end();
-
-		// Draw energy bar label
-		displayFont.setColor(Color.WHITE);
-		displayFont.getData().setScale(0.4f);
-		canvas.begin(); // DO NOT SCALE
-		canvas.drawText("Energy", displayFont, canvas.getWidth() - 800, canvas.getHeight() - 34);
-		canvas.end();
+		//TODO: implement energy bar usage
+//		float energy = 0.5f;
+//		canvas.shape.begin(ShapeRenderer.ShapeType.Filled);
+//		canvas.shape.setColor(Color.YELLOW);
+//		canvas.shape.rect(canvas.getWidth() - 800, canvas.getHeight() - 30, 200 * energy, 20);
+//		canvas.shape.end();
+//
+//		// Draw energy bar label
+//		displayFont.setColor(Color.WHITE);
+//		displayFont.getData().setScale(0.4f);
+//		canvas.begin(); // DO NOT SCALE
+//		canvas.drawText("Energy", displayFont, canvas.getWidth() - 800, canvas.getHeight() - 34);
+//		canvas.end();
 
 //		canvas.end();
 		//debug = false;
