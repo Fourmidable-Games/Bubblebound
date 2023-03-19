@@ -74,7 +74,7 @@ public class PlatformController extends WorldController implements ContactListen
 	 * The game has default gravity and other settings
 	 */
 	public PlatformController() {
-		super(DEFAULT_WIDTH,DEFAULT_HEIGHT,DEFAULT_GRAVITY);
+		super(DEFAULT_WIDTH*2,DEFAULT_HEIGHT*2,DEFAULT_GRAVITY);
 		setDebug(false);
 		setComplete(false);
 		setFailure(false);
@@ -118,6 +118,7 @@ public class PlatformController extends WorldController implements ContactListen
 	 */
 	public void reset() {
 		Vector2 gravity = new Vector2(world.getGravity() );
+		zones.clear();
 		if(rope != null){
 			destructRope(rope);
 		}
@@ -169,33 +170,33 @@ public class PlatformController extends WorldController implements ContactListen
 		//addObject(goalDoor);
 
 
-		LevelEditor Level1 = new LevelEditor();
-		loadTexturesIntoLevelEditor();
-		Level1.readTextures(textures);
-		Level1.readJson();
-		List<BoxObstacle> BoxList = Level1.getBoxes();
-		List<WheelObstacle> bubbleList = Level1.getBubbles();
-		List<Zone> gravityZoneList = Level1.getGravityZones();
+//		LevelEditor Level1 = new LevelEditor();
+//		loadTexturesIntoLevelEditor();
+//		Level1.readTextures(textures);
+//		//Level1.readJson();
+//		List<BoxObstacle> BoxList = Level1.getBoxes();
+//		List<WheelObstacle> bubbleList = Level1.getBubbles();
+//		List<Zone> gravityZoneList = Level1.getGravityZones();
 
 		//BoxObstacle box = new BoxObstacle(0, 0, 20, 2);
-		for (int i = 0; i < BoxList.size(); i++) {
-			BoxObstacle box = BoxList.get(i);
-			box.setTexture(earthTile);
-			box.setBodyType(BodyDef.BodyType.StaticBody);
-			box.setDensity(0);
-			box.setFriction(0);
-			box.setRestitution(0);
-			box.setDrawScale(scale);
-			box.setName("box");
-			addObject(box);
-		}
+//		for (int i = 0; i < BoxList.size(); i++) {
+//			BoxObstacle box = BoxList.get(i);
+//			box.setTexture(earthTile);
+//			box.setBodyType(BodyDef.BodyType.StaticBody);
+//			box.setDensity(0);
+//			box.setFriction(0);
+//			box.setRestitution(0);
+//			box.setDrawScale(scale);
+//			box.setName("box");
+//			addObject(box);
+//		}
 
-		for (int i = 0; i < gravityZoneList.size(); i++) {
-
-			Zone gravZone = gravityZoneList.get(i);
-			gravZone.scale = scale;
-			addZone(gravZone);
-		}
+//		for (int i = 0; i < gravityZoneList.size(); i++) {
+//
+//			Zone gravZone = gravityZoneList.get(i);
+//			gravZone.scale = scale;
+//			addZone(gravZone);
+//		}
 
 
 //		addZone(new Zone(10, 0, 10, 6, -1.0f, scale));
@@ -203,19 +204,54 @@ public class PlatformController extends WorldController implements ContactListen
 		//z.setMove(-0.01f, 0);
 //		addZone(z);
 
+		BoxObstacle box2 = new BoxObstacle(0, 0, 100, 1);
+		box2.setBodyType(BodyDef.BodyType.StaticBody);
+		box2.setDensity(0);
+		box2.setFriction(0);
+		box2.setDrawScale(scale);
+		box2.setName("box");
+		addObject(box2);
 
-		for (int i = 0; i < bubbleList.size(); i++) {
-			WheelObstacle wo = bubbleList.get(i);
-			wo.setName("Bubble");
-			wo.setBodyType(BodyDef.BodyType.DynamicBody);
-			wo.setStatic(true);
-			wo.setDrawScale(scale);
-			wo.activatePhysics(world);
-			wo.setDensity(1000f);
-			wo.setTexture(bubble);
-			bubbles.add(wo);
-			addQueuedObject(wo);
-		}
+
+		addZone(new Zone(10, 0, 10, 6, -1.0f, scale));
+		Zone z = new Zone(20, 0 ,10 ,32, -1.0f, scale);
+		//z.setMove(0.01f, 0);
+		addZone(z);
+
+//		for (int i = 0; i < bubbleList.size(); i++) {
+//			WheelObstacle wo = bubbleList.get(i);
+//			wo.setName("Bubble");
+//			wo.setBodyType(BodyDef.BodyType.DynamicBody);
+//			wo.setStatic(true);
+//			wo.setDrawScale(scale);
+//			wo.activatePhysics(world);
+//			wo.setDensity(1000f);
+//			wo.setTexture(bubble);
+//			bubbles.add(wo);
+//			addQueuedObject(wo);
+//		}
+
+		WheelObstacle wo = new WheelObstacle(5, 5, 1f);
+		wo.setName("Bubble");
+		wo.setBodyType(BodyDef.BodyType.DynamicBody);
+		wo.setStatic(true);
+		wo.setDrawScale(scale);
+		wo.activatePhysics(world);
+		wo.setDensity(1000f);
+		wo.setTexture(earthTile);
+		bubbles.add(wo);
+		addQueuedObject(wo);
+
+		WheelObstacle wo2 = new WheelObstacle(25, 13, 1f);
+		wo2.setName("Bubble");
+		wo2.setStatic(true);
+		wo2.setBodyType(BodyDef.BodyType.DynamicBody);
+		wo2.setDrawScale(scale);
+		wo2.activatePhysics(world);
+		wo2.setDensity(1000f);
+		wo2.setTexture(earthTile);
+		bubbles.add(wo2);
+		addQueuedObject(wo2);
 
 		JsonValue defaults = constants.get("defaults");
 
@@ -236,10 +272,10 @@ public class PlatformController extends WorldController implements ContactListen
 		avatar.setTexture(avatarTexture);
 		avatar.setName("Avatar");
 		addObject(avatar);
-		avatar.setGravityScale(-1);
-		avatar.setDensity(0.2F);
+		//avatar.setGravityScale(-1);
+		//avatar.setDensity(0.2F);
 		// Create rope bridge
-		
+		setCamera(avatar.getX(), avatar.getY());
 		//System.out.println(wo);
 		System.out.println("change");
 
@@ -297,11 +333,11 @@ public class PlatformController extends WorldController implements ContactListen
 	 */
 
 	boolean sbubble = false;
-	boolean betterSwinging = true;
 	private int wait = 10;
 	public void update(float dt) {
 		// Process actions in object model
 		moveZones();
+		updateCamera(avatar.getX()*scale.x, avatar.getY()*scale.y);
 		for(int i = 0; i < objects.size(); i++){
 			Body o = objects.get(i).getBody();
 			objects.get(i).setGrav(1.0f);
@@ -321,7 +357,10 @@ public class PlatformController extends WorldController implements ContactListen
 			sbubble = !sbubble;
 		}
 		Vector2 crosshair = InputController.getInstance().getCrossHair();
-
+		float xoffset = (cameraCoords.x / scale.x) - (CAMERA_WIDTH / 2f); //find bottom left corner of camera
+		float yoffset = (cameraCoords.y / scale.y) - (CAMERA_HEIGHT / 2f);
+		crosshair.x += xoffset;
+		crosshair.y += yoffset;
 
 
 
@@ -350,7 +389,9 @@ public class PlatformController extends WorldController implements ContactListen
 		boolean spawned = false;
 		if(InputController.getInstance().didTertiary()){
 			if(wait > 10) {
-				closest = spawnBubble(crosshair, sbubble);
+				if(bubbles.size() < BUBBLE_LIMIT){
+					closest = spawnBubble(crosshair, sbubble);
+				}
 				wait = 0;
 				spawned = true;
 			}
@@ -358,9 +399,6 @@ public class PlatformController extends WorldController implements ContactListen
 
 		if (closest != null) closest.setSelected(true);
 
-		if(InputController.getInstance().didDebug()){
-			betterSwinging = !betterSwinging;
-		}
 		Vector2 pos = avatar.getPosition();
 		boolean destructRope = false;
 		boolean constructRope = false;
@@ -369,16 +407,13 @@ public class PlatformController extends WorldController implements ContactListen
 				avatar.setGrappling(false);
 				destructRope = true;
 			}
-			if(betterSwinging) {
-				//if((InputController.getInstance().didBubble() || spawned) && avatar.getPosition().dst(closest.getPosition()) < 5 && !rope.bubble.equals(closest.getBody())){
-				if (InputController.getInstance().didBubble() && avatar.getPosition().dst(closest.getPosition()) < 5 && !rope.bubble.equals(closest.getBody())) {
+			if (InputController.getInstance().didBubble() && avatar.getPosition().dst(closest.getPosition()) < 5 && !rope.bubble.equals(closest.getBody())) {
 //				if(spawned){
 //					System.out.println("Hi");
 //					destructRope = true;
 //				}
-					avatar.setGrappling(true);
-					constructRope = true;
-				}
+				avatar.setGrappling(true);
+				constructRope = true;
 			}
 		}else{
 			if(InputController.getInstance().didBubble() && avatar.getPosition().dst(closest.getPosition()) < 5){

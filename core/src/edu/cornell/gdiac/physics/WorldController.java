@@ -56,6 +56,7 @@ public abstract class WorldController implements Screen {
 	protected TextureRegion bubble;
 	/** The font for giving messages to the player */
 	protected TextureRegion background;
+	protected Texture background2;
 	protected BitmapFont displayFont;
 	
 	/** Exit code for quitting the game */
@@ -211,10 +212,14 @@ public abstract class WorldController implements Screen {
 	 *
 	 * @param canvas the canvas associated with this controller
 	 */
+
+	public static int CAMERA_WIDTH = 32;
+	public static int CAMERA_HEIGHT = 18;
+
 	public void setCanvas(GameCanvas canvas) {
 		this.canvas = canvas;
-		this.scale.x = canvas.getWidth()/bounds.getWidth();
-		this.scale.y = canvas.getHeight()/bounds.getHeight();
+		this.scale.x = canvas.getWidth()/CAMERA_WIDTH;
+		this.scale.y = canvas.getHeight()/CAMERA_HEIGHT;
 	}
 	
 	/**
@@ -298,6 +303,7 @@ public abstract class WorldController implements Screen {
 		background = new TextureRegion(directory.getEntry("background:underground", Texture.class));
 		bubble = new TextureRegion(directory.getEntry( "shared:bubble", Texture.class ));
 		displayFont = directory.getEntry( "shared:retro" ,BitmapFont.class);
+		background2 = directory.getEntry("background:temp", Texture.class);
 	}
 
 
@@ -361,7 +367,7 @@ public abstract class WorldController implements Screen {
 	 */
 	public boolean preUpdate(float dt) {
 		InputController input = InputController.getInstance();
-		input.readInput(bounds, scale);
+		input.readInput(new Rectangle(0,0,CAMERA_WIDTH,CAMERA_HEIGHT), scale);//use camera rect instead of bounds
 		if (listener == null) {
 			return true;
 		}
@@ -451,7 +457,38 @@ public abstract class WorldController implements Screen {
 			}
 		}
 	}
+	public Vector2 cameraCoords = new Vector2(0, 0);
 
+	public void setCamera(float x, float y){
+		cameraCoords.set(x*scale.x, y*scale.y);
+		cameraCoords.x += CAMERA_WIDTH*scale.x/3;
+		cameraCoords.y += CAMERA_HEIGHT *scale.y/5; //put in leftish middle of screen
+		canvas.camera.position.set(cameraCoords, 0);
+		canvas.camera.update();
+	}
+
+	public void updateCamera(float x, float y){
+		Vector2 temp = new Vector2(x + CAMERA_WIDTH*scale.x/10, y + CAMERA_HEIGHT *scale.y/5);
+		temp.sub(cameraCoords).scl(0.05f, 0.5f); //0.05 is how much it lags in terms of x (smaller means it mvoes slower)
+		boolean movex = true;					       //0.5 is how much it lags in terms of y
+		boolean movey = true;
+
+		if((temp.x > 0 && cameraCoords.x + (scale.x * CAMERA_WIDTH / 2) >= bounds.getWidth() * scale.x) || (temp.x < 0 && cameraCoords.x - (scale.x * CAMERA_WIDTH / 2) <= 0) ){
+			movex = false; //check if camera reached left or right edge
+		}
+		if((temp.y > 0 && cameraCoords.y + (scale.y * CAMERA_HEIGHT / 2) >= bounds.getHeight() * scale.y) || (temp.y < 0 && cameraCoords.y - (scale.y * CAMERA_HEIGHT / 2) <= 0) ){
+			movey = false; //check if camera reached top or bottom
+		}
+		if(movex){
+			cameraCoords.x += temp.x;
+		}
+		if(movey){
+			cameraCoords.y += temp.y;
+		}
+
+		canvas.camera.position.set(cameraCoords, 0);
+		canvas.camera.update();
+	}
 
 	public List<Zone> zones = new ArrayList<>();
 
@@ -470,20 +507,35 @@ public abstract class WorldController implements Screen {
 	 */
 	public void draw(float dt) {
 		canvas.clear();
+		canvas.shape.setProjectionMatrix(canvas.camera.combined);
 		canvas.begin();
-		canvas.draw(background, 0, 0);
+		canvas.drawWrapped(background, cameraCoords.x, 0f); //draw default background
+		//canvas.draw(background, 0, 0);
+
+
+
+		//TODO: parallaxing and stuff kinda relies on pixel size not ideal for diff screen sizes
+
+		for(Zone z: zones){ //draws the backgrounds of the zones
+			z.drawBackground(background2, canvas, cameraCoords.x);
+//			int y = background2.getHeight() - (int)(z.ypos * scale.y) - (int)(z.height * scale.y); //finds y coord
+//			int x = canvas.wrapX(cameraCoords.x, background2.getWidth()) + (int)(z.xpos*scale.x); //find parallaxed x coord
+//			TextureRegion temp = new TextureRegion(text, x, y,(int)(z.width*scale.x), (int)(z.height * scale.y)); //select only needed part of image
+//			canvas.draw(temp, z.xpos * scale.x, z.ypos * scale.y);
+		}
+		canvas.end();
 
 		//canvas.begin();
-		//canvas.shape.begin(ShapeRenderer.ShapeType.Filled);
+		canvas.shape.begin(ShapeRenderer.ShapeType.Filled);
 
 		for(Obstacle obj : objects) {
-//			obj.sdraw(canvas); ////!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-			obj.draw(canvas);
+			obj.sdraw(canvas); ////!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			//obj.draw(canvas);
 		}
 
 
-		canvas.end();
-//		canvas.shape.end();
+		//canvas.end();
+		canvas.shape.end();
 		canvas.shape.begin(ShapeRenderer.ShapeType.Line);
 		for(Zone z : zones){
 			canvas.shape.setColor(Color.RED);
@@ -519,7 +571,7 @@ public abstract class WorldController implements Screen {
 		canvas.end();
 
 //		canvas.end();
-		debug = false;
+		//debug = false;
 		if (debug) {
 			canvas.beginDebug();
 			for(Obstacle obj : objects) {

@@ -1,5 +1,7 @@
 package edu.cornell.gdiac.physics;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 
@@ -47,6 +49,13 @@ public class Zone {
     public void sDraw(GameCanvas canvas){
         canvas.shape.rect(xpos*scale.x, ypos*scale.y, width*scale.x, height*scale.y);
     }
+    public void drawBackground(Texture image, GameCanvas canvas, float xcam){
+        int y = image.getHeight() - (int)(ypos * scale.y) - (int)(height * scale.y); //finds y coord
+        int x = canvas.wrapX(xcam, image.getWidth()) + (int)(xpos*scale.x); //find parallaxed x coord
+        TextureRegion temp = new TextureRegion(image, x, y,(int)(width*scale.x), (int)(height * scale.y)); //select only needed part of image
+        canvas.draw(temp, xpos * scale.x, ypos * scale.y);
+    }
+
 
     public void setMove(float x, float y){
         xmove = x;

@@ -213,8 +213,8 @@ public class BoxObstacle extends SimpleObstacle {
 	public void sdraw(GameCanvas canvas){
 
 
-		float x = getWidth()*drawScale.x / 2;
-		float y = getHeight()*drawScale.y / 2;
+//		float x = getWidth()*drawScale.x / 2;
+//		float y = getHeight()*drawScale.y / 2;
 
 
 //		if (getTexture() != null) {
@@ -227,12 +227,12 @@ public class BoxObstacle extends SimpleObstacle {
 
 
 
-//		float x = getWidth()*drawScale.x / 2;
-//		float y = getHeight()*drawScale.y / 2;
-//		canvas.shape.setColor(Color.BROWN);
-//		float angle = body.getAngle();
-		// canvas.shape.rect(getX()*drawScale.x-x,getY()*drawScale.y-y,getWidth()*drawScale.x,getHeight()*drawScale.y);
-//		canvas.shape.rect(getX()*drawScale.x-x,getY()*drawScale.y-y,x,y,getWidth()*drawScale.x,getHeight()*drawScale.y,1,1,(float)Math.toDegrees(angle));
+		float x = getWidth()*drawScale.x / 2;
+		float y = getHeight()*drawScale.y / 2;
+		canvas.shape.setColor(Color.BROWN);
+		float angle = body.getAngle();
+		 //canvas.shape.rect(getX()*drawScale.x-x,getY()*drawScale.y-y,getWidth()*drawScale.x,getHeight()*drawScale.y);
+		canvas.shape.rect(getX()*drawScale.x-x,getY()*drawScale.y-y,x,y,getWidth()*drawScale.x,getHeight()*drawScale.y,1,1,(float)Math.toDegrees(angle));
 	}
 
 }

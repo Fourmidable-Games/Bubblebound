@@ -14,7 +14,21 @@
       "repeatx": 10,
       "repeaty": 0,
       "box name" : "box"
+    },
+    {
+      "x": 0,
+      "y": 0,
+      "width": 1,
+      "height": 1,
+      "texture": 0,
+      "Density" : "static",
+      "friction": 0,
+      "restitution": 0,
+      "scale" : "scale",
+      "repeat": 60,
+      "box name" : "box"
     }
+
   ],
 
   "Bubbles": [

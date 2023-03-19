@@ -519,7 +519,7 @@ public class CapsuleObstacle extends SimpleObstacle {
 	public void sdraw(GameCanvas canvas){
 		float x = getWidth()*drawScale.x/2;
 		float y = getHeight()*drawScale.y/2;
-		canvas.shape.setColor(Color.WHITE);
+		canvas.shape.setColor(Color.CORAL);
 		canvas.shape.rect(getX()*drawScale.x-x,getY()*drawScale.y-y,
 				getWidth()*drawScale.x,getHeight()*drawScale.y);
 	}

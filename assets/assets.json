@@ -8,6 +8,9 @@
         "background:underground" : {
             "file":  "platform/background.png"
         },
+      "background:temp" : {
+        "file": "platform/background2.png"
+      },
       "shared:bubble" : {
         "file":  "shared/bubble_480.png",
         "wrapU": "repeated",
@@ -44,7 +47,7 @@
         },
         "rocket:crate01": "rocket/crate01.png",
         "rocket:crate02": "rocket/crate02.png",
-        "platform:dude":  "platform/dude.png",
+        "platform:dude":  "platform/dude2.png",
         "platform:rope":  "platform/ropebridge.png",
         "platform:barrier": "platform/barrier.png",
         "platform:bullet":  "platform/bullet.png",
