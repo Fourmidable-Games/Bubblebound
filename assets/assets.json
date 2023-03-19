@@ -8,6 +8,11 @@
         "background:underground" : {
             "file":  "platform/background.png"
         },
+      "shared:bubble" : {
+        "file":  "shared/bubble_480.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
         "shared:goal":   "shared/goaldoor.png",
         "rocket:rocket": "rocket/rocket.png",
         "rocket:main":  {

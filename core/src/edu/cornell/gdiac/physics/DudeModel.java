@@ -10,6 +10,7 @@
  */
 package edu.cornell.gdiac.physics;
 
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.physics.box2d.*;
@@ -395,7 +396,8 @@ public class DudeModel extends CapsuleObstacle {
 		float x = getWidth()*drawScale.x / 2;
 		float y = getHeight()*drawScale.y / 2;
 
-		float effect = faceRight ? 1.0f : -1.0f;
+		float effect = faceRight ? 1.0f : -1.0f;;
+
 		canvas.draw(texture,Color.WHITE,origin.x,origin.y,getX()*drawScale.x+x,getY()*drawScale.y+y,getAngle(),effect,1.0f);
 
 
