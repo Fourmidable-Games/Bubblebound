@@ -214,6 +214,12 @@ public class PlatformController extends WorldController implements ContactListen
 		box2.setName("box");
 		addObject(box2);
 
+		BoxObstacle box = new BoxObstacle(13, 7, 5, 1);
+		box.setBodyType(BodyDef.BodyType.StaticBody);
+		box.setDrawScale(scale);
+		box.setName("box");
+		addObject(box);
+
 		Spike sp = new Spike(1, 1, 1, 1);
 		sp.setBodyType(BodyDef.BodyType.StaticBody);
 		sp.setDrawScale(scale);
