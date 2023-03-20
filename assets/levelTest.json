@@ -10,13 +10,13 @@
       "friction": 0,
       "restitution": 0,
       "scale" : "scale",
-      "repeat": 15,
-      "repeatx": 15,
+      "repeat": 16,
+      "repeatx": 16,
       "repeaty": 0,
       "box name" : "box"
     },
     {
-      "x": 13,
+      "x": 11,
       "y": 7,
       "width": 1,
       "height": 1,
@@ -25,8 +25,8 @@
       "friction": 0,
       "restitution": 0,
       "scale": "scale",
-      "repeat": 5,
-      "repeatx": 0,
+      "repeat": 12,
+      "repeatx": 12,
       "repeaty": 0,
       "box name": "box"
     }
@@ -78,7 +78,7 @@
       "width" : 0.9,
       "height" : 1,
       "boundx" : 4,
-      "boundy" : 6
+      "boundy" : 12
     }
   ]
 

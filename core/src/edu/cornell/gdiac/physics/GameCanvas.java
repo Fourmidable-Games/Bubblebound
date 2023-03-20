@@ -1188,6 +1188,9 @@ public class GameCanvas {
 		pos.x /= PARALLAX_PRIMARY; // change 3 to smaller to increase parallax effect
 		return pos;
 	}
+	public void resetColor(){
+		spriteBatch.setColor(Color.WHITE);
+	}
 
 	public void drawWrapped(TextureRegion image, float x, float y) {
 		Vector2 pos = new Vector2(x,y);

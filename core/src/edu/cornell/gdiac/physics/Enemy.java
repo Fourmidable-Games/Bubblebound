@@ -40,11 +40,15 @@ public class Enemy extends CapsuleObstacle { //capsule not working for some reas
             if(getPosition().x >= rightBound){
                 setVX(-SPEED);
                 faceRight = false;
+            }else{
+                setVX(SPEED);
             }
         }else{
             if(getPosition().x <= leftBound){
                 setVX(SPEED);
                 faceRight = true;
+            }else{
+                setVX(-SPEED);
             }
         }
     }
@@ -60,9 +64,9 @@ public class Enemy extends CapsuleObstacle { //capsule not working for some reas
         float x = getWidth()*drawScale.x / 2;
         float y = getHeight()*drawScale.y / 2;
 
-        float effect = faceRight ? -1.0f : 1.0f;;
-
-        canvas.draw(texture, Color.WHITE,origin.x,origin.y,getX()*drawScale.x,getY()*drawScale.y,getAngle(),effect,1.0f);
+        float effect = faceRight ? 1.0f : -1.0f;;
+        float upside = (grav == -1) ? -1.0f : 1.0f;
+        canvas.draw(texture, Color.WHITE,origin.x,origin.y,getX()*drawScale.x,getY()*drawScale.y,getAngle(),effect,upside);
 
 
 
