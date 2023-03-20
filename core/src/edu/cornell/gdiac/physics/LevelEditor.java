@@ -162,6 +162,8 @@ public class LevelEditor {
                     object.get("height").asFloat()
             );
 
+            wo.setBounds( object.get("boundx").asFloat(), object.get("boundy").asFloat());
+
             enemies.add(wo);
 
         }

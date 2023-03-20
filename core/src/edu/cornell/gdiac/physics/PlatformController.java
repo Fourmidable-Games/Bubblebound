@@ -227,7 +227,6 @@ public class PlatformController extends WorldController implements ContactListen
 		for (int i = 0; i < enemies.size(); i++) {
 			Enemy enemy = enemies.get(i);
 			enemy.setDrawScale(scale);
-			enemy.setBounds(4, 12);
 			enemy.setTexture(dudeModel);
 			addObject(enemy);
 //			enemies.add(enemy); CRASHES GAME
