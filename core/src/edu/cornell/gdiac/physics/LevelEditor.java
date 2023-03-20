@@ -27,6 +27,8 @@ public class LevelEditor {
     private List<BoxObstacle> boxes = new ArrayList<>();
     private List<WheelObstacle> bubbles = new ArrayList<>();
     private List<Zone> gravityZones = new ArrayList<>();
+    private List<Spike> spikes = new ArrayList<>();
+    private List<Enemy> enemies = new ArrayList<>();
     private TextureRegion earthTile;
     private TextureRegion goalTile;
     private ArrayList<String> textureStrings;
@@ -137,6 +139,33 @@ public class LevelEditor {
 
         }
 
+        for (JsonValue object : jsonValue.get("Spikes")) {
+
+            Spike wo = new Spike(
+                    object.get("x").asFloat(),
+                    object.get("y").asFloat(),
+                    object.get("width").asFloat(),
+                    object.get("height").asFloat()
+            );
+
+            spikes.add(wo);
+
+        }
+
+
+        for (JsonValue object : jsonValue.get("Enemies")) {
+
+            Enemy wo = new Enemy(
+                    object.get("x").asFloat(),
+                    object.get("y").asFloat(),
+                    object.get("width").asFloat(),
+                    object.get("height").asFloat()
+            );
+
+            enemies.add(wo);
+
+        }
+
 
 
     }
@@ -153,8 +182,21 @@ public class LevelEditor {
         return gravityZones;
     }
 
+    public List getSpikes() {
+        return spikes;
+    }
+
+    public List getEnemies() {
+        return enemies;
+    }
+
 
 }
 
 
 
+//    Spike sp = new Spike(1, 1, 1, 1);
+//		sp.setBodyType(BodyDef.BodyType.StaticBody);
+//                sp.setDrawScale(scale);
+//                sp.setName("spike");
+//                addObject(sp);

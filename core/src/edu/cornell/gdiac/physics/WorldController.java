@@ -57,6 +57,8 @@ public abstract class WorldController implements Screen {
 	/** The font for giving messages to the player */
 	protected TextureRegion background;
 	protected Texture background2;
+	protected TextureRegion dudeModel;
+	protected TextureRegion spikeTexture;
 	protected BitmapFont displayFont;
 	
 	/** Exit code for quitting the game */
@@ -299,6 +301,8 @@ public abstract class WorldController implements Screen {
 	public void gatherAssets(AssetDirectory directory) {
 		// Allocate the tiles
 		earthTile = new TextureRegion(directory.getEntry( "shared:earth", Texture.class ));
+		dudeModel = new TextureRegion(directory.getEntry( "platform:dude2", Texture.class ));
+		spikeTexture = new TextureRegion(directory.getEntry( "platform:spike", Texture.class ));
 		goalTile  = new TextureRegion(directory.getEntry( "shared:goal", Texture.class ));
 		background = new TextureRegion(directory.getEntry("background:underground", Texture.class));
 		bubble = new TextureRegion(directory.getEntry( "shared:bubble", Texture.class ));
@@ -509,15 +513,25 @@ public abstract class WorldController implements Screen {
 	 */
 	public void draw(float dt) {
 		canvas.clear();
-		canvas.shape.setProjectionMatrix(canvas.camera.combined);
+
+
+
+
 		canvas.begin();
-		canvas.drawWrapped(background, cameraCoords.x, 0f); //draw default background
-		//canvas.draw(background, 0, 0);
+
+		canvas.drawWrapped(background, cameraCoords.x, 0f);
 
 
+//		canvas.shape.setProjectionMatrix(canvas.camera.combined); TEST
+
+		canvas.end();
 
 		//TODO: parallaxing and stuff kinda relies on pixel size not ideal for diff screen sizes
 
+
+		canvas.begin();
+		canvas.shape.begin(ShapeRenderer.ShapeType.Line);
+		canvas.shape.setProjectionMatrix(canvas.camera.combined);
 		for(Zone z: zones){ //draws the backgrounds of the zones
 			z.drawBackground(background2, canvas, cameraCoords.x);
 //			int y = background2.getHeight() - (int)(z.ypos * scale.y) - (int)(z.height * scale.y); //finds y coord
@@ -525,19 +539,19 @@ public abstract class WorldController implements Screen {
 //			TextureRegion temp = new TextureRegion(text, x, y,(int)(z.width*scale.x), (int)(z.height * scale.y)); //select only needed part of image
 //			canvas.draw(temp, z.xpos * scale.x, z.ypos * scale.y);
 		}
+		canvas.shape.end();
 		canvas.end();
-
-		//canvas.begin();
-		canvas.shape.begin(ShapeRenderer.ShapeType.Filled);
+		canvas.begin();
+//		canvas.shape.begin(ShapeRenderer.ShapeType.Filled); testttttt
 
 		for(Obstacle obj : objects) {
-			obj.sdraw(canvas); ////!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			obj.draw(canvas); ////!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 			//obj.draw(canvas);
 		}
 
-
-		//canvas.end();
-		canvas.shape.end();
+		canvas.end();
+//		canvas.shape.end();
+		canvas.shape.setProjectionMatrix(canvas.camera.combined);
 		canvas.shape.begin(ShapeRenderer.ShapeType.Line);
 		for(Zone z : zones){
 			canvas.shape.setColor(Color.RED);
@@ -546,10 +560,13 @@ public abstract class WorldController implements Screen {
 		canvas.shape.end();
 		// Draw life bar
 
-		canvas.shape.begin(ShapeRenderer.ShapeType.Filled);
-		canvas.shape.setColor(Color.RED);
-		canvas.shape.rect( cameraCoords.x - (canvas.getWidth() / 2) + 10, cameraCoords.y + (canvas.getHeight() / 2) - 30, 200 * life, 20);
-		canvas.shape.end();
+
+
+//		canvas.shape.setProjectionMatrix(canvas.camera.combined);
+//		canvas.shape.begin(ShapeRenderer.ShapeType.Filled);
+//		canvas.shape.setColor(Color.RED);
+//		canvas.shape.rect( cameraCoords.x - (canvas.getWidth() / 2) + 10, cameraCoords.y + (canvas.getHeight() / 2) - 30, 200 * life, 20);
+//		canvas.shape.end();
 
 		// Draw life bar label
 		displayFont.setColor(Color.WHITE);

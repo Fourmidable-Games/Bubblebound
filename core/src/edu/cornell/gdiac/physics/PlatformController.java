@@ -67,7 +67,7 @@ public class PlatformController extends WorldController implements ContactListen
 
 	private List<WheelObstacle> bubbles = new ArrayList<WheelObstacle>();
 
-	private List<Enemy> enemies = new ArrayList<>();
+	private List<Enemy> enemies = new ArrayList<Enemy>();
 
 	/**
 	 * Creates and initialize a new instance of the platformer game
@@ -172,107 +172,67 @@ public class PlatformController extends WorldController implements ContactListen
 		//addObject(goalDoor);
 
 
-//		LevelEditor Level1 = new LevelEditor();
-//		loadTexturesIntoLevelEditor();
-//		Level1.readTextures(textures);
-//		//Level1.readJson();
-//		List<BoxObstacle> BoxList = Level1.getBoxes();
-//		List<WheelObstacle> bubbleList = Level1.getBubbles();
-//		List<Zone> gravityZoneList = Level1.getGravityZones();
+		LevelEditor Level1 = new LevelEditor();
+		loadTexturesIntoLevelEditor();
+		Level1.readTextures(textures);
+		Level1.readJson();
+		List<BoxObstacle> BoxList = Level1.getBoxes();
+		List<WheelObstacle> bubbleList = Level1.getBubbles();
+		List<Zone> gravityZoneList = Level1.getGravityZones();
+		List<Spike> spikes = Level1.getSpikes();
+		enemies = Level1.getEnemies();
 
-		//BoxObstacle box = new BoxObstacle(0, 0, 20, 2);
-//		for (int i = 0; i < BoxList.size(); i++) {
-//			BoxObstacle box = BoxList.get(i);
-//			box.setTexture(earthTile);
-//			box.setBodyType(BodyDef.BodyType.StaticBody);
-//			box.setDensity(0);
-//			box.setFriction(0);
-//			box.setRestitution(0);
-//			box.setDrawScale(scale);
-//			box.setName("box");
-//			addObject(box);
-//		}
+		for (int i = 0; i < BoxList.size(); i++) {
+			BoxObstacle box = BoxList.get(i);
+			box.setTexture(earthTile);
+			box.setBodyType(BodyDef.BodyType.StaticBody);
+			box.setDensity(0);
+			box.setFriction(0);
+			box.setRestitution(0);
+			box.setDrawScale(scale);
+			box.setName("box");
+			addObject(box);
+		}
 
-//		for (int i = 0; i < gravityZoneList.size(); i++) {
-//
-//			Zone gravZone = gravityZoneList.get(i);
-//			gravZone.scale = scale;
-//			addZone(gravZone);
-//		}
+		for (int i = 0; i < gravityZoneList.size(); i++) {
 
-
-//		addZone(new Zone(10, 0, 10, 6, -1.0f, scale));
-//		Zone z = new Zone(20, 0 ,10 ,32, -1.0f, scale);
-		//z.setMove(-0.01f, 0);
-//		addZone(z);
-
-		BoxObstacle box2 = new BoxObstacle(0, 0, 100, 1);
-		box2.setBodyType(BodyDef.BodyType.StaticBody);
-		box2.setDensity(0);
-		box2.setFriction(0);
-		box2.setDrawScale(scale);
-		box2.setName("box");
-		addObject(box2);
-
-		BoxObstacle box = new BoxObstacle(13, 7, 5, 1);
-		box.setBodyType(BodyDef.BodyType.StaticBody);
-		box.setDrawScale(scale);
-		box.setName("box");
-		addObject(box);
-
-		Spike sp = new Spike(1, 1, 1, 1);
-		sp.setBodyType(BodyDef.BodyType.StaticBody);
-		sp.setDrawScale(scale);
-		sp.setName("spike");
-		addObject(sp);
+			Zone gravZone = gravityZoneList.get(i);
+			gravZone.scale = scale;
+			addZone(gravZone);
+		}
 
 
-		addZone(new Zone(10, 0, 10, 6, -1.0f, scale));
-		Zone z = new Zone(20, 0 ,10 ,32, -1.0f, scale);
-		//z.setMove(0.01f, 0);
-		addZone(z);
+		for (int i = 0; i < spikes.size(); i++) {
+			Spike spike = spikes.get(i);
+			spike.setBodyType(BodyDef.BodyType.StaticBody);
+			spike.setDrawScale(scale);
+			spike.setName("spike");
+			spike.setTexture(spikeTexture);
+			addObject(spike);
+		}
 
-//		for (int i = 0; i < bubbleList.size(); i++) {
-//			WheelObstacle wo = bubbleList.get(i);
-//			wo.setName("Bubble");
-//			wo.setBodyType(BodyDef.BodyType.DynamicBody);
-//			wo.setStatic(true);
-//			wo.setDrawScale(scale);
-//			wo.activatePhysics(world);
-//			wo.setDensity(1000f);
-//			wo.setTexture(bubble);
-//			bubbles.add(wo);
-//			addQueuedObject(wo);
-//		}
+		for (int i = 0; i < bubbleList.size(); i++) {
+			WheelObstacle wo = bubbleList.get(i);
+			wo.setName("Bubble");
+			wo.setBodyType(BodyDef.BodyType.DynamicBody);
+			wo.setStatic(true);
+			wo.setDrawScale(scale);
+			wo.activatePhysics(world);
+			wo.setDensity(1000f);
+			wo.setTexture(bubble);
+			bubbles.add(wo);
+			addQueuedObject(wo);
+		}
 
-		WheelObstacle wo = new WheelObstacle(5, 5, 1f);
-		wo.setName("bubble");
-		wo.setBodyType(BodyDef.BodyType.DynamicBody);
-		wo.setStatic(true);
-		wo.setDrawScale(scale);
-		wo.activatePhysics(world);
-		wo.setDensity(1000f);
-		wo.setTexture(earthTile);
-		bubbles.add(wo);
-		addQueuedObject(wo);
-
-		WheelObstacle wo2 = new WheelObstacle(25, 13, 1f);
-		wo2.setName("bubble");
-		wo2.setStatic(true);
-		wo2.setBodyType(BodyDef.BodyType.DynamicBody);
-		wo2.setDrawScale(scale);
-		wo2.activatePhysics(world);
-		wo2.setDensity(1000f);
-		wo2.setTexture(earthTile);
-		bubbles.add(wo2);
-		addQueuedObject(wo2);
-
-		Enemy enemy = new Enemy(8, 1, 0.9f, 1f); //it breaks if width = height
-		enemy.setDrawScale(scale);
-		enemy.setBounds(4, 12);
-		addObject(enemy);
-		enemies.add(enemy);
-		//addQueuedObject(enemy); //idk dif between add queued vs add
+		for (int i = 0; i < enemies.size(); i++) {
+			Enemy enemy = enemies.get(i);
+			enemy.setDrawScale(scale);
+			enemy.setBounds(4, 12);
+			enemy.setTexture(dudeModel);
+			addObject(enemy);
+//			enemies.add(enemy); CRASHES GAME
+//			addQueuedObject(enemy); //idk dif between add queued vs add
+		}
 
 
 
@@ -518,6 +478,7 @@ public class PlatformController extends WorldController implements ContactListen
 	 * @param contact The two bodies that collided
 	 */
 	public void beginContact(Contact contact) {
+
 		Fixture fix1 = contact.getFixtureA();
 		Fixture fix2 = contact.getFixtureB();
 
@@ -538,6 +499,7 @@ public class PlatformController extends WorldController implements ContactListen
 			if (bd2.getName().equals("bullet") && bd1 != avatar) {
 		        removeBullet(bd2);
 			}
+
 
 			if ((bd1 == avatar && (bd2.getName().equals("spike") || bd2.getName().equals("enemy"))) ||
 				(bd2 == avatar && (bd1.getName().equals("spike") || bd2.getName().equals("enemy")))){
@@ -573,6 +535,7 @@ public class PlatformController extends WorldController implements ContactListen
 	 * double jumping.
 	 */ 
 	public void endContact(Contact contact) {
+
 		Fixture fix1 = contact.getFixtureA();
 		Fixture fix2 = contact.getFixtureB();
 

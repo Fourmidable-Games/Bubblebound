@@ -80,6 +80,8 @@ public class Enemy extends CapsuleObstacle { //capsule not working for some reas
                     getWidth()*drawScale.x,getHeight()*drawScale.y);
 
 
+
+
     }
 
     /**
