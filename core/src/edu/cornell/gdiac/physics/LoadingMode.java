@@ -23,6 +23,7 @@
 package edu.cornell.gdiac.physics;
 
 import com.badlogic.gdx.*;
+//import com.badlogic.gdx.audio.*;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.*;
@@ -59,7 +60,10 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 	private Texture playButton;
 	/** Texture atlas to support a progress bar */
 	private final Texture statusBar;
-	
+	/** Texture atlas to support a progress bar */
+	/*private Music loadingMusic;
+	private long loadingMusicId = -1;
+	*/
 	// statusBar is a "texture atlas." Break it up into parts.
 	/** Left cap to the status background (grey region) */
 	private TextureRegion statusBkgLeft;
@@ -202,6 +206,11 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 		background = internal.getEntry( "background", Texture.class );
 		background.setFilter( TextureFilter.Linear, TextureFilter.Linear );
 		statusBar = internal.getEntry( "progress", Texture.class );
+
+		//load the loading theme immediately
+		/*loadingMusic = internal.getEntry("loadingMusic", Music.class);
+		loadingMusic.setLooping(true);
+		loadingMusic.play();*/
 
 		// Break up the status bar texture into regions
 		statusBkgLeft = internal.getEntry( "progress.backleft", TextureRegion.class );
