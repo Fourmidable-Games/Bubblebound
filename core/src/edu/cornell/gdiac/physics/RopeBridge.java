@@ -102,6 +102,7 @@ public class RopeBridge extends ComplexObstacle {
 	        pos.scl(t);
 	        pos.add(x0,y0);
 	        BoxObstacle plank = new BoxObstacle(pos.x, pos.y, planksize.x, planksize.y);
+			plank.isRope = true;
 			plank.setGravityScale(0);
 	        plank.setName("plank"+ii);
 	        plank.setDensity(data.getFloat("density",0));

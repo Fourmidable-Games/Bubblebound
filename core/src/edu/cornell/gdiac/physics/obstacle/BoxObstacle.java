@@ -18,6 +18,7 @@ import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.physics.box2d.*;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import edu.cornell.gdiac.physics.*;  // For GameCanvas
 
 import static com.badlogic.gdx.graphics.Texture.TextureWrap.Repeat;
@@ -38,6 +39,8 @@ public class BoxObstacle extends SimpleObstacle {
 	private Fixture geometry;
 	/** Cache of the polygon vertices (for resizing) */
 	private float[] vertices;
+
+	public boolean isRope = false;
 	
 	/** 
 	 * Returns the dimensions of this box
@@ -246,6 +249,16 @@ public class BoxObstacle extends SimpleObstacle {
 
 	@Override
 	public void draw(GameCanvas canvas) {
+
+		if (isRope == true) {
+			if(grav == 1) {
+				canvas.draw(texture, Color.WHITE, origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.x, getAngle(), 1, 1);
+			}else{
+				canvas.draw(texture, Color.RED, origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.x, getAngle(), 1, 1);
+			}
+		}
+
+
 		if (texture != null) {
 			if(grav == 1) {
 				canvas.draw(texture, Color.WHITE, origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.x, getAngle(), 0.5F, 0.5F);
@@ -253,6 +266,7 @@ public class BoxObstacle extends SimpleObstacle {
 				canvas.draw(texture, Color.RED, origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.x, getAngle(), 0.5F, 0.5F);
 			}
 		}
+
 	}
 
 }
