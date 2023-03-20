@@ -80,4 +80,5 @@ public class Rope extends ComplexObstacle{
         return rope.getTexture();
     }
 
+
 }

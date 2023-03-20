@@ -426,7 +426,7 @@ public class DudeModel extends CapsuleObstacle {
 			canvas.draw(texture,Color.WHITE,origin.x,origin.y,getX()*drawScale.x,getY()*drawScale.y,getAngle(),effect,1.0f);
 		}
 		else {
-			canvas.draw(texture,Color.WHITE,origin.x,origin.y,getX()*drawScale.x+x,getY()*drawScale.y+y,getAngle(),effect,1.0f);
+			canvas.draw(texture,Color.WHITE,origin.x,origin.y,getX()*drawScale.x,getY()*drawScale.y,getAngle(),effect,1.0f);
 		}
 
 

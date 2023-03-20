@@ -12,4 +12,7 @@ public class Bubble extends WheelObstacle{
     public Bubble(float radius) {
         super(radius);
     }
+
+
+
 }

@@ -690,7 +690,7 @@ public class GameCanvas {
 		}
 
 		local.set(affine);
-		local.translate(-ox,-oy);				
+		local.translate(-ox,-oy);
 		spriteBatch.setColor(tint);
 		spriteBatch.draw(region, region.getRegionWidth(), region.getRegionHeight(), local);
 	}

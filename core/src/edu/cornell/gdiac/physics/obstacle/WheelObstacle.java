@@ -146,4 +146,11 @@ public class WheelObstacle extends SimpleObstacle {
 		 canvas.shape.circle(getX()*drawScale.x,getY()*drawScale.y,getRadius()*drawScale.x);
 	}
 
+	@Override
+	public void draw(GameCanvas canvas) {
+		if (texture != null) {
+			canvas.draw(texture,Color.WHITE,origin.x,origin.y,getX()*drawScale.x,getY()*drawScale.y,getAngle(), 1.4F*getRadius(), 1.4F*getRadius());
+		}
+	}
+
 }

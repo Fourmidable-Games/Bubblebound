@@ -241,4 +241,16 @@ public class RopeBridge extends ComplexObstacle {
 	// 		canvas.shape.rect(getX()*drawScale.x-x,getY()*drawScale.y-y,((BoxObstacle)obj).getWidth()*drawScale.x,((BoxObstacle)obj).getHeight()*drawScale.y);
 	// 	}
 	// }
+
+
+//	@Override
+//	public void draw(GameCanvas canvas) {
+//		// Delegate to components
+//		for(Obstacle obj : bodies) {
+//			obj.draw(canvas);
+//			canvas.draw(Rope (obj));
+//		}
+//	}
+
+
 }

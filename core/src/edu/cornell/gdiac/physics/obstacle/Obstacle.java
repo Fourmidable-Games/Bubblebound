@@ -100,6 +100,7 @@ public abstract class Obstacle {
 	public void setBodyType(BodyType value) {
 		bodyinfo.type = value;
 	}
+
 	
 	/**
 	 * Returns the current position for this physics body
