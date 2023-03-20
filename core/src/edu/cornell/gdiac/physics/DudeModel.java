@@ -423,7 +423,6 @@ public class DudeModel extends CapsuleObstacle {
 
 		float effect = faceRight ? -1.0f : 1.0f;;
 		float upside = (grav == -1) ? -1.0f : 1.0f;
-		canvas.draw(texture, Color.WHITE,origin.x,origin.y,getX()*drawScale.x,getY()*drawScale.y,getAngle(),effect,upside);
 		if(invincible && invincibletimer % 2 == 0){
 
 		}

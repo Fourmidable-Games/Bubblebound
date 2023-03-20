@@ -259,7 +259,7 @@ public class PlatformController extends WorldController implements ContactListen
 		//avatar.setGravityScale(-1);
 		//avatar.setDensity(0.2F);
 		// Create rope bridge
-		setCamera(avatar.getX(), avatar.getY());
+		setCamera(avatar.getX(), avatar.getY() + 0.5f);
 		//System.out.println(wo);
 		System.out.println("change");
 

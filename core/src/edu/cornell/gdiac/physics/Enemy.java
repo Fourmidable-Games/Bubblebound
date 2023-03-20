@@ -40,11 +40,15 @@ public class Enemy extends CapsuleObstacle { //capsule not working for some reas
             if(getPosition().x >= rightBound){
                 setVX(-SPEED);
                 faceRight = false;
+            }else{
+                setVX(SPEED);
             }
         }else{
             if(getPosition().x <= leftBound){
                 setVX(SPEED);
                 faceRight = true;
+            }else{
+                setVX(-SPEED);
             }
         }
     }
