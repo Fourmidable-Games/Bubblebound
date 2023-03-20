@@ -62,6 +62,8 @@ public class DudeModel extends CapsuleObstacle {
 	private boolean isShooting;
 	private boolean isGrappling;
 	/** The physics shape of this object */
+
+	private int gravZone;
 	private PolygonShape sensorShape;
 
 
@@ -107,7 +109,16 @@ public class DudeModel extends CapsuleObstacle {
 			faceRight = true;
 		}
 	}
-	
+
+	/**
+	 * Returns the direction of gravity of the player (1 -> down, -1 -> up).
+	 *
+	 * @return left/right movement of this character.
+	 */
+	public float getGravZone() {
+		return grav;
+	}
+
 	/**
 	 * Returns true if the dude is actively firing.
 	 *
@@ -138,7 +149,14 @@ public class DudeModel extends CapsuleObstacle {
 	public boolean isJumping() {
 		return isJumping && isGrounded && jumpCooldown <= 0;
 	}
-	
+
+	/**
+	 * Returns true if the dude just jumped.
+	 *
+	 * @return true if the dude just jumped.
+	 */
+	public boolean justJumped() { return isJumping && isGrounded; }
+
 	/**
 	 * Sets whether the dude is actively jumping.
 	 *
@@ -252,8 +270,9 @@ public class DudeModel extends CapsuleObstacle {
 		maxspeed = data.getFloat("maxspeed", 0);
 		damping = data.getFloat("damping", 0);
 		force = data.getFloat("force", 0)*0.5f;
+		gravZone = 1;
 
-		jump_force = data.getFloat( "jump_force", 0 )*0.75f;
+		jump_force = data.getFloat( "jump_force", 0 )*1f;
 		jumpLimit = data.getInt( "jump_cool", 0 );
 		shotLimit = data.getInt( "shot_cool", 0 );
 		sensorName = "DudeGroundSensor";

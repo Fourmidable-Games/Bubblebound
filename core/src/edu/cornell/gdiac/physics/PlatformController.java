@@ -53,11 +53,18 @@ public class PlatformController extends WorldController implements ContactListen
 	/** The weapon pop sound.  We only want to play once. */
 	private Sound plopSound;
 	private long plopId = -1;
-	/** The shoot bubble sound.  We only want to play once. */
-	private Sound shootBubbleSound;
-	private long shootBubbleSoundId = -1;
+	/** The shoot rope sound.  We only want to play once. */
+	private Sound shootRopeSound;
+	private long shootRopeSoundId = -1;
+	/** The release rope sound.  We only want to play once. */
+	private Sound releaseRopeSound;
+	private long releaseRopeSoundId = -1;
 	/** The level 1 background music sound.  We want it to loop. */
-	private Sound level1Music;
+	private Sound level1MusicSunset;
+	private long level1MusicSunsetID;
+
+	private Sound level1MusicCave;
+	private long level1MusicCaveID;
 	/** The default sound volume */
 	private float volume;
 	private RopeBridge rope;
@@ -114,11 +121,13 @@ public class PlatformController extends WorldController implements ContactListen
 		bulletTexture = new TextureRegion(directory.getEntry("platform:bullet",Texture.class));
 		bridgeTexture = new TextureRegion(directory.getEntry("platform:rope",Texture.class));
 		barrierTexture = new TextureRegion(directory.getEntry("platform:barrier",Texture.class));
-		jumpSound = directory.getEntry( "bubbleboundsfx:jumpv1", Sound.class );
-		fireSound = directory.getEntry( "bubbleboundsfx:bubbleshootv1", Sound.class );
+		jumpSound = directory.getEntry( "bubbleboundsfx:jump", Sound.class );
+		fireSound = directory.getEntry( "bubbleboundsfx:ropeshoot", Sound.class );
 		plopSound = directory.getEntry( "bubbleboundsfx:plop", Sound.class );
-		shootBubbleSound = directory.getEntry( "bubbleboundsfx:bubbleshootv1", Sound.class );
-		level1Music = directory.getEntry( "bubbleboundsfx:level1sunsettheme", Sound.class );
+		shootRopeSound = directory.getEntry( "bubbleboundsfx:ropeshoot", Sound.class );
+		releaseRopeSound = directory.getEntry( "bubbleboundsfx:roperelease", Sound.class );
+		level1MusicSunset = directory.getEntry( "bubbleboundsfx:level1sunsettheme", Sound.class );
+		level1MusicCave = directory.getEntry( "bubbleboundsfx:level1cavetheme", Sound.class );
 		constants = directory.getEntry( "platform:constants", JsonValue.class );
 		volume = 1.0f;
 		super.gatherAssets(directory);
@@ -143,7 +152,8 @@ public class PlatformController extends WorldController implements ContactListen
 			}
 			
 		}
-		level1Music.stop();
+		level1MusicSunset.stop();
+		level1MusicCave.stop();
 
 		objects.clear();
 		bubbles.clear();
@@ -165,8 +175,8 @@ public class PlatformController extends WorldController implements ContactListen
 	 * Lays out the game geography.
 	 */
 	private void populateLevel() {
-		//Add Music
-		level1Music.loop(0.5f);
+		setSounds();
+
 		// Add level goal
 		float dwidth  = goalTile.getRegionWidth()/scale.x;
 		float dheight = goalTile.getRegionHeight()/scale.y;
@@ -342,6 +352,7 @@ public class PlatformController extends WorldController implements ContactListen
 	public void update(float dt) {
 		// Process actions in object model
 		moveZones();
+		updateSounds();
 		updateCamera(avatar.getX()*scale.x, avatar.getY()*scale.y);
 		for(int i = 0; i < objects.size(); i++){
 			Body o = objects.get(i).getBody();
@@ -353,10 +364,6 @@ public class PlatformController extends WorldController implements ContactListen
 					objects.get(i).setGrav(zones.get(j).getGrav());
 				}
 			}
-//			if(objects.get(i).getName().equals("Avatar")){
-//				DudeModel d = (DudeModel) objects.get(i);
-//				d.swapGravity(world, o.getGravityScale());
-//			}
 		}
 		if(InputController.getInstance().didSecondary()){
 			sbubble = !sbubble;
@@ -441,19 +448,15 @@ public class PlatformController extends WorldController implements ContactListen
 		}
 		if(destructRope){
 			destructRope(rope);
+			releaseRopeSoundId = playSound(releaseRopeSound, releaseRopeSoundId, volume );
 		}
 		if(constructRope){
 			//System.out.println("B4: " + pos);
 			rope = createGrapple(closest);
-			shootBubbleSoundId = playSound( shootBubbleSound, shootBubbleSoundId, volume );
+			shootRopeSoundId = playSound( shootRopeSound, shootRopeSoundId, volume );
 			//avatar.setPosition(pos);
 		}
-	    if (avatar.isJumping()) {
-	    	jumpId = playSound( jumpSound, jumpId, volume );
-	    }
-		if (avatar.justGrounded()) {
-			plopId = playSound( plopSound, plopId, volume );
-		}
+
 		avatar.applyForce();
 
 
@@ -461,7 +464,29 @@ public class PlatformController extends WorldController implements ContactListen
 
 	}
 
+	private void setSounds(){
+		level1MusicSunsetID = level1MusicSunset.loop(0.0f);
+		level1MusicCaveID = level1MusicCave.loop(0.0f);
+	}
 
+	public void updateSounds(){
+		if(avatar.getGravZone() == 1){
+			level1MusicSunset.setVolume(level1MusicSunsetID,volume * 0.5f);
+			level1MusicCave.setVolume(level1MusicCaveID,0.0f);
+		}
+		if(avatar.getGravZone() == -1){
+			level1MusicSunset.setVolume(level1MusicSunsetID,0.0f);
+			level1MusicCave.setVolume(level1MusicCaveID,volume);
+		}
+		if (avatar.justJumped()) {
+			jumpSound.setVolume(jumpId,volume * 2f);
+			jumpId = playSound( jumpSound, jumpId);
+		}
+		if (avatar.justGrounded()) {
+			plopSound.setVolume(plopId,volume * 2f);
+			plopId = playSound( plopSound, jumpId);
+		}
+	}
 
 	private RopeBridge createGrapple(WheelObstacle bubble){
 		float dwidth  = bridgeTexture.getRegionWidth()/scale.x;
