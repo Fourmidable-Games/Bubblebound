@@ -18,6 +18,10 @@ import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.physics.box2d.*;
 
 import edu.cornell.gdiac.assets.AssetDirectory;
+import edu.cornell.gdiac.audio.AudioEngine;
+import edu.cornell.gdiac.audio.AudioSource;
+import edu.cornell.gdiac.audio.EffectFilter;
+import edu.cornell.gdiac.audio.MusicQueue;
 import edu.cornell.gdiac.physics.obstacle.*;
 import java.util.*;
 
@@ -49,6 +53,12 @@ public class PlatformController extends WorldController implements ContactListen
 	/** The weapon pop sound.  We only want to play once. */
 	private Sound plopSound;
 	private long plopId = -1;
+	/** The shoot bubble sound.  We only want to play once. */
+	private Sound shootBubbleSound;
+	private long shootBubbleSoundId = -1;
+	/** The level 1 background music sound.  We want it to loop. */
+	private Sound level1Music;
+	private long level1MusicId = -1;
 	/** The default sound volume */
 	private float volume;
 	private RopeBridge rope;
@@ -100,16 +110,20 @@ public class PlatformController extends WorldController implements ContactListen
 	 * @param directory	Reference to global asset manager.
 	 */
 	public void gatherAssets(AssetDirectory directory) {
+
 		avatarTexture  = new TextureRegion(directory.getEntry("platform:dude",Texture.class));
 		bulletTexture = new TextureRegion(directory.getEntry("platform:bullet",Texture.class));
 		bridgeTexture = new TextureRegion(directory.getEntry("platform:rope",Texture.class));
 		barrierTexture = new TextureRegion(directory.getEntry("platform:barrier",Texture.class));
-		jumpSound = directory.getEntry( "platform:jump", Sound.class );
-		fireSound = directory.getEntry( "platform:pew", Sound.class );
-		plopSound = directory.getEntry( "platform:plop", Sound.class );
-
+		jumpSound = directory.getEntry( "bubbleboundsfx:jumpv1", Sound.class );
+		fireSound = directory.getEntry( "bubbleboundsfx:bubbleshootv1", Sound.class );
+		plopSound = directory.getEntry( "bubbleboundsfx:plop", Sound.class );
+		shootBubbleSound = directory.getEntry( "bubbleboundsfx:bubbleshootv1", Sound.class );
+		level1Music = directory.getEntry( "bubbleboundsfx:level1sunsettheme", Sound.class );
 		constants = directory.getEntry( "platform:constants", JsonValue.class );
+		volume = 1.0f;
 		super.gatherAssets(directory);
+
 	}
 
 	/**
@@ -323,6 +337,12 @@ public class PlatformController extends WorldController implements ContactListen
 
 	boolean sbubble = false;
 	private int wait = 10;
+
+	//move this to the avatar section
+	private int justLanded = -1;
+	//move this to something with music
+
+
 	public void update(float dt) {
 		// Process actions in object model
 		moveZones();
@@ -419,7 +439,6 @@ public class PlatformController extends WorldController implements ContactListen
 		}
 		wait++;
 
-		
 		// Add a bullet if we fire
 		if (avatar.isShooting()) {
 			//createBullet();
@@ -430,13 +449,24 @@ public class PlatformController extends WorldController implements ContactListen
 		if(constructRope){
 			//System.out.println("B4: " + pos);
 			rope = createGrapple(closest);
+			shootBubbleSoundId = playSound( shootBubbleSound, shootBubbleSoundId, volume );
 			//avatar.setPosition(pos);
 		}
-		
-		avatar.applyForce();
 	    if (avatar.isJumping()) {
 	    	jumpId = playSound( jumpSound, jumpId, volume );
+			justLanded = -1;
 	    }
+		if (avatar.isGrounded() && justLanded == -1) {
+			justLanded = 1;
+			plopId = playSound( plopSound, plopId, volume );
+		}
+		avatar.applyForce();
+		if (level1MusicId == -1){
+			level1MusicId = playSound( level1Music,level1MusicId, (volume * 0.5f) );
+		}
+
+
+
 	}
 
 

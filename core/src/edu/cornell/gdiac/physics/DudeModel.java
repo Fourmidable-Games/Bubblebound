@@ -96,7 +96,7 @@ public class DudeModel extends CapsuleObstacle {
 	public void setMovement(float value) {
 		movement = value; 
 		if(isGrappling()){
-			movement *= 1.25;
+			movement *= 1.5;
 		}
 		// Change facing if appropriate
 		if (movement < 0) {
