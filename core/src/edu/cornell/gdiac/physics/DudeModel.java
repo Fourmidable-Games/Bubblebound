@@ -56,6 +56,8 @@ public class DudeModel extends CapsuleObstacle {
 	private int shootCooldown;
 	/** Whether our feet are on the ground */
 	private boolean isGrounded;
+	/** Whether our feet were on the ground last frame */
+	private boolean wasGrounded = false;
 	/** Whether we are actively shooting */
 	private boolean isShooting;
 	private boolean isGrappling;
@@ -153,6 +155,17 @@ public class DudeModel extends CapsuleObstacle {
 	 */
 	public boolean isGrounded() {
 		return isGrounded;
+	}
+
+	/**
+	 * Returns true if the dude just landed on the ground
+	 *
+	 * @return true if the just landed on the ground
+	 */
+	public boolean justGrounded() {
+		boolean output = !isGrappling && !isJumping && isGrounded && !wasGrounded;
+		wasGrounded = isGrounded;
+		return output;
 	}
 	
 	/**

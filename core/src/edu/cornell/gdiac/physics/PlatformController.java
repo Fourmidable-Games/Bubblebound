@@ -58,7 +58,6 @@ public class PlatformController extends WorldController implements ContactListen
 	private long shootBubbleSoundId = -1;
 	/** The level 1 background music sound.  We want it to loop. */
 	private Sound level1Music;
-	private long level1MusicId = -1;
 	/** The default sound volume */
 	private float volume;
 	private RopeBridge rope;
@@ -144,7 +143,7 @@ public class PlatformController extends WorldController implements ContactListen
 			}
 			
 		}
-
+		level1Music.stop();
 
 		objects.clear();
 		bubbles.clear();
@@ -166,6 +165,8 @@ public class PlatformController extends WorldController implements ContactListen
 	 * Lays out the game geography.
 	 */
 	private void populateLevel() {
+		//Add Music
+		level1Music.loop(0.5f);
 		// Add level goal
 		float dwidth  = goalTile.getRegionWidth()/scale.x;
 		float dheight = goalTile.getRegionHeight()/scale.y;
@@ -338,11 +339,6 @@ public class PlatformController extends WorldController implements ContactListen
 	boolean sbubble = false;
 	private int wait = 10;
 
-	//move this to the avatar section
-	private int justLanded = -1;
-	//move this to something with music
-
-
 	public void update(float dt) {
 		// Process actions in object model
 		moveZones();
@@ -454,17 +450,12 @@ public class PlatformController extends WorldController implements ContactListen
 		}
 	    if (avatar.isJumping()) {
 	    	jumpId = playSound( jumpSound, jumpId, volume );
-			justLanded = -1;
 	    }
-		if (avatar.isGrounded() && justLanded == -1) {
-			justLanded = 1;
+		if (avatar.justGrounded()) {
 			plopId = playSound( plopSound, plopId, volume );
 		}
 		avatar.applyForce();
-		if (level1MusicId == -1){
-			insertSource()
-			level1MusicId = playSound( level1Music,level1MusicId, (volume * 0.5f) );
-		}
+
 
 
 
