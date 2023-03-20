@@ -422,11 +422,13 @@ public class DudeModel extends CapsuleObstacle {
 		float y = getHeight()*drawScale.y / 2;
 
 		float effect = faceRight ? -1.0f : 1.0f;;
+		float upside = (grav == -1) ? -1.0f : 1.0f;
+		canvas.draw(texture, Color.WHITE,origin.x,origin.y,getX()*drawScale.x,getY()*drawScale.y,getAngle(),effect,upside);
 		if(invincible && invincibletimer % 2 == 0){
-			canvas.draw(texture,Color.WHITE,origin.x,origin.y,getX()*drawScale.x,getY()*drawScale.y,getAngle(),effect,1.0f);
+
 		}
 		else {
-			canvas.draw(texture,Color.WHITE,origin.x,origin.y,getX()*drawScale.x+x,getY()*drawScale.y+y,getAngle(),effect,1.0f);
+			canvas.draw(texture, Color.WHITE,origin.x,origin.y,getX()*drawScale.x,getY()*drawScale.y,getAngle(),effect,upside);
 		}
 
 
