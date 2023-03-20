@@ -244,4 +244,15 @@ public class BoxObstacle extends SimpleObstacle {
 
 	}
 
+	@Override
+	public void draw(GameCanvas canvas) {
+		if (texture != null) {
+			if(grav == 1) {
+				canvas.draw(texture, Color.WHITE, origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.x, getAngle(), 0.5F, 0.5F);
+			}else{
+				canvas.draw(texture, Color.RED, origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.x, getAngle(), 0.5F, 0.5F);
+			}
+		}
+	}
+
 }
