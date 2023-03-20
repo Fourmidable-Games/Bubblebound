@@ -462,6 +462,7 @@ public class PlatformController extends WorldController implements ContactListen
 		}
 		avatar.applyForce();
 		if (level1MusicId == -1){
+			insertSource()
 			level1MusicId = playSound( level1Music,level1MusicId, (volume * 0.5f) );
 		}
 
