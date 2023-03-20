@@ -41,6 +41,8 @@ public class BoxObstacle extends SimpleObstacle {
 	private float[] vertices;
 
 	public boolean isRope = false;
+
+	public boolean isGoal = false;
 	
 	/** 
 	 * Returns the dimensions of this box
@@ -258,14 +260,23 @@ public class BoxObstacle extends SimpleObstacle {
 			}
 		}
 
+		else if (isGoal == true) {
+			if(grav == 1) {
+				canvas.draw(texture, Color.WHITE, origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.x, getAngle(), 1, 1);
+			}else{
+				canvas.draw(texture, Color.RED, origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.x, getAngle(), 1, 1);
+			}
+		}
 
-		if (texture != null) {
+
+		else if (texture != null) {
 			if(grav == 1) {
 				canvas.draw(texture, Color.WHITE, origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.x, getAngle(), 0.5F, 0.5F);
 			}else{
 				canvas.draw(texture, Color.RED, origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.x, getAngle(), 0.5F, 0.5F);
 			}
 		}
+
 
 	}
 

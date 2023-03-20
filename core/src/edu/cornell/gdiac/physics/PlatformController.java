@@ -152,24 +152,6 @@ public class PlatformController extends WorldController implements ContactListen
 	 * Lays out the game geography.
 	 */
 	private void populateLevel() {
-		// Add level goal
-		float dwidth  = goalTile.getRegionWidth()/scale.x;
-		float dheight = goalTile.getRegionHeight()/scale.y;
-		//Vector2 scale2 = new Vector2(16f, 16f);
-		//scale2.x /= 2;
-		//scale2.y /= 2;
-		JsonValue goal = constants.get("goal");
-		JsonValue goalpos = goal.get("pos");
-		goalDoor = new BoxObstacle(goalpos.getFloat(0),goalpos.getFloat(1),dwidth,dheight);
-		goalDoor.setBodyType(BodyDef.BodyType.StaticBody);
-		goalDoor.setDensity(goal.getFloat("density", 0));
-		goalDoor.setFriction(goal.getFloat("friction", 0));
-		goalDoor.setRestitution(goal.getFloat("restitution", 0));
-		goalDoor.setSensor(true);
-		goalDoor.setDrawScale(scale);
-		goalDoor.setTexture(goalTile);
-		goalDoor.setName("goal");
-		//addObject(goalDoor);
 
 
 		LevelEditor Level1 = new LevelEditor();
@@ -180,7 +162,25 @@ public class PlatformController extends WorldController implements ContactListen
 		List<WheelObstacle> bubbleList = Level1.getBubbles();
 		List<Zone> gravityZoneList = Level1.getGravityZones();
 		List<Spike> spikes = Level1.getSpikes();
+		goalDoor = Level1.getGoal();
 		enemies = Level1.getEnemies();
+
+
+		// Add level goal
+		float dwidth  = goalTile.getRegionWidth()/scale.x;
+		float dheight = goalTile.getRegionHeight()/scale.y;
+		//Vector2 scale2 = new Vector2(16f, 16f);
+		//scale2.x /= 2;
+		//scale2.y /= 2;
+
+		goalDoor.setBodyType(BodyDef.BodyType.StaticBody);
+		goalDoor.setSensor(true);
+		goalDoor.setDrawScale(scale);
+		goalDoor.setTexture(goalTile);
+		goalDoor.setName("goal");
+		goalDoor.isGoal = true;
+		addObject(goalDoor);
+
 
 		for (int i = 0; i < BoxList.size(); i++) {
 			BoxObstacle box = BoxList.get(i);
@@ -518,7 +518,7 @@ public class PlatformController extends WorldController implements ContactListen
 			// Check for win condition
 			if ((bd1 == avatar   && bd2 == goalDoor) ||
 				(bd1 == goalDoor && bd2 == avatar)) {
-				//setComplete(true);
+				setComplete(true);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

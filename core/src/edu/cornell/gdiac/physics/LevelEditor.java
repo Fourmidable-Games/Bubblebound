@@ -33,6 +33,7 @@ public class LevelEditor {
     private TextureRegion goalTile;
     private ArrayList<String> textureStrings;
     private ArrayList<TextureRegion> textureObjects;
+    private BoxObstacle goal;
 
     public LevelEditor() {
 
@@ -168,6 +169,21 @@ public class LevelEditor {
 
         }
 
+        for (JsonValue object : jsonValue.get("Goal")) {
+
+            BoxObstacle wo = new BoxObstacle(
+                    object.get("x").asFloat(),
+                    object.get("y").asFloat(),
+                    object.get("width").asFloat(),
+                    object.get("height").asFloat()
+            );
+
+            wo.isGoal = true;
+
+            goal = wo;
+
+        }
+
 
 
     }
@@ -190,6 +206,10 @@ public class LevelEditor {
 
     public List getEnemies() {
         return enemies;
+    }
+
+    public BoxObstacle getGoal() {
+        return goal;
     }
 
 

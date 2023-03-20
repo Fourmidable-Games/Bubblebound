@@ -80,6 +80,13 @@
       "boundx" : 4,
       "boundy" : 12
     }
-  ]
+  ],
 
+  "Goal" : [
+    { "x" : 4,
+      "y": 14,
+      "width" : 3,
+      "height" : 3
+    }
+  ]
 }
