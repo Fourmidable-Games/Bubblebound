@@ -141,12 +141,12 @@
 
   "Enemies" : [
     {
-      "x": 11,
+      "x": 9,
       "y": 7,
       "width": 0.9,
       "height": 1,
-      "boundx": 13,
-      "boundy": 20
+      "boundx": 8,
+      "boundy": 14
     }
   ],
 

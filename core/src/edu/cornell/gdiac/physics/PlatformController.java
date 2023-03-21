@@ -312,7 +312,7 @@ public class PlatformController extends WorldController implements ContactListen
 		WheelObstacle wo2 = new WheelObstacle(v.x, v.y, 1f);
 		wo2.setName("Bubble" + (BUBBLE_LIMIT-bubbles_left));
 
-		bubble_timer[BUBBLE_LIMIT-bubbles_left] = 300;
+		bubble_timer[BUBBLE_LIMIT-bubbles_left] = 500;
 		bubbles_left--;
 		wo2.setStatic(b);
 		wo2.setBodyType(BodyDef.BodyType.DynamicBody);
