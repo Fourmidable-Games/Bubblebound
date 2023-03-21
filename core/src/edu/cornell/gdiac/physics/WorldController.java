@@ -596,13 +596,12 @@ public abstract class WorldController implements Screen {
 		if (complete && !failed) {
 			displayFont.setColor(Color.YELLOW);
 			canvas.begin(); // DO NOT SCALE
-			canvas.drawText("VICTORY!", displayFont, cameraCoords.x, cameraCoords.y);
-
+			canvas.drawText("VICTORY", displayFont, cameraCoords.x-90, cameraCoords.y);
 			canvas.end();
 		} else if (failed) {
 			displayFont.setColor(Color.RED);
 			canvas.begin(); // DO NOT SCALE
-			canvas.drawText("FAILURE!", displayFont, cameraCoords.x, cameraCoords.y);
+			canvas.drawText("FAILURE!", displayFont, cameraCoords.x-90, cameraCoords.y);
 			canvas.end();
 		}
 	}
