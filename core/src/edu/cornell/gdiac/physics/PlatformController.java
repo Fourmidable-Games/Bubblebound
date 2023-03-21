@@ -67,7 +67,7 @@ public class PlatformController extends WorldController implements ContactListen
 	private long level1MusicCaveID;
 	/** The default sound volume */
 	private float volume;
-	private RopeBridge rope;
+	private NewRopeBridge rope;
 
 	private int connectedBubbleID = -1;
 
@@ -253,7 +253,7 @@ public class PlatformController extends WorldController implements ContactListen
 			wo.setStatic(true);
 			wo.setDrawScale(scale);
 			wo.activatePhysics(world);
-			wo.setDensity(1000f);
+			wo.setDensity(1f);
 			wo.setTexture(bubble);
 			bubbles.add(wo);
 			addQueuedObject(wo);
@@ -285,6 +285,7 @@ public class PlatformController extends WorldController implements ContactListen
 		dwidth  = avatarTexture.getRegionWidth()/scale.x;
 		dheight = avatarTexture.getRegionHeight()/scale.y;
 		avatar = new DudeModel(constants.get("dude"), dwidth, dheight);
+		avatar.setDensity(0.5f);
 		avatar.setDrawScale(scale);
 		avatar.setTexture(avatarTexture);
 		avatar.setName("avatar");
@@ -537,10 +538,10 @@ public class PlatformController extends WorldController implements ContactListen
 		}
 	}
 
-	private RopeBridge createGrapple(WheelObstacle bubble){
+	private NewRopeBridge createGrapple(WheelObstacle bubble){
 		float dwidth  = bridgeTexture.getRegionWidth()/scale.x;
 		float dheight = bridgeTexture.getRegionHeight()/scale.y;
-		RopeBridge bridge = new RopeBridge(constants.get("bridge"), dwidth,dheight,bubble.getBody(), avatar.getBody());
+		NewRopeBridge bridge = new NewRopeBridge(constants.get("bridge"), bubble.getBody(), avatar);
 		bridge.setTexture(bridgeTexture);
 		bridge.setDrawScale(scale);
 		addQueuedObject(bridge);

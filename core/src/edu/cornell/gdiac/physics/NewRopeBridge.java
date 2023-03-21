@@ -189,7 +189,7 @@ public class NewRopeBridge extends ComplexObstacle {
 		assert bodies.size > 0;
 		
 		Vector2 anchor1 = new Vector2(); 
-		Vector2 anchor2 = new Vector2(0,1f);
+		Vector2 anchor2 = new Vector2(0,avatarCapsule.getHeight()/2);
 
 		// Definition for a revolute joint and distance joint
 		DistanceJointDef jointDefDist = new DistanceJointDef();
@@ -202,32 +202,41 @@ public class NewRopeBridge extends ComplexObstacle {
 		Joint joint;
 		jointDef.bodyA = bodies.get(0).getBody();
 		jointDef.bodyB = avatar;
-		jointDef.localAnchorA.set(anchor2);
-		jointDef.localAnchorB.set(anchor1);
+		jointDef.localAnchorA.set(anchor1);
+		jointDef.localAnchorB.set(anchor2);
 		jointDef.collideConnected = false;
-//		joint = world.createJoint(jointDef);
-//		joints.add(joint);
+		joint = world.createJoint(jointDef);
+		joints.add(joint);
 		anchor2.y = 0;
 
 		//JOINT NEXT ONE TO FIRST
 		Body nextOne = bodies.get(1).getBody();
-//		jointDefDist.length = .125f * (float)Math.sqrt(3);
-		jointDefDist.length = 0;
+		jointDefDist.length = .125f * (float)Math.sqrt(3);
+//		jointDefDist.length = 0;
 		jointDefDist.bodyA = nextOne;
 		jointDefDist.bodyB = bodies.get(0).getBody();
 		jointDefDist.localAnchorA.set(anchor1);
-		jointDefDist.localAnchorB.set(new Vector2(0, avatarCapsule.getHeight()/2));
+		jointDefDist.localAnchorB.set(anchor2);
 		jointDefDist.collideConnected = false;
 		joint = world.createJoint(jointDefDist);
 		joints.add(joint);
 
 		//JOINT NEXT TWO TO FIRST
 		Body nextTwo = bodies.get(2).getBody();
+		jointDefDist.length = .125f * (float)Math.sqrt(3);
 		jointDefDist.bodyA = nextTwo;
+		jointDefDist.bodyB = bodies.get(0).getBody();
+		jointDefDist.localAnchorA.set(anchor1);
+		jointDefDist.localAnchorB.set(anchor2);
+		jointDefDist.collideConnected = false;
 		joint = world.createJoint(jointDefDist);
 		joints.add(joint);
+
+
 		jointDefDist.localAnchorB.set(new Vector2());
-		jointDefDist.dampingRatio = 0.8f;
+
+
+		jointDefDist.dampingRatio = 0.3f;
 		jointDefDist.frequencyHz = 10;
 
 		//JOINT NEXT ONE TO NEXT TWO
@@ -364,14 +373,14 @@ public class NewRopeBridge extends ComplexObstacle {
 	// }
 
 
-//	@Override
-//	public void draw(GameCanvas canvas) {
-//		// Delegate to components
-//		for(Obstacle obj : bodies) {
-//			obj.draw(canvas);
-//			canvas.draw(Rope (obj));
-//		}
-//	}
+	@Override
+	public void draw(GameCanvas canvas) {
+		// Delegate to components
+		// for(Obstacle obj : bodies) {
+		// 	obj.draw(canvas);
+		// 	canvas.draw(Rope (obj));
+		// }
+	}
 
 
 
