@@ -571,7 +571,7 @@ public class PlatformController extends WorldController implements ContactListen
 		rope.markRemoved(true);
 		avatar.setLinearVelocity(avatar.getLinearVelocity().scl(1.3f));
 		rope = null;
-		avatar.setGrappling(false);
+		//avatar.setGrappling(false);
 	}
 
 	public void popBubble(Obstacle bubble, int id){
@@ -579,6 +579,7 @@ public class PlatformController extends WorldController implements ContactListen
 		System.out.println(id);
 		if(id == connectedBubbleID){
 			destructRope(rope);
+			avatar.setGrappling(false);
 		}
 		System.out.println("Rope Destructed!");
 		for(int i = 0; i < bubbles.size(); i++){
