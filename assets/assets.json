@@ -81,6 +81,7 @@
         "bubbleboundsfx:roperelease" : "bubbleboundsfx/roperelease.wav",
         "bubbleboundsfx:jump" : "bubbleboundsfx/jump.wav",
         "bubbleboundsfx:plop" : "bubbleboundsfx/plop.wav",
+        "bubbleboundsfx:wind" : "bubbleboundsfx/wind.wav",
         "bubbleboundsfx:level1sunsettheme" : "bubbleboundsfx/level1sunsettheme.wav",
         "bubbleboundsfx:level1cavetheme" : "bubbleboundsfx/level1cavetheme.wav",
         "ragdoll:glub1" : "ragdoll/bubble01.mp3",

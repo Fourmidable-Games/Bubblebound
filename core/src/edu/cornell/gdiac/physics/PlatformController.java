@@ -59,6 +59,9 @@ public class PlatformController extends WorldController implements ContactListen
 	/** The release rope sound.  We only want to play once. */
 	private Sound releaseRopeSound;
 	private long releaseRopeSoundId = -1;
+
+	private Sound windSound;
+	private long windSoundID = -1;
 	/** The level 1 background music sound.  We want it to loop. */
 	private Sound level1MusicSunset;
 	private long level1MusicSunsetID;
@@ -132,6 +135,7 @@ public class PlatformController extends WorldController implements ContactListen
 		plopSound = directory.getEntry( "bubbleboundsfx:plop", Sound.class );
 		shootRopeSound = directory.getEntry( "bubbleboundsfx:ropeshoot", Sound.class );
 		releaseRopeSound = directory.getEntry( "bubbleboundsfx:roperelease", Sound.class );
+		windSound = directory.getEntry( "bubbleboundsfx:wind", Sound.class );
 		level1MusicSunset = directory.getEntry( "bubbleboundsfx:level1sunsettheme", Sound.class );
 		level1MusicCave = directory.getEntry( "bubbleboundsfx:level1cavetheme", Sound.class );
 		constants = directory.getEntry( "platform:constants", JsonValue.class );
@@ -162,8 +166,10 @@ public class PlatformController extends WorldController implements ContactListen
 			}
 			
 		}
+		//actually find a way to delete and reinitialize these later
 		level1MusicSunset.stop();
 		level1MusicCave.stop();
+		windSound.stop();
 
 		objects.clear();
 		bubbles.clear();
@@ -516,6 +522,7 @@ public class PlatformController extends WorldController implements ContactListen
 	private void setSounds(){
 		level1MusicSunsetID = level1MusicSunset.loop(0.0f);
 		level1MusicCaveID = level1MusicCave.loop(0.0f);
+		windSoundID = windSound.loop(0.0f);
 	}
 
 	public void updateSounds(){
@@ -535,6 +542,8 @@ public class PlatformController extends WorldController implements ContactListen
 			plopSound.setVolume(plopId,volume * 2f);
 			plopId = playSound( plopSound, jumpId);
 		}
+			windSound.setVolume(windSoundID, Math.min((float) Math.abs((avatar.getVX() + (avatar.getVY() * 0.5)) * 0.06f),0.4f));
+
 	}
 
 	private RopeBridge createGrapple(WheelObstacle bubble){

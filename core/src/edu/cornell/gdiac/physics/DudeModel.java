@@ -63,6 +63,8 @@ public class DudeModel extends CapsuleObstacle {
 	private boolean isGrappling;
 	/** The physics shape of this object */
 
+	private float acceleration;
+
 	private int gravZone;
 	private PolygonShape sensorShape;
 
