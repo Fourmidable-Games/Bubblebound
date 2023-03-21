@@ -489,7 +489,7 @@ public class PlatformController extends WorldController implements ContactListen
 	private NewRopeBridge createGrapple(WheelObstacle bubble){
 		float dwidth  = bridgeTexture.getRegionWidth()/scale.x;
 		float dheight = bridgeTexture.getRegionHeight()/scale.y;
-		NewRopeBridge bridge = new NewRopeBridge(constants.get("bridge"), bubble.getBody(), avatar.getBody());
+		NewRopeBridge bridge = new NewRopeBridge(constants.get("bridge"), bubble.getBody(), avatar);
 		bridge.setTexture(bridgeTexture);
 		bridge.setDrawScale(scale);
 		addQueuedObject(bridge);
