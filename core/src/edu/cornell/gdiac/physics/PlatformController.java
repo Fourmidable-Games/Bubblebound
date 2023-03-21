@@ -67,7 +67,7 @@ public class PlatformController extends WorldController implements ContactListen
 	private long level1MusicCaveID;
 	/** The default sound volume */
 	private float volume;
-	private RopeBridge rope;
+	private NewRopeBridge rope;
 
 	// Physics objects for the game
 	/** Physics constants for initialization */
@@ -286,7 +286,7 @@ public class PlatformController extends WorldController implements ContactListen
 		// Create rope bridge
 		setCamera(avatar.getX(), avatar.getY() + 0.5f);
 		//System.out.println(wo);
-		System.out.println("change");
+		// System.out.println("change");
 
 		volume = constants.getFloat("volume", 1.0f);
 	}
@@ -486,10 +486,10 @@ public class PlatformController extends WorldController implements ContactListen
 		}
 	}
 
-	private RopeBridge createGrapple(WheelObstacle bubble){
+	private NewRopeBridge createGrapple(WheelObstacle bubble){
 		float dwidth  = bridgeTexture.getRegionWidth()/scale.x;
 		float dheight = bridgeTexture.getRegionHeight()/scale.y;
-		RopeBridge bridge = new RopeBridge(constants.get("bridge"), dwidth, dheight, bubble.getBody(), avatar.getBody());
+		NewRopeBridge bridge = new NewRopeBridge(constants.get("bridge"), bubble.getBody(), avatar.getBody());
 		bridge.setTexture(bridgeTexture);
 		bridge.setDrawScale(scale);
 		addQueuedObject(bridge);

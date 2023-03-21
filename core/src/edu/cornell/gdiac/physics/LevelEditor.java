@@ -51,7 +51,7 @@ public class LevelEditor {
         int yo = 0;
 
         for (JsonValue object : jsonValue.get("Objects")) {
-            System.out.println(jsonValue);
+            // System.out.println(jsonValue);
 
             if (object == null) {
                 return;
@@ -68,8 +68,8 @@ public class LevelEditor {
             );
 
             if ((object.get("repeat")).asInt() > 1) {
-                System.out.println("Test");
-                System.out.println((object.get("repeat")).asInt());
+                // System.out.println("Test");
+                // System.out.println((object.get("repeat")).asInt());
                 for (int i = 1; i < (object.get("repeat")).asInt(); i++) {
                     if ((object.get("repeatx")).asInt() > 1) {
                         xo = i;

@@ -374,7 +374,7 @@ public class DudeModel extends CapsuleObstacle {
 			}else{
 				forceCache.set(-getDamping()*getVX(),0);
 			}
-			System.out.println(forceCache.x);
+			// System.out.println(forceCache.x);
 			body.applyForce(forceCache,getPosition(),true);
 		}
 
