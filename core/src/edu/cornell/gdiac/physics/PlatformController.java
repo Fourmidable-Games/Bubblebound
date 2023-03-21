@@ -514,7 +514,7 @@ public class PlatformController extends WorldController implements ContactListen
 
 		avatar.applyForce();
 
-
+		bubblesleft = bubbles_left - 2;
 
 
 	}
@@ -571,6 +571,7 @@ public class PlatformController extends WorldController implements ContactListen
 		rope.markRemoved(true);
 		avatar.setLinearVelocity(avatar.getLinearVelocity().scl(1.3f));
 		rope = null;
+		avatar.setGrappling(false);
 	}
 
 	public void popBubble(Obstacle bubble, int id){

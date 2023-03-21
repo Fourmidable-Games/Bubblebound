@@ -501,6 +501,7 @@ public abstract class WorldController implements Screen {
 	public void addZone(Zone z){
 		zones.add(z);
 	}
+	int bubblesleft = 8;
 	/**
 	 * Draw the physics objects to the canvas
 	 *
@@ -572,18 +573,14 @@ public abstract class WorldController implements Screen {
 
 		// Draw energy bar
 		//TODO: implement energy bar usage
-//		float energy = 0.5f;
-//		canvas.shape.begin(ShapeRenderer.ShapeType.Filled);
-//		canvas.shape.setColor(Color.YELLOW);
-//		canvas.shape.rect(canvas.getWidth() - 800, canvas.getHeight() - 30, 200 * energy, 20);
-//		canvas.shape.end();
-//
-//		// Draw energy bar label
-//		displayFont.setColor(Color.WHITE);
-//		displayFont.getData().setScale(0.4f);
-//		canvas.begin(); // DO NOT SCALE
-//		canvas.drawText("Energy", displayFont, canvas.getWidth() - 800, canvas.getHeight() - 34);
-//		canvas.end();
+
+
+		// Draw energy bar label
+		displayFont.setColor(Color.WHITE);
+		displayFont.getData().setScale(0.4f);
+		canvas.begin(); // DO NOT SCALE
+		canvas.drawText("Remaining Bubbles: " + bubblesleft, displayFont, cameraCoords.x + (canvas.getWidth() / 2) - 400, cameraCoords.y + (canvas.getHeight() / 2) - 30);
+		canvas.end();
 
 //		canvas.end();
 		//debug = false;
