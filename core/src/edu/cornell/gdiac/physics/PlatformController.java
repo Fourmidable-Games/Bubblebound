@@ -644,7 +644,7 @@ public class PlatformController extends WorldController implements ContactListen
 			if ((avatar.getSensorName().equals(fd2) && avatar != bd1) ||
 				(avatar.getSensorName().equals(fd1) && avatar != bd2)) {
 				avatar.setGrounded(true);
-				//sensorFixtures.add(avatar == bd1 ? fix2 : fix1); // Could have more than one ground
+				sensorFixtures.add(avatar == bd1 ? fix2 : fix1); // Could have more than one ground
 			}
 			
 			// Check for win condition
