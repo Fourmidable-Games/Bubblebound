@@ -1196,7 +1196,8 @@ public class GameCanvas {
 		Vector2 pos = new Vector2(x,y);
 		float w = image.getRegionWidth();
 		wrapPosition(pos, w);
-		pos.x -= 500; //just initial offset, needed cuz spawns too close to the left of the bounds
+		pos.y -= 500;
+		pos.x -= 800; //just initial offset, needed cuz spawns too close to the left of the bounds
 		// System.out.println("pos" + pos);
 
 		// Have to draw the background twice for continuous scrolling.
