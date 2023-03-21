@@ -1192,7 +1192,7 @@ public class GameCanvas {
 		spriteBatch.setColor(Color.WHITE);
 	}
 
-	public void drawWrapped(TextureRegion image, float x, float y) {
+	public void drawWrapped(TextureRegion image, float x, float y) { //draws background
 		Vector2 pos = new Vector2(x,y);
 		float w = image.getRegionWidth();
 		wrapPosition(pos, w);
