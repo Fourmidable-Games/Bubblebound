@@ -69,6 +69,8 @@ public class PlatformController extends WorldController implements ContactListen
 	private float volume;
 	private RopeBridge rope;
 
+	private int connectedBubbleID = -1;
+
 	// Physics objects for the game
 	/** Physics constants for initialization */
 	private JsonValue constants;
@@ -78,10 +80,14 @@ public class PlatformController extends WorldController implements ContactListen
 	private BoxObstacle goalDoor;
 	private final int BUBBLE_LIMIT = 10;
 
+	private int bubbles_left = 10;
+
 	/** Mark set to handle more sophisticated collision callbacks */
 	protected ObjectSet<Fixture> sensorFixtures;
 
 	private List<WheelObstacle> bubbles = new ArrayList<WheelObstacle>();
+	private List<Obstacle> bubbles_removed = new ArrayList<>();
+	private int[] bubble_timer = new int[BUBBLE_LIMIT];
 
 	private List<Enemy> enemies = new ArrayList<Enemy>();
 
@@ -140,6 +146,10 @@ public class PlatformController extends WorldController implements ContactListen
 	 * This method disposes of the world and creates a new one.
 	 */
 	public void reset() {
+		bubbles_left = BUBBLE_LIMIT;
+		for(int i = 0; i < BUBBLE_LIMIT; i++){
+			bubble_timer[i] = -1;
+		}
 		Vector2 gravity = new Vector2(world.getGravity() );
 		zones.clear();
 		life = 1; //reset health
@@ -292,9 +302,12 @@ public class PlatformController extends WorldController implements ContactListen
 	}
 
 	public WheelObstacle spawnBubble(Vector2 v, boolean b){
-		if(bubbles.size() >= BUBBLE_LIMIT) return null;
+		if(bubbles_left == 0) return null;
 		WheelObstacle wo2 = new WheelObstacle(v.x, v.y, 1f);
-		wo2.setName("Bubble");
+		wo2.setName("Bubble" + (BUBBLE_LIMIT-bubbles_left));
+
+		bubble_timer[BUBBLE_LIMIT-bubbles_left] = 300;
+		bubbles_left--;
 		wo2.setStatic(b);
 		wo2.setBodyType(BodyDef.BodyType.DynamicBody);
 		wo2.setDrawScale(scale);
@@ -318,6 +331,7 @@ public class PlatformController extends WorldController implements ContactListen
 	 * @return whether to process the update loop
 	 */
 	public boolean preUpdate(float dt) {
+		System.out.println("preupdate");
 		if (!super.preUpdate(dt)) {
 			return false;
 		}
@@ -348,6 +362,26 @@ public class PlatformController extends WorldController implements ContactListen
 	boolean sbubble = false;
 	private int wait = 10;
 	public void update(float dt) {
+		System.out.println("NEXT CYCLE");
+		System.out.print("[" + bubble_timer[0]);
+		for(int i = 1; i < bubble_timer.length; i++){
+			System.out.print(", " + bubble_timer[i]);
+		}
+		System.out.println("]");
+		for(int i = 0; i < BUBBLE_LIMIT; i++){
+			if(bubble_timer[i]>0){
+				bubble_timer[i]--;
+			}else if(bubble_timer[i]==0){
+				for(int j = 0; j<bubbles.size(); j++){
+					Obstacle b = bubbles.get(j);
+					// System.out.print(b.getName());
+					// System.out.println("vs Bubble" + i);
+					if(b.getName().equals("Bubble" + i)){
+						popBubble(b, i);
+					}
+				}
+			}
+		}
 		// Process actions in object model
 		moveZones();
 		updateSounds();
@@ -400,7 +434,7 @@ public class PlatformController extends WorldController implements ContactListen
 		avatar.setMovement(InputController.getInstance().getHorizontal() *avatar.getForce());
 		avatar.setJumping(InputController.getInstance().didPrimary());
 		avatar.setShooting(InputController.getInstance().didSecondary());
-
+		System.out.println("got to before bubble check");
 		boolean spawned = false;
 		if(InputController.getInstance().didTertiary()){
 			if(wait > 10) {
@@ -413,6 +447,7 @@ public class PlatformController extends WorldController implements ContactListen
 		}
 
 		if (closest != null) closest.setSelected(true);
+		System.out.println("got to after bubble check");
 
 		Vector2 pos = avatar.getPosition();
 		boolean destructRope = false;
@@ -439,7 +474,7 @@ public class PlatformController extends WorldController implements ContactListen
 			}
 		}
 		wait++;
-
+		System.out.println("After destruct construct stuff");
 		// Add a bullet if we fire
 		if (avatar.isShooting()) {
 			//createBullet();
@@ -448,12 +483,28 @@ public class PlatformController extends WorldController implements ContactListen
 			destructRope(rope);
 			releaseRopeSoundId = playSound(releaseRopeSound, releaseRopeSoundId, volume );
 		}
+		System.out.println("After destruct");
 		if(constructRope){
 			//System.out.println("B4: " + pos);
+			String n = closest.getName();
+			char [] chars = n.toCharArray();
+			boolean hasDigit = false;
+			int digit = -1;
+			for(int i = 0; i < chars.length; i++){
+				if(Character.isDigit(chars[i])){
+					hasDigit = true;
+					digit = Integer.parseInt(Character.toString(chars[i]));
+				}
+			}
+			if(hasDigit){
+				connectedBubbleID = digit;
+			}
 			rope = createGrapple(closest);
 			shootRopeSoundId = playSound( shootRopeSound, shootRopeSoundId, volume );
 			//avatar.setPosition(pos);
 		}
+		System.out.println("after construct");
+
 
 		avatar.applyForce();
 
@@ -507,9 +558,34 @@ public class PlatformController extends WorldController implements ContactListen
 	}
 
 	public void destructRope(Obstacle rope) {
+		connectedBubbleID = -1;
 		rope.markRemoved(true);
 		avatar.setLinearVelocity(avatar.getLinearVelocity().scl(1.3f));
 		rope = null;
+	}
+
+	public void popBubble(Obstacle bubble, int id){
+		System.out.println(connectedBubbleID);
+		System.out.println(id);
+		if(id == connectedBubbleID){
+			destructRope(rope);
+		}
+		System.out.println("Rope Destructed!");
+		for(int i = 0; i < bubbles.size(); i++){
+			if(bubbles.get(i).getName().equals(bubble.getName())){
+				bubbles.get(i).setActive(false);
+				((WheelObstacle)bubbles.get(i)).stopDraw();
+				bubble_timer[id] = -1;
+			}
+		}
+		System.out.println("After for loop");
+//		bubble.markRemoved(true);
+//		bubbles_removed.add(bubble);
+//		bubbles_removed.get(bubbles_removed.size()-1);
+//		bubble.markRemoved(true);
+		System.out.println("markremoved");
+		playSound(plopSound,plopId,0.5f);
+
 	}
 
 	

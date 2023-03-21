@@ -31,6 +31,8 @@ public class WheelObstacle extends SimpleObstacle {
 	private boolean selected;
 
 	public boolean statc;
+	private boolean d = true;
+
 
 	public void setStatic(boolean b){
 		statc = b;
@@ -134,10 +136,12 @@ public class WheelObstacle extends SimpleObstacle {
 	 * @param canvas Drawing context
 	 */
 	 public void drawDebug(GameCanvas canvas) {
+		 if(!d) return;
 		canvas.drawPhysics(shape,Color.YELLOW,getX(),getY(),drawScale.x,drawScale.y);
 	}
 	@Override
 	public void sdraw(GameCanvas canvas){
+		 if(!d) return;
 		 if(selected){
 			 canvas.shape.setColor(Color.YELLOW);
 		 }else{
@@ -148,9 +152,10 @@ public class WheelObstacle extends SimpleObstacle {
 
 	@Override
 	public void draw(GameCanvas canvas) {
-		if (texture != null) {
+		if (texture != null && d) {
 			canvas.draw(texture,Color.WHITE,origin.x,origin.y,getX()*drawScale.x,getY()*drawScale.y,getAngle(), 1.4F*getRadius(), 1.4F*getRadius());
 		}
 	}
+	public void stopDraw(){d = false;}
 
 }

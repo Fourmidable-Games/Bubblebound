@@ -74,16 +74,16 @@ public class RopeBridge extends ComplexObstacle {
 		float y0 = a.getPosition().y;
 		planksize = new Vector2(lwidth,lheight);
 		linksize = planksize.x;
-		System.out.println(planksize);
+		// System.out.println(planksize);
 	    // Compute the bridge length
 		dimension = new Vector2(data.getFloat("width",0),data.getFloat("height",0));
-	    System.out.println("Dimension: " + dimension);
+	    // System.out.println("Dimension: " + dimension);
 		float length = dimension.len();
 		length = (float)Math.sqrt(Math.pow(bubble.getPosition().x-avatar.getPosition().x,2)+ Math.pow(bubble.getPosition().y-avatar.getPosition().y,2));
 	    Vector2 norm = new Vector2(dimension);
-		System.out.println("Norm:" + norm);
+		// System.out.println("Norm:" + norm);
 	    norm.nor();
-		System.out.println("Norm normed:" + norm);
+		// System.out.println("Norm normed:" + norm);
 	    
 	    // If too small, only make one plank.;
 	    int nLinks = (int)(length / linksize);
@@ -103,14 +103,14 @@ public class RopeBridge extends ComplexObstacle {
 
 	    for (int ii = 0; ii < nLinks; ii++) {
 	        float t = ii*(linksize+spacing) + linksize/2.0f;
-			System.out.println("Iteration " + ii);
-	        System.out.println("init pos: " + pos);
+			// System.out.println("Iteration " + ii);
+	        // System.out.println("init pos: " + pos);
 			pos.set(norm);
-			System.out.println("norm pos: " + pos);
+			// System.out.println("norm pos: " + pos);
 	        pos.scl(t);
-			System.out.println("scale pos: " + pos);
+			// System.out.println("scale pos: " + pos);
 	        pos.add(x0,y0);
-			System.out.println("add pos: " + pos);
+			// System.out.println("add pos: " + pos);
 	        BoxObstacle plank = new BoxObstacle(pos.x, pos.y, planksize.x, planksize.y);
 			plank.isRope = true;
 			plank.setGravityScale(0);

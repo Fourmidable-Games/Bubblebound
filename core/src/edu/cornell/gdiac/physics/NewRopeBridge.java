@@ -79,22 +79,22 @@ public class NewRopeBridge extends ComplexObstacle {
 		float yn = bubble.getPosition().y;
 
 		linksize = 0.125f;
-		System.out.println("linksize " +linksize);
+		// System.out.println("linksize " +linksize);
 	    // Compute the bridge length
 
 		float length = (float)Math.sqrt(Math.pow(bubble.getPosition().x-avatar.getPosition().x,2)+ Math.pow(bubble.getPosition().y-1.0f-avatar.getPosition().y+0.5f,2));
 		dimension = new Vector2(length,0.125f);
-		System.out.println("Dimension: " + dimension);
+		// System.out.println("Dimension: " + dimension);
 		float x_diff = bubble.getPosition().x - avatar.getPosition().x;
 		float y_diff = bubble.getPosition().y -1.0f - avatar.getPosition().y + avatarCapsule.getHeight()/2;
 		Vector2 norm = new Vector2(x_diff,y_diff);
-		System.out.println("Norm:" + norm);
+		// System.out.println("Norm:" + norm);
 	    norm.nor();
 		Vector2 moveleft = new Vector2(-1 * norm.y, norm.x);
 		moveleft.scl(dimension.y/2);
 		Vector2 moveright = new Vector2(-1 * norm.y, norm.x);
 		moveright.scl(dimension.y/2);
-		System.out.println("Norm normed:" + norm);
+		// System.out.println("Norm normed:" + norm);
 	    
 	    // If too small, only make one plank.;
 	    int nLinks = (int)((length -0.25f)/linksize);
@@ -194,7 +194,7 @@ public class NewRopeBridge extends ComplexObstacle {
 		// Definition for a revolute joint and distance joint
 		DistanceJointDef jointDefDist = new DistanceJointDef();
 
-		System.out.println(jointDefDist.frequencyHz);
+		// System.out.println(jointDefDist.frequencyHz);
 //		jointDefDist.frequencyHz = 0.5f;
 		RevoluteJointDef jointDef = new RevoluteJointDef();
 
