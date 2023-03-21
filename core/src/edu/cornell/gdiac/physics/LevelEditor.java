@@ -80,7 +80,6 @@ public class LevelEditor {
 
                     }
 
-
                     BoxObstacle myObject2 = new BoxObstacle(
                             object.get("x").asInt() + xo,
                             object.get("y").asInt() + yo,

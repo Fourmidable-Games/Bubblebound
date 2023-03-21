@@ -6,10 +6,10 @@
             "wrapV": "repeated"
         },
         "background:underground" : {
-            "file":  "platform/background.png"
+            "file":  "platform/background2.png"
         },
       "background:temp" : {
-        "file": "platform/background2.png"
+        "file": "platform/background.png"
       },
       "shared:bubble" : {
         "file":  "shared/bubble_480.png",
@@ -47,7 +47,7 @@
         },
         "rocket:crate01": "rocket/crate01.png",
         "rocket:crate02": "rocket/crate02.png",
-        "platform:dude2":  "platform/dude2.png",
+        "platform:dude2":  "platform/enemy.gif",
         "platform:dude":  "platform/dude.png",
         "platform:spike":  "platform/spike.png",
         "platform:rope":  "platform/ropebridge.png",

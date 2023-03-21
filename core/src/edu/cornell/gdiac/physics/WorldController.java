@@ -307,7 +307,7 @@ public abstract class WorldController implements Screen {
 		background = new TextureRegion(directory.getEntry("background:underground", Texture.class));
 		bubble = new TextureRegion(directory.getEntry( "shared:bubble", Texture.class ));
 		displayFont = directory.getEntry( "shared:retro" ,BitmapFont.class);
-		background2 = directory.getEntry("background:underground", Texture.class);
+		background2 = directory.getEntry("background:temp", Texture.class);
 	}
 
 

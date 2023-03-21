@@ -54,9 +54,8 @@ public class Zone {
         int y = image.getHeight() - (int)(ypos * scale.y) - (int)(height * scale.y); //finds y coord
         int x = canvas.wrapX(xcam, image.getWidth()) + (int)(xpos*scale.x); //find parallaxed x coord
         TextureRegion temp = new TextureRegion(image, x, y,(int)(width*scale.x), (int)(height * scale.y)); //select only needed part of image
-        canvas.draw(temp, Color.YELLOW, xpos * scale.x, ypos * scale.y, temp.getRegionWidth(), temp.getRegionHeight());
+        canvas.draw(temp, Color.WHITE, xpos * scale.x, ypos * scale.y, temp.getRegionWidth(), temp.getRegionHeight());
     }
-
 
     public void setMove(float x, float y){
         xmove = x;
