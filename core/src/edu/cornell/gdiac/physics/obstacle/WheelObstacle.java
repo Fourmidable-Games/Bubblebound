@@ -156,7 +156,7 @@ public class WheelObstacle extends SimpleObstacle {
 
 
 			if(grav == 1) {
-				canvas.draw(texture,Color.YELLOW,origin.x,origin.y,getX()*drawScale.x,getY()*drawScale.y,getAngle(), 1.4F*getRadius(), 1.4F*getRadius());
+				canvas.draw(texture,Color.GOLD,origin.x,origin.y,getX()*drawScale.x,getY()*drawScale.y,getAngle(), 1.4F*getRadius(), 1.4F*getRadius());
 			}else{
 				canvas.draw(texture,Color.WHITE,origin.x,origin.y,getX()*drawScale.x,getY()*drawScale.y,getAngle(), 1.4F*getRadius(), 1.4F*getRadius());
 			}
