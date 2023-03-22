@@ -11,6 +11,9 @@
       "background:temp" : {
         "file": "platform/background.png"
       },
+      "losing" : {
+        "file" : "shared/losing.png"
+      },
       "shared:bubble" : {
         "file":  "shared/bubble_480.png",
         "wrapU": "repeated",
