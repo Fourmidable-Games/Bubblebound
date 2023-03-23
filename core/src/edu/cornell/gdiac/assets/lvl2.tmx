@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.10.0" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="64" tileheight="64" infinite="1" nextlayerid="11" nextobjectid="35">
+ <tileset firstgid="1" source="tiled assets/tile imeages.tsx"/>
+ <tileset firstgid="8" source="tiled assets/tiles.tsx"/>
+ <imagelayer id="3" name="Image Layer 1" offsetx="-1092.54" offsety="-398.458" repeatx="1">
+  <image source="tiled assets/background.png" width="1877" height="1407"/>
+ </imagelayer>
+ <group id="6" name="Group 1" offsetx="44.9533" offsety="-170.159">
+  <objectgroup id="10" name="player"/>
+  <layer id="1" name="Tile Layer 1" width="30" height="20">
+   <data encoding="csv">
+    <chunk x="-48" y="0" width="16" height="16">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,9,9,9,9,0,0,0,0,0,0,
+0,0,0,0,0,9,0,0,0,0,9,0,0,0,0,0,
+0,0,0,0,0,9,0,0,0,0,9,9,0,0,0,0,
+0,0,0,0,9,0,0,0,0,0,0,9,9,0,0,0,
+0,0,0,0,9,0,0,0,0,0,0,0,9,0,0,0,
+0,0,0,0,9,0,0,0,0,0,0,0,9,0,0,0,
+0,0,0,0,9,0,0,0,0,0,0,0,0,9,0,0,
+0,0,0,0,9,0,0,0,0,0,0,0,0,9,0,0,
+0,0,0,0,9,0,0,0,0,0,0,0,0,0,0,0,
+0,9,9,9,9,9,9,9,9,9,9,9,9,9,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,9,9,9,9,9,9,9,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,9,9,9,9,9,0,0
+</chunk>
+   </data>
+  </layer>
+  <objectgroup id="9" name="spikes"/>
+  <objectgroup id="5" name="enemies" opacity="0.94"/>
+  <objectgroup id="7" name="goal"/>
+  <objectgroup id="8" name="bubbles"/>
+ </group>
+</map>

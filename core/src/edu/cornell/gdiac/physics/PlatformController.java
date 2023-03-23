@@ -10,20 +10,20 @@
  */
 package edu.cornell.gdiac.physics;
 
-import com.badlogic.gdx.math.*;
-import com.badlogic.gdx.utils.*;
-import com.badlogic.gdx.audio.*;
-import com.badlogic.gdx.graphics.*;
-import com.badlogic.gdx.graphics.g2d.*;
+import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
-
+import com.badlogic.gdx.utils.JsonValue;
+import com.badlogic.gdx.utils.ObjectSet;
 import edu.cornell.gdiac.assets.AssetDirectory;
-import edu.cornell.gdiac.audio.AudioEngine;
-import edu.cornell.gdiac.audio.AudioSource;
-import edu.cornell.gdiac.audio.EffectFilter;
-import edu.cornell.gdiac.audio.MusicQueue;
-import edu.cornell.gdiac.physics.obstacle.*;
-import java.util.*;
+import edu.cornell.gdiac.physics.obstacle.BoxObstacle;
+import edu.cornell.gdiac.physics.obstacle.Obstacle;
+import edu.cornell.gdiac.physics.obstacle.WheelObstacle;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Gameplay specific controller for the platformer game.  
@@ -200,6 +200,10 @@ public class PlatformController extends WorldController implements ContactListen
 		setSounds();
 
 
+		LevelEditorV2 level2 = new LevelEditorV2();
+		loadTexturesIntoLevelEditor();
+		level2.readTextures(textures);
+		level2.readJson();
 
 		LevelEditor Level1 = new LevelEditor();
 		loadTexturesIntoLevelEditor();

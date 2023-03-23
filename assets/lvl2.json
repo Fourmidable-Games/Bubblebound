@@ -1,0 +1,198 @@
+{ "compressionlevel":-1,
+ "height":20,
+ "infinite":true,
+ "layers":[
+        {
+         "id":3,
+         "image":"tiled assets\/background.png",
+         "name":"Image Layer 1",
+         "offsetx":-1092.54498714653,
+         "offsety":-398.457583547558,
+         "opacity":1,
+         "repeatx":true,
+         "type":"imagelayer",
+         "visible":true,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "id":6,
+         "layers":[
+                {
+                 "draworder":"topdown",
+                 "id":10,
+                 "name":"player",
+                 "objects":[
+                        {
+                         "gid":5,
+                         "height":40,
+                         "id":18,
+                         "name":"",
+                         "rotation":0,
+                         "type":"",
+                         "visible":true,
+                         "width":32,
+                         "x":-2788.33396308676,
+                         "y":767.984449934602
+                        }],
+                 "opacity":1,
+                 "type":"objectgroup",
+                 "visible":true,
+                 "x":0,
+                 "y":0
+                }, 
+                {
+                 "chunks":[
+                        {
+                         "data":[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                            0, 0, 0, 0, 3, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0,
+                            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                         "height":16,
+                         "width":16,
+                         "x":-48,
+                         "y":0
+                        }],
+                 "height":64,
+                 "id":1,
+                 "name":"Tile Layer 1",
+                 "opacity":1,
+                 "parallaxx":1,
+                 "startx":-48,
+                 "starty":-16,
+                 "type":"tilelayer",
+                 "visible":true,
+                 "width":64,
+                 "x":0,
+                 "y":0
+                }, 
+                {
+                 "draworder":"topdown",
+                 "id":9,
+                 "name":"spikes",
+                 "objects":[
+                        {
+                         "gid":4,
+                         "height":24,
+                         "id":19,
+                         "name":"",
+                         "rotation":0,
+                         "type":"",
+                         "visible":true,
+                         "width":30,
+                         "x":-2695.77750326987,
+                         "y":775.970498474059
+                        }],
+                 "opacity":1,
+                 "type":"objectgroup",
+                 "visible":true,
+                 "x":0,
+                 "y":0
+                }, 
+                {
+                 "draworder":"topdown",
+                 "id":5,
+                 "name":"enemies",
+                 "objects":[
+                        {
+                         "gid":2,
+                         "height":50,
+                         "id":21,
+                         "name":"",
+                         "rotation":0,
+                         "type":"",
+                         "visible":true,
+                         "width":50,
+                         "x":-2647.64641767185,
+                         "y":778.797558494405
+                        }],
+                 "opacity":0.94,
+                 "parallaxx":0.999999999999998,
+                 "type":"objectgroup",
+                 "visible":true,
+                 "x":0,
+                 "y":0
+                }, 
+                {
+                 "draworder":"topdown",
+                 "id":7,
+                 "name":"goal",
+                 "objects":[
+                        {
+                         "gid":6,
+                         "height":96,
+                         "id":20,
+                         "name":"",
+                         "rotation":0,
+                         "type":"goal",
+                         "visible":true,
+                         "width":96,
+                         "x":-2567.46374073535,
+                         "y":775.638569975294
+                        }],
+                 "opacity":1,
+                 "type":"objectgroup",
+                 "visible":true,
+                 "x":0,
+                 "y":0
+                }, 
+                {
+                 "draworder":"topdown",
+                 "id":8,
+                 "name":"bubbles",
+                 "objects":[
+                        {
+                         "gid":7,
+                         "height":50,
+                         "id":23,
+                         "name":"",
+                         "rotation":0,
+                         "type":"",
+                         "visible":true,
+                         "width":50,
+                         "x":-2612.94392523364,
+                         "y":641.88785046729
+                        }],
+                 "opacity":1,
+                 "type":"objectgroup",
+                 "visible":true,
+                 "x":0,
+                 "y":0
+                }],
+         "name":"Group 1",
+         "offsetx":44.9532710280373,
+         "offsety":-170.158878504673,
+         "opacity":1,
+         "type":"group",
+         "visible":true,
+         "x":0,
+         "y":0
+        }],
+ "nextlayerid":11,
+ "nextobjectid":28,
+ "orientation":"orthogonal",
+ "renderorder":"right-down",
+ "tiledversion":"1.10.0",
+ "tileheight":64,
+ "tilesets":[
+        {
+         "firstgid":1,
+         "source":"tiled assets\/tile imeages.tsx"
+        }],
+ "tilewidth":64,
+ "type":"map",
+ "version":"1.10",
+ "width":30
+}
