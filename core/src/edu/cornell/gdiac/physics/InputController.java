@@ -65,6 +65,7 @@ public class InputController {
 	private boolean secondPrevious;
 	/** Whether the teritiary action button was pressed. */
 	private boolean tertiaryPressed;
+	private boolean tertiaryPrevious;
 	/** Whether the debug toggle was pressed. */
 	private boolean debugPressed;
 	private boolean debugPrevious;
@@ -74,6 +75,22 @@ public class InputController {
 
 	private boolean bubblePressed;
 	private boolean bubblePrevious;
+
+	/**Whether the player can spawn and attach to bubbles using the mouse*/
+	private boolean mouseControllsPressed = true;
+	private boolean mouseControllsPrevious = true;
+
+	/**Whether the player can spawn and attach to bubbles using the j and k buttons */
+	private boolean buttonControllsPressed = false;
+	private boolean buttonControllsPrevious = false;
+
+	/**Whether the player can only use a finite amount of bubbles */
+	private boolean finiteBubblesPressed = true;
+	private boolean finiteBubblesPrevious = true;
+
+	/**Whether the player reload the bubbles they have after touching the ground */
+	private boolean reloadBubblesOnGroundPressed = false;
+	private boolean reloadBubblesOnGroundPrevious = false;
 	
 	/** How much did we move horizontally? */
 	private float horizontal;
@@ -158,9 +175,7 @@ public class InputController {
 	 *
 	 * @return true if the secondary action button was pressed.
 	 */
-	public boolean didTertiary() {
-		return tertiaryPressed ;
-	}
+	public boolean didTertiary() { return tertiaryPressed; }
 
 	/**
 	 * Returns true if the reset button was pressed.
@@ -208,6 +223,14 @@ public class InputController {
 	}
 
 	public boolean didBubble(){return bubblePressed && !bubblePrevious; }
+
+	public boolean isMouseControlls(){return mouseControllsPressed && !mouseControllsPrevious; }
+
+	public boolean isButtonControlls(){return buttonControllsPressed && !buttonControllsPrevious; }
+
+	public boolean isFiniteBubbles(){return finiteBubblesPressed; }
+
+	public boolean isReloadBubblesOnGround(){return reloadBubblesOnGroundPressed; }
 	
 	/**
 	 * Creates a new input controller
@@ -248,6 +271,11 @@ public class InputController {
 		bubblePrevious = bubblePressed;
 		nextPrevious = nextPressed;
 		prevPrevious = prevPressed;
+		mouseControllsPrevious = mouseControllsPressed;
+		buttonControllsPrevious = buttonControllsPressed;
+		finiteBubblesPrevious = finiteBubblesPressed;
+		reloadBubblesOnGroundPrevious = reloadBubblesOnGroundPressed;
+
 		
 		// Check to see if a GamePad is connected
 		if (xbox != null && xbox.isConnected()) {
@@ -316,8 +344,41 @@ public class InputController {
 		nextPressed = (secondary && nextPressed) || (Gdx.input.isKeyPressed(Input.Keys.N));
 		exitPressed  = (secondary && exitPressed) || (Gdx.input.isKeyPressed(Input.Keys.ESCAPE));
 
-		bubblePressed = (secondary && bubblePressed) || (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT));
-		
+
+		if(buttonControllsPressed){
+			bubblePressed = (secondary && bubblePressed) || (Gdx.input.isKeyJustPressed(Input.Keys.J));
+		}else{
+			bubblePressed = (secondary && bubblePressed) || (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT));
+		}
+		if((secondary && mouseControllsPressed) || (Gdx.input.isKeyJustPressed(Input.Keys.NUM_1))){
+			mouseControllsPressed = true;
+			buttonControllsPressed = false;
+			//System.out.println("SWITCHED TO MOUSE CONTROLLS!!");
+		}
+		if((secondary && buttonControllsPressed) || (Gdx.input.isKeyJustPressed(Input.Keys.NUM_2))){
+			mouseControllsPressed = false;
+			buttonControllsPressed = true;
+			//System.out.println("SWITCHED TO BUTTON CONTROLLS!!");
+		}
+		if((secondary && finiteBubblesPressed) || (Gdx.input.isKeyJustPressed(Input.Keys.NUM_3))){
+			finiteBubblesPressed = !finiteBubblesPressed;
+
+			if(finiteBubblesPressed == true){
+				//System.out.println("finitebubbles :(");
+			}else{
+				//System.out.println("INFINITE BUBBLES :)");
+			}
+		}
+		//System.out.println("Finite Bubbles in IC?: "+ finiteBubblesPressed);
+		if ((secondary && reloadBubblesOnGroundPressed) || (Gdx.input.isKeyJustPressed(Input.Keys.NUM_4))) {
+			reloadBubblesOnGroundPressed = !reloadBubblesOnGroundPressed;
+			if(reloadBubblesOnGroundPressed == true){
+				System.out.println("Ready to RELOAD");
+			}else{
+				System.out.println("not reloadin' not ever!");
+			}
+		}
+
 		// Directional controls
 		horizontal = (secondary ? horizontal : 0.0f);
 		if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D)) {
@@ -336,8 +397,13 @@ public class InputController {
 			vertical -= 1.0f;
 		}
 		
-		// Mouse results
-        tertiaryPressed = Gdx.input.isButtonPressed(Input.Buttons.RIGHT);
+		// Grapple Button results
+		if(mouseControllsPressed){
+			tertiaryPressed = Gdx.input.isButtonPressed(Input.Buttons.RIGHT);
+		}else{
+			tertiaryPressed = Gdx.input.isKeyPressed(Input.Keys.K);
+		}
+
 				
 		crosshair.set(Gdx.input.getX(), Gdx.input.getY());
 		crosshair.scl(1/scale.x,-1/scale.y);

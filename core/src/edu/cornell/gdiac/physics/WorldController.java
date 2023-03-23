@@ -514,6 +514,10 @@ public abstract class WorldController implements Screen {
 	 *
 	 * @param dt	Number of seconds since last animation frame
 	 */
+
+	public void updateBubbleCount(int bubbles_left){
+		bubblesleft = bubbles_left;
+	}
 	public void draw(float dt) {
 		canvas.clear();
 		canvas.begin();
@@ -581,7 +585,7 @@ public abstract class WorldController implements Screen {
 		displayFont.setColor(Color.WHITE);
 		displayFont.getData().setScale(0.4f);
 		canvas.begin(); // DO NOT SCALE
-		canvas.drawText("Remaining Bubbles: " + bubblesleft, displayFont, cameraCoords.x + (canvas.getWidth() / 2) - 400, cameraCoords.y + (canvas.getHeight() / 2) - 30);
+		canvas.drawText("Current Bubbles: " + bubblesleft, displayFont, cameraCoords.x + (canvas.getWidth() / 2) - 400, cameraCoords.y + (canvas.getHeight() / 2) - 30);
 		canvas.end();
 
 //		canvas.end();

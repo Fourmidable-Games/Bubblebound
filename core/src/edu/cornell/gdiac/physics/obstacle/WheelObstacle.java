@@ -33,6 +33,30 @@ public class WheelObstacle extends SimpleObstacle {
 	public boolean statc;
 	private boolean d = true;
 
+	private String nametag = "bubble";
+
+	/**
+	 * Returns the physics object tag.
+	 *
+	 * A tag is a string attached to an object, in order to identify it in debugging.
+	 *
+	 * @return the physics object tag.
+	 */
+	public String getName() {
+		return nametag;
+	}
+
+	/**
+	 * Sets the physics object tag.
+	 *
+	 * A tag is a string attached to an object, in order to identify it in debugging.
+	 *
+	 * @param  value    the physics object tag
+	 */
+	public void setName(String value) {
+		nametag = value;
+	}
+
 
 	public void setStatic(boolean b){
 		statc = b;
