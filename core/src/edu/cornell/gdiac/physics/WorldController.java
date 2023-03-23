@@ -57,6 +57,7 @@ public abstract class WorldController implements Screen {
 	/** The font for giving messages to the player */
 	protected TextureRegion background;
 	protected Texture background2;
+	protected TextureRegion losing;
 	protected TextureRegion dudeModel;
 	protected TextureRegion spikeTexture;
 	protected BitmapFont displayFont;
@@ -308,6 +309,7 @@ public abstract class WorldController implements Screen {
 		bubble = new TextureRegion(directory.getEntry( "shared:bubble", Texture.class ));
 		displayFont = directory.getEntry( "shared:retro" ,BitmapFont.class);
 		background2 = directory.getEntry("background:temp", Texture.class);
+		losing = new TextureRegion(directory.getEntry("losing", Texture.class));
 	}
 
 
@@ -602,6 +604,7 @@ public abstract class WorldController implements Screen {
 			displayFont.setColor(Color.RED);
 			canvas.begin(); // DO NOT SCALE
 			canvas.drawText("FAILURE!", displayFont, cameraCoords.x-90, cameraCoords.y);
+			canvas.draw(losing,0, 0);
 			canvas.end();
 		}
 	}
