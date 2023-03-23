@@ -174,7 +174,7 @@ public class DudeModel extends CapsuleObstacle {
 	 * @return true if the dude is on the ground.
 	 */
 	public boolean isGrounded() {
-		return isGrounded;
+		return isGrounded || isGrappling;
 	}
 
 	/**
@@ -359,19 +359,19 @@ public class DudeModel extends CapsuleObstacle {
 		if (!isActive()) {
 			return;
 		}
-		if(isGrappling){
-			body.setGravityScale(grav * 2.0f);
+		if(isGrappling && !(getMovement() == 0)){
+			body.setGravityScale(grav * 1.5f);
 			damp = false;
-		}
-		if(!isGrappling){
+		}else{
 			damp = true;
 		}
+
 		// Don't want to be moving. Damp out player motion
-		if (getMovement() == 0  && (!isGrappling) ){
+		if ((getMovement() == 0 || getVX() * getMovement() < 0)  && (!isGrappling) ){
 			if(!damp){
 				forceCache.set(-getDamping()*getVX()*0.1f,0);
 			}else{
-				forceCache.set(-getDamping()*getVX(),0);
+				forceCache.set(-getDamping()*getVX()*0.5f,0);
 			}
 			body.applyForce(forceCache,getPosition(),true);
 		}
@@ -384,16 +384,17 @@ public class DudeModel extends CapsuleObstacle {
 		}else{
 			usedFactor = regDampFactor;
 		}*/
-		if (getVX() >= getMaxSpeed()) {
-			setVX(getMaxSpeed());
-		} if (getVX() <= -getMaxSpeed()) {
-			setVX(-getMaxSpeed());
-		} if (getVY() >= 2.5f*getMaxSpeed()) {
-			setVY(2.5f*getMaxSpeed());
-		}else {
-			forceCache.set(getMovement(),0);
-			body.applyForce(forceCache,getPosition(),true);
+
+		if (getVX() >= getMaxSpeed()*1.5f) {
+			setVX(getMaxSpeed()*1.5f);
+		} if (getVX() <= -getMaxSpeed()*1.5f) {
+			setVX(-getMaxSpeed()*1.5f);
+		} if (getVY() >= 2f*getMaxSpeed()) {
+			setVY(2f * getMaxSpeed());
 		}
+
+		forceCache.set(getMovement(),0);
+		body.applyForce(forceCache,getPosition(),true);
 
 
 

@@ -85,9 +85,9 @@ public class PlatformController extends WorldController implements ContactListen
 
 	private int bubbles_left = 4;
 
-	private int bubble_regen_timer_max = 10;
+	private int bubble_regen_timer_max = 200;
 
-	private  int bubble_regen_timer = 10;
+	private  int bubble_regen_timer = 200;
 
 
 
@@ -96,7 +96,7 @@ public class PlatformController extends WorldController implements ContactListen
 
 	private List<WheelObstacle> bubbles = new ArrayList<WheelObstacle>();
 	private List<Obstacle> bubbles_removed = new ArrayList<>();
-	private ArrayList<Integer> bubble_timer = new ArrayList<>(BUBBLE_LIMIT);
+	private ArrayList<Integer> bubble_timer = new ArrayList<>();
 
 	private List<Enemy> enemies = new ArrayList<Enemy>();
 
@@ -159,10 +159,7 @@ public class PlatformController extends WorldController implements ContactListen
 		bubbles_left = BUBBLE_LIMIT;
 		bubble_regen_timer = bubble_regen_timer_max;
 		updateBubbleCount(bubbles_left);
-		for(int i = 0; i < BUBBLE_LIMIT; i++){
-			System.out.println("Iteration " + i);
-			bubble_timer.add(-1);
-		}
+		bubble_timer.clear();
 		Vector2 gravity = new Vector2(world.getGravity() );
 		zones.clear();
 		life = 1; //reset health
@@ -319,13 +316,14 @@ public class PlatformController extends WorldController implements ContactListen
 	public WheelObstacle spawnBubble(Vector2 v){
 		if(bubbles_left == 0) return null;
 		WheelObstacle wo2 = new WheelObstacle(v.x, v.y, 1f);
-		System.out.println("isFiniteBubbles: "+ InputController.getInstance().isFiniteBubbles());
+		//System.out.println("isFiniteBubbles: "+ InputController.getInstance().isFiniteBubbles());
 		if(InputController.getInstance().isFiniteBubbles()){
 			bubbles_left--;
 		}
-		System.out.println("SPAWNED BUBBLE!, BUBBLES LEFT: " + bubbles_left);
+		//System.out.println("SPAWNED BUBBLE!, BUBBLES LEFT: " + bubbles_left);
 		wo2.setName("Bubble" + (bubbles_left));
-		bubble_timer.add(500);
+		bubble_timer.add(20);
+		System.out.print("Timer set for bubble");
 		wo2.setStatic(false);
 		wo2.setBodyType(BodyDef.BodyType.DynamicBody);
 		wo2.setDrawScale(scale);
@@ -396,23 +394,20 @@ public class PlatformController extends WorldController implements ContactListen
 			System.out.print(", " + bubble_timer[i]);
 		}
 		System.out.println("]");*/
-		for(int i = 0; i < BUBBLE_LIMIT; i++){
+		for(int i = 0; i < bubble_timer.size(); i++){
 			int bt = bubble_timer.get(i);
+			System.out.println("bbts: " + bubble_timer.size());
+			System.out.println("bbs: " + bubbles.size());
 			if(bubble_timer.get(i)>0){
 				bubble_timer.set(i,bt-1);
 				//BUBBLE UPDATE TINT HERE
 			}else if(bt==0){
-				for(int j = 0; j<bubbles.size(); j++){
-					Obstacle b = bubbles.get(j);
-					// System.out.print(b.getName());
-					// System.out.println("vs Bubble" + i);
-					if(b.getName().equals("Bubble" + i)){
-						popBubble(b, i);
-					}
-				}
+				//popBubble(bubbles.get(i), i);
+				//bubble_timer.remove(i);
 			}
 		}
 	}
+
 
 	private void updateObjectGravs(){
 		for(int i = 0; i < objects.size(); i++){
@@ -437,11 +432,25 @@ public class PlatformController extends WorldController implements ContactListen
 			placeLocation.y += yoffset;
 		}else{
 			if(!avatar.isGrounded() && !avatar.isGrappling()){
-				placeLocation = avatar.getPosition().add(avatar.getVX() * 0.6f,2);
+				if(avatar.grav > 0){
+					placeLocation = avatar.getPosition().add(avatar.getVX() * 0.6f,2);
+				}else{
+					placeLocation = avatar.getPosition().add(avatar.getVX() * 0.6f,-2);
+				}
+
 			}else if(avatar.isFacingRight()){
-				placeLocation = avatar.getPosition().add(2.5f,1);
+				if(avatar.grav > 0){
+					placeLocation = avatar.getPosition().add(2.5f,1);
+				}else{
+					placeLocation = avatar.getPosition().add(2.5f,-1);
+				}
+
 			}else{
-				placeLocation = avatar.getPosition().add(-2.5f,1);
+				if(avatar.grav > 0){
+					placeLocation = avatar.getPosition().add(-2.5f,1);
+				}else{
+					placeLocation = avatar.getPosition().add(-2.5f,-1);
+				}
 			}
 		}
 
@@ -633,7 +642,6 @@ public class PlatformController extends WorldController implements ContactListen
 			if(bubbles.get(i).getName().equals(bubble.getName())){
 				bubbles.get(i).setActive(false);
 				((WheelObstacle)bubbles.get(i)).stopDraw();
-				bubble_timer.remove(id);
 			}
 		}
 		//System.out.println("After for loop");
@@ -667,8 +675,15 @@ public class PlatformController extends WorldController implements ContactListen
 		Object fd1 = fix1.getUserData();
 		Object fd2 = fix2.getUserData();
 		try {
+
 			Obstacle bd1 = (Obstacle)body1.getUserData();
 			Obstacle bd2 = (Obstacle)body2.getUserData();
+			//System.out.println("bd1: " + bd1.getName());
+			//System.out.println("bd2: " + bd2.getName());
+			if(bd1.getName().contains("Bubble") || bd2.getName().contains("Bubble")){
+				//System.out.println("SKIPPED BUBBLES!!!");
+				return;
+			}
 
 			// Test bullet collision with world
 			if (bd1.getName().equals("bullet") && bd2 != avatar) {
@@ -689,8 +704,8 @@ public class PlatformController extends WorldController implements ContactListen
 			}
 
 			// See if we have landed on the ground.
-			if ((avatar.getSensorName().equals(fd2) && avatar != bd1 && !bd1.getName().contains("bubble")) ||
-				(avatar.getSensorName().equals(fd1) && avatar != bd2 && !bd2.getName().contains("bubble"))) {
+			if ((avatar.getSensorName().equals(fd2) && avatar != bd1 && !bd1.getName().contains("Bubble")) ||
+				(avatar.getSensorName().equals(fd1) && avatar != bd2 && !bd2.getName().contains("Bubble"))) {
 				avatar.setGrounded(true);
 				sensorFixtures.add(avatar == bd1 ? fix2 : fix1); // Could have more than one ground
 			}
