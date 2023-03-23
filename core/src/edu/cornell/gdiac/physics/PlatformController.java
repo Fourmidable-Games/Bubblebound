@@ -527,12 +527,12 @@ public class PlatformController extends WorldController implements ContactListen
 
 	public void updateSounds(){
 		if(avatar.getGravZone() == 1){
-			level1MusicSunset.setVolume(level1MusicSunsetID,volume * 0.5f);
+			level1MusicSunset.setVolume(level1MusicSunsetID,volume * 1f);
 			level1MusicCave.setVolume(level1MusicCaveID,0.0f);
 		}
 		if(avatar.getGravZone() == -1){
 			level1MusicSunset.setVolume(level1MusicSunsetID,0.0f);
-			level1MusicCave.setVolume(level1MusicCaveID,volume);
+			level1MusicCave.setVolume(level1MusicCaveID,1f);
 		}
 		if (avatar.justJumped()) {
 			jumpSound.setVolume(jumpId,volume * 2f);
