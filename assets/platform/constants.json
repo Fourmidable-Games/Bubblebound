@@ -31,8 +31,8 @@
 	"bridge" : {
 		"pos": [9.0, 3.8],
 	    "width": 14.0,
-		"density": 0.05,
-		"pin_radius": 0.05
+		"density": 0.005,
+		"pin_radius": 0.005
 	},
 	"spinner" : {
 		"pos": [13.0,12.5],

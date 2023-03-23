@@ -22,6 +22,7 @@ import com.badlogic.gdx.physics.box2d.JointDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.DistanceJointDef;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
+import com.badlogic.gdx.physics.box2d.joints.RopeJointDef;
 import com.badlogic.gdx.utils.JsonValue;
 import edu.cornell.gdiac.physics.obstacle.*;
 
@@ -187,20 +188,19 @@ public class NewRopeBridge extends ComplexObstacle {
 	 */
 	protected boolean createJoints(World world) {
 		assert bodies.size > 0;
-		
-		Vector2 anchor1 = new Vector2(); 
-		Vector2 anchor2 = new Vector2(0,avatarCapsule.getHeight()/2);
+
+		Vector2 anchor1 = new Vector2();
+		Vector2 anchor2 = new Vector2(avatarCapsule.getWidth()/2,0);
 
 		// Definition for a revolute joint and distance joint
 		DistanceJointDef jointDefDist = new DistanceJointDef();
-
 		// System.out.println(jointDefDist.frequencyHz);
 //		jointDefDist.frequencyHz = 0.5f;
 		RevoluteJointDef jointDef = new RevoluteJointDef();
 
 		// REVOLUTE JOINT TO AVATAR
 		Joint joint;
-		jointDef.bodyA = bodies.get(0).getBody();
+		jointDef.bodyA = bodies.get(1).getBody();
 		jointDef.bodyB = avatar;
 		jointDef.localAnchorA.set(anchor1);
 		jointDef.localAnchorB.set(anchor2);
@@ -321,7 +321,137 @@ public class NewRopeBridge extends ComplexObstacle {
 		}
 		return true;
 	}
-	
+	/*protected boolean createJoints(World world) {
+		assert bodies.size > 0;
+
+		Vector2 anchor1 = new Vector2();
+		Vector2 anchor2 = new Vector2(0,0);
+		// Definition for a revolute joint and distance joint
+		DistanceJointDef jointDefDist = new DistanceJointDef();
+
+//		jointDefDist.frequencyHz = 0.5f;
+		RevoluteJointDef jointDef = new RevoluteJointDef();
+		Joint joint;
+		Body fst = bodies.get(0).getBody();
+		if(bubble != null) {
+			// FINAL REVOLUTE JOINT FROM LAST BODY TO BUBBLE
+			anchor2.x = 0;
+			anchor2.y = -1.0f;
+			jointDef.bodyA = fst;
+			jointDef.bodyB = bubble;
+			// System.out.println(bubble);
+			jointDef.localAnchorA.set(anchor1);
+			jointDef.localAnchorB.set(anchor2);
+			jointDef.collideConnected = false;
+			joint = world.createJoint(jointDef);
+			joints.add(joint);
+		}
+
+		//JOINT NEXT ONE TO FIRST
+		Body nextOne = bodies.get(1).getBody();
+		jointDefDist.length = .125f * (float)Math.sqrt(3);
+//		jointDefDist.length = 0;
+		jointDefDist.bodyA = nextOne;
+		jointDefDist.bodyB = fst;
+		joint = world.createJoint(jointDefDist);
+		joints.add(joint);
+
+		//JOINT NEXT TWO TO FIRST
+		Body nextTwo = bodies.get(2).getBody();
+		jointDefDist.length = .125f * (float)Math.sqrt(3);
+//		jointDefDist.length = 0;
+		jointDefDist.bodyA = nextTwo;
+		jointDefDist.bodyB = fst;
+		joint = world.createJoint(jointDefDist);
+		joints.add(joint);
+
+
+		jointDefDist.localAnchorB.set(new Vector2());
+
+
+		jointDefDist.dampingRatio = 0.3f;
+		jointDefDist.frequencyHz = 10;
+
+		//JOINT NEXT ONE TO NEXT TWO
+		jointDefDist.bodyB = nextOne;
+		jointDefDist.length = 0.125f;
+		joint = world.createJoint(jointDefDist);
+		joints.add(joint);
+
+		Body prevOne = nextOne;
+		Body prevTwo = nextTwo;
+
+		// Link the pins together
+		for (int ii = 0; ii < bodies.size-4; ii+=2) {
+			prevOne = nextOne;
+			prevTwo = nextTwo;
+			nextOne = bodies.get(3 + ii).getBody();
+			nextTwo = bodies.get(4 + ii).getBody();
+
+			//JOINT Prev1-Next1 (.25)
+			jointDefDist.length = 0.125f;
+			jointDefDist.bodyA = prevOne;
+			jointDefDist.bodyB = nextOne;
+			joint = world.createJoint(jointDefDist);
+			joints.add(joint);
+			//JOINT Prev2-Next2 (.25)
+			jointDefDist.length = 0.125f;
+			jointDefDist.bodyA = prevTwo;
+			jointDefDist.bodyB = nextTwo;
+			joint = world.createJoint(jointDefDist);
+			joints.add(joint);
+			//JOINT Prev1-Next2 (.25 root 2)
+			jointDefDist.length = 0.125f * (float)Math.sqrt(2);
+			jointDefDist.bodyA = prevOne;
+			jointDefDist.bodyB = nextTwo;
+			joint = world.createJoint(jointDefDist);
+			joints.add(joint);
+			//JOINT Prev2-Next1 (.25 root 2)
+			jointDefDist.length = 0.125f * (float)Math.sqrt(2);
+			jointDefDist.bodyA = prevTwo;
+			jointDefDist.bodyB = nextOne;
+			joint = world.createJoint(jointDefDist);
+			joints.add(joint);
+			//JOINT Next1-Next2 (.25)
+			jointDefDist.length = 0.125f;
+			jointDefDist.bodyA = nextOne;
+			jointDefDist.bodyB = nextTwo;
+			joint = world.createJoint(jointDefDist);
+			joints.add(joint);
+
+
+			prevOne = nextOne;
+			prevTwo = nextTwo;
+		}
+
+		//JOINT PREV ONE TO LAST
+		Body last = bodies.get(bodies.size-1).getBody();
+		jointDefDist.length = 0.125f * (float)Math.sqrt(3);
+		jointDefDist.bodyA = prevOne;
+		jointDefDist.bodyB = last;
+		joint = world.createJoint(jointDefDist);
+		joints.add(joint);
+
+		//JOINT PREV TWO TO LAST
+		jointDefDist.length = 0.125f * (float)Math.sqrt(3);
+		jointDefDist.bodyA = prevTwo;
+		jointDefDist.bodyB = last;
+		joint = world.createJoint(jointDefDist);
+		joints.add(joint);
+
+		// REVOLUTE JOINT TO AVATAR
+
+		jointDef.bodyA = last;
+		jointDef.bodyB = avatar;
+		jointDef.localAnchorA.set(anchor1);
+		jointDef.localAnchorB.set(anchor2);
+		jointDef.collideConnected = false;
+		joint = world.createJoint(jointDef);
+		joints.add(joint);
+		anchor2.y = 0;
+
+		return true;
+	}*/
 	/**
 	 * Destroys the physics Body(s) of this object if applicable,
 	 * removing them from the world.
