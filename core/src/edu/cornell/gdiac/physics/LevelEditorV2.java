@@ -3,10 +3,6 @@ package edu.cornell.gdiac.physics;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.maps.MapLayers;
-import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import edu.cornell.gdiac.physics.obstacle.BoxObstacle;
@@ -18,6 +14,7 @@ import java.util.List;
 public class LevelEditorV2 {
 
     private FileHandle file = Gdx.files.internal("lvl2.json");
+    private FileHandle file2 = Gdx.files.internal("propertytypes.json");
     private JsonReader jsonReader = new JsonReader();
     public JsonValue jsonValue = jsonReader.parse(file);
     private List<BoxObstacle> boxes = new ArrayList<>();
@@ -30,8 +27,10 @@ public class LevelEditorV2 {
     private ArrayList<String> textureStrings;
     private ArrayList<TextureRegion> textureObjects;
     private BoxObstacle goal;
+    private List<List<Integer>> tileMap = new ArrayList<>();
 
     public LevelEditorV2() {
+
 
     }
 
@@ -42,25 +41,103 @@ public class LevelEditorV2 {
 
     public void readJson() {
 
-        TiledMap tiledMap = new TmxMapLoader().load("lvl2.tmx");
+        JsonReader json = new JsonReader();
+        JsonValue base = json.parse(Gdx.files.internal("lvl2.json"));
 
-        MapLayers layers = tiledMap.getLayers();
+        JsonReader json1 = new JsonReader();
+        JsonValue base1 = json.parse(Gdx.files.internal("propertytypes.json"));
 
-        TiledMapTileLayer layer = (TiledMapTileLayer) layers.get("Tile Layer 1");
+        int mapWidth = base.getInt("width");
+        int mapHeight = base.getInt("height");
 
-        for (int row = 0; row < layer.getHeight(); row++) {
-            for (int col = 0; col < layer.getWidth(); col++) {
-                TiledMapTileLayer.Cell cell = layer.getCell(col, row);
-                if (cell == null) continue;
+        System.out.println("Testing Tile -1");
 
-                float x = col * layer.getTileWidth();
-                float y = (layer.getHeight() - row - 1) * layer.getTileHeight();
+        JsonValue firstLayers = base.get("layers");
 
-                BoxObstacle wo = new BoxObstacle(x,y,1,1);
-                boxes.add(wo);
+
+        for (JsonValue obj : firstLayers) {
+            if (obj.getInt("id") == 6) {
+                JsonValue secondLayers = obj.get("layers");
+                System.out.println("Testing");
+
+                for (JsonValue obj1 : secondLayers) {
+
+                    if (obj1.getInt("id") == 8) {
+
+                        JsonValue bubbleList = obj1.get("objects");
+
+                        System.out.println("Testing bub");
+
+                        for (JsonValue bub : bubbleList) {
+
+                            for (JsonValue type : base1) {
+
+                                if (type.getInt("id") == 4) {
+
+
+
+                                    System.out.println( type.get("members"));
+
+                                    WheelObstacle wo = new WheelObstacle(
+                                            (bub.getFloat("x")/64*64),
+                                            (bub.getFloat("y")/64*64),
+                                            type.get("members").get(0).getInt("value")
+                                    );
+
+
+                                    bubbles.add(wo);
+                                }
+                            }
+                        }
+
+                    }
+
+
+                    if (obj1.getInt("id") == 1) {
+
+                        System.out.println("Testing 2");
+
+                        JsonValue tileData1 = obj1.get("data");
+
+                        int[] tileData = tileData1.asIntArray();
+
+                        for (int i = 0; i < mapWidth; i++) {
+                            List<Integer> row = new ArrayList<>();
+                            for (int j = 0; j < mapHeight; j++) {
+                                int index = i * mapWidth + j;
+                                if (index < tileData.length) {
+                                    row.add(tileData[index]);
+                                } else {
+                                    row.add(0); 
+                                }
+                            }
+                            tileMap.add(row);
+                        }
+
+                        for (int i = 0; i < mapHeight; i++) {
+                            for (int j = 0; j < mapWidth; j++) {
+                                if (tileMap.get(j).get(i) > 0) {
+                                    BoxObstacle wo = new BoxObstacle(
+                                            i,
+                                            mapHeight - j,
+                                            1,
+                                            1
+                                    );
+
+                                    boxes.add(wo);
+                                }
+                            }
+                        }
+
+                    }
+
+                }
+
+
 
 
             }
+
 
         }
 
@@ -69,6 +146,10 @@ public class LevelEditorV2 {
 
     public List getBoxes() {
         return boxes;
+    }
+
+    public List getBubbles() {
+        return bubbles;
     }
 
 }

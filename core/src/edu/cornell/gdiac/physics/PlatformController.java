@@ -200,17 +200,17 @@ public class PlatformController extends WorldController implements ContactListen
 		setSounds();
 
 
-		LevelEditorV2 level2 = new LevelEditorV2();
+		LevelEditorV2 Level2 = new LevelEditorV2();
 		loadTexturesIntoLevelEditor();
-		level2.readTextures(textures);
-		level2.readJson();
+		Level2.readTextures(textures);
+		Level2.readJson();
 
 		LevelEditor Level1 = new LevelEditor();
 		loadTexturesIntoLevelEditor();
 		Level1.readTextures(textures);
 		Level1.readJson();
-		List<BoxObstacle> BoxList = Level1.getBoxes();
-		List<WheelObstacle> bubbleList = Level1.getBubbles();
+		List<BoxObstacle> BoxList = Level2.getBoxes();
+		List<WheelObstacle> bubbleList = Level2.getBubbles();
 		List<Zone> gravityZoneList = Level1.getGravityZones();
 		List<Spike> spikes = Level1.getSpikes();
 		goalDoor = Level1.getGoal();
