@@ -3,6 +3,7 @@ package edu.cornell.gdiac.physics;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.maps.MapLayers;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -41,9 +42,11 @@ public class LevelEditorV2 {
 
     public void readJson() {
 
-        TiledMap tiledMap = new TmxMapLoader().load(String.valueOf(Gdx.files.internal("lvl2.tmx")));
+        TiledMap tiledMap = new TmxMapLoader().load("lvl2.tmx");
 
-        TiledMapTileLayer layer = (TiledMapTileLayer) tiledMap.getLayers().get("Tile Layer 1");
+        MapLayers layers = tiledMap.getLayers();
+
+        TiledMapTileLayer layer = (TiledMapTileLayer) layers.get("Tile Layer 1");
 
         for (int row = 0; row < layer.getHeight(); row++) {
             for (int col = 0; col < layer.getWidth(); col++) {
@@ -60,6 +63,7 @@ public class LevelEditorV2 {
             }
 
         }
+
 
     }
 
