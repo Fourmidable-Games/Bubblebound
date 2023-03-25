@@ -79,8 +79,8 @@ public class LevelEditorV2 {
                                     System.out.println( type.get("members"));
 
                                     WheelObstacle wo = new WheelObstacle(
-                                            (bub.getFloat("x")/64*64),
-                                            (bub.getFloat("y")/64*64),
+                                            (bub.getFloat("x"))/64,
+                                            mapHeight - (bub.getFloat("y"))/64,
                                             type.get("members").get(0).getInt("value")
                                     );
 
@@ -108,7 +108,7 @@ public class LevelEditorV2 {
                                 if (index < tileData.length) {
                                     row.add(tileData[index]);
                                 } else {
-                                    row.add(0); 
+                                    row.add(0);
                                 }
                             }
                             tileMap.add(row);
