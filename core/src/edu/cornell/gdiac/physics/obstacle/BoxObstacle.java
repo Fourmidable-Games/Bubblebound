@@ -12,12 +12,16 @@
 package edu.cornell.gdiac.physics.obstacle;
 
 import com.badlogic.gdx.graphics.g2d.PolygonRegion;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.physics.box2d.*;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import edu.cornell.gdiac.physics.*;  // For GameCanvas
+
+import static com.badlogic.gdx.graphics.Texture.TextureWrap.Repeat;
 
 /**
  * Box-shaped model to support collisions.
@@ -35,6 +39,10 @@ public class BoxObstacle extends SimpleObstacle {
 	private Fixture geometry;
 	/** Cache of the polygon vertices (for resizing) */
 	private float[] vertices;
+
+	public boolean isRope = false;
+
+	public boolean isGoal = false;
 	
 	/** 
 	 * Returns the dimensions of this box
@@ -208,12 +216,61 @@ public class BoxObstacle extends SimpleObstacle {
 
 	@Override
 	public void sdraw(GameCanvas canvas){
+
+
+//		float x = getWidth()*drawScale.x / 2;
+//		float y = getHeight()*drawScale.y / 2;
+
+
+//		if (getTexture() != null) {
+//			canvas.spriteBatch.begin();
+//			TextureRegion platform = getTexture();
+//			platform.getTexture().setWrap(Texture.TextureWrap.MirroredRepeat, Texture.TextureWrap.MirroredRepeat);
+//			canvas.spriteBatch.draw(platform, origin.x, origin.y, getHeight()*drawScale.y);
+//			canvas.spriteBatch.end();
+//		}
+
+
+
 		float x = getWidth()*drawScale.x / 2;
 		float y = getHeight()*drawScale.y / 2;
 		canvas.shape.setColor(Color.BROWN);
 		float angle = body.getAngle();
-		// canvas.shape.rect(getX()*drawScale.x-x,getY()*drawScale.y-y,getWidth()*drawScale.x,getHeight()*drawScale.y);
+		 //canvas.shape.rect(getX()*drawScale.x-x,getY()*drawScale.y-y,getWidth()*drawScale.x,getHeight()*drawScale.y);
 		canvas.shape.rect(getX()*drawScale.x-x,getY()*drawScale.y-y,x,y,getWidth()*drawScale.x,getHeight()*drawScale.y,1,1,(float)Math.toDegrees(angle));
+
+
+//		float x = getWidth()*drawScale.x / 2;
+//		float y = getHeight()*drawScale.y / 2;
+//		canvas.shape.setColor(Color.BROWN);
+//		//canvas.shape.rect(getX()*drawScale.x-x,getY()*drawScale.y-y,getWidth()*drawScale.x,getHeight()*drawScale.y);
+//		float angle = body.getAngle();
+
+
+	}
+
+	@Override
+	public void draw(GameCanvas canvas) {
+
+		if (isRope == true) {
+			canvas.draw(texture, Color.WHITE, origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.x, getAngle(), 1, 1);
+
+		}
+
+		else if (isGoal == true) {
+			canvas.draw(texture, Color.WHITE, origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.x, getAngle(), 1, 1);
+					}
+
+
+		else if (texture != null) {
+			if(grav == 1) {
+				canvas.draw(texture, Color.MAROON, origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.x, getAngle(), 0.5F, 0.5F);
+			}else{
+				canvas.draw(texture, Color.WHITE, origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.x, getAngle(), 0.5F, 0.5F);
+			}
+		}
+
+
 	}
 
 }

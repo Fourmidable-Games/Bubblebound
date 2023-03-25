@@ -690,7 +690,7 @@ public class GameCanvas {
 		}
 
 		local.set(affine);
-		local.translate(-ox,-oy);				
+		local.translate(-ox,-oy);
 		spriteBatch.setColor(tint);
 		spriteBatch.draw(region, region.getRegionWidth(), region.getRegionHeight(), local);
 	}
@@ -1159,5 +1159,50 @@ public class GameCanvas {
 		local.rotate(180.0f*angle/(float)Math.PI);
 		local.scale(sx,sy);
 		local.translate(-ox,-oy);
+	}
+
+
+	private static int PARALLAX_PRIMARY = 2;
+	private static int PARALLAX_SECONDARY = 9;
+
+	public int wrapX(float x, float w) { //used for 2nd dimension thingy
+		if (x < 0) {
+			float n = (float)Math.floor((-x) / w);
+			x += (1 + n) * w;
+		} else if (x > 0) {
+			x %= w;
+		}
+		x /= PARALLAX_SECONDARY; //default is 3
+		return (int)x;
+	}
+
+
+	public Vector2 wrapPosition(Vector2 pos, float w) {
+
+		if (pos.x < 0) {
+			float n = (float)Math.floor((-pos.x) / w);
+			pos.x += (1 + n) * w;
+		} else if (pos.x > 0) {
+			pos.x %= w;
+		}
+		pos.x /= PARALLAX_PRIMARY; // change 3 to smaller to increase parallax effect
+		return pos;
+	}
+	public void resetColor(){
+		spriteBatch.setColor(Color.WHITE);
+	}
+
+	public void drawWrapped(TextureRegion image, float x, float y) { //draws background
+		Vector2 pos = new Vector2(x,y);
+		float w = image.getRegionWidth();
+		wrapPosition(pos, w);
+		pos.y -= 500;
+		pos.x -= 800; //just initial offset, needed cuz spawns too close to the left of the bounds
+		// System.out.println("pos" + pos);
+
+		// Have to draw the background twice for continuous scrolling.
+		spriteBatch.draw(image, pos.x,   pos.y);
+		//spriteBatch.draw(image, pos.x-w, pos.y);
+		spriteBatch.draw(image, pos.x+w, pos.y);
 	}
 }

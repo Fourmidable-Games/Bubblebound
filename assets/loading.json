@@ -13,5 +13,8 @@
                 "foreright"  : [384, 40, 400, 70]
             }
         }
-	}
+    },
+    "sounds":{
+        "menuscreen": "extra/menuscreen.wav"
+    }
 }

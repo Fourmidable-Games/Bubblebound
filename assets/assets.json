@@ -5,6 +5,17 @@
             "wrapU": "repeated",
             "wrapV": "repeated"
         },
+        "background:underground" : {
+            "file":  "platform/background2.png"
+        },
+      "background:temp" : {
+        "file": "platform/background.png"
+      },
+      "shared:bubble" : {
+        "file":  "shared/bubble_480.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
         "shared:goal":   "shared/goaldoor.png",
         "rocket:rocket": "rocket/rocket.png",
         "rocket:main":  {
@@ -36,7 +47,9 @@
         },
         "rocket:crate01": "rocket/crate01.png",
         "rocket:crate02": "rocket/crate02.png",
+        "platform:dude2":  "platform/enemy.gif",
         "platform:dude":  "platform/dude.png",
+        "platform:spike":  "platform/spike.png",
         "platform:rope":  "platform/ropebridge.png",
         "platform:barrier": "platform/barrier.png",
         "platform:bullet":  "platform/bullet.png",
@@ -64,6 +77,13 @@
         "platform:jump" : "platform/jump.mp3",
         "platform:pew"  : "platform/pew.mp3",
         "platform:plop" : "platform/plop.mp3",
+        "bubbleboundsfx:ropeshoot" : "bubbleboundsfx/ropeshoot.wav",
+        "bubbleboundsfx:roperelease" : "bubbleboundsfx/roperelease.wav",
+        "bubbleboundsfx:jump" : "bubbleboundsfx/jump.wav",
+        "bubbleboundsfx:plop" : "bubbleboundsfx/plop.wav",
+        "bubbleboundsfx:wind" : "bubbleboundsfx/wind.wav",
+        "bubbleboundsfx:level1sunsettheme" : "bubbleboundsfx/level2sunsettheme.wav",
+        "bubbleboundsfx:level1cavetheme" : "bubbleboundsfx/level2cavetheme.wav",
         "ragdoll:glub1" : "ragdoll/bubble01.mp3",
         "ragdoll:glub2" : "ragdoll/bubble02.mp3",
         "ragdoll:glub3" : "ragdoll/bubble03.mp3",

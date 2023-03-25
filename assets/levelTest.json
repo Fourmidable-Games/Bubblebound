@@ -1,0 +1,161 @@
+{
+  "Objects": [
+    {
+      "x": -5,
+      "y": 0,
+      "width": 1,
+      "height": 1,
+      "texture": 0,
+      "Density" : "static",
+      "friction": 0,
+      "restitution": 0,
+      "scale" : "scale",
+      "repeat": 16,
+      "repeatx": 16,
+      "repeaty": 0,
+      "box name" : "box"
+    },
+    {
+      "x": 11,
+      "y": 7,
+      "width": 1,
+      "height": 1,
+      "texture": 0,
+      "Density": "static",
+      "friction": 0,
+      "restitution": 0,
+      "scale": "scale",
+      "repeat": 12,
+      "repeatx": 12,
+      "repeaty": 0,
+      "box name": "box"
+    },
+    {
+      "x": -8,
+      "y": 5,
+      "width": 1,
+      "height": 1,
+      "texture": 0,
+      "Density": "static",
+      "friction": 0,
+      "restitution": 0,
+      "scale": "scale",
+      "repeat": 8,
+      "repeatx": 8,
+      "repeaty": 0,
+      "box name": "box"
+    },
+    {
+      "x": 4,
+      "y": 12,
+      "width": 1,
+      "height": 1,
+      "texture": 0,
+      "Density": "static",
+      "friction": 0,
+      "restitution": 0,
+      "scale": "scale",
+      "repeat": 2,
+      "repeatx": 2,
+      "repeaty": 0,
+      "box name": "box"
+    },
+    {
+      "x": 30,
+      "y": 12,
+      "width": 1,
+      "height": 1,
+      "texture": 0,
+      "Density": "static",
+      "friction": 0,
+      "restitution": 0,
+      "scale": "scale",
+      "repeat": 7,
+      "repeatx": 7,
+      "repeaty": 0,
+      "box name": "box"
+    }
+  ],
+
+  "Bubbles": [
+    {
+      "x": 5,
+      "y": 5,
+      "radius" : 1
+    },
+    {
+      "x": 25,
+      "y": 13,
+      "radius" : 1
+    }
+  ],
+
+  "Gravity Zones" : [
+    { "x" : 10.5,
+      "y": 0,
+      "width" : 10,
+      "height" : 6.5,
+      "gravity" : -1,
+      "scale": 0
+    },
+    {
+      "x" : 20.5,
+      "y": 0,
+      "width" : 10,
+      "height" : 32,
+      "gravity" : -1,
+      "scale": 0
+    }
+],
+
+  "Spikes" : [
+    { "x" : 50,
+      "y": 20,
+      "width" : 1,
+      "height" : 1
+    },
+    { "x" : -8,
+      "y": 8,
+      "width" : 1,
+      "height" : 1
+    },
+    {
+      "x": 25,
+      "y": 20,
+      "width": 1,
+      "height": 1
+    },
+    {
+      "x": 20,
+      "y": 13,
+      "width": 1,
+      "height": 1
+    },
+    {
+      "x": 14,
+      "y": 3,
+      "width": 1,
+      "height": 1
+    }
+  ],
+
+  "Enemies" : [
+    {
+      "x": 9,
+      "y": 7,
+      "width": 0.9,
+      "height": 1,
+      "boundx": 8,
+      "boundy": 14
+    }
+  ],
+
+  "Goal" : [
+    {
+      "x": 35,
+      "y": 14,
+      "width": 3,
+      "height": 3
+    }
+  ]
+}

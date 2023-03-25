@@ -18,6 +18,10 @@ import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.physics.box2d.*;
 
 import edu.cornell.gdiac.assets.AssetDirectory;
+import edu.cornell.gdiac.audio.AudioEngine;
+import edu.cornell.gdiac.audio.AudioSource;
+import edu.cornell.gdiac.audio.EffectFilter;
+import edu.cornell.gdiac.audio.MusicQueue;
 import edu.cornell.gdiac.physics.obstacle.*;
 import java.util.*;
 
@@ -39,7 +43,7 @@ public class PlatformController extends WorldController implements ContactListen
 	private TextureRegion bridgeTexture;
 
 	private TextureRegion barrierTexture;
-
+	private TextureRegion[] bodyTextures;
 	/** The jump sound.  We only want to play once. */
 	private Sound jumpSound;
 	private long jumpId = -1;
@@ -49,9 +53,26 @@ public class PlatformController extends WorldController implements ContactListen
 	/** The weapon pop sound.  We only want to play once. */
 	private Sound plopSound;
 	private long plopId = -1;
+	/** The shoot rope sound.  We only want to play once. */
+	private Sound shootRopeSound;
+	private long shootRopeSoundId = -1;
+	/** The release rope sound.  We only want to play once. */
+	private Sound releaseRopeSound;
+	private long releaseRopeSoundId = -1;
+
+	private Sound windSound;
+	private long windSoundID = -1;
+	/** The level 1 background music sound.  We want it to loop. */
+	private Sound level1MusicSunset;
+	private long level1MusicSunsetID;
+
+	private Sound level1MusicCave;
+	private long level1MusicCaveID;
 	/** The default sound volume */
 	private float volume;
 	private RopeBridge rope;
+
+	private int connectedBubbleID = -1;
 
 	// Physics objects for the game
 	/** Physics constants for initialization */
@@ -62,10 +83,16 @@ public class PlatformController extends WorldController implements ContactListen
 	private BoxObstacle goalDoor;
 	private final int BUBBLE_LIMIT = 10;
 
+	private int bubbles_left = 10;
+
 	/** Mark set to handle more sophisticated collision callbacks */
 	protected ObjectSet<Fixture> sensorFixtures;
 
 	private List<WheelObstacle> bubbles = new ArrayList<WheelObstacle>();
+	private List<Obstacle> bubbles_removed = new ArrayList<>();
+	private int[] bubble_timer = new int[BUBBLE_LIMIT];
+
+	private List<Enemy> enemies = new ArrayList<Enemy>();
 
 	/**
 	 * Creates and initialize a new instance of the platformer game
@@ -73,13 +100,21 @@ public class PlatformController extends WorldController implements ContactListen
 	 * The game has default gravity and other settings
 	 */
 	public PlatformController() {
-		super(DEFAULT_WIDTH,DEFAULT_HEIGHT,DEFAULT_GRAVITY);
+		super(DEFAULT_WIDTH*2,DEFAULT_HEIGHT*2,DEFAULT_GRAVITY);
 		setDebug(false);
 		setComplete(false);
 		setFailure(false);
 		world.setContactListener(this);
 		sensorFixtures = new ObjectSet<Fixture>();
 	}
+
+	public List<TextureRegion> loadTexturesIntoLevelEditor() {
+		textures.add(earthTile);
+		textures.add(goalTile);
+		return textures;
+	}
+
+
 
 	/**
 	 * Gather the assets for this controller.
@@ -94,22 +129,33 @@ public class PlatformController extends WorldController implements ContactListen
 		bulletTexture = new TextureRegion(directory.getEntry("platform:bullet",Texture.class));
 		bridgeTexture = new TextureRegion(directory.getEntry("platform:rope",Texture.class));
 		barrierTexture = new TextureRegion(directory.getEntry("platform:barrier",Texture.class));
-
-		jumpSound = directory.getEntry( "platform:jump", Sound.class );
-		fireSound = directory.getEntry( "platform:pew", Sound.class );
-		plopSound = directory.getEntry( "platform:plop", Sound.class );
-
+		jumpSound = directory.getEntry( "bubbleboundsfx:jump", Sound.class );
+		fireSound = directory.getEntry( "bubbleboundsfx:ropeshoot", Sound.class );
+		plopSound = directory.getEntry( "bubbleboundsfx:plop", Sound.class );
+		shootRopeSound = directory.getEntry( "bubbleboundsfx:ropeshoot", Sound.class );
+		releaseRopeSound = directory.getEntry( "bubbleboundsfx:roperelease", Sound.class );
+		windSound = directory.getEntry( "bubbleboundsfx:wind", Sound.class );
+		level1MusicSunset = directory.getEntry( "bubbleboundsfx:level1sunsettheme", Sound.class );
+		level1MusicCave = directory.getEntry( "bubbleboundsfx:level1cavetheme", Sound.class );
 		constants = directory.getEntry( "platform:constants", JsonValue.class );
+		volume = 1.0f;
 		super.gatherAssets(directory);
+
 	}
-	
+
 	/**
 	 * Resets the status of the game so that we can play again.
 	 *
 	 * This method disposes of the world and creates a new one.
 	 */
 	public void reset() {
+		bubbles_left = BUBBLE_LIMIT;
+		for(int i = 0; i < BUBBLE_LIMIT; i++){
+			bubble_timer[i] = -1;
+		}
 		Vector2 gravity = new Vector2(world.getGravity() );
+		zones.clear();
+		life = 1; //reset health
 		if(rope != null){
 			destructRope(rope);
 		}
@@ -119,11 +165,14 @@ public class PlatformController extends WorldController implements ContactListen
 			}
 			
 		}
-
+		//actually find a way to delete and reinitialize these later
+		level1MusicSunset.stop();
+		level1MusicCave.stop();
+		windSound.stop();
 
 		objects.clear();
 		bubbles.clear();
-
+		enemies.clear();
 		addQueue.clear();
 
 		
@@ -141,72 +190,92 @@ public class PlatformController extends WorldController implements ContactListen
 	 * Lays out the game geography.
 	 */
 	private void populateLevel() {
+		setSounds();
+
+
+
+		LevelEditor Level1 = new LevelEditor();
+		loadTexturesIntoLevelEditor();
+		Level1.readTextures(textures);
+		Level1.readJson();
+		List<BoxObstacle> BoxList = Level1.getBoxes();
+		List<WheelObstacle> bubbleList = Level1.getBubbles();
+		List<Zone> gravityZoneList = Level1.getGravityZones();
+		List<Spike> spikes = Level1.getSpikes();
+		goalDoor = Level1.getGoal();
+		enemies = Level1.getEnemies();
+
+
 		// Add level goal
 		float dwidth  = goalTile.getRegionWidth()/scale.x;
 		float dheight = goalTile.getRegionHeight()/scale.y;
 		//Vector2 scale2 = new Vector2(16f, 16f);
 		//scale2.x /= 2;
 		//scale2.y /= 2;
-		JsonValue goal = constants.get("goal");
-		JsonValue goalpos = goal.get("pos");
-		goalDoor = new BoxObstacle(goalpos.getFloat(0),goalpos.getFloat(1),dwidth,dheight);
+
 		goalDoor.setBodyType(BodyDef.BodyType.StaticBody);
-		goalDoor.setDensity(goal.getFloat("density", 0));
-		goalDoor.setFriction(goal.getFloat("friction", 0));
-		goalDoor.setRestitution(goal.getFloat("restitution", 0));
 		goalDoor.setSensor(true);
 		goalDoor.setDrawScale(scale);
 		goalDoor.setTexture(goalTile);
 		goalDoor.setName("goal");
-		//addObject(goalDoor);
+		goalDoor.isGoal = true;
+		addObject(goalDoor);
 
 
-		BoxObstacle box = new BoxObstacle(0, 0, 20, 2);
-		box.setTexture(earthTile);
-		box.setBodyType(BodyDef.BodyType.StaticBody);
-		box.setDensity(0);
-		box.setFriction(0);
-		box.setRestitution(0);
-		box.setDrawScale(scale);
-		box.setName("box");
-		addObject(box);
+		for (int i = 0; i < BoxList.size(); i++) {
+			BoxObstacle box = BoxList.get(i);
+			box.setTexture(earthTile);
+			box.setBodyType(BodyDef.BodyType.StaticBody);
+			box.setDensity(0);
+			box.setFriction(0);
+			box.setRestitution(0);
+			box.setDrawScale(scale);
+			box.setName("box");
+			addObject(box);
+		}
+
+		for (int i = 0; i < gravityZoneList.size(); i++) {
+
+			Zone gravZone = gravityZoneList.get(i);
+			gravZone.scale = scale;
+			addZone(gravZone);
+		}
 
 
-		BoxObstacle box2 = new BoxObstacle(0, 17, 100, 1);
-		box2.setBodyType(BodyDef.BodyType.StaticBody);
-		box2.setDensity(0);
-		box2.setFriction(0);
-		box2.setRestitution(0);
-		box2.setDrawScale(scale);
-		box2.setName("box");
-		addObject(box2);
+		for (int i = 0; i < spikes.size(); i++) {
+			Spike spike = spikes.get(i);
+			spike.setBodyType(BodyDef.BodyType.StaticBody);
+			spike.setDrawScale(scale);
+			spike.setName("spike");
+			spike.setTexture(spikeTexture);
+			addObject(spike);
+		}
+
+		for (int i = 0; i < bubbleList.size(); i++) {
+			WheelObstacle wo = bubbleList.get(i);
+			wo.setName("Bubble");
+			wo.setBodyType(BodyDef.BodyType.DynamicBody);
+			wo.setStatic(true);
+			wo.setDrawScale(scale);
+			wo.activatePhysics(world);
+			wo.setDensity(1000f);
+			wo.setTexture(bubble);
+			bubbles.add(wo);
+			addQueuedObject(wo);
+		}
+
+		for (int i = 0; i < enemies.size(); i++) {
+			Enemy enemy = enemies.get(i);
+			enemy.setDrawScale(scale);
+			enemy.setTexture(dudeModel);
+			addObject(enemy);
+//			enemies.add(enemy); CRASHES GAME
+//			addQueuedObject(enemy); //idk dif between add queued vs add
+		}
 
 
 
-		addZone(new Zone(10, 0, 10, 6, -1.0f, scale));
-		Zone z = new Zone(20, 0 ,10 ,32, -1.0f, scale);
-		//z.setMove(-0.01f, 0);
-		addZone(z);
 
-		WheelObstacle wo = new WheelObstacle(5, 5, 1f);
-		wo.setName("Bubble");
-		wo.setBodyType(BodyDef.BodyType.DynamicBody);
-		wo.setStatic(true);
-		wo.setDrawScale(scale);
-		wo.activatePhysics(world);
-		wo.setDensity(1000f);
-		bubbles.add(wo);
-		addQueuedObject(wo);
-
-		WheelObstacle wo2 = new WheelObstacle(25, 13, 1f);
-		wo2.setName("Bubble");
-		wo2.setStatic(true);
-		wo2.setBodyType(BodyDef.BodyType.DynamicBody);
-		wo2.setDrawScale(scale);
-		wo2.activatePhysics(world);
-		wo2.setDensity(1000f);
-		bubbles.add(wo2);
-		addQueuedObject(wo2);
 		JsonValue defaults = constants.get("defaults");
 
 
@@ -214,31 +283,42 @@ public class PlatformController extends WorldController implements ContactListen
 		world.setGravity( new Vector2(0,defaults.getFloat("gravity",0)) );
 
 		// Create dude
+//		dwidth  = avatarTexture.getRegionWidth()/scale.x;
+//		dheight = avatarTexture.getRegionHeight()/scale.y;
+
+
 		dwidth  = avatarTexture.getRegionWidth()/scale.x;
 		dheight = avatarTexture.getRegionHeight()/scale.y;
 		avatar = new DudeModel(constants.get("dude"), dwidth, dheight);
 		avatar.setDrawScale(scale);
 		avatar.setTexture(avatarTexture);
-		avatar.setName("Avatar");
+		avatar.setName("avatar");
 		addObject(avatar);
-		avatar.setGravityScale(-1);
+
+
+		//avatar.setGravityScale(-1);
+		//avatar.setDensity(0.2F);
 		// Create rope bridge
-		
-		System.out.println(wo);
-		System.out.println("change");
+		setCamera(avatar.getX(), avatar.getY() + 0.5f);
+		//System.out.println(wo);
+		// System.out.println("change");
 
 		volume = constants.getFloat("volume", 1.0f);
 	}
 
 	public WheelObstacle spawnBubble(Vector2 v, boolean b){
-		if(bubbles.size() >= BUBBLE_LIMIT) return null;
+		if(bubbles_left == 0) return null;
 		WheelObstacle wo2 = new WheelObstacle(v.x, v.y, 1f);
-		wo2.setName("Bubble");
+		wo2.setName("Bubble" + (BUBBLE_LIMIT-bubbles_left));
+
+		bubble_timer[BUBBLE_LIMIT-bubbles_left] = 500;
+		bubbles_left--;
 		wo2.setStatic(b);
 		wo2.setBodyType(BodyDef.BodyType.DynamicBody);
 		wo2.setDrawScale(scale);
 		wo2.activatePhysics(world);
 		wo2.setDensity(10000f);
+		wo2.setTexture(bubble);
 		bubbles.add(wo2);
 		addQueuedObject(wo2);
 		return wo2;
@@ -256,10 +336,15 @@ public class PlatformController extends WorldController implements ContactListen
 	 * @return whether to process the update loop
 	 */
 	public boolean preUpdate(float dt) {
+		System.out.println("preupdate");
 		if (!super.preUpdate(dt)) {
 			return false;
 		}
-		
+		if(!avatar.isAlive()){
+			setFailure(true);
+			return false;
+		}
+
 		if (!isFailure() && avatar.getY() < -1) {
 			setFailure(true);
 			return false;
@@ -280,11 +365,32 @@ public class PlatformController extends WorldController implements ContactListen
 	 */
 
 	boolean sbubble = false;
-	boolean betterSwinging = true;
 	private int wait = 10;
 	public void update(float dt) {
+		System.out.println("NEXT CYCLE");
+		System.out.print("[" + bubble_timer[0]);
+		for(int i = 1; i < bubble_timer.length; i++){
+			System.out.print(", " + bubble_timer[i]);
+		}
+		System.out.println("]");
+		for(int i = 0; i < BUBBLE_LIMIT; i++){
+			if(bubble_timer[i]>0){
+				bubble_timer[i]--;
+			}else if(bubble_timer[i]==0){
+				for(int j = 0; j<bubbles.size(); j++){
+					Obstacle b = bubbles.get(j);
+					// System.out.print(b.getName());
+					// System.out.println("vs Bubble" + i);
+					if(b.getName().equals("Bubble" + i)){
+						popBubble(b, i);
+					}
+				}
+			}
+		}
 		// Process actions in object model
 		moveZones();
+		updateSounds();
+		updateCamera(avatar.getX()*scale.x, avatar.getY()*scale.y);
 		for(int i = 0; i < objects.size(); i++){
 			Body o = objects.get(i).getBody();
 			objects.get(i).setGrav(1.0f);
@@ -295,16 +401,20 @@ public class PlatformController extends WorldController implements ContactListen
 					objects.get(i).setGrav(zones.get(j).getGrav());
 				}
 			}
-//			if(objects.get(i).getName().equals("Avatar")){
-//				DudeModel d = (DudeModel) objects.get(i);
-//				d.swapGravity(world, o.getGravityScale());
-//			}
 		}
 		if(InputController.getInstance().didSecondary()){
 			sbubble = !sbubble;
 		}
-		Vector2 crosshair = InputController.getInstance().getCrossHair();
 
+		for(Enemy e : enemies){
+			e.update();
+		}
+
+		Vector2 crosshair = InputController.getInstance().getCrossHair();
+		float xoffset = (cameraCoords.x / scale.x) - (CAMERA_WIDTH / 2f); //find bottom left corner of camera
+		float yoffset = (cameraCoords.y / scale.y) - (CAMERA_HEIGHT / 2f);
+		crosshair.x += xoffset;
+		crosshair.y += yoffset;
 
 
 
@@ -329,98 +439,116 @@ public class PlatformController extends WorldController implements ContactListen
 		avatar.setMovement(InputController.getInstance().getHorizontal() *avatar.getForce());
 		avatar.setJumping(InputController.getInstance().didPrimary());
 		avatar.setShooting(InputController.getInstance().didSecondary());
-
+		System.out.println("got to before bubble check");
 		boolean spawned = false;
 		if(InputController.getInstance().didTertiary()){
 			if(wait > 10) {
-				closest = spawnBubble(crosshair, sbubble);
+				if(bubbles.size() < BUBBLE_LIMIT){
+					closest = spawnBubble(crosshair, sbubble);
+				}
 				wait = 0;
 				spawned = true;
 			}
 		}
 
 		if (closest != null) closest.setSelected(true);
+		System.out.println("got to after bubble check");
 
-		if(InputController.getInstance().didDebug()){
-			betterSwinging = !betterSwinging;
-		}
 		Vector2 pos = avatar.getPosition();
 		boolean destructRope = false;
 		boolean constructRope = false;
-		if(avatar.isGrappling()){
-			if(InputController.getInstance().didBubble()){
-				avatar.setGrappling(false);
-				destructRope = true;
-			}
-			if(betterSwinging) {
-				//if((InputController.getInstance().didBubble() || spawned) && avatar.getPosition().dst(closest.getPosition()) < 5 && !rope.bubble.equals(closest.getBody())){
+		if(!spawned) { //temp prevents people from left and right clicking at same time (which breaks for some reason)
+			if (avatar.isGrappling()) {
+				if (InputController.getInstance().didBubble()) {
+					avatar.setGrappling(false);
+					destructRope = true;
+				}
 				if (InputController.getInstance().didBubble() && avatar.getPosition().dst(closest.getPosition()) < 5 && !rope.bubble.equals(closest.getBody())) {
-//				if(spawned){
-//					System.out.println("Hi");
-//					destructRope = true;
-//				}
+					//				if(spawned){
+					//					System.out.println("Hi");
+					//					destructRope = true;
+					//				}
+					avatar.setGrappling(true);
+					constructRope = true;
+				}
+			} else {
+				if (InputController.getInstance().didBubble() && avatar.getPosition().dst(closest.getPosition()) < 5) {
 					avatar.setGrappling(true);
 					constructRope = true;
 				}
 			}
-		}else{
-			if(InputController.getInstance().didBubble() && avatar.getPosition().dst(closest.getPosition()) < 5){
-				avatar.setGrappling(true);
-				constructRope = true;
-			}
 		}
 		wait++;
-
-		
+		System.out.println("After destruct construct stuff");
 		// Add a bullet if we fire
 		if (avatar.isShooting()) {
 			//createBullet();
 		}
 		if(destructRope){
 			destructRope(rope);
+			releaseRopeSoundId = playSound(releaseRopeSound, releaseRopeSoundId, volume );
 		}
+		System.out.println("After destruct");
 		if(constructRope){
 			//System.out.println("B4: " + pos);
+			String n = closest.getName();
+			char [] chars = n.toCharArray();
+			boolean hasDigit = false;
+			int digit = -1;
+			for(int i = 0; i < chars.length; i++){
+				if(Character.isDigit(chars[i])){
+					hasDigit = true;
+					digit = Integer.parseInt(Character.toString(chars[i]));
+				}
+			}
+			if(hasDigit){
+				connectedBubbleID = digit;
+			}
 			rope = createGrapple(closest);
+			shootRopeSoundId = playSound( shootRopeSound, shootRopeSoundId, volume );
 			//avatar.setPosition(pos);
 		}
-		
+		System.out.println("after construct");
+
+
 		avatar.applyForce();
-	    if (avatar.isJumping()) {
-	    	jumpId = playSound( jumpSound, jumpId, volume );
-	    }
+
+		bubblesleft = bubbles_left - 2;
+
+
 	}
 
-	/**
-	 * Add a new bullet to the world and send it in the right direction.
-	 */
-	private void createBullet() {
-		JsonValue bulletjv = constants.get("bullet");
-		float offset = bulletjv.getFloat("offset",0);
-		offset *= (avatar.isFacingRight() ? 1 : -1);
-		float radius = bulletTexture.getRegionWidth()/(2.0f*scale.x);
-		WheelObstacle bullet = new WheelObstacle(avatar.getX()+offset, avatar.getY(), radius);
-		
-	    bullet.setName("bullet");
-		bullet.setDensity(bulletjv.getFloat("density", 0));
-	    bullet.setDrawScale(scale);
-	    bullet.setTexture(bulletTexture);
-	    bullet.setBullet(true);
-	    bullet.setGravityScale(0);
-		
-		// Compute position and velocity
-		float speed = bulletjv.getFloat( "speed", 0 );
-		speed  *= (avatar.isFacingRight() ? 1 : -1);
-		bullet.setVX(speed);
-		addQueuedObject(bullet);
+	private void setSounds(){
+		level1MusicSunsetID = level1MusicSunset.loop(0.0f);
+		level1MusicCaveID = level1MusicCave.loop(0.0f);
+		windSoundID = windSound.loop(0.0f);
+	}
 
-		fireId = playSound( fireSound, fireId );
+	public void updateSounds(){
+		if(avatar.getGravZone() == 1){
+			level1MusicSunset.setVolume(level1MusicSunsetID,volume * 1f);
+			level1MusicCave.setVolume(level1MusicCaveID,0.0f);
+		}
+		if(avatar.getGravZone() == -1){
+			level1MusicSunset.setVolume(level1MusicSunsetID,0.0f);
+			level1MusicCave.setVolume(level1MusicCaveID,1f);
+		}
+		if (avatar.justJumped()) {
+			jumpSound.setVolume(jumpId,volume * 2f);
+			jumpId = playSound( jumpSound, jumpId);
+		}
+		if (avatar.justGrounded()) {
+			plopSound.setVolume(plopId,volume * 2f);
+			plopId = playSound( plopSound, jumpId);
+		}
+			windSound.setVolume(windSoundID, Math.min((float) Math.abs((avatar.getVX() + (avatar.getVY() * 0.5)) * 0.06f),0.4f));
+
 	}
 
 	private RopeBridge createGrapple(WheelObstacle bubble){
 		float dwidth  = bridgeTexture.getRegionWidth()/scale.x;
 		float dheight = bridgeTexture.getRegionHeight()/scale.y;
-		RopeBridge bridge = new RopeBridge(constants.get("bridge"), dwidth, dheight, bubble.getBody(), avatar.getBody());
+		RopeBridge bridge = new RopeBridge(constants.get("bridge"), dwidth,dheight,bubble.getBody(), avatar.getBody());
 		bridge.setTexture(bridgeTexture);
 		bridge.setDrawScale(scale);
 		addQueuedObject(bridge);
@@ -438,9 +566,36 @@ public class PlatformController extends WorldController implements ContactListen
 	}
 
 	public void destructRope(Obstacle rope) {
+		connectedBubbleID = -1;
 		rope.markRemoved(true);
 		avatar.setLinearVelocity(avatar.getLinearVelocity().scl(1.3f));
 		rope = null;
+		//avatar.setGrappling(false);
+	}
+
+	public void popBubble(Obstacle bubble, int id){
+		System.out.println(connectedBubbleID);
+		System.out.println(id);
+		if(id == connectedBubbleID){
+			destructRope(rope);
+			avatar.setGrappling(false);
+		}
+		System.out.println("Rope Destructed!");
+		for(int i = 0; i < bubbles.size(); i++){
+			if(bubbles.get(i).getName().equals(bubble.getName())){
+				bubbles.get(i).setActive(false);
+				((WheelObstacle)bubbles.get(i)).stopDraw();
+				bubble_timer[id] = -1;
+			}
+		}
+		System.out.println("After for loop");
+//		bubble.markRemoved(true);
+//		bubbles_removed.add(bubble);
+//		bubbles_removed.get(bubbles_removed.size()-1);
+//		bubble.markRemoved(true);
+		System.out.println("markremoved");
+		playSound(plopSound,plopId,0.5f);
+
 	}
 
 	
@@ -475,17 +630,26 @@ public class PlatformController extends WorldController implements ContactListen
 		        removeBullet(bd2);
 			}
 
+
+			if ((bd1 == avatar && (bd2.getName().equals("spike") || bd2.getName().equals("enemy"))) ||
+				(bd2 == avatar && (bd1.getName().equals("spike") || bd2.getName().equals("enemy")))){
+				if(!avatar.isInvincible()) {
+					avatar.hurt();
+					life = avatar.health / (float)avatar.MAX_HEALTH;
+				}
+			}
+
 			// See if we have landed on the ground.
 			if ((avatar.getSensorName().equals(fd2) && avatar != bd1) ||
 				(avatar.getSensorName().equals(fd1) && avatar != bd2)) {
 				avatar.setGrounded(true);
-				//sensorFixtures.add(avatar == bd1 ? fix2 : fix1); // Could have more than one ground
+				sensorFixtures.add(avatar == bd1 ? fix2 : fix1); // Could have more than one ground
 			}
 			
 			// Check for win condition
 			if ((bd1 == avatar   && bd2 == goalDoor) ||
 				(bd1 == goalDoor && bd2 == avatar)) {
-				//setComplete(true);
+				setComplete(true);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

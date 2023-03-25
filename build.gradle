@@ -10,7 +10,6 @@ buildscript {
     }
     dependencies {
 
-
     }
 }
 
@@ -52,6 +51,9 @@ project(":desktop") {
         api "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
         api "com.badlogicgames.gdx:gdx-lwjgl3-glfw-awt-macos:$gdxVersion"
         implementation files("../dependencies/soundlib.jar")
+        implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.3'
+        api 'com.google.code.gson:gson:2.10.1'
+
 
     }
 }
@@ -66,6 +68,7 @@ project(":core") {
         api "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
         api "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
         implementation files("../dependencies/soundlib.jar")
+        api 'com.google.code.gson:gson:2.10.1'
         
     }
 }

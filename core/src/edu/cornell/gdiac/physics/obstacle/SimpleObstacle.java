@@ -776,7 +776,11 @@ public abstract class SimpleObstacle extends Obstacle {
 	 */
 	public void draw(GameCanvas canvas) {
 		if (texture != null) {
-			canvas.draw(texture,Color.WHITE,origin.x,origin.y,getX()*drawScale.x,getY()*drawScale.x,getAngle(),1,1);
+			if(grav == 1) {
+				canvas.draw(texture, Color.WHITE, origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.x, getAngle(), 1, 1);
+			}else{
+				canvas.draw(texture, Color.RED, origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.x, getAngle(), 1, 1);
+			}
 		}
 	}
 
@@ -827,7 +831,7 @@ public abstract class SimpleObstacle extends Obstacle {
 	 * @return true if object allocation succeeded
 	 */
 	public boolean activatePhysics(World world) {
-		System.out.println("activate physics");
+		// System.out.println("activate physics");
 		// Make a body, if possible
 		bodyinfo.active = true;
 		body = world.createBody(bodyinfo);
@@ -840,7 +844,7 @@ public abstract class SimpleObstacle extends Obstacle {
 		} 
 		
 		bodyinfo.active = false;
-		System.out.println(getName());
+		// System.out.println(getName());
 		return false;
 	}
 	
@@ -885,7 +889,7 @@ public abstract class SimpleObstacle extends Obstacle {
 	 *
 	 * @param dt Timing values from parent loop
 	 */
-	public void update(float delta) {
+	public void supdate(float delta) {
 		// Recreate the fixture object if dimensions changed.
 		if (isDirty()) {
 			createFixtures();

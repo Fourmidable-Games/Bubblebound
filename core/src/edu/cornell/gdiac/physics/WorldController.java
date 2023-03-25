@@ -53,7 +53,12 @@ public abstract class WorldController implements Screen {
 	protected TextureRegion earthTile;
 	/** The texture for the exit condition */
 	protected TextureRegion goalTile;
+	protected TextureRegion bubble;
 	/** The font for giving messages to the player */
+	protected TextureRegion background;
+	protected Texture background2;
+	protected TextureRegion dudeModel;
+	protected TextureRegion spikeTexture;
 	protected BitmapFont displayFont;
 	
 	/** Exit code for quitting the game */
@@ -106,6 +111,8 @@ public abstract class WorldController implements Screen {
 	private boolean debug;
 	/** Countdown active for winning or losing */
 	private int countdown;
+
+	public ArrayList<TextureRegion> textures = new ArrayList<TextureRegion>();
 
 	/**
 	 * Returns true if debug mode is active.
@@ -207,10 +214,14 @@ public abstract class WorldController implements Screen {
 	 *
 	 * @param canvas the canvas associated with this controller
 	 */
+
+	public static int CAMERA_WIDTH = 32;
+	public static int CAMERA_HEIGHT = 18;
+
 	public void setCanvas(GameCanvas canvas) {
 		this.canvas = canvas;
-		this.scale.x = canvas.getWidth()/bounds.getWidth();
-		this.scale.y = canvas.getHeight()/bounds.getHeight();
+		this.scale.x = canvas.getWidth()/CAMERA_WIDTH;
+		this.scale.y = canvas.getHeight()/CAMERA_HEIGHT;
 	}
 	
 	/**
@@ -290,9 +301,15 @@ public abstract class WorldController implements Screen {
 	public void gatherAssets(AssetDirectory directory) {
 		// Allocate the tiles
 		earthTile = new TextureRegion(directory.getEntry( "shared:earth", Texture.class ));
+		dudeModel = new TextureRegion(directory.getEntry( "platform:dude2", Texture.class ));
+		spikeTexture = new TextureRegion(directory.getEntry( "platform:spike", Texture.class ));
 		goalTile  = new TextureRegion(directory.getEntry( "shared:goal", Texture.class ));
+		background = new TextureRegion(directory.getEntry("background:underground", Texture.class));
+		bubble = new TextureRegion(directory.getEntry( "shared:bubble", Texture.class ));
 		displayFont = directory.getEntry( "shared:retro" ,BitmapFont.class);
+		background2 = directory.getEntry("background:temp", Texture.class);
 	}
+
 
 	/**
 	 *
@@ -354,7 +371,7 @@ public abstract class WorldController implements Screen {
 	 */
 	public boolean preUpdate(float dt) {
 		InputController input = InputController.getInstance();
-		input.readInput(bounds, scale);
+		input.readInput(new Rectangle(0,0,CAMERA_WIDTH,CAMERA_HEIGHT), scale);//use camera rect instead of bounds
 		if (listener == null) {
 			return true;
 		}
@@ -419,8 +436,6 @@ public abstract class WorldController implements Screen {
 	 */
 
 
-
-
 	public void postUpdate(float dt) {
 		// Add any objects created by actions
 		while (!addQueue.isEmpty()) {
@@ -446,13 +461,47 @@ public abstract class WorldController implements Screen {
 			}
 		}
 	}
+	public Vector2 cameraCoords = new Vector2(0, 0);
 
+	public void setCamera(float x, float y){
+		cameraCoords.set(x*scale.x, y*scale.y);
+		cameraCoords.x += CAMERA_WIDTH*scale.x/3;
+		cameraCoords.y += CAMERA_HEIGHT *scale.y/5; //put in leftish middle of screen
+		canvas.camera.position.set(cameraCoords, 0);
+		canvas.camera.update();
+	}
+
+	public void updateCamera(float x, float y){
+		Vector2 temp = new Vector2(x + CAMERA_WIDTH*scale.x/10, y + CAMERA_HEIGHT *scale.y/5);
+		temp.sub(cameraCoords).scl(0.1f, 0.5f); //0.01 is how much it lags in terms of x (smaller means it mvoes slower)
+		boolean movex = true;					       //0.5 is how much it lags in terms of y
+		boolean movey = true;
+
+		if((temp.x > 0 && cameraCoords.x + (scale.x * CAMERA_WIDTH / 2) >= bounds.getWidth() * scale.x) || (temp.x < 0 && cameraCoords.x - (scale.x * CAMERA_WIDTH / 2) <= 0) ){
+			movex = false; //check if camera reached left or right edge
+		}
+		if((temp.y > 0 && cameraCoords.y + (scale.y * CAMERA_HEIGHT / 2) >= bounds.getHeight() * scale.y) || (temp.y < 0 && cameraCoords.y - (scale.y * CAMERA_HEIGHT / 2) <= 5) ){
+			movey = false; //check if camera reached top or bottom
+		}
+		if(movex){
+			cameraCoords.x += temp.x;
+		}
+		if(movey){
+			cameraCoords.y += temp.y;
+		}
+
+		canvas.camera.position.set(cameraCoords, 0);
+		canvas.camera.update();
+	}
 
 	public List<Zone> zones = new ArrayList<>();
+
+	float life = 1;
 
 	public void addZone(Zone z){
 		zones.add(z);
 	}
+	int bubblesleft = 8;
 	/**
 	 * Draw the physics objects to the canvas
 	 *
@@ -465,13 +514,40 @@ public abstract class WorldController implements Screen {
 	 */
 	public void draw(float dt) {
 		canvas.clear();
-		
-		//canvas.begin();
-		canvas.shape.begin(ShapeRenderer.ShapeType.Filled);
-		for(Obstacle obj : objects) {
-			obj.sdraw(canvas); ////!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		canvas.begin();
+		canvas.resetColor();
+		canvas.drawWrapped(background, cameraCoords.x, 0f);
+
+
+//		canvas.shape.setProjectionMatrix(canvas.camera.combined); TEST
+
+		canvas.end();
+
+		//TODO: parallaxing and stuff kinda relies on pixel size not ideal for diff screen sizes
+
+
+		canvas.begin();
+		for(Zone z: zones){ //draws the backgrounds of the zones
+			z.drawBackground(background2, canvas, cameraCoords.x);
+//			int y = background2.getHeight() - (int)(z.ypos * scale.y) - (int)(z.height * scale.y); //finds y coord
+//			int x = canvas.wrapX(cameraCoords.x, background2.getWidth()) + (int)(z.xpos*scale.x); //find parallaxed x coord
+//			TextureRegion temp = new TextureRegion(text, x, y,(int)(z.width*scale.x), (int)(z.height * scale.y)); //select only needed part of image
+//			canvas.draw(temp, z.xpos * scale.x, z.ypos * scale.y);
 		}
-		canvas.shape.end();
+		canvas.resetColor();
+		canvas.end();
+		canvas.begin();
+//		canvas.shape.begin(ShapeRenderer.ShapeType.Filled); testttttt
+
+		for(Obstacle obj : objects) {
+			obj.draw(canvas); ////!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			//obj.sdraw(canvas);
+			canvas.resetColor();
+		}
+
+		canvas.end();
+//		canvas.shape.end();
+		//canvas.shape.setProjectionMatrix(canvas.camera.combined);
 		canvas.shape.begin(ShapeRenderer.ShapeType.Line);
 		for(Zone z : zones){
 			canvas.shape.setColor(Color.RED);
@@ -479,35 +555,35 @@ public abstract class WorldController implements Screen {
 		}
 		canvas.shape.end();
 		// Draw life bar
-		float life = 0.7f;
+
+
+
+		canvas.shape.setProjectionMatrix(canvas.camera.combined);
 		canvas.shape.begin(ShapeRenderer.ShapeType.Filled);
 		canvas.shape.setColor(Color.RED);
-		canvas.shape.rect(10, canvas.getHeight() - 30, 200 * life, 20);
+		canvas.shape.rect( cameraCoords.x - (canvas.getWidth() / 2) + 10, cameraCoords.y + (canvas.getHeight() / 2) - 30, 200 * life, 20);
 		canvas.shape.end();
 
 		// Draw life bar label
 		displayFont.setColor(Color.WHITE);
 		displayFont.getData().setScale(0.4f);
 		canvas.begin(); // DO NOT SCALE
-		canvas.drawText("Life", displayFont, 20, canvas.getHeight() - 34);
+		canvas.drawText("Life", displayFont, cameraCoords.x - (canvas.getWidth() / 2) + 20, cameraCoords.y + (canvas.getHeight() / 2) -  34);
 		canvas.end();
 
 		// Draw energy bar
-		float energy = 0.5f;
-		canvas.shape.begin(ShapeRenderer.ShapeType.Filled);
-		canvas.shape.setColor(Color.YELLOW);
-		canvas.shape.rect(canvas.getWidth() - 800, canvas.getHeight() - 30, 200 * energy, 20);
-		canvas.shape.end();
+		//TODO: implement energy bar usage
+
 
 		// Draw energy bar label
 		displayFont.setColor(Color.WHITE);
 		displayFont.getData().setScale(0.4f);
 		canvas.begin(); // DO NOT SCALE
-		canvas.drawText("Energy", displayFont, canvas.getWidth() - 800, canvas.getHeight() - 34);
+		canvas.drawText("Remaining Bubbles: " + bubblesleft, displayFont, cameraCoords.x + (canvas.getWidth() / 2) - 400, cameraCoords.y + (canvas.getHeight() / 2) - 30);
 		canvas.end();
 
 //		canvas.end();
-		debug = false;
+		//debug = false;
 		if (debug) {
 			canvas.beginDebug();
 			for(Obstacle obj : objects) {
@@ -520,12 +596,12 @@ public abstract class WorldController implements Screen {
 		if (complete && !failed) {
 			displayFont.setColor(Color.YELLOW);
 			canvas.begin(); // DO NOT SCALE
-			canvas.drawTextCentered("VICTORY!", displayFont, 0.0f);
+			canvas.drawText("VICTORY", displayFont, cameraCoords.x-90, cameraCoords.y);
 			canvas.end();
 		} else if (failed) {
 			displayFont.setColor(Color.RED);
 			canvas.begin(); // DO NOT SCALE
-			canvas.drawTextCentered("FAILURE!", displayFont, 0.0f);
+			canvas.drawText("FAILURE!", displayFont, cameraCoords.x-90, cameraCoords.y);
 			canvas.end();
 		}
 	}

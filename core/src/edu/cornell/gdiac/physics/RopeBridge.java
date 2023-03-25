@@ -65,7 +65,7 @@ public class RopeBridge extends ComplexObstacle {
 	public RopeBridge(JsonValue data, float lwidth, float lheight, Body b, Body a) {
 		//super(data.get("pos").getFloat(0),data.get("pos").getFloat(1));
 		super(b.getPosition().x, b.getPosition().y);
-		System.out.println(getPosition());
+		// System.out.println(getPosition());
 		setName("bridge");
 		this.data = data;
 		bubble = b;
@@ -74,13 +74,16 @@ public class RopeBridge extends ComplexObstacle {
 		float y0 = a.getPosition().y;
 		planksize = new Vector2(lwidth,lheight);
 		linksize = planksize.x;
-		
+		// System.out.println(planksize);
 	    // Compute the bridge length
 		dimension = new Vector2(data.getFloat("width",0),data.getFloat("height",0));
-	    float length = dimension.len();
+	    // System.out.println("Dimension: " + dimension);
+		float length = dimension.len();
 		length = (float)Math.sqrt(Math.pow(bubble.getPosition().x-avatar.getPosition().x,2)+ Math.pow(bubble.getPosition().y-avatar.getPosition().y,2));
 	    Vector2 norm = new Vector2(dimension);
+		// System.out.println("Norm:" + norm);
 	    norm.nor();
+		// System.out.println("Norm normed:" + norm);
 	    
 	    // If too small, only make one plank.;
 	    int nLinks = (int)(length / linksize);
@@ -95,13 +98,21 @@ public class RopeBridge extends ComplexObstacle {
 	    	    
 	    // Create the planks
 	    planksize.x = linksize;
-	    Vector2 pos = new Vector2();
+
+		Vector2 pos = new Vector2();
+
 	    for (int ii = 0; ii < nLinks; ii++) {
 	        float t = ii*(linksize+spacing) + linksize/2.0f;
-	        pos.set(norm);
+			// System.out.println("Iteration " + ii);
+	        // System.out.println("init pos: " + pos);
+			pos.set(norm);
+			// System.out.println("norm pos: " + pos);
 	        pos.scl(t);
+			// System.out.println("scale pos: " + pos);
 	        pos.add(x0,y0);
+			// System.out.println("add pos: " + pos);
 	        BoxObstacle plank = new BoxObstacle(pos.x, pos.y, planksize.x, planksize.y);
+			plank.isRope = true;
 			plank.setGravityScale(0);
 	        plank.setName("plank"+ii);
 	        plank.setDensity(data.getFloat("density",0));
@@ -137,6 +148,7 @@ public class RopeBridge extends ComplexObstacle {
 //		start.activatePhysics(world);
 //
 //		// Definition for a revolute joint
+//		DistanceJointDef jointDef = new DistanceJointDef();
 		RevoluteJointDef jointDef = new RevoluteJointDef();
 //
 //		// Initial joint
@@ -148,7 +160,7 @@ public class RopeBridge extends ComplexObstacle {
 		Joint joint;
 			jointDef.bodyA = bodies.get(0).getBody();
 			jointDef.bodyB = avatar;
-			System.out.println(bubble);
+			// System.out.println(bubble);
 			jointDef.localAnchorA.set(anchor2);
 			jointDef.localAnchorB.set(anchor1);
 			jointDef.collideConnected = false;
@@ -182,7 +194,7 @@ public class RopeBridge extends ComplexObstacle {
 			anchor2.y = 0;
 			jointDef.bodyA = last.getBody();
 			jointDef.bodyB = bubble;
-			System.out.println(bubble);
+			// System.out.println(bubble);
 			jointDef.localAnchorA.set(anchor1);
 			jointDef.localAnchorB.set(anchor2);
 			jointDef.collideConnected = false;
@@ -241,4 +253,18 @@ public class RopeBridge extends ComplexObstacle {
 	// 		canvas.shape.rect(getX()*drawScale.x-x,getY()*drawScale.y-y,((BoxObstacle)obj).getWidth()*drawScale.x,((BoxObstacle)obj).getHeight()*drawScale.y);
 	// 	}
 	// }
+
+
+//	@Override
+//	public void draw(GameCanvas canvas) {
+//		// Delegate to components
+//		for(Obstacle obj : bodies) {
+//			obj.draw(canvas);
+//			canvas.draw(Rope (obj));
+//		}
+//	}
+
+
+
+
 }

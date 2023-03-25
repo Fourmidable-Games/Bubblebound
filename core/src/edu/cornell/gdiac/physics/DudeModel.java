@@ -10,6 +10,7 @@
  */
 package edu.cornell.gdiac.physics;
 
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.physics.box2d.*;
@@ -55,13 +56,26 @@ public class DudeModel extends CapsuleObstacle {
 	private int shootCooldown;
 	/** Whether our feet are on the ground */
 	private boolean isGrounded;
+	/** Whether our feet were on the ground last frame */
+	private boolean wasGrounded = false;
 	/** Whether we are actively shooting */
 	private boolean isShooting;
 	private boolean isGrappling;
 	/** The physics shape of this object */
+
+	private float acceleration;
+
+	private int gravZone;
 	private PolygonShape sensorShape;
 
 
+	public static int MAX_HEALTH = 4;
+
+	public int health;
+
+	public boolean invincible = false;
+
+	public int invincibletimer = 30;
 	
 	/** Cache for internal force calculations */
 	private final Vector2 forceCache = new Vector2();
@@ -88,7 +102,7 @@ public class DudeModel extends CapsuleObstacle {
 	public void setMovement(float value) {
 		movement = value; 
 		if(isGrappling()){
-			movement *= 1.25;
+			movement *= 1.5;
 		}
 		// Change facing if appropriate
 		if (movement < 0) {
@@ -97,7 +111,16 @@ public class DudeModel extends CapsuleObstacle {
 			faceRight = true;
 		}
 	}
-	
+
+	/**
+	 * Returns the direction of gravity of the player (1 -> down, -1 -> up).
+	 *
+	 * @return left/right movement of this character.
+	 */
+	public float getGravZone() {
+		return grav;
+	}
+
 	/**
 	 * Returns true if the dude is actively firing.
 	 *
@@ -128,7 +151,14 @@ public class DudeModel extends CapsuleObstacle {
 	public boolean isJumping() {
 		return isJumping && isGrounded && jumpCooldown <= 0;
 	}
-	
+
+	/**
+	 * Returns true if the dude just jumped.
+	 *
+	 * @return true if the dude just jumped.
+	 */
+	public boolean justJumped() { return isJumping && isGrounded; }
+
 	/**
 	 * Sets whether the dude is actively jumping.
 	 *
@@ -145,6 +175,17 @@ public class DudeModel extends CapsuleObstacle {
 	 */
 	public boolean isGrounded() {
 		return isGrounded;
+	}
+
+	/**
+	 * Returns true if the dude just landed on the ground
+	 *
+	 * @return true if the just landed on the ground
+	 */
+	public boolean justGrounded() {
+		boolean output = !isGrappling && !isJumping && isGrounded && !wasGrounded;
+		wasGrounded = isGrounded;
+		return output;
 	}
 	
 	/**
@@ -227,12 +268,13 @@ public class DudeModel extends CapsuleObstacle {
         setDensity(data.getFloat("density", 0));
 		setFriction(data.getFloat("friction", 0));  /// HE WILL STICK TO WALLS IF YOU FORGET
 		setFixedRotation(true);
-
+		health = MAX_HEALTH;
 		maxspeed = data.getFloat("maxspeed", 0);
 		damping = data.getFloat("damping", 0);
 		force = data.getFloat("force", 0)*0.5f;
+		gravZone = 1;
 
-		jump_force = data.getFloat( "jump_force", 0 )*0.75f;
+		jump_force = data.getFloat( "jump_force", 0 )*1f;
 		jumpLimit = data.getInt( "jump_cool", 0 );
 		shotLimit = data.getInt( "shot_cool", 0 );
 		sensorName = "DudeGroundSensor";
@@ -329,12 +371,12 @@ public class DudeModel extends CapsuleObstacle {
 			//System.out.println("Damping  " + getDamping());
 			if(!damp){
 				//System.out.println("hiii");
-				forceCache.set(-getDamping()*getVX()*0.05f,0);
+				forceCache.set(-getDamping()*getVX()*0.2f,0);
 				//forceCache.set(-getDamping()*0.2f,0);
 			}else{
 				forceCache.set(-getDamping()*getVX(),0);
 			}
-			System.out.println(forceCache.x);
+			// System.out.println(forceCache.x);
 			body.applyForce(forceCache,getPosition(),true);
 		}
 
@@ -380,8 +422,27 @@ public class DudeModel extends CapsuleObstacle {
 		} else {
 			shootCooldown = Math.max(0, shootCooldown - 1);
 		}
-		
+		if(invincible){
+			invincibletimer--;
+			if(invincibletimer <= 0){
+				invincible = false;
+			}
+		}
 		super.update(dt);
+	}
+
+	public boolean isInvincible(){
+		return invincible;
+	}
+
+	public boolean isAlive(){
+		return health > 0;
+	}
+
+	public void hurt(){
+		health--;
+		invincible = true;
+		invincibletimer = 50;
 	}
 
 	/**
@@ -390,8 +451,37 @@ public class DudeModel extends CapsuleObstacle {
 	 * @param canvas Drawing context
 	 */
 	public void draw(GameCanvas canvas) {
-		float effect = faceRight ? 1.0f : -1.0f;
-		canvas.draw(texture,Color.WHITE,origin.x,origin.y,getX()*drawScale.x,getY()*drawScale.y,getAngle(),effect,1.0f);
+
+		float x = getWidth()*drawScale.x / 2;
+		float y = getHeight()*drawScale.y / 2;
+
+		float effect = faceRight ? -1.0f : 1.0f;;
+		float upside = (grav == -1) ? -1.0f : 1.0f;
+		if(invincible && invincibletimer % 2 == 0){
+
+		}
+		else {
+			canvas.draw(texture, Color.WHITE,origin.x,origin.y,getX()*drawScale.x,getY()*drawScale.y,getAngle(),effect,upside);
+		}
+
+
+
+//		float effect = faceRight ? 1.0f : -1.0f;
+//		canvas.draw(texture,Color.WHITE,origin.x,origin.y,getX()*drawScale.x,getY()*drawScale.y,getAngle(),effect,1.0f);
+	}
+
+	@Override
+	public void sdraw(GameCanvas canvas){
+		float x = getWidth()*drawScale.x/2;
+		float y = getHeight()*drawScale.y/2;
+		canvas.shape.setColor(Color.CORAL);
+		if(invincible && invincibletimer % 2 == 0){
+			return;
+		}else{
+			canvas.shape.rect(getX()*drawScale.x-x,getY()*drawScale.y-y,
+					getWidth()*drawScale.x,getHeight()*drawScale.y);
+		}
+
 	}
 	
 	/**

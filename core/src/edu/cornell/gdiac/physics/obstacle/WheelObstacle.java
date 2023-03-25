@@ -31,6 +31,8 @@ public class WheelObstacle extends SimpleObstacle {
 	private boolean selected;
 
 	public boolean statc;
+	private boolean d = true;
+
 
 	public void setStatic(boolean b){
 		statc = b;
@@ -97,7 +99,7 @@ public class WheelObstacle extends SimpleObstacle {
 	 * This is the primary method to override for custom physics objects
 	 */
 	protected void createFixtures() {
-		System.out.println("create fixtures");
+		// System.out.println("create fixtures");
 		if (body == null) {
 			return;
 		}
@@ -118,8 +120,8 @@ public class WheelObstacle extends SimpleObstacle {
 	 * This is the primary method to override for custom physics objects
 	 */
 	protected void releaseFixtures() {
-		System.out.println("release fixtures");
-		System.out.println(geometry);
+		// System.out.println("release fixtures");
+		// System.out.println(geometry);
 	    if (geometry != null && geometry.getBody() == body) {
 	        body.destroyFixture(geometry);
 	        geometry = null;
@@ -134,10 +136,12 @@ public class WheelObstacle extends SimpleObstacle {
 	 * @param canvas Drawing context
 	 */
 	 public void drawDebug(GameCanvas canvas) {
+		 if(!d) return;
 		canvas.drawPhysics(shape,Color.YELLOW,getX(),getY(),drawScale.x,drawScale.y);
 	}
 	@Override
 	public void sdraw(GameCanvas canvas){
+		 if(!d) return;
 		 if(selected){
 			 canvas.shape.setColor(Color.YELLOW);
 		 }else{
@@ -145,5 +149,20 @@ public class WheelObstacle extends SimpleObstacle {
 		 }
 		 canvas.shape.circle(getX()*drawScale.x,getY()*drawScale.y,getRadius()*drawScale.x);
 	}
+
+	@Override
+	public void draw(GameCanvas canvas) {
+		if (texture != null && d) {
+
+
+			if(grav == 1) {
+				canvas.draw(texture,Color.GOLD,origin.x,origin.y,getX()*drawScale.x,getY()*drawScale.y,getAngle(), 1.4F*getRadius(), 1.4F*getRadius());
+			}else{
+				canvas.draw(texture,Color.WHITE,origin.x,origin.y,getX()*drawScale.x,getY()*drawScale.y,getAngle(), 1.4F*getRadius(), 1.4F*getRadius());
+			}
+
+		}
+	}
+	public void stopDraw(){d = false;}
 
 }

@@ -23,6 +23,10 @@
 package edu.cornell.gdiac.physics;
 
 import com.badlogic.gdx.*;
+import com.badlogic.gdx.audio.Sound;
+//import com.badlogic.gdx.audio.*;
+import com.badlogic.gdx.math.Vector2;
+
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.*;
@@ -59,7 +63,10 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 	private Texture playButton;
 	/** Texture atlas to support a progress bar */
 	private final Texture statusBar;
-	
+	/** Texture atlas to support a progress bar */
+	/*private Music loadingMusic;
+	private long loadingMusicId = -1;
+	*/
 	// statusBar is a "texture atlas." Break it up into parts.
 	/** Left cap to the status background (grey region) */
 	private TextureRegion statusBkgLeft;
@@ -73,6 +80,9 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 	private TextureRegion statusFrgMiddle;
 	/** Right cap to the status forground (colored region) */
 	private TextureRegion statusFrgRight;	
+
+	private Sound loadingMusic;
+	private long loadingMusicId;
 
 	/** Default budget for asset loader (do nothing but load 60 fps) */
 	private static int DEFAULT_BUDGET = 15;
@@ -203,6 +213,11 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 		background.setFilter( TextureFilter.Linear, TextureFilter.Linear );
 		statusBar = internal.getEntry( "progress", Texture.class );
 
+		//load the loading theme immediately
+		loadingMusic = internal.getEntry("menuscreen", Sound.class);
+		loadingMusic.loop(0.5f);
+		loadingMusic.play();
+
 		// Break up the status bar texture into regions
 		statusBkgLeft = internal.getEntry( "progress.backleft", TextureRegion.class );
 		statusBkgRight = internal.getEntry( "progress.backright", TextureRegion.class );
@@ -211,6 +226,9 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 		statusFrgLeft = internal.getEntry( "progress.foreleft", TextureRegion.class );
 		statusFrgRight = internal.getEntry( "progress.foreright", TextureRegion.class );
 		statusFrgMiddle = internal.getEntry( "progress.foreground", TextureRegion.class );
+
+		loadingMusic = internal.getEntry( "bubbleboundsfx:level1cavetheme", Sound.class );
+
 
 		// No progress so far.
 		progress = 0;
@@ -266,13 +284,13 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 	 */
 	private void draw() {
 		canvas.begin();
-		//canvas.draw(background, 0, 0);
+		canvas.draw(background, 0, 0);
 		if (playButton == null) {
-			//drawProgress(canvas);
+			drawProgress(canvas);
 		} else {
 			Color tint = (pressState == 1 ? Color.GRAY: Color.WHITE);
 			canvas.draw(playButton, tint, playButton.getWidth()/2, playButton.getHeight()/2, 
-						centerX, centerY, 0, BUTTON_SCALE*scale, BUTTON_SCALE*scale);
+						centerX + 290, centerY +173, 0, BUTTON_SCALE*scale*0.83f, BUTTON_SCALE*scale*0.83f);
 		}
 		canvas.end();
 	}
@@ -286,25 +304,26 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 	 *
 	 * @param canvas The drawing context
 	 */	
-	private void drawProgress(GameCanvas canvas) {	
-		canvas.draw(statusBkgLeft,   Color.WHITE, centerX-width/2, centerY,
+	private void drawProgress(GameCanvas canvas) {
+		float adj = 100f;
+		canvas.draw(statusBkgLeft,   Color.WHITE, centerX-width/2, centerY-adj,
 				scale*statusBkgLeft.getRegionWidth(), scale*statusBkgLeft.getRegionHeight());
-		canvas.draw(statusBkgRight,  Color.WHITE,centerX+width/2-scale*statusBkgRight.getRegionWidth(), centerY,
+		canvas.draw(statusBkgRight,  Color.WHITE,centerX+width/2-scale*statusBkgRight.getRegionWidth(), centerY-adj,
 				scale*statusBkgRight.getRegionWidth(), scale*statusBkgRight.getRegionHeight());
-		canvas.draw(statusBkgMiddle, Color.WHITE,centerX-width/2+scale*statusBkgLeft.getRegionWidth(), centerY,
+		canvas.draw(statusBkgMiddle, Color.WHITE,centerX-width/2+scale*statusBkgLeft.getRegionWidth(), centerY-adj,
 				width-scale*(statusBkgRight.getRegionWidth()+statusBkgLeft.getRegionWidth()),
 				scale*statusBkgMiddle.getRegionHeight());
 
-		canvas.draw(statusFrgLeft,   Color.WHITE,centerX-width/2, centerY,
+		canvas.draw(statusFrgLeft,   Color.WHITE,centerX-width/2, centerY-adj,
 				scale*statusFrgLeft.getRegionWidth(), scale*statusFrgLeft.getRegionHeight());
 		if (progress > 0) {
 			float span = progress*(width-scale*(statusFrgLeft.getRegionWidth()+statusFrgRight.getRegionWidth()))/2.0f;
-			canvas.draw(statusFrgRight,  Color.WHITE,centerX-width/2+scale*statusFrgLeft.getRegionWidth()+span, centerY,
+			canvas.draw(statusFrgRight,  Color.WHITE,centerX-width/2+scale*statusFrgLeft.getRegionWidth()+span, centerY-adj,
 					scale*statusFrgRight.getRegionWidth(), scale*statusFrgRight.getRegionHeight());
-			canvas.draw(statusFrgMiddle, Color.WHITE,centerX-width/2+scale*statusFrgLeft.getRegionWidth(), centerY,
+			canvas.draw(statusFrgMiddle, Color.WHITE,centerX-width/2+scale*statusFrgLeft.getRegionWidth(), centerY-adj,
 					span, scale*statusFrgMiddle.getRegionHeight());
 		} else {
-			canvas.draw(statusFrgRight,  Color.WHITE,centerX-width/2+scale*statusFrgLeft.getRegionWidth(), centerY,
+			canvas.draw(statusFrgRight,  Color.WHITE,centerX-width/2+scale*statusFrgLeft.getRegionWidth(), centerY-adj,
 					scale*statusFrgRight.getRegionWidth(), scale*statusFrgRight.getRegionHeight());
 		}
 	}
@@ -420,10 +439,13 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 		
 		// TODO: Fix scaling
 		// Play button is a circle.
-		float radius = BUTTON_SCALE*scale*playButton.getWidth()/2.0f;
-		float dist = (screenX-centerX)*(screenX-centerX)+(screenY-centerY)*(screenY-centerY);
-		if (dist < radius*radius) {
-			pressState = 1;
+		float button_w = playButton.getWidth()*BUTTON_SCALE*scale*0.83f;
+		float button_h = playButton.getHeight()*BUTTON_SCALE*scale*0.83f;
+		Vector2 button_center = new Vector2(centerX + 290, centerY + 173);
+		if(screenX >= button_center.x - button_w/2 && screenX <= button_center.x + button_w/2){
+			if(screenY >= button_center.y - button_h/2 && screenY <= button_center.y + button_h/2){
+				pressState = 1;
+			}
 		}
 		return false;
 	}
