@@ -128,6 +128,28 @@ public class LevelEditorV2 {
 
                         }
 
+                        if (obj1.getInt("id") == 11) {
+                            JsonValue gr = obj1.get("objects");
+
+
+                            for (JsonValue grav : gr) {
+
+                                System.out.println("GRAVVVVV");
+
+                                Zone wo = new Zone(
+                                        (grav.getFloat("x")) / 64,
+                                        (mapHeight - (grav.getFloat("y")) / 64),
+                                        (grav.getFloat("width"))/64,
+                                        (grav.getFloat("height"))/64,
+                                        -1,
+                                        0
+                                );
+
+                                gravityZones.add(wo);
+                            }
+
+                        }
+
 
 
 
@@ -265,6 +287,10 @@ public class LevelEditorV2 {
 
     public List getSpikes() {
         return spikes;
+    }
+
+    public List getGravityZones() {
+        return gravityZones;
     }
 
 

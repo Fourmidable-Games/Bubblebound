@@ -3,7 +3,6 @@ package edu.cornell.gdiac.physics;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 
 public class Zone {
@@ -18,13 +17,13 @@ public class Zone {
     public Vector2 scale;
     public float grav;
 
-    public Zone(float xp, float yp, float w, float h, float gravity, Vector2 s){
+    public Zone(float xp, float yp, float w, float h, float gravity, int i){
         xpos = xp;
         ypos = yp;
         width = w;
         height = h;
         grav = gravity;
-        scale = s;
+        scale = scale;
         xmove = 0;
         ymove = 0;
     }

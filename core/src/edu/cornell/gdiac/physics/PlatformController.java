@@ -211,7 +211,7 @@ public class PlatformController extends WorldController implements ContactListen
 		Level1.readJson();
 		List<BoxObstacle> BoxList = Level2.getBoxes();
 		List<WheelObstacle> bubbleList = Level2.getBubbles();
-		List<Zone> gravityZoneList = Level1.getGravityZones();
+		List<Zone> gravityZoneList = Level2.getGravityZones();
 		List<Spike> spikes = Level2.getSpikes();
 		goalDoor = Level2.getGoal();
 		enemies = Level2.getEnemies();

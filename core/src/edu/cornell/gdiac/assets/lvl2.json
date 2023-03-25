@@ -20,6 +20,28 @@
          "layers":[
                 {
                  "draworder":"topdown",
+                 "id":11,
+                 "name":"gravity zones",
+                 "objects":[
+                        {
+                         "height":233.291298865069,
+                         "id":53,
+                         "name":"",
+                         "rotation":0,
+                         "type":"",
+                         "visible":true,
+                         "width":170.239596469105,
+                         "x":514.630558764187,
+                         "y":486.993804539723
+                        }],
+                 "opacity":1,
+                 "type":"objectgroup",
+                 "visible":true,
+                 "x":0,
+                 "y":0
+                }, 
+                {
+                 "draworder":"topdown",
                  "id":10,
                  "name":"player",
                  "objects":[
@@ -182,8 +204,8 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":11,
- "nextobjectid":52,
+ "nextlayerid":12,
+ "nextobjectid":57,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.10.0",

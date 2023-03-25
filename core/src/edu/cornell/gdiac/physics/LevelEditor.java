@@ -1,23 +1,15 @@
 package edu.cornell.gdiac.physics;
 
-import java.io.File;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.util.ArrayList;
-import java.util.List;
-import java.io.FileReader;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
-import edu.cornell.gdiac.assets.JsonValueParser;
 import edu.cornell.gdiac.physics.obstacle.BoxObstacle;
 import edu.cornell.gdiac.physics.obstacle.WheelObstacle;
-import sun.tools.jstat.Scale;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class LevelEditor {
 
@@ -132,8 +124,7 @@ public class LevelEditor {
                     object.get("width").asFloat(),
                     object.get("height").asFloat(),
                     object.get("gravity").asFloat(),
-                    null
-            );
+                    0);
 
             gravityZones.add(wo);
 
