@@ -212,7 +212,7 @@ public class PlatformController extends WorldController implements ContactListen
 		List<BoxObstacle> BoxList = Level2.getBoxes();
 		List<WheelObstacle> bubbleList = Level2.getBubbles();
 		List<Zone> gravityZoneList = Level1.getGravityZones();
-		List<Spike> spikes = Level1.getSpikes();
+		List<Spike> spikes = Level2.getSpikes();
 		goalDoor = Level2.getGoal();
 		enemies = Level2.getEnemies();
 
@@ -300,7 +300,8 @@ public class PlatformController extends WorldController implements ContactListen
 
 		dwidth  = avatarTexture.getRegionWidth()/scale.x;
 		dheight = avatarTexture.getRegionHeight()/scale.y;
-		avatar = new DudeModel(constants.get("dude"), dwidth, dheight);
+//		avatar = new DudeModel(constants.get("dude"), dwidth, dheight);
+		avatar = Level2.getPlayer();
 		avatar.setDrawScale(scale);
 		avatar.setTexture(avatarTexture);
 		avatar.setName("avatar");

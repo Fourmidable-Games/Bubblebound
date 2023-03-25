@@ -15,7 +15,9 @@ public class LevelEditorV2 {
 
     private FileHandle file = Gdx.files.internal("lvl2.json");
     private FileHandle file2 = Gdx.files.internal("propertytypes.json");
+    private FileHandle file3 = Gdx.files.internal("constants.json");
     private JsonReader jsonReader = new JsonReader();
+    private JsonValue constants = jsonReader.parse(file3);
     public JsonValue jsonValue = jsonReader.parse(file);
     private List<BoxObstacle> boxes = new ArrayList<>();
     private List<WheelObstacle> bubbles = new ArrayList<>();
@@ -28,6 +30,7 @@ public class LevelEditorV2 {
     private ArrayList<TextureRegion> textureObjects;
     private BoxObstacle goal;
     private List<List<Integer>> tileMap = new ArrayList<>();
+    private DudeModel player;
 
     public LevelEditorV2() {
 
@@ -65,13 +68,10 @@ public class LevelEditorV2 {
                         if (obj1.getInt("id") == 7) {
                             JsonValue go = obj1.get("objects");
 
-                            System.out.println("GOOOALLL222");
 
                             System.out.println(go.toString());
 
                             for (JsonValue goals : go) {
-
-                                System.out.println("GOOOALLL111");
 
 
                                 BoxObstacle wo = new BoxObstacle(
@@ -85,6 +85,45 @@ public class LevelEditorV2 {
                                 wo.isGoal = true;
                                 System.out.println("GOOOALLL");
                                 goal = wo;
+                            }
+
+                        }
+
+                        if (obj1.getInt("id") == 10) {
+                            JsonValue sp = obj1.get("objects");
+
+
+                            for (JsonValue pl : sp) {
+
+
+                                DudeModel wo = new DudeModel(
+                                        constants.get("dude"),
+                                        (pl.getFloat("x")) / 64,
+                                        mapHeight - (pl.getFloat("y")) / 64,
+                                        1F,
+                                        1F
+                                );
+
+                                player = wo;
+                            }
+
+                        }
+
+                        if (obj1.getInt("id") == 9) {
+                            JsonValue sp = obj1.get("objects");
+
+
+                            for (JsonValue goals : sp) {
+
+
+                                Spike wo = new Spike(
+                                        (goals.getFloat("x")) / 64,
+                                        mapHeight - (goals.getFloat("y")) / 64,
+                                        1,
+                                        1
+                                );
+
+                                spikes.add(wo);
                             }
 
                         }
@@ -216,9 +255,16 @@ public class LevelEditorV2 {
     public List getEnemies() {
         return enemies;
     }
+    public DudeModel getPlayer() {
+        return player;
+    }
 
     public BoxObstacle getGoal() {
         return goal;
+    }
+
+    public List getSpikes() {
+        return spikes;
     }
 
 

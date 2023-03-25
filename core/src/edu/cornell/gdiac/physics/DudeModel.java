@@ -10,14 +10,14 @@
  */
 package edu.cornell.gdiac.physics;
 
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.*;
-import com.badlogic.gdx.graphics.*;
-import com.badlogic.gdx.physics.box2d.*;
-
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.JsonValue;
-import edu.cornell.gdiac.physics.*;
-import edu.cornell.gdiac.physics.obstacle.*;
+import edu.cornell.gdiac.physics.obstacle.CapsuleObstacle;
 
 /**
  * Player avatar for the plaform game.
@@ -286,6 +286,37 @@ public class DudeModel extends CapsuleObstacle {
 		isJumping = false;
 		faceRight = true;
 		
+		shootCooldown = 0;
+		jumpCooldown = 0;
+		setName("dude");
+	}
+
+	public DudeModel(JsonValue data, float x, float y, float width, float height) {
+		// The shrink factors fit the image to a tigher hitbox
+		super(	x, y,
+				width*data.get("shrink").getFloat( 0 ),
+				height*data.get("shrink").getFloat( 1 ));
+		setDensity(data.getFloat("density", 0));
+		setFriction(data.getFloat("friction", 0));  /// HE WILL STICK TO WALLS IF YOU FORGET
+		setFixedRotation(true);
+		health = MAX_HEALTH;
+		maxspeed = data.getFloat("maxspeed", 0);
+		damping = data.getFloat("damping", 0);
+		force = data.getFloat("force", 0)*0.5f;
+		gravZone = 1;
+
+		jump_force = data.getFloat( "jump_force", 0 )*1f;
+		jumpLimit = data.getInt( "jump_cool", 0 );
+		shotLimit = data.getInt( "shot_cool", 0 );
+		sensorName = "DudeGroundSensor";
+		this.data = data;
+
+		// Gameplay attributes
+		isGrounded = false;
+		isShooting = false;
+		isJumping = false;
+		faceRight = true;
+
 		shootCooldown = 0;
 		jumpCooldown = 0;
 		setName("dude");
