@@ -236,8 +236,8 @@ public class NewRopeBridge extends ComplexObstacle {
 		jointDefDist.localAnchorB.set(new Vector2());
 
 
-		jointDefDist.dampingRatio = 0.3f;
-		jointDefDist.frequencyHz = 10;
+		jointDefDist.dampingRatio = 0f;
+		jointDefDist.frequencyHz = 20;
 
 		//JOINT NEXT ONE TO NEXT TWO
 		jointDefDist.bodyB = nextOne;

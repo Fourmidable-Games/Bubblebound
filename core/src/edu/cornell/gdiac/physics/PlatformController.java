@@ -431,8 +431,12 @@ public class PlatformController extends WorldController implements ContactListen
 				min = d;
 			}
 		}
-
-		avatar.setMovement(InputController.getInstance().getHorizontal() *avatar.getForce());
+		// TODO
+		if(avatar.isGrappling()) {
+			avatar.setMovement(InputController.getInstance().getHorizontal() *avatar.getForce() * 10);
+		} else {
+			avatar.setMovement(InputController.getInstance().getHorizontal() * avatar.getForce());
+		}
 		avatar.setJumping(InputController.getInstance().didPrimary());
 		avatar.setShooting(InputController.getInstance().didSecondary());
 		System.out.println("got to before bubble check");
