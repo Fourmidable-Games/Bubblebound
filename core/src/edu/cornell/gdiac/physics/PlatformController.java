@@ -213,7 +213,7 @@ public class PlatformController extends WorldController implements ContactListen
 		List<WheelObstacle> bubbleList = Level2.getBubbles();
 		List<Zone> gravityZoneList = Level1.getGravityZones();
 		List<Spike> spikes = Level1.getSpikes();
-		goalDoor = Level1.getGoal();
+		goalDoor = Level2.getGoal();
 		enemies = Level2.getEnemies();
 
 

@@ -62,6 +62,36 @@ public class LevelEditorV2 {
 
                 for (JsonValue obj1 : secondLayers) {
 
+                        if (obj1.getInt("id") == 7) {
+                            JsonValue go = obj1.get("objects");
+
+                            System.out.println("GOOOALLL222");
+
+                            System.out.println(go.toString());
+
+                            for (JsonValue goals : go) {
+
+                                System.out.println("GOOOALLL111");
+
+
+                                BoxObstacle wo = new BoxObstacle(
+                                        (goals.getFloat("x")) / 64,
+                                        mapHeight - (goals.getFloat("y")) / 64,
+                                        1,
+                                        1
+                                );
+
+
+                                wo.isGoal = true;
+                                System.out.println("GOOOALLL");
+                                goal = wo;
+                            }
+
+                        }
+
+
+
+
                         if (obj1.getInt("id") == 5) {
                             JsonValue enemyList = obj1.get("objects");
 
@@ -186,5 +216,11 @@ public class LevelEditorV2 {
     public List getEnemies() {
         return enemies;
     }
+
+    public BoxObstacle getGoal() {
+        return goal;
+    }
+
+
 
 }
