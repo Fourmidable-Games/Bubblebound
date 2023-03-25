@@ -214,7 +214,7 @@ public class PlatformController extends WorldController implements ContactListen
 		List<Zone> gravityZoneList = Level1.getGravityZones();
 		List<Spike> spikes = Level1.getSpikes();
 		goalDoor = Level1.getGoal();
-		enemies = Level1.getEnemies();
+		enemies = Level2.getEnemies();
 
 
 		// Add level goal

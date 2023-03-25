@@ -62,78 +62,111 @@ public class LevelEditorV2 {
 
                 for (JsonValue obj1 : secondLayers) {
 
-                    if (obj1.getInt("id") == 8) {
+                        if (obj1.getInt("id") == 5) {
+                            JsonValue enemyList = obj1.get("objects");
 
-                        JsonValue bubbleList = obj1.get("objects");
+                            for (JsonValue en : enemyList) {
 
-                        System.out.println("Testing bub");
+                                Enemy ene = new Enemy(
+                                        (en.getFloat("x")) / 64,
+                                        mapHeight - (en.getFloat("y")) / 64,
+                                        0.9F,
+                                        1
+                                );
 
-                        for (JsonValue bub : bubbleList) {
+                                JsonValue prop = en.get("properties");
 
-                            for (JsonValue type : base1) {
+                                int left = 0;
+                                int right = 0;
 
-                                if (type.getInt("id") == 4) {
+                                for (JsonValue prop1 : prop) {
+                                    if (prop1.getString("name").equals("leftBound")) {
+                                        left = prop1.getInt("value");
+                                    }
+                                    if (prop1.getString("name").equals("rightBound")) {
+                                        right = prop1.getInt("value");
+                                    }
+                                }
+
+                                ene.setBounds(left, right);
+
+                                enemies.add(ene);
+
+                            }
+                        }
+
+                        if (obj1.getInt("id") == 8) {
+
+                            JsonValue bubbleList = obj1.get("objects");
+
+                            System.out.println("Testing bub");
+
+                            for (JsonValue bub : bubbleList) {
+
+                                for (JsonValue type : base1) {
+
+                                    if (type.getInt("id") == 4) {
 
 
+                                        System.out.println(type.get("members"));
 
-                                    System.out.println( type.get("members"));
-
-                                    WheelObstacle wo = new WheelObstacle(
-                                            (bub.getFloat("x"))/64,
-                                            mapHeight - (bub.getFloat("y"))/64,
-                                            type.get("members").get(0).getInt("value")
-                                    );
+                                        WheelObstacle wo = new WheelObstacle(
+                                                (bub.getFloat("x")) / 64,
+                                                mapHeight - (bub.getFloat("y")) / 64,
+                                                type.get("members").get(0).getInt("value")
+                                        );
 
 
-                                    bubbles.add(wo);
+                                        bubbles.add(wo);
+                                    }
                                 }
                             }
+
+                        }
+
+
+                        if (obj1.getInt("id") == 1) {
+
+                            System.out.println("Testing 2");
+
+                            JsonValue tileData1 = obj1.get("data");
+
+                            int[] tileData = tileData1.asIntArray();
+
+                            for (int i = 0; i < mapWidth; i++) {
+                                List<Integer> row = new ArrayList<>();
+                                for (int j = 0; j < mapHeight; j++) {
+                                    int index = i * mapWidth + j;
+                                    if (index < tileData.length) {
+                                        row.add(tileData[index]);
+                                    } else {
+                                        row.add(0);
+                                    }
+                                }
+                                tileMap.add(row);
+                            }
+
+                            for (int i = 0; i < mapHeight; i++) {
+                                for (int j = 0; j < mapWidth; j++) {
+                                    if (tileMap.get(j).get(i) > 0) {
+                                        BoxObstacle wo = new BoxObstacle(
+                                                i,
+                                                mapHeight - j,
+                                                1,
+                                                1
+                                        );
+
+                                        boxes.add(wo);
+                                    }
+                                }
+                            }
+
                         }
 
                     }
 
-
-                    if (obj1.getInt("id") == 1) {
-
-                        System.out.println("Testing 2");
-
-                        JsonValue tileData1 = obj1.get("data");
-
-                        int[] tileData = tileData1.asIntArray();
-
-                        for (int i = 0; i < mapWidth; i++) {
-                            List<Integer> row = new ArrayList<>();
-                            for (int j = 0; j < mapHeight; j++) {
-                                int index = i * mapWidth + j;
-                                if (index < tileData.length) {
-                                    row.add(tileData[index]);
-                                } else {
-                                    row.add(0);
-                                }
-                            }
-                            tileMap.add(row);
-                        }
-
-                        for (int i = 0; i < mapHeight; i++) {
-                            for (int j = 0; j < mapWidth; j++) {
-                                if (tileMap.get(j).get(i) > 0) {
-                                    BoxObstacle wo = new BoxObstacle(
-                                            i,
-                                            mapHeight - j,
-                                            1,
-                                            1
-                                    );
-
-                                    boxes.add(wo);
-                                }
-                            }
-                        }
-
-                    }
 
                 }
-
-
 
 
             }
@@ -142,14 +175,16 @@ public class LevelEditorV2 {
         }
 
 
-    }
-
     public List getBoxes() {
         return boxes;
     }
 
     public List getBubbles() {
         return bubbles;
+    }
+
+    public List getEnemies() {
+        return enemies;
     }
 
 }
