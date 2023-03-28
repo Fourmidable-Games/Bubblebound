@@ -55,6 +55,9 @@ public class PlatformController extends WorldController implements ContactListen
 	private long fireId = -1;
 	/** The weapon pop sound.  We only want to play once. */
 	private Sound plopSound;
+
+	private Sound popSound;
+	private long popID = -1;
 	private long plopId = -1;
 	/** The shoot rope sound.  We only want to play once. */
 	private Sound shootRopeSound;
@@ -138,6 +141,8 @@ public class PlatformController extends WorldController implements ContactListen
 		jumpSound = directory.getEntry( "bubbleboundsfx:jump", Sound.class );
 		fireSound = directory.getEntry( "bubbleboundsfx:ropeshoot", Sound.class );
 		plopSound = directory.getEntry( "bubbleboundsfx:plop", Sound.class );
+		popSound = directory.getEntry("bubbleboundsfx:pop", Sound.class);
+
 		shootRopeSound = directory.getEntry( "bubbleboundsfx:ropeshoot", Sound.class );
 		releaseRopeSound = directory.getEntry( "bubbleboundsfx:roperelease", Sound.class );
 		windSound = directory.getEntry( "bubbleboundsfx:wind", Sound.class );
@@ -633,7 +638,8 @@ public class PlatformController extends WorldController implements ContactListen
 		bubble.setActive(false);
 		bubble.stopDraw();
 		bubbles.remove(bubble);
-		playSound(plopSound,plopId,0.5f);
+		popSound.setVolume(popID, volume * 10f);
+		popID = playSound(popSound,popID,0.5f);
 	}
 
 	
@@ -747,6 +753,7 @@ public class PlatformController extends WorldController implements ContactListen
 	public void pause() {
 		jumpSound.stop(jumpId);
 		plopSound.stop(plopId);
+		popSound.stop(popID);
 		fireSound.stop(fireId);
 	}
 }
