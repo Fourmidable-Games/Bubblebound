@@ -18,7 +18,7 @@ import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.physics.box2d.*;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
+//import com.sun.org.apache.xpath.internal.operations.Bool;
 import edu.cornell.gdiac.physics.*;  // For GameCanvas
 
 import static com.badlogic.gdx.graphics.Texture.TextureWrap.Repeat;

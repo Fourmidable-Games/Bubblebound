@@ -19,7 +19,7 @@ import edu.cornell.gdiac.assets.JsonValueParser;
 import edu.cornell.gdiac.physics.obstacle.BoxObstacle;
 import edu.cornell.gdiac.physics.obstacle.WheelObstacle;
 import edu.cornell.gdiac.physics.Bubble;
-import sun.tools.jstat.Scale;
+//import sun.tools.jstat.Scale;
 
 public class LevelEditor {
 

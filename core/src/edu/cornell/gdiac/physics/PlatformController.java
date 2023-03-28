@@ -405,6 +405,7 @@ public class PlatformController extends WorldController implements ContactListen
 					avatar.setGrappling(false);
 				}
 				popBubble(b);
+				i--;
 			}
 		}
 	}
