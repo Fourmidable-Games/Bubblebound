@@ -74,6 +74,79 @@
       "repeatx": 7,
       "repeaty": 0,
       "box name": "box"
+    },
+    { "x" : 50,
+      "y": 19.2,
+      "width" : 1,
+      "height" : 1,
+      "texture": 0,
+      "Density": "static",
+      "friction": 0,
+      "restitution": 0,
+      "scale": "scale",
+      "repeat": 1,
+      "repeatx": 1,
+      "repeaty": 0,
+      "box name": "box"
+    },
+    { "x" : -8,
+      "y": 7.2,
+      "width" : 1,
+      "height" : 1,
+      "texture": 0,
+      "Density": "static",
+      "friction": 0,
+      "restitution": 0,
+      "scale": "scale",
+      "repeat": 1,
+      "repeatx": 1,
+      "repeaty": 0,
+      "box name": "box"
+    },
+    {
+      "x": 25,
+      "y": 19.2,
+      "width": 1,
+      "height": 1,
+      "texture": 0,
+      "Density": "static",
+      "friction": 0,
+      "restitution": 0,
+      "scale": "scale",
+      "repeat": 1,
+      "repeatx": 1,
+      "repeaty": 0,
+      "box name": "box"
+    },
+    {
+      "x": 20,
+      "y": 12.2,
+      "width": 1,
+      "height": 1,
+      "texture": 0,
+      "Density": "static",
+      "friction": 0,
+      "restitution": 0,
+      "scale": "scale",
+      "repeat": 1,
+      "repeatx": 1,
+      "repeaty": 0,
+      "box name": "box"
+    },
+    {
+      "x": 14,
+      "y": 2.2,
+      "width": 1,
+      "height": 1,
+      "texture": 0,
+      "Density": "static",
+      "friction": 0,
+      "restitution": 0,
+      "scale": "scale",
+      "repeat": 1,
+      "repeatx": 1,
+      "repeaty": 0,
+      "box name": "box"
     }
   ],
 
@@ -153,9 +226,9 @@
   "Goal" : [
     {
       "x": 35,
-      "y": 14,
-      "width": 3,
-      "height": 3
+      "y": 13,
+      "width": 1,
+      "height": 1
     }
   ]
 }

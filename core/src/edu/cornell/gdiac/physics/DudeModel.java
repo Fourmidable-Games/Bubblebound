@@ -359,40 +359,43 @@ public class DudeModel extends CapsuleObstacle {
 		if (!isActive()) {
 			return;
 		}
-		if(isGrappling){
-			body.setGravityScale(grav * 2.0f);
+		if(isGrappling && !(getMovement() == 0)){
+			body.setGravityScale(grav * 1.5f);
 			damp = false;
-		}
-		if(isGrounded || isJumping){
+		}else{
 			damp = true;
 		}
+
 		// Don't want to be moving. Damp out player motion
-		if (getMovement() == 0  && (!isGrappling) ){
-			//System.out.println("Damping  " + getDamping());
+		if ((getMovement() == 0 || getVX() * getMovement() < 0)  && (!isGrappling) ){
 			if(!damp){
-				//System.out.println("hiii");
-				forceCache.set(-getDamping()*getVX()*0.2f,0);
-				//forceCache.set(-getDamping()*0.2f,0);
+				forceCache.set(-getDamping()*getVX()*0.1f,0);
 			}else{
-				forceCache.set(-getDamping()*getVX(),0);
+				forceCache.set(-getDamping()*getVX()*0.5f,0);
 			}
-			// System.out.println(forceCache.x);
 			body.applyForce(forceCache,getPosition(),true);
 		}
-
-
-
-
+		/*float regDampFactor = 0.7f;
+		float grapDampFactor = 1.3f;
+		float usedFactor;*/
 		// Velocity too high, clamp it
-		if (Math.abs(getVX()) >= getMaxSpeed()) {
-			//setVX(Math.signum(getVX())*getMaxSpeed());
-		}else if(Math.abs(getVY()) >= getMaxSpeed() * 3){
-			//setVY(Math.signum((getVX()*getMaxSpeed())));
+		/*if(isGrappling){
+			usedFactor = grapDampFactor;
+		}else{
+			usedFactor = regDampFactor;
+		}*/
+
+		if (getVX() >= getMaxSpeed()*1.5f) {
+			setVX(getMaxSpeed()*1.5f);
+		} if (getVX() <= -getMaxSpeed()*1.5f) {
+			setVX(-getMaxSpeed()*1.5f);
+		} if (getVY() >= 2f*getMaxSpeed()) {
+			setVY(2f * getMaxSpeed());
 		}
-		else {
-			forceCache.set(getMovement(),0);
-			body.applyForce(forceCache,getPosition(),true);
-		}
+
+		forceCache.set(getMovement(),0);
+		body.applyForce(forceCache,getPosition(),true);
+
 
 
 		if (isJumping()) {

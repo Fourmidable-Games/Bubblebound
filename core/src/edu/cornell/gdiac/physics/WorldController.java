@@ -51,12 +51,14 @@ import edu.cornell.gdiac.physics.obstacle.*;
 public abstract class WorldController implements Screen {
 	/** The texture for walls and platforms */
 	protected TextureRegion earthTile;
+	protected TextureRegion iceTile;
 	/** The texture for the exit condition */
 	protected TextureRegion goalTile;
 	protected TextureRegion bubble;
 	/** The font for giving messages to the player */
 	protected TextureRegion background;
 	protected Texture background2;
+	protected TextureRegion losing;
 	protected TextureRegion dudeModel;
 	protected TextureRegion spikeTexture;
 	protected BitmapFont displayFont;
@@ -301,6 +303,7 @@ public abstract class WorldController implements Screen {
 	public void gatherAssets(AssetDirectory directory) {
 		// Allocate the tiles
 		earthTile = new TextureRegion(directory.getEntry( "shared:earth", Texture.class ));
+		iceTile = new TextureRegion(directory.getEntry("shared:ice", Texture.class));
 		dudeModel = new TextureRegion(directory.getEntry( "platform:dude2", Texture.class ));
 		spikeTexture = new TextureRegion(directory.getEntry( "platform:spike", Texture.class ));
 		goalTile  = new TextureRegion(directory.getEntry( "shared:goal", Texture.class ));
@@ -308,6 +311,7 @@ public abstract class WorldController implements Screen {
 		bubble = new TextureRegion(directory.getEntry( "shared:bubble", Texture.class ));
 		displayFont = directory.getEntry( "shared:retro" ,BitmapFont.class);
 		background2 = directory.getEntry("background:temp", Texture.class);
+		losing = new TextureRegion(directory.getEntry("losing", Texture.class));
 	}
 
 
@@ -512,6 +516,10 @@ public abstract class WorldController implements Screen {
 	 *
 	 * @param dt	Number of seconds since last animation frame
 	 */
+
+	public void updateBubbleCount(int bubbles_left){
+		bubblesleft = bubbles_left;
+	}
 	public void draw(float dt) {
 		canvas.clear();
 		canvas.begin();
@@ -560,7 +568,7 @@ public abstract class WorldController implements Screen {
 
 		canvas.shape.setProjectionMatrix(canvas.camera.combined);
 		canvas.shape.begin(ShapeRenderer.ShapeType.Filled);
-		canvas.shape.setColor(Color.RED);
+		 canvas.shape.setColor(Color.RED);
 		canvas.shape.rect( cameraCoords.x - (canvas.getWidth() / 2) + 10, cameraCoords.y + (canvas.getHeight() / 2) - 30, 200 * life, 20);
 		canvas.shape.end();
 
@@ -579,7 +587,7 @@ public abstract class WorldController implements Screen {
 		displayFont.setColor(Color.WHITE);
 		displayFont.getData().setScale(0.4f);
 		canvas.begin(); // DO NOT SCALE
-		canvas.drawText("Remaining Bubbles: " + bubblesleft, displayFont, cameraCoords.x + (canvas.getWidth() / 2) - 400, cameraCoords.y + (canvas.getHeight() / 2) - 30);
+		canvas.drawText("Current Bubbles: " + bubblesleft, displayFont, cameraCoords.x + (canvas.getWidth() / 2) - 400, cameraCoords.y + (canvas.getHeight() / 2) - 30);
 		canvas.end();
 
 //		canvas.end();
@@ -602,6 +610,7 @@ public abstract class WorldController implements Screen {
 			displayFont.setColor(Color.RED);
 			canvas.begin(); // DO NOT SCALE
 			canvas.drawText("FAILURE!", displayFont, cameraCoords.x-90, cameraCoords.y);
+			canvas.draw(losing,cameraCoords.x - canvas.getWidth()/2, cameraCoords.y - canvas.getHeight()/2);
 			canvas.end();
 		}
 	}
