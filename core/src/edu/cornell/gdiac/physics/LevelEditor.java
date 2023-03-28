@@ -11,12 +11,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import edu.cornell.gdiac.assets.JsonValueParser;
 import edu.cornell.gdiac.physics.obstacle.BoxObstacle;
 import edu.cornell.gdiac.physics.obstacle.WheelObstacle;
+import edu.cornell.gdiac.physics.Bubble;
 import sun.tools.jstat.Scale;
 
 public class LevelEditor {
@@ -25,7 +27,7 @@ public class LevelEditor {
     private JsonReader jsonReader = new JsonReader();
     public JsonValue jsonValue = jsonReader.parse(file);
     private List<BoxObstacle> boxes = new ArrayList<>();
-    private List<WheelObstacle> bubbles = new ArrayList<>();
+    private List<Bubble> bubbles = new ArrayList<>();
     private List<Zone> gravityZones = new ArrayList<>();
     private List<Spike> spikes = new ArrayList<>();
     private List<Enemy> enemies = new ArrayList<>();
@@ -114,10 +116,10 @@ public class LevelEditor {
 
         for (JsonValue object : jsonValue.get("Bubbles")) {
 
-            WheelObstacle wo = new WheelObstacle(
-                    object.get("x").asInt(),
-                    object.get("y").asInt(),
-                    object.get("radius").asInt()
+            Bubble wo = new Bubble(
+                    new Vector2(object.get("x").asFloat(), object.get("y").asFloat()),
+                    object.get("radius").asInt(),
+                    Bubble.BubbleType.STATIC
             );
 
             bubbles.add(wo);

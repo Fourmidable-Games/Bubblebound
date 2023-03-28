@@ -76,13 +76,12 @@ public class InputController {
 	private boolean bubblePressed;
 	private boolean bubblePrevious;
 
-	/**Whether the player can spawn and attach to bubbles using the mouse*/
-	private boolean mouseControllsPressed = true;
-	private boolean mouseControllsPrevious = true;
-
-	/**Whether the player can spawn and attach to bubbles using the j and k buttons */
-	private boolean buttonControllsPressed = false;
-	private boolean buttonControllsPrevious = false;
+	public enum ControlMapping{
+		MOUSE,
+		KEYBOARD,
+		CONTROLLER
+	}
+	private ControlMapping controlMapping = ControlMapping.MOUSE;
 
 	/**Whether the player can only use a finite amount of bubbles */
 	private boolean finiteBubblesPressed = true;
@@ -224,9 +223,9 @@ public class InputController {
 
 	public boolean didBubble(){return bubblePressed && !bubblePrevious; }
 
-	public boolean isMouseControlls(){return mouseControllsPressed && !mouseControllsPrevious; }
+	public boolean isMouseControlls(){return controlMapping == ControlMapping.MOUSE; }
 
-	public boolean isButtonControlls(){return buttonControllsPressed && !buttonControllsPrevious; }
+	public boolean isButtonControlls(){return controlMapping == ControlMapping.KEYBOARD; }
 
 	public boolean isFiniteBubbles(){return finiteBubblesPressed; }
 
@@ -271,8 +270,6 @@ public class InputController {
 		bubblePrevious = bubblePressed;
 		nextPrevious = nextPressed;
 		prevPrevious = prevPressed;
-		mouseControllsPrevious = mouseControllsPressed;
-		buttonControllsPrevious = buttonControllsPressed;
 		finiteBubblesPrevious = finiteBubblesPressed;
 		reloadBubblesOnGroundPrevious = reloadBubblesOnGroundPressed;
 
@@ -343,23 +340,20 @@ public class InputController {
 		prevPressed = (secondary && prevPressed) || (Gdx.input.isKeyPressed(Input.Keys.P));
 		nextPressed = (secondary && nextPressed) || (Gdx.input.isKeyPressed(Input.Keys.N));
 		exitPressed  = (secondary && exitPressed) || (Gdx.input.isKeyPressed(Input.Keys.ESCAPE));
+		if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_1)){
+			if(controlMapping == ControlMapping.KEYBOARD){
+				controlMapping = ControlMapping.MOUSE;
+			}else if(controlMapping == ControlMapping.MOUSE){
+				controlMapping = ControlMapping.KEYBOARD;
+			}
+		}
 
-
-		if(buttonControllsPressed){
+		if(controlMapping == ControlMapping.KEYBOARD){
 			bubblePressed = (secondary && bubblePressed) || (Gdx.input.isKeyJustPressed(Input.Keys.J));
 		}else{
 			bubblePressed = (secondary && bubblePressed) || (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT));
 		}
-		if((secondary && mouseControllsPressed) || (Gdx.input.isKeyJustPressed(Input.Keys.NUM_1))){
-			mouseControllsPressed = true;
-			buttonControllsPressed = false;
-			//System.out.println("SWITCHED TO MOUSE CONTROLLS!!");
-		}
-		if((secondary && buttonControllsPressed) || (Gdx.input.isKeyJustPressed(Input.Keys.NUM_2))){
-			mouseControllsPressed = false;
-			buttonControllsPressed = true;
-			//System.out.println("SWITCHED TO BUTTON CONTROLLS!!");
-		}
+
 		if((secondary && finiteBubblesPressed) || (Gdx.input.isKeyJustPressed(Input.Keys.NUM_3))){
 			finiteBubblesPressed = !finiteBubblesPressed;
 
@@ -398,7 +392,7 @@ public class InputController {
 		}
 		
 		// Grapple Button results
-		if(mouseControllsPressed){
+		if(controlMapping == ControlMapping.MOUSE){
 			tertiaryPressed = Gdx.input.isButtonPressed(Input.Buttons.RIGHT);
 		}else{
 			tertiaryPressed = Gdx.input.isKeyPressed(Input.Keys.K);

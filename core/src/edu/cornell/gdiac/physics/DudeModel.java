@@ -174,7 +174,7 @@ public class DudeModel extends CapsuleObstacle {
 	 * @return true if the dude is on the ground.
 	 */
 	public boolean isGrounded() {
-		return isGrounded || isGrappling;
+		return isGrounded;
 	}
 
 	/**

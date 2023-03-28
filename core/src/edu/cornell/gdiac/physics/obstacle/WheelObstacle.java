@@ -187,6 +187,9 @@ public class WheelObstacle extends SimpleObstacle {
 
 		}
 	}
+
+	// Gets D
+	public boolean getD(){return d;}
 	public void stopDraw(){d = false;}
 
 }

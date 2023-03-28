@@ -51,6 +51,7 @@ import edu.cornell.gdiac.physics.obstacle.*;
 public abstract class WorldController implements Screen {
 	/** The texture for walls and platforms */
 	protected TextureRegion earthTile;
+	protected TextureRegion iceTile;
 	/** The texture for the exit condition */
 	protected TextureRegion goalTile;
 	protected TextureRegion bubble;
@@ -302,6 +303,7 @@ public abstract class WorldController implements Screen {
 	public void gatherAssets(AssetDirectory directory) {
 		// Allocate the tiles
 		earthTile = new TextureRegion(directory.getEntry( "shared:earth", Texture.class ));
+		iceTile = new TextureRegion(directory.getEntry("shared:ice", Texture.class));
 		dudeModel = new TextureRegion(directory.getEntry( "platform:dude2", Texture.class ));
 		spikeTexture = new TextureRegion(directory.getEntry( "platform:spike", Texture.class ));
 		goalTile  = new TextureRegion(directory.getEntry( "shared:goal", Texture.class ));
@@ -566,7 +568,7 @@ public abstract class WorldController implements Screen {
 
 		canvas.shape.setProjectionMatrix(canvas.camera.combined);
 		canvas.shape.begin(ShapeRenderer.ShapeType.Filled);
-		canvas.shape.setColor(Color.RED);
+		 canvas.shape.setColor(Color.RED);
 		canvas.shape.rect( cameraCoords.x - (canvas.getWidth() / 2) + 10, cameraCoords.y + (canvas.getHeight() / 2) - 30, 200 * life, 20);
 		canvas.shape.end();
 
@@ -608,7 +610,7 @@ public abstract class WorldController implements Screen {
 			displayFont.setColor(Color.RED);
 			canvas.begin(); // DO NOT SCALE
 			canvas.drawText("FAILURE!", displayFont, cameraCoords.x-90, cameraCoords.y);
-			canvas.draw(losing,0, 0);
+			canvas.draw(losing,cameraCoords.x - canvas.getWidth()/2, cameraCoords.y - canvas.getHeight()/2);
 			canvas.end();
 		}
 	}
