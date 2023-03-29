@@ -23,6 +23,8 @@ import edu.cornell.gdiac.audio.AudioSource;
 import edu.cornell.gdiac.audio.EffectFilter;
 import edu.cornell.gdiac.audio.MusicQueue;
 import edu.cornell.gdiac.physics.obstacle.*;
+import edu.cornell.gdiac.util.FilmStrip;
+
 import java.util.*;
 
 /**
@@ -299,6 +301,7 @@ public class PlatformController extends WorldController implements ContactListen
 
 		dwidth  = avatarTexture.getRegionWidth()/scale.x;
 		dheight = avatarTexture.getRegionHeight()/scale.y;
+
 		avatar = new DudeModel(constants.get("dude"), dwidth, dheight);
 		avatar.setDrawScale(scale);
 		avatar.setTexture(avatarTexture);
@@ -318,7 +321,9 @@ public class PlatformController extends WorldController implements ContactListen
 
 	public Bubble spawnBubble(Vector2 v){
 		if(bubbles_left == 0) return null;
+		//bubble = new FilmStrip(bubbleText, 1, 8, 8);
 		Bubble wo2 = new Bubble(v,1, Bubble.BubbleType.FLOATING);
+		//wo2.initialize(bubble);
 		//System.out.println("isFiniteBubbles: "+ InputController.getInstance().isFiniteBubbles());
 		if(InputController.getInstance().isFiniteBubbles()){
 			bubbles_left--;
@@ -332,6 +337,7 @@ public class PlatformController extends WorldController implements ContactListen
 		wo2.activatePhysics(world);
 		wo2.setDensity(10000f);
 		wo2.setTexture(bubble);
+		//wo2.initialize(bubble);
 		bubbles.add(wo2);
 		addQueuedObject(wo2);
 		return wo2;
@@ -396,18 +402,27 @@ public class PlatformController extends WorldController implements ContactListen
 			System.out.print(", " + bubble_timer[i]);
 		}
 		System.out.println("]");*/
-		for(int i = 0; i < bubbles.size(); i++){
+
+		int counter = 0;
+		final int delay = 100; // adjust this value to change the delay
+
+		for (int i = 0; i < bubbles.size(); i++) {
 			Bubble b = bubbles.get(i);
-			b.update();
-			if(b.isPopped()){
-				if(b.isGrappled()){
+			if (counter == 0) { // execute initialize only when counter reaches 0
+				b.initialize(bubble);
+			}
+			b.update(3f);
+			if (b.isPopped()) {
+				if (b.isGrappled()) {
 					destructRope(rope);
 					avatar.setGrappling(false);
 				}
 				popBubble(b);
 				i--;
 			}
+			counter = (counter + 1) % delay; // increment counter and reset to 0 when it reaches delay
 		}
+
 	}
 
 

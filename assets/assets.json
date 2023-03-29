@@ -5,6 +5,7 @@
             "wrapU": "repeated",
             "wrapV": "repeated"
         },
+      "shared:bubble2": "shared/new_bubble.png",
       "shared:ice" : {
         "file":  "shared/icetile.png",
         "wrapU": "repeated",

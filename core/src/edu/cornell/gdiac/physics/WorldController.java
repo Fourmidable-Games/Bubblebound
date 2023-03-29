@@ -54,10 +54,12 @@ public abstract class WorldController implements Screen {
 	protected TextureRegion iceTile;
 	/** The texture for the exit condition */
 	protected TextureRegion goalTile;
-	protected TextureRegion bubble;
+	protected FilmStrip bubble;
 	/** The font for giving messages to the player */
 	protected TextureRegion background;
 	protected Texture background2;
+
+	protected Texture bubbleText;
 	protected TextureRegion losing;
 	protected TextureRegion dudeModel;
 	protected TextureRegion spikeTexture;
@@ -308,10 +310,12 @@ public abstract class WorldController implements Screen {
 		spikeTexture = new TextureRegion(directory.getEntry( "platform:spike", Texture.class ));
 		goalTile  = new TextureRegion(directory.getEntry( "shared:goal", Texture.class ));
 		background = new TextureRegion(directory.getEntry("background:underground", Texture.class));
-		bubble = new TextureRegion(directory.getEntry( "shared:bubble", Texture.class ));
+		bubbleText = directory.getEntry( "shared:bubble2", Texture.class );
 		displayFont = directory.getEntry( "shared:retro" ,BitmapFont.class);
 		background2 = directory.getEntry("background:temp", Texture.class);
 		losing = new TextureRegion(directory.getEntry("losing", Texture.class));
+		bubble = new FilmStrip(bubbleText, 1, 8, 8);
+		//bubble.setFrame(0);
 	}
 
 

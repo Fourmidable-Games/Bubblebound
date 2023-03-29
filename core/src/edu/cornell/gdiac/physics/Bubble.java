@@ -4,8 +4,10 @@ import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.physics.box2d.*;
 
 import com.badlogic.gdx.utils.JsonValue;
+import edu.cornell.gdiac.assets.AssetDirectory;
 import edu.cornell.gdiac.physics.*;
 import edu.cornell.gdiac.physics.obstacle.*;
+import edu.cornell.gdiac.util.FilmStrip;
 
 public class Bubble extends WheelObstacle{
     public static enum BubbleType{
@@ -18,8 +20,15 @@ public class Bubble extends WheelObstacle{
    private int id;
 
     private boolean isGrappled;
+    private boolean animate = true;
 
     private int pop_timer;
+    /** FilmStrip pointer to the texture region */
+    private FilmStrip filmstrip;
+    /** The current animation frame of the avatar */
+    private int startFrame;
+    /** The rotational center of the filmstrip */
+    private Vector2 center;
 
 
     public Bubble(Vector2 location, float radius, BubbleType type){
@@ -33,8 +42,14 @@ public class Bubble extends WheelObstacle{
         }
         id = last_used_id + 1;
         last_used_id++;
-    }
 
+    }
+    // TODO
+    public void initialize(FilmStrip f) {
+        filmstrip = f;
+        f.setFrame(0);
+        //System.out.println("strips:" + filmstrip);
+    }
     public boolean isPopped(){
         return pop_timer == 0;
     }
@@ -54,12 +69,30 @@ public class Bubble extends WheelObstacle{
     public boolean isGrappled(){
         return isGrappled;
     }
+    protected int i;
+    protected int counter = 0;
+    protected final int delay = 50; // adjust this value to change the delay
 
-    public void update(){
-        if(bubbleType == BubbleType.FLOATING){
+    public void update(float dt) {
+        if (animate) {
+            if (filmstrip != null) {
+                if (counter == 0) { // execute setFrame only when counter reaches 0
+                    int next = (i++) % 8;
+                    filmstrip.setFrame(next);
+                }
+                counter = (counter + 1) % delay; // increment counter and reset to 0 when it reaches delay
+            }
+        } else {
+            if (filmstrip != null) {
+                filmstrip.setFrame(0);
+            }
+        }
+        if (bubbleType == BubbleType.FLOATING) {
             pop_timer--;
         }
+        super.update(dt);
     }
+
     @Override
     public void draw(GameCanvas canvas) {
         if (texture != null && getD()) {

@@ -19,6 +19,7 @@ import edu.cornell.gdiac.assets.JsonValueParser;
 import edu.cornell.gdiac.physics.obstacle.BoxObstacle;
 import edu.cornell.gdiac.physics.obstacle.WheelObstacle;
 import edu.cornell.gdiac.physics.Bubble;
+import edu.cornell.gdiac.util.FilmStrip;
 //import sun.tools.jstat.Scale;
 
 public class LevelEditor {
@@ -115,7 +116,6 @@ public class LevelEditor {
         }
 
         for (JsonValue object : jsonValue.get("Bubbles")) {
-
             Bubble wo = new Bubble(
                     new Vector2(object.get("x").asFloat(), object.get("y").asFloat()),
                     object.get("radius").asInt(),
