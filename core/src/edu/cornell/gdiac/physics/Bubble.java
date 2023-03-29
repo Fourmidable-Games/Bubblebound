@@ -47,7 +47,7 @@ public class Bubble extends WheelObstacle{
     // TODO
     protected int ii = 0;
     protected int counter1 = 0;
-    protected final int delay1 = 4; // adjust this value to change the delay
+    protected final int delay1 = 6; // adjust this value to change the delay
 
     public void initialize(FilmStrip f) {
         filmstrip = f;
