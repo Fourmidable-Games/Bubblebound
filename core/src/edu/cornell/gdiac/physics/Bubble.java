@@ -45,11 +45,19 @@ public class Bubble extends WheelObstacle{
 
     }
     // TODO
+    protected int ii = 0;
+    protected int counter1 = 0;
+    protected final int delay1 = 4; // adjust this value to change the delay
+
     public void initialize(FilmStrip f) {
         filmstrip = f;
-        f.setFrame(0);
+        if (counter1 == 0) { // execute setFrame only when counter reaches 0
+            f.setFrame(ii++ % 8);
+        }
+        counter1 = (counter1 + 1) % delay1; // increment counter and reset to 0 when it reaches delay
         //System.out.println("strips:" + filmstrip);
     }
+
     public boolean isPopped(){
         return pop_timer == 0;
     }

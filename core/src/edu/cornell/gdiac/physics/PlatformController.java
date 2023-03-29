@@ -403,26 +403,19 @@ public class PlatformController extends WorldController implements ContactListen
 		}
 		System.out.println("]");*/
 
-		int counter = 0;
-		final int delay = 100; // adjust this value to change the delay
-
-		for (int i = 0; i < bubbles.size(); i++) {
+		for(int i = 0; i < bubbles.size(); i++){
 			Bubble b = bubbles.get(i);
-			if (counter == 0) { // execute initialize only when counter reaches 0
-				b.initialize(bubble);
-			}
+			b.initialize(bubble);
 			b.update(3f);
-			if (b.isPopped()) {
-				if (b.isGrappled()) {
+			if(b.isPopped()){
+				if(b.isGrappled()){
 					destructRope(rope);
 					avatar.setGrappling(false);
 				}
 				popBubble(b);
 				i--;
 			}
-			counter = (counter + 1) % delay; // increment counter and reset to 0 when it reaches delay
 		}
-
 	}
 
 
