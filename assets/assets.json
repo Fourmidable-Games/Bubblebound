@@ -56,7 +56,7 @@
         },
         "rocket:crate01": "rocket/crate01.png",
         "rocket:crate02": "rocket/crate02.png",
-        "platform:dude2":  "platform/enemy.gif",
+        "platform:dude2":  "platform/enemy.png",
         "platform:dude":  "platform/dude.png",
         "platform:spike":  "platform/spike.png",
         "platform:rope":  "platform/ropebridge.png",

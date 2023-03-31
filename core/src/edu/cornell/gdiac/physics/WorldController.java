@@ -56,12 +56,12 @@ public abstract class WorldController implements Screen {
 	protected TextureRegion goalTile;
 	protected FilmStrip bubble;
 	/** The font for giving messages to the player */
+	protected FilmStrip enemyStrip;
 	protected TextureRegion background;
 	protected Texture background2;
-
+	protected Texture enemyText;
 	protected Texture bubbleText;
 	protected TextureRegion losing;
-	protected TextureRegion dudeModel;
 	protected TextureRegion spikeTexture;
 	protected BitmapFont displayFont;
 	
@@ -306,7 +306,7 @@ public abstract class WorldController implements Screen {
 		// Allocate the tiles
 		earthTile = new TextureRegion(directory.getEntry( "shared:earth", Texture.class ));
 		iceTile = new TextureRegion(directory.getEntry("shared:ice", Texture.class));
-		dudeModel = new TextureRegion(directory.getEntry( "platform:dude2", Texture.class ));
+		//dudeModel = new TextureRegion(directory.getEntry( "platform:dude2", Texture.class ));
 		spikeTexture = new TextureRegion(directory.getEntry( "platform:spike", Texture.class ));
 		goalTile  = new TextureRegion(directory.getEntry( "shared:goal", Texture.class ));
 		background = new TextureRegion(directory.getEntry("background:underground", Texture.class));
@@ -315,7 +315,8 @@ public abstract class WorldController implements Screen {
 		background2 = directory.getEntry("background:temp", Texture.class);
 		losing = new TextureRegion(directory.getEntry("losing", Texture.class));
 		bubble = new FilmStrip(bubbleText, 1, 8, 8);
-		//bubble.setFrame(0);
+		enemyText = directory.getEntry( "platform:dude2", Texture.class );
+		enemyStrip = new FilmStrip(enemyText, 1, 9, 9);
 	}
 
 

@@ -204,8 +204,6 @@ public class PlatformController extends WorldController implements ContactListen
 	private void populateLevel() {
 		setSounds();
 
-
-
 		LevelEditor Level1 = new LevelEditor();
 		loadTexturesIntoLevelEditor();
 		Level1.readTextures(textures);
@@ -252,8 +250,6 @@ public class PlatformController extends WorldController implements ContactListen
 		}
 
 
-
-
 		for (int i = 0; i < spikes.size(); i++) {
 			Spike spike = spikes.get(i);
 			spike.setBodyType(BodyDef.BodyType.StaticBody);
@@ -279,13 +275,11 @@ public class PlatformController extends WorldController implements ContactListen
 		for (int i = 0; i < enemies.size(); i++) {
 			Enemy enemy = enemies.get(i);
 			enemy.setDrawScale(scale);
-			enemy.setTexture(dudeModel);
+			enemy.setTexture(enemyStrip);
 			addObject(enemy);
 //			enemies.add(enemy); CRASHES GAME
 //			addQueuedObject(enemy); //idk dif between add queued vs add
 		}
-
-
 
 
 		JsonValue defaults = constants.get("defaults");
@@ -321,10 +315,7 @@ public class PlatformController extends WorldController implements ContactListen
 
 	public Bubble spawnBubble(Vector2 v){
 		if(bubbles_left == 0) return null;
-		//bubble = new FilmStrip(bubbleText, 1, 8, 8);
 		Bubble wo2 = new Bubble(v,1, Bubble.BubbleType.FLOATING);
-		//wo2.initialize(bubble);
-		//System.out.println("isFiniteBubbles: "+ InputController.getInstance().isFiniteBubbles());
 		if(InputController.getInstance().isFiniteBubbles()){
 			bubbles_left--;
 		}
@@ -337,7 +328,6 @@ public class PlatformController extends WorldController implements ContactListen
 		wo2.activatePhysics(world);
 		wo2.setDensity(10000f);
 		wo2.setTexture(bubble);
-		//wo2.initialize(bubble);
 		bubbles.add(wo2);
 		addQueuedObject(wo2);
 		return wo2;
@@ -387,6 +377,7 @@ public class PlatformController extends WorldController implements ContactListen
 	private int wait = 0;
 	public void update(float dt) {
 		updateBubbles();
+		updateEnemies();
 		moveZones();
 		updateSounds();
 		updateCamera(avatar.getX()*scale.x, avatar.getY()*scale.y);
@@ -417,7 +408,13 @@ public class PlatformController extends WorldController implements ContactListen
 			}
 		}
 	}
-
+	private void updateEnemies(){
+		for(int i = 0; i < enemies.size(); i++){
+			Enemy enemy = enemies.get(i);
+			enemy.initialize(enemyStrip);
+			enemy.update();
+		}
+	}
 
 	//TODO more efficient
 	private void updateObjectGravs(){
