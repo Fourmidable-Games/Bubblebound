@@ -11,7 +11,7 @@
  * Based on original PhysicsDemo Lab by Don Holden, 2007
  * Updated asset version, 2/6/2021
  */
- package edu.cornell.gdiac.physics;
+ package edu.cornell.gdiac.bubblebound;
 
 import com.badlogic.gdx.*;
 import edu.cornell.gdiac.util.*;
@@ -36,7 +36,7 @@ public class GDXRoot extends Game implements ScreenListener {
 	/** Player mode for the the game proper (CONTROLLER CLASS) */
 	private int current;
 	/** List of all WorldControllers */
-	private WorldController[] controllers;
+	private PlatformController[] controllers;
 	
 	/**
 	 * Creates a new game from the configuration settings.
@@ -57,7 +57,7 @@ public class GDXRoot extends Game implements ScreenListener {
 		loading = new LoadingMode("assets.json",canvas,1);
 
 		// Initialize the three game worlds
-		controllers = new WorldController[1];
+		controllers = new PlatformController[1];
 		//controllers[0] = new RocketController();
 		controllers[0] = new PlatformController();
 		//controllers[2] = new RagdollController();
@@ -126,15 +126,15 @@ public class GDXRoot extends Game implements ScreenListener {
 			
 			loading.dispose();
 			loading = null;
-		} else if (exitCode == WorldController.EXIT_NEXT) {
+		} else if (exitCode == PlatformController.EXIT_NEXT) {
 			current = (current+1) % controllers.length;
 			controllers[current].reset();
 			setScreen(controllers[current]);
-		} else if (exitCode == WorldController.EXIT_PREV) {
+		} else if (exitCode == PlatformController.EXIT_PREV) {
 			current = (current+controllers.length-1) % controllers.length;
 			controllers[current].reset();
 			setScreen(controllers[current]);
-		} else if (exitCode == WorldController.EXIT_QUIT) {
+		} else if (exitCode == PlatformController.EXIT_QUIT) {
 			// We quit the main application
 			Gdx.app.exit();
 		}

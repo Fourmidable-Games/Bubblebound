@@ -12,18 +12,18 @@
  * Based on original PhysicsDemo Lab by Don Holden, 2007
  * Updated asset version, 2/6/2021
  */
-package edu.cornell.gdiac.physics;
+package edu.cornell.gdiac.bubblebound;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Joint;
-import com.badlogic.gdx.physics.box2d.JointDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.DistanceJointDef;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.badlogic.gdx.utils.JsonValue;
-import edu.cornell.gdiac.physics.obstacle.*;
+import edu.cornell.gdiac.bubblebound.obstacle.*;
+import edu.cornell.gdiac.bubblebound.obstacle.*;
 
 /**
  * A bridge with planks connected by revolute joints.

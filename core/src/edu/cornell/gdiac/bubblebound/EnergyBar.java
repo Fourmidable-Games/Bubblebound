@@ -1,11 +1,11 @@
-package edu.cornell.gdiac.physics;
+package edu.cornell.gdiac.bubblebound;
 import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.physics.box2d.*;
 
 import com.badlogic.gdx.utils.JsonValue;
-import edu.cornell.gdiac.physics.*;
-import edu.cornell.gdiac.physics.obstacle.*;
+import edu.cornell.gdiac.bubblebound.*;
+import edu.cornell.gdiac.bubblebound.obstacle.*;
 
 public class EnergyBar {
     private static final float MAX_ENERGY = 1.0f;
