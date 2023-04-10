@@ -330,11 +330,9 @@ public class DudeModel extends CapsuleObstacle {
 		sensorShape.setAsBox(sensorjv.getFloat("shrink",0)*getWidth()/2.0f,
 								 sensorjv.getFloat("height",0), sensorCenter, 0.0f);
 		sensorDef.shape = sensorShape;
-
 		// Ground sensor to represent our feet
 		Fixture sensorFixture = body.createFixture( sensorDef );
 		sensorFixture.setUserData(getSensorName());
-
 		Vector2 sensorCenter2 = new Vector2(0, getHeight() / 2);
 		FixtureDef sensorDef2 = new FixtureDef();
 		sensorDef2.density = data.getFloat("density",0);

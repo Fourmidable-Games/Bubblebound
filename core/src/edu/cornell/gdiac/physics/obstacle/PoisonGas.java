@@ -9,13 +9,10 @@ import edu.cornell.gdiac.physics.GameCanvas;
 
 public class PoisonGas extends BoxObstacle{
 
-    public Vector2 dimension;
-    public Vector2 sizeCache;
-    public float[] vertices;
-    public Fixture geometry;
     public static float width = 1f;
     public static float height = 1f;
-
+    public int timer = 0;
+    public boolean faded = false;
 
 
 
@@ -23,7 +20,19 @@ public class PoisonGas extends BoxObstacle{
         super(x, y, 1, 1);
         this.setSensor(true);
         this.setName("gas");
+        faded = false;
         setBodyType(BodyDef.BodyType.StaticBody);
+    }
+
+    public void setFade(boolean val){
+        timer = 200;
+    }
+
+    public void update(){
+        if(timer < 0){
+            faded = true;
+        }
+        timer--;
     }
 
     @Override

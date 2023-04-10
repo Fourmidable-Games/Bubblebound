@@ -45,6 +45,8 @@ public class PlatformController extends WorldController implements ContactListen
 	private TextureRegion barrierTexture;
 
 	private TextureRegion poisonTexture;
+	private TextureRegion lucenTexture;
+
 
 	private final Vector2 ROPE_LAUNCH_SPEED = new Vector2(1.7f, 7);
 	private TextureRegion[] bodyTextures;
@@ -104,6 +106,10 @@ public class PlatformController extends WorldController implements ContactListen
 
 	private List<Enemy> enemies = new ArrayList<Enemy>();
 
+	private List<LucenglazeSensor> lucens = new ArrayList<>();
+
+	private List<PoisonGas> poisons = new ArrayList();
+
 	/**
 	 * Creates and initialize a new instance of the platformer game
 	 *
@@ -141,6 +147,7 @@ public class PlatformController extends WorldController implements ContactListen
 		bridgeTexture = new TextureRegion(directory.getEntry("platform:rope",Texture.class));
 		barrierTexture = new TextureRegion(directory.getEntry("platform:barrier",Texture.class));
 		poisonTexture = new TextureRegion(directory.getEntry("platform:gas", Texture.class));
+		lucenTexture = new TextureRegion(directory.getEntry("platform:lucenglaze", Texture.class));
 
 		jumpSound = directory.getEntry( "bubbleboundsfx:jump", Sound.class );
 		fireSound = directory.getEntry( "bubbleboundsfx:ropeshoot", Sound.class );
@@ -187,6 +194,8 @@ public class PlatformController extends WorldController implements ContactListen
 		objects.clear();
 		bubbles.clear();
 		enemies.clear();
+		lucens.clear();
+		poisons.clear();
 		addQueue.clear();
 
 		
@@ -235,7 +244,6 @@ public class PlatformController extends WorldController implements ContactListen
 		goalDoor.isGoal = true;
 		addObject(goalDoor);
 		for (int i = 0; i < gravityZoneList.size(); i++) {
-
 			Zone gravZone = gravityZoneList.get(i);
 			gravZone.scale = scale;
 			addZone(gravZone);
@@ -287,23 +295,8 @@ public class PlatformController extends WorldController implements ContactListen
 //			addQueuedObject(enemy); //idk dif between add queued vs add
 		}
 
-		PoisonGas gas = new PoisonGas(6f,1f);
-		gas.setDrawScale(scale);
-		gas.setTexture(poisonTexture);
-		addObject(gas);
-		PoisonGas gas2 = new PoisonGas(7f, 1f);
-		gas2.setDrawScale(scale);
-		gas2.setTexture(poisonTexture);
-		addObject(gas2);
-		PoisonGas gas3 = new PoisonGas(6f, 2f);
-		gas3.setDrawScale(scale);
-		gas3.setTexture(poisonTexture);
-		addObject(gas3);
-		PoisonGas gas4 = new PoisonGas(7f, 2f);
-		gas4.setDrawScale(scale);
-		gas4.setTexture(poisonTexture);
-		addObject(gas4);
 
+		createLucenGlaze(12, 8);
 
 
 
@@ -335,6 +328,30 @@ public class PlatformController extends WorldController implements ContactListen
 		// System.out.println("change");
 
 		volume = constants.getFloat("volume", 1.0f);
+	}
+
+	public void createPoisonGas(float x, float y, boolean fade){
+		PoisonGas gas = new PoisonGas(x,y);
+		gas.setFade(fade);
+		gas.setDrawScale(scale);
+		gas.setTexture(poisonTexture);
+		addObject(gas);
+		poisons.add(gas);
+	}
+
+	public void createLucenGlaze(float x, float y){ //takes in coords of lucenglaze itself(will adjust for sensor automatically)
+		LucenglazeSensor lgs = new LucenglazeSensor(x, y);
+		lgs.setLucen(createLucenObject(x, y));
+		lgs.setDrawScale(scale);
+		addObject(lgs);
+		lucens.add(lgs);
+	}
+	public Lucenglaze createLucenObject(float x, float y){ //called by prev
+		Lucenglaze lg = new Lucenglaze(x, y);
+		lg.setDrawScale(scale);
+		lg.setTexture(lucenTexture);
+		addObject(lg);
+		return lg;
 	}
 
 	public Bubble spawnBubble(Vector2 v){
@@ -407,7 +424,33 @@ public class PlatformController extends WorldController implements ContactListen
 		updateCamera(avatar.getX()*scale.x, avatar.getY()*scale.y);
 		updateObjectGravs();
 		for(Enemy e : enemies){e.update();}
+		updateLucens();
+		updatePoisons();
 		updateAvatar();
+	}
+
+	private void updateLucens(){
+		for(LucenglazeSensor l : lucens) {
+			List<Vector2> list = l.update();
+			if(list != null){
+				for(int i = 0; i < list.size(); i++){
+					createPoisonGas(list.get(i).x, list.get(i).y, true);
+				}
+			}
+		}
+	}
+
+	private void updatePoisons(){
+
+		for(int i = 0; i < poisons.size(); i++){
+			if(poisons.get(i) == null){
+				continue;
+			}
+			poisons.get(i).update();
+			if(poisons.get(i).faded){
+				poisons.get(i).markRemoved(true);
+			}
+		}
 	}
 
 	private void updateBubbles(){
@@ -715,8 +758,9 @@ public class PlatformController extends WorldController implements ContactListen
 //				System.out.println("here");
 //				System.out.println("BD1: " + bd1.getName());
 //				System.out.println("BD2: " + bd2.getName());
-				printnum++;
-				System.out.print("PRINT NUM: " + printnum + "\navatar: " + avatar + "\navtarSensorName: " + avatar.getSensorName() +"\n FD1: " + fd1 + "\n fd2: " + fd2 + "\n bd1N: " + bd1 + " \n bd2: " + bd2 +"\n bd1.name: " + bd1.getName() + "\n bd2 name: " + bd2.getName() + "\n");
+				//printnum++;
+				//System.out.print("PRINT NUM: " + printnum + "\navatar: " + avatar + "\navtarSensorName: " + avatar.getSensorName() +"\n FD1: " + fd1 + "\n fd2: " + fd2 + "\n bd1N: " + bd1 + " \n bd2: " + bd2 +"\n bd1.name: " + bd1.getName() + "\n bd2 name: " + bd2.getName() + "\n");
+
 
 				avatar.setGrounded(true);
 				sensorFixtures.add(avatar == bd1 ? fix2 : fix1); // Could have more than one ground
@@ -734,6 +778,12 @@ public class PlatformController extends WorldController implements ContactListen
 				if(avatar.gas > 0){
 					avatar.setInGas(true);
 				}
+			}
+
+			if ((bd1 == avatar && bd2.getName().equals("lucenglazesensor")) ){
+				((LucenglazeSensor) bd2).activate();
+			}else if((bd1.getName().equals("lucenglazesensor") && bd2 == avatar)){
+				((LucenglazeSensor) bd1).activate();
 			}
 
 		} catch (Exception e) {
