@@ -54,6 +54,8 @@ public class Timer {
         hasFinished = false;
     }
 
+    //CHANGING SOMETHING RANDOM SO THAT A PULL REQUEST POPS UP BECAUSE GITHUB IS BEING A DUMMY!
+
     public boolean hasFinished(){
         return hasFinished;
     }
