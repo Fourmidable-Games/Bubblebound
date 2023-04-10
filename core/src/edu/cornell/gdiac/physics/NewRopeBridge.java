@@ -191,7 +191,9 @@ public class NewRopeBridge extends ComplexObstacle {
 
 		Vector2 anchor1 = new Vector2();
 		Vector2 anchor2 = new Vector2(avatarCapsule.getWidth()/2,0);
-
+		Vector2 anchor22 = new Vector2(-linksize / 2, 0);
+		Vector2 pos = bodies.get(0).getPosition();
+		pos.x -= linksize / 2;
 		// Definition for a revolute joint and distance joint
 		DistanceJointDef jointDefDist = new DistanceJointDef();
 		// System.out.println(jointDefDist.frequencyHz);
@@ -232,6 +234,14 @@ public class NewRopeBridge extends ComplexObstacle {
 		joint = world.createJoint(jointDefDist);
 		joints.add(joint);
 
+		jointDef.bodyA = bodies.get(0).getBody();
+		jointDef.bodyB = avatar;
+		// System.out.println(bubble);
+		jointDef.localAnchorA.set(anchor22);
+		jointDef.localAnchorB.set(anchor1);
+		jointDef.collideConnected = false;
+		joint = world.createJoint(jointDef);
+		joints.add(joint);
 
 		jointDefDist.localAnchorB.set(new Vector2());
 
@@ -315,6 +325,35 @@ public class NewRopeBridge extends ComplexObstacle {
 			// System.out.println(bubble);
 			jointDef.localAnchorA.set(anchor1);
 			jointDef.localAnchorB.set(anchor2);
+			jointDef.collideConnected = false;
+			joint = world.createJoint(jointDef);
+			joints.add(joint);
+		}
+
+		anchor1.x = linksize / 2;
+		for (int ii = 0; ii < bodies.size-1; ii++) {
+			jointDef.bodyA = bodies.get(ii).getBody();
+			jointDef.bodyB = bodies.get(ii + 1).getBody();
+			jointDef.localAnchorA.set(anchor1);
+			jointDef.localAnchorB.set(anchor22);
+			jointDef.collideConnected = false;
+			joint = world.createJoint(jointDef);
+			joints.add(joint);
+			//#region INSERT CODE HERE
+			// Look at what we did above
+
+			//#endregion
+		}
+
+		if(bubble != null) {
+			// Final joint
+			anchor2.x = 0;
+			anchor2.y = 0;
+			jointDef.bodyA = last;
+			jointDef.bodyB = bubble;
+			// System.out.println(bubble);
+			jointDef.localAnchorA.set(anchor1);
+			jointDef.localAnchorB.set(anchor22);
 			jointDef.collideConnected = false;
 			joint = world.createJoint(jointDef);
 			joints.add(joint);
