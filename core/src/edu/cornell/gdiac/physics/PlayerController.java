@@ -53,7 +53,7 @@ public class PlayerController {
     /** Whether we are actively invincible */
     public boolean isInvincible = false;
 
-    public int invincibletimer = 30;
+    public Timer invincibletimer = new Timer(50);
 
     /** Whether we are actively grappling */
     private boolean isFacingRight;
@@ -142,7 +142,7 @@ public class PlayerController {
         isShooting = false;
         isJumping = false;
 
-        invincibletimer = 50;
+        invincibletimer = new Timer(50);
         isFacingRight = true;
 
     }
@@ -161,19 +161,17 @@ public class PlayerController {
             shootCooldown = Math.max(0, shootCooldown - 1);
         }
         if(isInvincible){
-            invincibletimer--;
-            if(invincibletimer <= 0){
-                isInvincible = false;
-                invincibletimer = 50;
+            invincibletimer.update();
+            if(invincibletimer.hasFinished()){
+                invincibletimer.reset();
             }
         }
     }
 
     public void hurt(){
-        if(isInvincible) {
-
+        if(!isInvincible) {
+            health--;
         }
-        health--;
     }
 
 

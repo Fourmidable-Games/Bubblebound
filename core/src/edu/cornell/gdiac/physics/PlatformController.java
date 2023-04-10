@@ -89,10 +89,7 @@ public class PlatformController extends WorldController implements ContactListen
 
 	private int bubbles_left = 4;
 
-	private int bubble_regen_timer_max = 100;
-
-	private  int bubble_regen_timer = bubble_regen_timer_max;
-
+	private Timer bubble_regen_timer = new Timer(100);
 
 
 	/** Mark set to handle more sophisticated collision callbacks */
@@ -161,7 +158,7 @@ public class PlatformController extends WorldController implements ContactListen
 	 */
 	public void reset() {
 		bubbles_left = BUBBLE_LIMIT;
-		bubble_regen_timer = bubble_regen_timer_max;
+		bubble_regen_timer.reset();
 		updateBubbleCount(bubbles_left);
 		Vector2 gravity = new Vector2(world.getGravity() );
 		zones.clear();
@@ -510,18 +507,18 @@ public class PlatformController extends WorldController implements ContactListen
 		if(InputController.getInstance().isFiniteBubbles()){
 //			System.out.println("Grounded: " + avatar.isGrounded());
 			if(avatar.isGrounded() && InputController.getInstance().isReloadBubblesOnGround()){
-				if(bubble_regen_timer <= 0 && bubbles_left < BUBBLE_LIMIT){
+				if(bubble_regen_timer.hasFinished() && bubbles_left < BUBBLE_LIMIT){
 					bubbles_left++;
 					updateBubbleCount(bubbles_left);
-					bubble_regen_timer = bubble_regen_timer_max;
+					bubble_regen_timer.reset();
 				}
 			}else{
-				bubble_regen_timer = bubble_regen_timer_max;
+				bubble_regen_timer.reset();
 			}
 		}else{
 			bubbles_left = BUBBLE_LIMIT;
 		}
-		bubble_regen_timer--;
+		bubble_regen_timer.update();
 		//System.out.println("Finite Bubbles?: " + InputController.getInstance().isFiniteBubbles());
 		//System.out.println("Bubbles: " + bubbles_left);
 		//System.out.println("Regen Bubbles?: " + InputController.getInstance().isReloadBubblesOnGround());
@@ -629,7 +626,6 @@ public class PlatformController extends WorldController implements ContactListen
 
 	public void destructRope(Obstacle rope) {
 		rope.markRemoved(true);
-//		avatar.setLinearVelocity(avatar.getLinearVelocity().scl(ROPE_LAUNCH));
 		avatar.setLinearVelocity(new Vector2(avatar.getLinearVelocity().scl(ROPE_LAUNCH_SPEED.x).x,avatar.getLinearVelocity().scl(ROPE_LAUNCH_SPEED.y).y));
 		rope = null;
 		//avatar.setGrappling(false);

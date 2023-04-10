@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.physics.box2d.*;
 
 import com.badlogic.gdx.utils.JsonValue;
+import com.sun.org.apache.bcel.internal.generic.POP;
 import edu.cornell.gdiac.physics.*;
 import edu.cornell.gdiac.physics.obstacle.*;
 
@@ -13,13 +14,13 @@ public class Bubble extends WheelObstacle{
         FLOATING
     }
     private static int last_used_id=-1;
+
+    private Timer pop_timer;
     private final int POP_TIME = 400;
     private BubbleType bubbleType;
    private int id;
 
     private boolean isGrappled;
-
-    private int pop_timer;
 
 
     public Bubble(Vector2 location, float radius, BubbleType type){
@@ -27,16 +28,16 @@ public class Bubble extends WheelObstacle{
         super(location.x,location.y,radius);
         bubbleType = type;
         if(type == BubbleType.FLOATING){
-            pop_timer = POP_TIME;
+            pop_timer = new Timer(POP_TIME);
         }else{
-            pop_timer = -1;
+            pop_timer = new Timer(POP_TIME, true);
         }
         id = last_used_id + 1;
         last_used_id++;
     }
 
     public boolean isPopped(){
-        return pop_timer == 0;
+        return pop_timer.hasFinished();
     }
 
     public BubbleType getBubbleType(){
@@ -57,7 +58,7 @@ public class Bubble extends WheelObstacle{
 
     public void update(){
         if(bubbleType == BubbleType.FLOATING){
-            pop_timer--;
+            pop_timer.update();
         }
     }
     @Override
@@ -65,7 +66,7 @@ public class Bubble extends WheelObstacle{
         if (texture != null && getD()) {
             float alpha =1;
             if(bubbleType == BubbleType.FLOATING) {
-                alpha = 1 - (((float) POP_TIME - (float) pop_timer) / ((float) POP_TIME));
+                alpha = 1 - (((float) pop_timer.getMaxTime() - (float) pop_timer.getTime()) / ((float) pop_timer.getMaxTime()));
             }
             Color gold = new Color(Color.GOLD);
             gold.a =alpha;
