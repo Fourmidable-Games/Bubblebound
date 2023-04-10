@@ -1,10 +1,10 @@
-package edu.cornell.gdiac.physics.obstacle;
+package edu.cornell.gdiac.bubblebound.obstacle;
 
 import java.util.*;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
-import edu.cornell.gdiac.physics.GameCanvas;
+import edu.cornell.gdiac.bubblebound.GameCanvas;
 
 public class LucenglazeSensor extends BoxObstacle{
 

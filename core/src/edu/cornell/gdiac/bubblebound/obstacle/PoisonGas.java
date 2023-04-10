@@ -1,28 +1,19 @@
-package edu.cornell.gdiac.physics.obstacle;
+package edu.cornell.gdiac.bubblebound.obstacle;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
-import edu.cornell.gdiac.physics.GameCanvas;
+import edu.cornell.gdiac.bubblebound.GameCanvas;
 
 public class PoisonGas extends BoxObstacle{
 
-<<<<<<< HEAD:core/src/edu/cornell/gdiac/bubblebound/obstacle/PoisonGas.java
-<<<<<<< HEAD:core/src/edu/cornell/gdiac/bubblebound/obstacle/PoisonGas.java
-
-=======
-=======
->>>>>>> e954a2829f47cfd9084f28496c01c8ad5b7205bc:core/src/edu/cornell/gdiac/physics/obstacle/PoisonGas.java
     public static float width = 1f;
     public static float height = 1f;
     public int timer = 0;
     public boolean faded = false;
-<<<<<<< HEAD:core/src/edu/cornell/gdiac/bubblebound/obstacle/PoisonGas.java
->>>>>>> d51f487 (lucenglaze completed):core/src/edu/cornell/gdiac/physics/obstacle/PoisonGas.java
-=======
->>>>>>> e954a2829f47cfd9084f28496c01c8ad5b7205bc:core/src/edu/cornell/gdiac/physics/obstacle/PoisonGas.java
+
 
 
 

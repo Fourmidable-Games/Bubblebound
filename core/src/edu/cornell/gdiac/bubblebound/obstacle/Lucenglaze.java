@@ -1,4 +1,4 @@
-package edu.cornell.gdiac.physics.obstacle;
+package edu.cornell.gdiac.bubblebound.obstacle;
 
 
 import com.badlogic.gdx.physics.box2d.BodyDef;

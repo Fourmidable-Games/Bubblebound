@@ -182,9 +182,6 @@ public class PlatformController implements ContactListener, Screen {
 
 	private List<PoisonGas> poisons = new ArrayList();
 
-	private List<LucenglazeSensor> lucens = new ArrayList<>();
-
-	private List<PoisonGas> poisons = new ArrayList();
 
 	/**
 	 * Creates and initialize a new instance of the platformer game
@@ -844,13 +841,14 @@ public class PlatformController implements ContactListener, Screen {
 
 			if ((bd1 == avatar && (bd2.getName().equals("spike") || bd2.getName().equals("enemy"))) ||
 				(bd2 == avatar && (bd1.getName().equals("spike") || bd2.getName().equals("enemy")))){
-<<<<<<< HEAD:core/src/edu/cornell/gdiac/bubblebound/PlatformController.java
+
 				avatar.hurt();
 				life = avatar.getLife();
-=======
+
 				if(!avatar.isInvincible()) {
-					avatar.hurt();
-					if(bd1 == avatar){
+					//avatar.hurt();
+					if(bd1 == avatar){ //move it to player controller
+						//TODO look prev comment
 
 						Vector2 v2 = body1.getPosition().sub(body2.getPosition()).scl(15);
 						body1.applyLinearImpulse(new Vector2(v2.x, v2.y), body1.getPosition(), true);
@@ -861,7 +859,6 @@ public class PlatformController implements ContactListener, Screen {
 
 					}
 				}
->>>>>>> 7c5c9d6 (added poisongas enemy):core/src/edu/cornell/gdiac/physics/PlatformController.java
 			}
 
 			// See if we have landed on the ground.

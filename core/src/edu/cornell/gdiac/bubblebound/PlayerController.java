@@ -174,7 +174,7 @@ public class PlayerController {
             return;
         }
         health--;
-        setInvincible();
+        //setInvincible(true);
     }
 
 

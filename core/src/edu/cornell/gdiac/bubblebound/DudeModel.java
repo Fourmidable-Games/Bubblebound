@@ -455,35 +455,6 @@ public class DudeModel extends CapsuleObstacle {
 		}
 	}
 
-	public void setInGas(boolean b){
-		inGas = b;
-	}
-
-	public boolean displayBreath = false;
-
-	public void breathe(){
-		if(inGas){
-			if(breath > 0) {
-				breath--;
-			}
-			if(breath % 10 == 0) {
-				System.out.println("Breath: " + breath);
-			}
-			displayBreath = true;
-			if(breath == 0){
-				if(!invincible){
-					hurt();
-				}
-			}
-		}else{
-			if(breath < 50){
-				breath++;
-				displayBreath = true;
-			}else{
-				displayBreath = false;
-			}
-		}
-	}
 
 	/**
 	 * Draws the physics object.
