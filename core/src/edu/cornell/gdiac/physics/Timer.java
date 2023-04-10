@@ -1,4 +1,4 @@
-package edu.cornell.gdiac.physics;
+package edu.cornell.gdiac.bubblebound;
 
 public class Timer {
 
