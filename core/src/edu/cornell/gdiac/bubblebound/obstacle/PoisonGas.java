@@ -9,7 +9,14 @@ import edu.cornell.gdiac.physics.GameCanvas;
 
 public class PoisonGas extends BoxObstacle{
 
+<<<<<<< HEAD:core/src/edu/cornell/gdiac/bubblebound/obstacle/PoisonGas.java
 
+=======
+    public static float width = 1f;
+    public static float height = 1f;
+    public int timer = 0;
+    public boolean faded = false;
+>>>>>>> d51f487 (lucenglaze completed):core/src/edu/cornell/gdiac/physics/obstacle/PoisonGas.java
 
 
 
@@ -17,7 +24,19 @@ public class PoisonGas extends BoxObstacle{
         super(x, y, 1, 1);
         this.setSensor(true);
         this.setName("gas");
+        faded = false;
         setBodyType(BodyDef.BodyType.StaticBody);
+    }
+
+    public void setFade(boolean val){
+        timer = 200;
+    }
+
+    public void update(){
+        if(timer < 0){
+            faded = true;
+        }
+        timer--;
     }
 
     @Override
