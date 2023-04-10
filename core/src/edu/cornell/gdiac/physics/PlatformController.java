@@ -43,6 +43,8 @@ public class PlatformController extends WorldController implements ContactListen
 	protected FilmStrip dude;
 	protected Texture swingText;
 	protected FilmStrip swingStrip;
+	protected Texture idleText;
+	protected FilmStrip idleStrip;
 	/** Texture asset for the bullet */
 	private TextureRegion bulletTexture;
 	/** Texture asset for the bridge plank */
@@ -142,7 +144,9 @@ public class PlatformController extends WorldController implements ContactListen
 		dudeText = directory.getEntry("platform:dude3", Texture.class);
 		dude = new FilmStrip(dudeText, 1, 11, 11);
 		swingText = directory.getEntry("platform:dude4", Texture.class);
-		swingStrip = new FilmStrip(swingText, 1, 1, 1);
+		swingStrip = new FilmStrip(swingText, 1, 3, 3);
+		idleText = directory.getEntry("platform:dude5", Texture.class);
+		idleStrip = new FilmStrip(idleText, 1, 3, 3);
 		bulletTexture = new TextureRegion(directory.getEntry("platform:bullet",Texture.class));
 		bridgeTexture = new TextureRegion(directory.getEntry("platform:rope",Texture.class));
 		barrierTexture = new TextureRegion(directory.getEntry("platform:barrier",Texture.class));
@@ -581,7 +585,11 @@ public class PlatformController extends WorldController implements ContactListen
 		//System.out.println("after construct");
 
 		avatar.applyForce();
-		avatar.initialize(dude);
+		avatar.initialize(dude, swingStrip, idleStrip);
+		//System.out.println("AAAAA:" + avatar.getForce());
+		if(avatar.isGrappling()) avatar.setTexture(swingStrip);
+		//else if(avatar.isGrounded() && avatar.getForce() == 10.0) avatar.setTexture(idleStrip);
+		else avatar.setTexture(dude);
 		avatar.update(3f);
 		//bubblesleft = bubbles_left - 2;
 	}
