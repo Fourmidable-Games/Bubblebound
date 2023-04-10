@@ -46,6 +46,10 @@ public class PlatformController implements ContactListener, Screen {
 
 	private TextureRegion barrierTexture;
 
+	private TextureRegion poisonTexture;
+	private TextureRegion lucenTexture;
+
+
 	private final Vector2 ROPE_LAUNCH_SPEED = new Vector2(1.7f, 7);
 	private TextureRegion[] bodyTextures;
 	/** The jump sound.  We only want to play once. */
@@ -174,6 +178,11 @@ public class PlatformController implements ContactListener, Screen {
 	/** Reference to the goalDoor (for collision detection) */
 	private BoxObstacle goalDoor;
 
+	private List<LucenglazeSensor> lucens = new ArrayList<>();
+
+	private List<PoisonGas> poisons = new ArrayList();
+
+
 	/**
 	 * Creates and initialize a new instance of the platformer game
 	 *
@@ -217,6 +226,9 @@ public class PlatformController implements ContactListener, Screen {
 		bulletTexture = new TextureRegion(directory.getEntry("platform:bullet",Texture.class));
 		bridgeTexture = new TextureRegion(directory.getEntry("platform:rope",Texture.class));
 		barrierTexture = new TextureRegion(directory.getEntry("platform:barrier",Texture.class));
+		poisonTexture = new TextureRegion(directory.getEntry("platform:gas", Texture.class));
+		lucenTexture = new TextureRegion(directory.getEntry("platform:lucenglaze", Texture.class));
+
 		jumpSound = directory.getEntry( "bubbleboundsfx:jump", Sound.class );
 		fireSound = directory.getEntry( "bubbleboundsfx:ropeshoot", Sound.class );
 		plopSound = directory.getEntry( "bubbleboundsfx:plop", Sound.class );
@@ -271,6 +283,8 @@ public class PlatformController implements ContactListener, Screen {
 		objects.clear();
 		bubbles.clear();
 		enemies.clear();
+		lucens.clear();
+		poisons.clear();
 		addQueue.clear();
 
 		
@@ -371,6 +385,15 @@ public class PlatformController implements ContactListener, Screen {
 		}
 
 
+		createLucenGlaze(12, 8);
+
+		Spike sp = new Spike(1, 1, 1, 1);
+		sp.setBodyType(BodyDef.BodyType.StaticBody);
+		sp.setDrawScale(scale);
+		sp.setName("spike");
+		sp.setTexture(spikeTexture);
+		addObject(sp);
+
 
 
 		JsonValue defaults = constants.get("defaults");
@@ -401,6 +424,30 @@ public class PlatformController implements ContactListener, Screen {
 		// System.out.println("change");
 
 		volume = constants.getFloat("volume", 1.0f);
+	}
+
+	public void createPoisonGas(float x, float y, boolean fade){
+		PoisonGas gas = new PoisonGas(x,y);
+		gas.setFade(fade);
+		gas.setDrawScale(scale);
+		gas.setTexture(poisonTexture);
+		addObject(gas);
+		poisons.add(gas);
+	}
+
+	public void createLucenGlaze(float x, float y){ //takes in coords of lucenglaze itself(will adjust for sensor automatically)
+		LucenglazeSensor lgs = new LucenglazeSensor(x, y);
+		lgs.setLucen(createLucenObject(x, y));
+		lgs.setDrawScale(scale);
+		addObject(lgs);
+		lucens.add(lgs);
+	}
+	public Lucenglaze createLucenObject(float x, float y){ //called by prev
+		Lucenglaze lg = new Lucenglaze(x, y);
+		lg.setDrawScale(scale);
+		lg.setTexture(lucenTexture);
+		addObject(lg);
+		return lg;
 	}
 
 	public Bubble spawnBubble(Vector2 v){
@@ -473,7 +520,33 @@ public class PlatformController implements ContactListener, Screen {
 		updateCamera(avatar.getX()*scale.x, avatar.getY()*scale.y);
 		updateObjectGravs();
 		for(Enemy e : enemies){e.update();}
+		updateLucens();
+		updatePoisons();
 		updateAvatar();
+	}
+
+	private void updateLucens(){
+		for(LucenglazeSensor l : lucens) {
+			List<Vector2> list = l.update();
+			if(list != null){
+				for(int i = 0; i < list.size(); i++){
+					createPoisonGas(list.get(i).x, list.get(i).y, true);
+				}
+			}
+		}
+	}
+
+	private void updatePoisons(){
+
+		for(int i = 0; i < poisons.size(); i++){
+			if(poisons.get(i) == null){
+				continue;
+			}
+			poisons.get(i).update();
+			if(poisons.get(i).faded){
+				poisons.get(i).markRemoved(true);
+			}
+		}
 	}
 
 	private void updateBubbles(){
@@ -654,8 +727,9 @@ public class PlatformController implements ContactListener, Screen {
 		}
 		//System.out.println("after construct");
 
-
+		avatar.breathe(); //used for poison gas stuff
 		avatar.applyForce();
+		life = avatar.health / (float)avatar.MAX_HEALTH;//update health bar
 
 		//bubblesleft = bubbles_left - 2;
 
@@ -766,18 +840,29 @@ public class PlatformController implements ContactListener, Screen {
 
 			if ((bd1 == avatar && (bd2.getName().equals("spike") || bd2.getName().equals("enemy"))) ||
 				(bd2 == avatar && (bd1.getName().equals("spike") || bd2.getName().equals("enemy")))){
+
 				avatar.hurt();
 				life = avatar.getLife();
+
+				if(!avatar.isInvincible()) {
+					//avatar.hurt();
+					if(bd1 == avatar){ //move it to player controller
+						//TODO look prev comment
+
+						Vector2 v2 = body1.getPosition().sub(body2.getPosition()).scl(15);
+						body1.applyLinearImpulse(new Vector2(v2.x, v2.y), body1.getPosition(), true);
+
+					}else{
+						Vector2 v2 = body2.getPosition().sub(body1.getPosition()).scl(15);
+						body2.applyLinearImpulse(new Vector2(v2.x, v2.y), body2.getPosition(), true);
+
+					}
+				}
 			}
 
 			// See if we have landed on the ground.
 			if ((avatar.getSensorName().equals(fd2) && avatar != bd1 && !bd1.getName().equals("bubble") && !bd1.getName().contains("bridge") && !bd1.getName().equals("lucenglazesensor") && !bd1.getName().contains("gas")) ||
 				(avatar.getSensorName().equals(fd1) && avatar != bd2 && !bd2.getName().equals("bubble") && !bd2.getName().contains("bridge") && !bd2.getName().equals("lucenglazesensor") && !bd2.getName().contains("gas"))) {
-//				System.out.println("here");
-//				System.out.println("BD1: " + bd1.getName());
-//				System.out.println("BD2: " + bd2.getName());
-				printnum++;
-				//System.out.print("PRINT NUM: " + printnum + "\navatar: " + avatar + "\navtarSensorName: " + avatar.getSensorName() +"\n FD1: " + fd1 + "\n fd2: " + fd2 + "\n bd1N: " + bd1 + " \n bd2: " + bd2 +"\n bd1.name: " + bd1.getName() + "\n bd2 name: " + bd2.getName() + "\n");
 
 				avatar.setGrounded(true);
 				sensorFixtures.add(avatar == bd1 ? fix2 : fix1); // Could have more than one ground
@@ -798,6 +883,21 @@ public class PlatformController implements ContactListener, Screen {
 				(bd1 == goalDoor && bd2 == avatar)) {
 				setComplete(true);
 			}
+
+			if ((bd1 == avatar && bd2.getName().equals("gas")) || (bd1.getName().equals("gas") && bd2 == avatar)){
+				assert avatar.gas >= 0;
+				avatar.gas++;
+				if(avatar.gas > 0){
+					avatar.setInGas(true);
+				}
+			}
+
+			if ((bd1 == avatar && bd2.getName().equals("lucenglazesensor")) ){
+				((LucenglazeSensor) bd2).activate();
+			}else if((bd1.getName().equals("lucenglazesensor") && bd2 == avatar)){
+				((LucenglazeSensor) bd1).activate();
+			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -820,17 +920,33 @@ public class PlatformController implements ContactListener, Screen {
 
 		Object fd1 = fix1.getUserData();
 		Object fd2 = fix2.getUserData();
-		
+
 		Object bd1 = body1.getUserData();
 		Object bd2 = body2.getUserData();
 
 		if ((avatar.getSensorName().equals(fd2) && avatar != bd1) ||
-			(avatar.getSensorName().equals(fd1) && avatar != bd2)) {
+				(avatar.getSensorName().equals(fd1) && avatar != bd2)) {
 			sensorFixtures.remove(avatar == bd1 ? fix2 : fix1);
 			if (sensorFixtures.size == 0) {
 				avatar.setGrounded(false);
 			}
 		}
+		try {
+
+			Obstacle cd1 = (Obstacle) body1.getUserData(); //idk man
+			Obstacle cd2 = (Obstacle) body2.getUserData(); //copied begin contact but bd was already taken so used cd
+			if ((cd1 == avatar && cd2.getName().equals("gas")) || (cd1.getName().equals("gas") && cd2 == avatar)) {
+				avatar.gas--;
+				assert avatar.gas >= 0;
+				if(avatar.gas == 0){
+					avatar.setInGas(false);
+				}
+
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+
 	}
 
 
