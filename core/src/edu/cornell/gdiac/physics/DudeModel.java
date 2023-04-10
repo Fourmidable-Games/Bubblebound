@@ -18,6 +18,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.JsonValue;
 import edu.cornell.gdiac.physics.*;
 import edu.cornell.gdiac.physics.obstacle.*;
+import edu.cornell.gdiac.physics.PlayerController;
 
 /**
  * Player avatar for the plaform game.
@@ -26,6 +27,8 @@ import edu.cornell.gdiac.physics.obstacle.*;
  * no other subclasses that we might loop through.
  */
 public class DudeModel extends CapsuleObstacle {
+	private PlayerController playerController;
+
 	/** The initializing data (to avoid magic numbers) */
 	private final JsonValue data;
 
@@ -39,28 +42,12 @@ public class DudeModel extends CapsuleObstacle {
 	private final String sensorName;
 	/** The impulse for the character jump */
 	private final float jump_force;
-	/** Cooldown (in animation frames) for jumping */
-	private final int jumpLimit;
-	/** Cooldown (in animation frames) for shooting */
-	private final int shotLimit;
 
 	/** The current horizontal movement of the character */
 	private float   movement;
 	/** Which direction is the character facing */
 	private boolean faceRight;
-	/** How long until we can jump again */
-	private int jumpCooldown;
-	/** Whether we are actively jumping */
-	private boolean isJumping;
-	/** How long until we can shoot again */
-	private int shootCooldown;
-	/** Whether our feet are on the ground */
-	private boolean isGrounded;
-	/** Whether our feet were on the ground last frame */
-	private boolean wasGrounded = false;
-	/** Whether we are actively shooting */
-	private boolean isShooting;
-	private boolean isGrappling;
+
 	/** The physics shape of this object */
 
 	private float acceleration;
@@ -68,14 +55,6 @@ public class DudeModel extends CapsuleObstacle {
 	private int gravZone;
 	private PolygonShape sensorShape;
 
-
-	public static int MAX_HEALTH = 4;
-
-	public int health;
-
-	public boolean invincible = false;
-
-	public int invincibletimer = 30;
 	
 	/** Cache for internal force calculations */
 	private final Vector2 forceCache = new Vector2();
@@ -106,9 +85,9 @@ public class DudeModel extends CapsuleObstacle {
 		}
 		// Change facing if appropriate
 		if (movement < 0) {
-			faceRight = false;
+			playerController.setFacingRight(false);
 		} else if (movement > 0) {
-			faceRight = true;
+			playerController.setFacingRight(true);
 		}
 	}
 
@@ -127,10 +106,20 @@ public class DudeModel extends CapsuleObstacle {
 	 * @return true if the dude is actively firing.
 	 */
 	public boolean isShooting() {
-		return isShooting && shootCooldown <= 0;
+		return playerController.isShooting();
 	}
 
-	public boolean isGrappling(){return isGrappling;}
+	public int getHealth(){
+		return playerController.getHealth();
+	}
+
+	public int getMaxHealth(){
+		return playerController.getMaxHealth();
+	}
+
+
+
+	public boolean isGrappling(){return playerController.isGrappling();}
 	
 	/**
 	 * Sets whether the dude is actively firing.
@@ -138,10 +127,10 @@ public class DudeModel extends CapsuleObstacle {
 	 * @param value whether the dude is actively firing.
 	 */
 	public void setShooting(boolean value) {
-		isShooting = value; 
+		playerController.setShooting(value);
 	}
 
-	public void setGrappling(boolean value){isGrappling = value;}
+	public void setGrappling(boolean value){playerController.setGrappling(value);}
 
 	/**
 	 * Returns true if the dude is actively jumping.
@@ -149,7 +138,7 @@ public class DudeModel extends CapsuleObstacle {
 	 * @return true if the dude is actively jumping.
 	 */
 	public boolean isJumping() {
-		return isJumping && isGrounded && jumpCooldown <= 0;
+		return playerController.isJumping();
 	}
 
 	/**
@@ -157,7 +146,7 @@ public class DudeModel extends CapsuleObstacle {
 	 *
 	 * @return true if the dude just jumped.
 	 */
-	public boolean justJumped() { return isJumping && isGrounded; }
+	public boolean justJumped() { return playerController.justJumped(); }
 
 	/**
 	 * Sets whether the dude is actively jumping.
@@ -165,7 +154,7 @@ public class DudeModel extends CapsuleObstacle {
 	 * @param value whether the dude is actively jumping.
 	 */
 	public void setJumping(boolean value) {
-		isJumping = value; 
+		playerController.setJumping(value);
 	}
 
 	/**
@@ -174,7 +163,7 @@ public class DudeModel extends CapsuleObstacle {
 	 * @return true if the dude is on the ground.
 	 */
 	public boolean isGrounded() {
-		return isGrounded;
+		return playerController.isGrounded();
 	}
 
 	/**
@@ -183,9 +172,7 @@ public class DudeModel extends CapsuleObstacle {
 	 * @return true if the just landed on the ground
 	 */
 	public boolean justGrounded() {
-		boolean output = !isGrappling && !isJumping && isGrounded && !wasGrounded;
-		wasGrounded = isGrounded;
-		return output;
+		return playerController.justGrounded();
 	}
 	
 	/**
@@ -194,7 +181,7 @@ public class DudeModel extends CapsuleObstacle {
 	 * @param value whether the dude is on the ground.
 	 */
 	public void setGrounded(boolean value) {
-		isGrounded = value; 
+		playerController.setGrounded(value);
 	}
 
 	/**
@@ -245,7 +232,10 @@ public class DudeModel extends CapsuleObstacle {
 	 * @return true if this character is facing right
 	 */
 	public boolean isFacingRight() {
-		return faceRight;
+		return playerController.isFacingRight();
+	}
+	public void setFacingRight(boolean value) {
+		playerController.setFacingRight(value);
 	}
 
 	/**
@@ -268,26 +258,15 @@ public class DudeModel extends CapsuleObstacle {
         setDensity(data.getFloat("density", 0));
 		setFriction(data.getFloat("friction", 0));  /// HE WILL STICK TO WALLS IF YOU FORGET
 		setFixedRotation(true);
-		health = MAX_HEALTH;
 		maxspeed = data.getFloat("maxspeed", 0);
 		damping = data.getFloat("damping", 0);
 		force = data.getFloat("force", 0)*0.5f;
 		gravZone = 1;
-
 		jump_force = data.getFloat( "jump_force", 0 )*1f;
-		jumpLimit = data.getInt( "jump_cool", 0 );
-		shotLimit = data.getInt( "shot_cool", 0 );
 		sensorName = "DudeGroundSensor";
-		this.data = data;
 
-		// Gameplay attributes
-		isGrounded = false;
-		isShooting = false;
-		isJumping = false;
-		faceRight = true;
-		
-		shootCooldown = 0;
-		jumpCooldown = 0;
+		this.playerController = new PlayerController(data);
+		this.data = data;
 		setName("dude");
 	}
 
@@ -359,7 +338,7 @@ public class DudeModel extends CapsuleObstacle {
 		if (!isActive()) {
 			return;
 		}
-		if(isGrappling && !(getMovement() == 0)){
+		if(playerController.isGrappling() && !(getMovement() == 0)){
 			body.setGravityScale(grav * 1.5f);
 			damp = false;
 		}else{
@@ -367,7 +346,7 @@ public class DudeModel extends CapsuleObstacle {
 		}
 
 		// Don't want to be moving. Damp out player motion
-		if ((getMovement() == 0 || getVX() * getMovement() < 0)  && (!isGrappling) ){
+		if ((getMovement() == 0 || getVX() * getMovement() < 0)  && (!playerController.isGrappling()) ){
 			if(!damp){
 				forceCache.set(-getDamping()*getVX()*0.1f,0);
 			}else{
@@ -413,39 +392,24 @@ public class DudeModel extends CapsuleObstacle {
 	 * @param dt	Number of seconds since last animation frame
 	 */
 	public void update(float dt) {
-		// Apply cooldowns
-		if (isJumping()) {
-			jumpCooldown = jumpLimit;
-		} else {
-			jumpCooldown = Math.max(0, jumpCooldown - 1);
-		}
-
-		if (isShooting()) {
-			shootCooldown = shotLimit;
-		} else {
-			shootCooldown = Math.max(0, shootCooldown - 1);
-		}
-		if(invincible){
-			invincibletimer--;
-			if(invincibletimer <= 0){
-				invincible = false;
-			}
-		}
+		playerController.update();
 		super.update(dt);
 	}
 
 	public boolean isInvincible(){
-		return invincible;
+		return playerController.isInvincible();
 	}
 
 	public boolean isAlive(){
-		return health > 0;
+		return playerController.isAlive();
+	}
+
+	public float getLife(){
+		return playerController.getHealth() / (float)playerController.getMaxHealth();
 	}
 
 	public void hurt(){
-		health--;
-		invincible = true;
-		invincibletimer = 50;
+		playerController.hurt();
 	}
 
 	/**
@@ -460,7 +424,7 @@ public class DudeModel extends CapsuleObstacle {
 
 		float effect = faceRight ? -1.0f : 1.0f;;
 		float upside = (grav == -1) ? -1.0f : 1.0f;
-		if(invincible && invincibletimer % 2 == 0){
+		if(playerController.isInvincible){
 
 		}
 		else {
@@ -478,7 +442,7 @@ public class DudeModel extends CapsuleObstacle {
 		float x = getWidth()*drawScale.x/2;
 		float y = getHeight()*drawScale.y/2;
 		canvas.shape.setColor(Color.CORAL);
-		if(invincible && invincibletimer % 2 == 0){
+		if(playerController.isInvincible()){
 			return;
 		}else{
 			canvas.shape.rect(getX()*drawScale.x-x,getY()*drawScale.y-y,

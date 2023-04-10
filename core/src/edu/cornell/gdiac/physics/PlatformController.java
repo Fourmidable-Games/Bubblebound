@@ -678,13 +678,10 @@ public class PlatformController extends WorldController implements ContactListen
 		        removeBullet(bd2);
 			}
 
-
 			if ((bd1 == avatar && (bd2.getName().equals("spike") || bd2.getName().equals("enemy"))) ||
 				(bd2 == avatar && (bd1.getName().equals("spike") || bd2.getName().equals("enemy")))){
-				if(!avatar.isInvincible()) {
-					avatar.hurt();
-					life = avatar.health / (float)avatar.MAX_HEALTH;
-				}
+				avatar.hurt();
+				life = avatar.getLife();
 			}
 
 			// See if we have landed on the ground.
