@@ -395,7 +395,8 @@ public class DudeModel extends CapsuleObstacle {
 			body.applyLinearImpulse(forceCache,getPosition(),true);
 		}
 	}
-	
+
+
 	/**
 	 * Updates the object's physics state (NOT GAME LOGIC).
 	 *

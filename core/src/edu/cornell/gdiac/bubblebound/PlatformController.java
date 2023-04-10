@@ -386,6 +386,13 @@ public class PlatformController implements ContactListener, Screen {
 
 		createLucenGlaze(12, 8);
 
+		Spike sp = new Spike(1, 1, 1, 1);
+		sp.setBodyType(BodyDef.BodyType.StaticBody);
+		sp.setDrawScale(scale);
+		sp.setName("spike");
+		sp.setTexture(spikeTexture);
+		addObject(sp);
+
 
 
 		JsonValue defaults = constants.get("defaults");
@@ -839,7 +846,16 @@ public class PlatformController implements ContactListener, Screen {
 =======
 				if(!avatar.isInvincible()) {
 					avatar.hurt();
+					if(bd1 == avatar){
 
+						Vector2 v2 = body1.getPosition().sub(body2.getPosition()).scl(15);
+						body1.applyLinearImpulse(new Vector2(v2.x, v2.y), body1.getPosition(), true);
+
+					}else{
+						Vector2 v2 = body2.getPosition().sub(body1.getPosition()).scl(15);
+						body2.applyLinearImpulse(new Vector2(v2.x, v2.y), body2.getPosition(), true);
+
+					}
 				}
 >>>>>>> 7c5c9d6 (added poisongas enemy):core/src/edu/cornell/gdiac/physics/PlatformController.java
 			}
