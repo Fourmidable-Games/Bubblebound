@@ -458,8 +458,8 @@ public class PlatformController implements ContactListener, Screen {
 			bubbles_left--;
 		}
 		//System.out.println("SPAWNED BUBBLE!, BUBBLES LEFT: " + bubbles_left);
-		wo2.setName("Bubble" + (bubbles_left));
-		System.out.print("Timer set for bubble");
+		wo2.setName("bubble");
+		//System.out.print("Timer set for bubble");
 		wo2.setStatic(false);
 		wo2.setBodyType(BodyDef.BodyType.DynamicBody);
 		wo2.setDrawScale(scale);
@@ -559,11 +559,7 @@ public class PlatformController implements ContactListener, Screen {
 		for(int i = 0; i < bubbles.size(); i++){
 			Bubble b = bubbles.get(i);
 			b.update();
-			if(b.isPopped()){
-				if(b.isGrappled()){
-					destructRope(rope);
-					avatar.setGrappling(false);
-				}
+			if(b.timedOut()){
 				popBubble(b);
 				i--;
 			}
@@ -797,8 +793,11 @@ public class PlatformController implements ContactListener, Screen {
 	}
 
 	public void popBubble(Bubble bubble){
-		bubble.setActive(false);
-		bubble.stopDraw();
+		if(bubble.isGrappled()){
+			destructRope(rope);
+			avatar.setGrappling(false);
+		}
+		bubble.markRemoved(true);
 		bubbles.remove(bubble);
 		popSound.setVolume(popID, volume * 10f);
 		popID = playSound(popSound,popID,0.5f);
@@ -862,17 +861,21 @@ public class PlatformController implements ContactListener, Screen {
 			}
 
 			// See if we have landed on the ground.
-			if ((avatar.getSensorName().equals(fd2) && avatar != bd1 && !bd1.getName().contains("Bubble") && !bd1.getName().contains("bridge")) ||
-				(avatar.getSensorName().equals(fd1) && avatar != bd2 && !bd2.getName().contains("Bubble")&& !bd2.getName().contains("bridge"))) {
-//				System.out.println("here");
-//				System.out.println("BD1: " + bd1.getName());
-//				System.out.println("BD2: " + bd2.getName());
-				//printnum++;
-				//System.out.print("PRINT NUM: " + printnum + "\navatar: " + avatar + "\navtarSensorName: " + avatar.getSensorName() +"\n FD1: " + fd1 + "\n fd2: " + fd2 + "\n bd1N: " + bd1 + " \n bd2: " + bd2 +"\n bd1.name: " + bd1.getName() + "\n bd2 name: " + bd2.getName() + "\n");
-
+			if ((avatar.getSensorName().equals(fd2) && avatar != bd1 && !bd1.getName().equals("bubble") && !bd1.getName().contains("bridge") && !bd1.getName().equals("lucenglazesensor") && !bd1.getName().contains("gas")) ||
+				(avatar.getSensorName().equals(fd1) && avatar != bd2 && !bd2.getName().equals("bubble") && !bd2.getName().contains("bridge") && !bd2.getName().equals("lucenglazesensor") && !bd2.getName().contains("gas"))) {
 
 				avatar.setGrounded(true);
 				sensorFixtures.add(avatar == bd1 ? fix2 : fix1); // Could have more than one ground
+			}
+
+			if ((bd1.getName().equals("bubble") && (bd2.getName().equals("enemy") || bd2.getName().equals("spike"))) ||
+					(bd2.getName().equals("bubble") && (bd1.getName().equals("enemy") || bd1.getName().equals("spike")))){
+				if(bd1.getName().equals("bubble")){
+					popBubble((Bubble) bd1);
+
+				}else{
+					popBubble((Bubble) bd2);
+				}
 			}
 			
 			// Check for win condition

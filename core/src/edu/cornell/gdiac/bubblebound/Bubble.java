@@ -33,7 +33,8 @@ public class Bubble extends WheelObstacle {
         last_used_id++;
     }
 
-    public boolean isPopped(){
+
+    public boolean timedOut(){
         return pop_timer == 0;
     }
 
