@@ -58,6 +58,8 @@
         "rocket:crate02": "rocket/crate02.png",
         "platform:dude2":  "platform/enemy.png",
         "platform:dude":  "platform/dude.png",
+        "platform:dude3":  "platform/dude3.png",
+        "platform:dude4":  "platform/dude4.png",
         "platform:spike":  "platform/spike.png",
         "platform:rope":  "platform/ropebridge.png",
         "platform:barrier": "platform/barrier.png",

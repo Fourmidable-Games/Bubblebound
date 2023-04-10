@@ -39,6 +39,10 @@ import java.util.*;
 public class PlatformController extends WorldController implements ContactListener {
 	/** Texture asset for character avatar */
 	private TextureRegion avatarTexture;
+	protected Texture dudeText;
+	protected FilmStrip dude;
+	protected Texture swingText;
+	protected FilmStrip swingStrip;
 	/** Texture asset for the bullet */
 	private TextureRegion bulletTexture;
 	/** Texture asset for the bridge plank */
@@ -95,8 +99,6 @@ public class PlatformController extends WorldController implements ContactListen
 
 	private  int bubble_regen_timer = bubble_regen_timer_max;
 
-
-
 	/** Mark set to handle more sophisticated collision callbacks */
 	protected ObjectSet<Fixture> sensorFixtures;
 
@@ -137,6 +139,10 @@ public class PlatformController extends WorldController implements ContactListen
 	 */
 	public void gatherAssets(AssetDirectory directory) {
 		avatarTexture  = new TextureRegion(directory.getEntry("platform:dude",Texture.class));
+		dudeText = directory.getEntry("platform:dude3", Texture.class);
+		dude = new FilmStrip(dudeText, 1, 11, 11);
+		swingText = directory.getEntry("platform:dude4", Texture.class);
+		swingStrip = new FilmStrip(swingText, 1, 1, 1);
 		bulletTexture = new TextureRegion(directory.getEntry("platform:bullet",Texture.class));
 		bridgeTexture = new TextureRegion(directory.getEntry("platform:rope",Texture.class));
 		barrierTexture = new TextureRegion(directory.getEntry("platform:barrier",Texture.class));
@@ -219,9 +225,7 @@ public class PlatformController extends WorldController implements ContactListen
 		// Add level goal
 		float dwidth  = goalTile.getRegionWidth()/scale.x;
 		float dheight = goalTile.getRegionHeight()/scale.y;
-		//Vector2 scale2 = new Vector2(16f, 16f);
-		//scale2.x /= 2;
-		//scale2.y /= 2;
+
 
 		goalDoor.setBodyType(BodyDef.BodyType.StaticBody);
 		goalDoor.setSensor(true);
@@ -292,13 +296,12 @@ public class PlatformController extends WorldController implements ContactListen
 //		dwidth  = avatarTexture.getRegionWidth()/scale.x;
 //		dheight = avatarTexture.getRegionHeight()/scale.y;
 
-
 		dwidth  = avatarTexture.getRegionWidth()/scale.x;
 		dheight = avatarTexture.getRegionHeight()/scale.y;
 
 		avatar = new DudeModel(constants.get("dude"), dwidth, dheight);
 		avatar.setDrawScale(scale);
-		avatar.setTexture(avatarTexture);
+		avatar.setTexture(dude);
 		avatar.setName("avatar");
 		addObject(avatar);
 
@@ -478,6 +481,7 @@ public class PlatformController extends WorldController implements ContactListen
 		Bubble closest = bubbles.get(0);
 		float min = Float.MAX_VALUE;
 		for(int i = 0; i < bubbles.size(); i++){
+
 			Bubble b = bubbles.get(i);
 			if(b.statc){
 				b.setLinearVelocity(new Vector2(0, 0));
@@ -576,11 +580,10 @@ public class PlatformController extends WorldController implements ContactListen
 		}
 		//System.out.println("after construct");
 
-
 		avatar.applyForce();
-
+		avatar.initialize(dude);
+		avatar.update(3f);
 		//bubblesleft = bubbles_left - 2;
-
 	}
 
 	private void setSounds(){

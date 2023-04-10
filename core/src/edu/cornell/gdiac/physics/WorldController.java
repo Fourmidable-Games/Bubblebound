@@ -92,7 +92,7 @@ public abstract class WorldController implements Screen {
 	/** Reference to the game canvas */
 	protected GameCanvas canvas;
 	/** All the objects in the world. */
-	protected PooledList<Obstacle> objects  = new PooledList<Obstacle>();
+	protected PooledList<Obstacle> objects = new PooledList<Obstacle>();
 	/** Queue for adding objects */
 	protected PooledList<Obstacle> addQueue = new PooledList<Obstacle>();
 	/** Listener that will update the player mode when we are done */
@@ -537,8 +537,6 @@ public abstract class WorldController implements Screen {
 		canvas.end();
 
 		//TODO: parallaxing and stuff kinda relies on pixel size not ideal for diff screen sizes
-
-
 		canvas.begin();
 		for(Zone z: zones){ //draws the backgrounds of the zones
 			z.drawBackground(background2, canvas, cameraCoords.x);
@@ -557,7 +555,6 @@ public abstract class WorldController implements Screen {
 			//obj.sdraw(canvas);
 			canvas.resetColor();
 		}
-
 		canvas.end();
 //		canvas.shape.end();
 		//canvas.shape.setProjectionMatrix(canvas.camera.combined);
@@ -568,9 +565,6 @@ public abstract class WorldController implements Screen {
 		}
 		canvas.shape.end();
 		// Draw life bar
-
-
-
 		canvas.shape.setProjectionMatrix(canvas.camera.combined);
 		canvas.shape.begin(ShapeRenderer.ShapeType.Filled);
 		 canvas.shape.setColor(Color.RED);
@@ -586,7 +580,6 @@ public abstract class WorldController implements Screen {
 
 		// Draw energy bar
 		//TODO: implement energy bar usage
-
 
 		// Draw energy bar label
 		displayFont.setColor(Color.WHITE);
@@ -604,7 +597,7 @@ public abstract class WorldController implements Screen {
 			}
 			canvas.endDebug();
 		}
-		
+
 		// Final message
 		if (complete && !failed) {
 			displayFont.setColor(Color.YELLOW);

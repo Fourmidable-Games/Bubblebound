@@ -18,6 +18,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.JsonValue;
 import edu.cornell.gdiac.physics.*;
 import edu.cornell.gdiac.physics.obstacle.*;
+import edu.cornell.gdiac.util.FilmStrip;
 
 /**
  * Player avatar for the plaform game.
@@ -79,7 +80,8 @@ public class DudeModel extends CapsuleObstacle {
 	
 	/** Cache for internal force calculations */
 	private final Vector2 forceCache = new Vector2();
-
+	private boolean animate = true;
+	private FilmStrip filmstrip;
 
 	/**
 	 * Returns left/right movement of this character.
@@ -91,7 +93,16 @@ public class DudeModel extends CapsuleObstacle {
 	public float getMovement() {
 		return movement;
 	}
-	
+	protected int ii = 0;
+	protected int counter1 = 0;
+	protected final int delay1 = 6; // adjust this value to change the delay
+	public void initialize(FilmStrip f) {
+		filmstrip = f;
+		if (counter1 == 0) { // execute setFrame only when counter reaches 0
+			f.setFrame(ii++ % 11);
+		}
+		counter1 = (counter1 + 1) % delay1; // increment counter and reset to 0 when it reaches delay
+	}
 	/**
 	 * Sets left/right movement of this character.
 	 * 
@@ -412,7 +423,23 @@ public class DudeModel extends CapsuleObstacle {
 	 *
 	 * @param dt	Number of seconds since last animation frame
 	 */
+	protected int i;
+	protected int counter = 0;
+	protected final int delay = 50; // adjust this value to change the delay
 	public void update(float dt) {
+		if (animate) {
+			if (filmstrip != null) {
+				if (counter == 0) { // execute setFrame only when counter reaches 0
+					int next = (i++) % 11;
+					filmstrip.setFrame(next);
+				}
+				counter = (counter + 1) % delay; // increment counter and reset to 0 when it reaches delay
+			}
+		} else {
+			if (filmstrip != null) {
+				filmstrip.setFrame(0);
+			}
+		}
 		// Apply cooldowns
 		if (isJumping()) {
 			jumpCooldown = jumpLimit;
