@@ -447,7 +447,6 @@ public class PlatformController extends WorldController implements ContactListen
 			}
 			return earthTile;
 	}
-
 	private void updateAvatar(){
 		Vector2 placeLocation;
 		if(InputController.getInstance().isMouseControlls()){
@@ -588,7 +587,7 @@ public class PlatformController extends WorldController implements ContactListen
 		avatar.initialize(dude, swingStrip, idleStrip);
 		//System.out.println("AAAAA:" + avatar.getForce());
 		if(avatar.isGrappling()) avatar.setTexture(swingStrip);
-		//else if(avatar.isGrounded() && avatar.getForce() == 10.0) avatar.setTexture(idleStrip);
+		else if(avatar.isGrounded() && avatar.getMovement() == 0.0) avatar.setTexture(idleStrip);
 		else avatar.setTexture(dude);
 		avatar.update(3f);
 		//bubblesleft = bubbles_left - 2;
