@@ -55,6 +55,20 @@ public class DudeModel extends CapsuleObstacle {
 	private int gravZone;
 	private PolygonShape sensorShape;
 
+
+	public static int MAX_HEALTH = 4;
+
+	public int health;
+
+	public boolean invincible = false;
+
+	public int invincibletimer = 30;
+
+	public int breath = 50;
+
+	public boolean inGas = false;
+	public int gas = 0;
+
 	
 	/** Cache for internal force calculations */
 	private final Vector2 forceCache = new Vector2();
@@ -410,6 +424,36 @@ public class DudeModel extends CapsuleObstacle {
 
 	public void hurt(){
 		playerController.hurt();
+	}
+
+	public void setInGas(boolean b){
+		inGas = b;
+	}
+
+	public boolean displayBreath = false;
+
+	public void breathe(){
+		if(inGas){
+			if(breath > 0) {
+				breath--;
+			}
+			if(breath % 10 == 0) {
+				System.out.println("Breath: " + breath);
+			}
+			displayBreath = true;
+			if(breath == 0){
+				if(!invincible){
+					hurt();
+				}
+			}
+		}else{
+			if(breath < 50){
+				breath++;
+				displayBreath = true;
+			}else{
+				displayBreath = false;
+			}
+		}
 	}
 
 	/**

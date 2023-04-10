@@ -171,9 +171,10 @@ public class PlayerController {
 
     public void hurt(){
         if(isInvincible) {
-
+            return;
         }
         health--;
+        setInvincible();
     }
 
 

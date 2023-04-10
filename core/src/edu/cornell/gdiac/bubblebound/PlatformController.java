@@ -46,6 +46,8 @@ public class PlatformController implements ContactListener, Screen {
 
 	private TextureRegion barrierTexture;
 
+	private TextureRegion poisonTexture;
+
 	private final Vector2 ROPE_LAUNCH_SPEED = new Vector2(1.7f, 7);
 	private TextureRegion[] bodyTextures;
 	/** The jump sound.  We only want to play once. */
@@ -217,6 +219,8 @@ public class PlatformController implements ContactListener, Screen {
 		bulletTexture = new TextureRegion(directory.getEntry("platform:bullet",Texture.class));
 		bridgeTexture = new TextureRegion(directory.getEntry("platform:rope",Texture.class));
 		barrierTexture = new TextureRegion(directory.getEntry("platform:barrier",Texture.class));
+		poisonTexture = new TextureRegion(directory.getEntry("platform:gas", Texture.class));
+
 		jumpSound = directory.getEntry( "bubbleboundsfx:jump", Sound.class );
 		fireSound = directory.getEntry( "bubbleboundsfx:ropeshoot", Sound.class );
 		plopSound = directory.getEntry( "bubbleboundsfx:plop", Sound.class );
@@ -370,6 +374,23 @@ public class PlatformController implements ContactListener, Screen {
 //			enemies.add(enemy); CRASHES GAME
 //			addQueuedObject(enemy); //idk dif between add queued vs add
 		}
+
+		PoisonGas gas = new PoisonGas(6f,1f);
+		gas.setDrawScale(scale);
+		gas.setTexture(poisonTexture);
+		addObject(gas);
+		PoisonGas gas2 = new PoisonGas(7f, 1f);
+		gas2.setDrawScale(scale);
+		gas2.setTexture(poisonTexture);
+		addObject(gas2);
+		PoisonGas gas3 = new PoisonGas(6f, 2f);
+		gas3.setDrawScale(scale);
+		gas3.setTexture(poisonTexture);
+		addObject(gas3);
+		PoisonGas gas4 = new PoisonGas(7f, 2f);
+		gas4.setDrawScale(scale);
+		gas4.setTexture(poisonTexture);
+		addObject(gas4);
 
 
 
@@ -659,8 +680,9 @@ public class PlatformController implements ContactListener, Screen {
 		}
 		//System.out.println("after construct");
 
-
+		avatar.breathe(); //used for poison gas stuff
 		avatar.applyForce();
+		life = avatar.health / (float)avatar.MAX_HEALTH;//update health bar
 
 		//bubblesleft = bubbles_left - 2;
 
@@ -768,8 +790,15 @@ public class PlatformController implements ContactListener, Screen {
 
 			if ((bd1 == avatar && (bd2.getName().equals("spike") || bd2.getName().equals("enemy"))) ||
 				(bd2 == avatar && (bd1.getName().equals("spike") || bd2.getName().equals("enemy")))){
+<<<<<<< HEAD:core/src/edu/cornell/gdiac/bubblebound/PlatformController.java
 				avatar.hurt();
 				life = avatar.getLife();
+=======
+				if(!avatar.isInvincible()) {
+					avatar.hurt();
+
+				}
+>>>>>>> 7c5c9d6 (added poisongas enemy):core/src/edu/cornell/gdiac/physics/PlatformController.java
 			}
 
 			// See if we have landed on the ground.
@@ -790,6 +819,15 @@ public class PlatformController implements ContactListener, Screen {
 				(bd1 == goalDoor && bd2 == avatar)) {
 				setComplete(true);
 			}
+
+			if ((bd1 == avatar && bd2.getName().equals("gas")) || (bd1.getName().equals("gas") && bd2 == avatar)){
+				assert avatar.gas >= 0;
+				avatar.gas++;
+				if(avatar.gas > 0){
+					avatar.setInGas(true);
+				}
+			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -812,17 +850,33 @@ public class PlatformController implements ContactListener, Screen {
 
 		Object fd1 = fix1.getUserData();
 		Object fd2 = fix2.getUserData();
-		
+
 		Object bd1 = body1.getUserData();
 		Object bd2 = body2.getUserData();
 
 		if ((avatar.getSensorName().equals(fd2) && avatar != bd1) ||
-			(avatar.getSensorName().equals(fd1) && avatar != bd2)) {
+				(avatar.getSensorName().equals(fd1) && avatar != bd2)) {
 			sensorFixtures.remove(avatar == bd1 ? fix2 : fix1);
 			if (sensorFixtures.size == 0) {
 				avatar.setGrounded(false);
 			}
 		}
+		try {
+
+			Obstacle cd1 = (Obstacle) body1.getUserData(); //idk man
+			Obstacle cd2 = (Obstacle) body2.getUserData(); //copied begin contact but bd was already taken so used cd
+			if ((cd1 == avatar && cd2.getName().equals("gas")) || (cd1.getName().equals("gas") && cd2 == avatar)) {
+				avatar.gas--;
+				assert avatar.gas >= 0;
+				if(avatar.gas == 0){
+					avatar.setInGas(false);
+				}
+
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+
 	}
 
 
