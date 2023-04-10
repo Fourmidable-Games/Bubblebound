@@ -10,13 +10,19 @@ import edu.cornell.gdiac.physics.GameCanvas;
 public class PoisonGas extends BoxObstacle{
 
 <<<<<<< HEAD:core/src/edu/cornell/gdiac/bubblebound/obstacle/PoisonGas.java
+<<<<<<< HEAD:core/src/edu/cornell/gdiac/bubblebound/obstacle/PoisonGas.java
 
 =======
+=======
+>>>>>>> e954a2829f47cfd9084f28496c01c8ad5b7205bc:core/src/edu/cornell/gdiac/physics/obstacle/PoisonGas.java
     public static float width = 1f;
     public static float height = 1f;
     public int timer = 0;
     public boolean faded = false;
+<<<<<<< HEAD:core/src/edu/cornell/gdiac/bubblebound/obstacle/PoisonGas.java
 >>>>>>> d51f487 (lucenglaze completed):core/src/edu/cornell/gdiac/physics/obstacle/PoisonGas.java
+=======
+>>>>>>> e954a2829f47cfd9084f28496c01c8ad5b7205bc:core/src/edu/cornell/gdiac/physics/obstacle/PoisonGas.java
 
 
 

@@ -182,6 +182,10 @@ public class PlatformController implements ContactListener, Screen {
 
 	private List<PoisonGas> poisons = new ArrayList();
 
+	private List<LucenglazeSensor> lucens = new ArrayList<>();
+
+	private List<PoisonGas> poisons = new ArrayList();
+
 	/**
 	 * Creates and initialize a new instance of the platformer game
 	 *
