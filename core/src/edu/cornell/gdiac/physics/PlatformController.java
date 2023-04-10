@@ -303,7 +303,7 @@ public class PlatformController extends WorldController implements ContactListen
 		dwidth  = avatarTexture.getRegionWidth()/scale.x;
 		dheight = avatarTexture.getRegionHeight()/scale.y;
 
-		avatar = new DudeModel(constants.get("dude"), dwidth, dheight);
+		avatar = new DudeModel(constants.get("dude"), 1, 2);
 		avatar.setDrawScale(scale);
 		avatar.setTexture(dude);
 		avatar.setName("avatar");

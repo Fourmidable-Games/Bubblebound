@@ -133,7 +133,7 @@ public class RopeBridge extends ComplexObstacle {
 	protected boolean createJoints(World world) {
 		assert bodies.size > 0;
 		
-		Vector2 anchor1 = new Vector2(); 
+		Vector2 anchor1 = new Vector2();
 		Vector2 anchor2 = new Vector2(-linksize / 2, 0);
 		
 		// Create the leftmost anchor
@@ -141,22 +141,7 @@ public class RopeBridge extends ComplexObstacle {
 		// reasons to not add the anchor to the bodies list.
 		Vector2 pos = bodies.get(0).getPosition();
 		pos.x -= linksize / 2;
-//		start = new WheelObstacle(pos.x,pos.y,data.getFloat("pin_radius", 1));
-//		start.setName("pin0");
-//		start.setDensity(data.getFloat("density", 0));
-//		start.setBodyType(BodyDef.BodyType.StaticBody);
-//		start.activatePhysics(world);
-//
-//		// Definition for a revolute joint
-//		DistanceJointDef jointDef = new DistanceJointDef();
 		RevoluteJointDef jointDef = new RevoluteJointDef();
-//
-//		// Initial joint
-//		jointDef.bodyA = start.getBody();
-//		jointDef.bodyB = bodies.get(0).getBody();
-//		jointDef.localAnchorA.set(anchor1);
-//		jointDef.localAnchorB.set(anchor2);
-//		jointDef.collideConnected = false;
 		Joint joint;
 			jointDef.bodyA = bodies.get(0).getBody();
 			jointDef.bodyB = avatar;
@@ -166,11 +151,9 @@ public class RopeBridge extends ComplexObstacle {
 			jointDef.collideConnected = false;
 			joint = world.createJoint(jointDef);
 			joints.add(joint);
-//		Joint joint = world.createJoint(jointDef);
-//		joints.add(joint);
-
 		// Link the planks together
 		anchor1.x = linksize / 2;
+		DistanceJointDef distJointDef = new DistanceJointDef();
 		for (int ii = 0; ii < bodies.size-1; ii++) {
 			jointDef.bodyA = bodies.get(ii).getBody();
 			jointDef.bodyB = bodies.get(ii + 1).getBody();
@@ -181,7 +164,15 @@ public class RopeBridge extends ComplexObstacle {
 			joints.add(joint);
 			//#region INSERT CODE HERE
 			// Look at what we did above
-
+			Vector2 anchor11 = new Vector2(0,0);
+			Vector2 anchor22 = new Vector2(0, 0);
+			distJointDef.bodyA = bodies.get(ii).getBody();
+			distJointDef.bodyB = bodies.get(ii + 1).getBody();
+			distJointDef.localAnchorA.set(anchor11);
+			distJointDef.localAnchorB.set(anchor22);
+			distJointDef.collideConnected = false;
+			joint = world.createJoint(jointDef);
+			joints.add(joint);
 			//#endregion
 		}
 
