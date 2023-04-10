@@ -9,19 +9,14 @@
  * Based on original PhysicsDemo Lab by Don Holden, 2007
  * LibGDX version, 2/6/2015
  */
-package edu.cornell.gdiac.physics.obstacle;
+package edu.cornell.gdiac.bubblebound.obstacle;
 
-import com.badlogic.gdx.graphics.g2d.PolygonRegion;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.physics.box2d.*;
 
 //import com.sun.org.apache.xpath.internal.operations.Bool;
-import edu.cornell.gdiac.physics.*;  // For GameCanvas
-
-import static com.badlogic.gdx.graphics.Texture.TextureWrap.Repeat;
+import edu.cornell.gdiac.bubblebound.GameCanvas;
 
 /**
  * Box-shaped model to support collisions.

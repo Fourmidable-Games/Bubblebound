@@ -20,7 +20,7 @@
  * Based on original PhysicsDemo Lab by Don Holden, 2007
  * Updated asset version, 2/6/2021
  */
-package edu.cornell.gdiac.physics;
+package edu.cornell.gdiac.bubblebound;
 
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.audio.Sound;

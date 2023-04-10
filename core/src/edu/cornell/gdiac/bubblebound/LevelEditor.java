@@ -1,24 +1,15 @@
-package edu.cornell.gdiac.physics;
+package edu.cornell.gdiac.bubblebound;
 
-import java.io.File;
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
-import java.io.FileReader;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
-import edu.cornell.gdiac.assets.JsonValueParser;
-import edu.cornell.gdiac.physics.obstacle.BoxObstacle;
-import edu.cornell.gdiac.physics.obstacle.WheelObstacle;
-import edu.cornell.gdiac.physics.Bubble;
+import edu.cornell.gdiac.bubblebound.obstacle.BoxObstacle;
 //import sun.tools.jstat.Scale;
 
 public class LevelEditor {

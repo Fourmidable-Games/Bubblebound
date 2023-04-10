@@ -1,10 +1,10 @@
-package edu.cornell.gdiac.physics;
+package edu.cornell.gdiac.bubblebound;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
-import edu.cornell.gdiac.physics.obstacle.SimpleObstacle;
+import edu.cornell.gdiac.bubblebound.obstacle.SimpleObstacle;
 
 public class Spike extends SimpleObstacle {
 

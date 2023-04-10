@@ -1,12 +1,14 @@
-package edu.cornell.gdiac.physics;
+package edu.cornell.gdiac.bubblebound;
 
 import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.joints.*;
-import edu.cornell.gdiac.physics.obstacle.*;
+import edu.cornell.gdiac.bubblebound.obstacle.BoxObstacle;
+import edu.cornell.gdiac.bubblebound.obstacle.ComplexObstacle;
+import edu.cornell.gdiac.bubblebound.obstacle.*;
 
-public class Rope extends ComplexObstacle{
+public class Rope extends ComplexObstacle {
 
     Body body1;
     Body body2;

@@ -14,7 +14,7 @@ package edu.cornell.gdiac.physics.desktop;
 
 import edu.cornell.gdiac.backend.GDXApp;
 import edu.cornell.gdiac.backend.GDXAppSettings;
-import edu.cornell.gdiac.physics.GDXRoot;
+import edu.cornell.gdiac.bubblebound.GDXRoot;
 
 /**
  * The main class of the game.

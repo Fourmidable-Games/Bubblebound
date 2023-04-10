@@ -1,10 +1,7 @@
-package edu.cornell.gdiac.physics;
+package edu.cornell.gdiac.bubblebound;
 
 import com.badlogic.gdx.graphics.Color;
-import edu.cornell.gdiac.physics.GameCanvas;
-import edu.cornell.gdiac.physics.obstacle.CapsuleObstacle;
-
-import javax.swing.*;
+import edu.cornell.gdiac.bubblebound.obstacle.CapsuleObstacle;
 
 public class Enemy extends CapsuleObstacle { //capsule not working for some reasons
 
