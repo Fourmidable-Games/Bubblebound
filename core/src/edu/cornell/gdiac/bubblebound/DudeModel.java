@@ -19,6 +19,7 @@ import com.badlogic.gdx.utils.JsonValue;
 import edu.cornell.gdiac.bubblebound.*;
 import edu.cornell.gdiac.bubblebound.obstacle.*;
 import edu.cornell.gdiac.bubblebound.PlayerController;
+import edu.cornell.gdiac.util.FilmStrip;
 
 /**
  * Player avatar for the plaform game.
@@ -73,6 +74,10 @@ public class DudeModel extends CapsuleObstacle {
 	/** Cache for internal force calculations */
 	private final Vector2 forceCache = new Vector2();
 
+	private boolean animate = true;
+	private FilmStrip filmstrip;
+	private FilmStrip filmstrip_swing;
+	private FilmStrip filmstrip_idle;
 
 	/**
 	 * Returns left/right movement of this character.
@@ -84,7 +89,22 @@ public class DudeModel extends CapsuleObstacle {
 	public float getMovement() {
 		return movement;
 	}
-	
+
+	protected int ii = 0;
+	protected int counter1 = 0;
+	protected final int delay1 = 6; // adjust this value to change the delay
+	public void initialize(FilmStrip f, FilmStrip f1, FilmStrip f2) {
+		filmstrip = f;
+		filmstrip_swing = f1;
+		filmstrip_idle = f2;
+		if (counter1 == 0) { // execute setFrame only when counter reaches 0
+			f.setFrame(ii++ % 11);
+			f1.setFrame(ii++ % 3);
+			f2.setFrame(ii++ % 3);
+		}
+		counter1 = (counter1 + 1) % delay1; // increment counter and reset to 0 when it reaches delay
+	}
+
 	/**
 	 * Sets left/right movement of this character.
 	 * 
@@ -267,8 +287,8 @@ public class DudeModel extends CapsuleObstacle {
 		// The shrink factors fit the image to a tigher hitbox
 		super(	data.get("pos").getFloat(0),
 				data.get("pos").getFloat(1),
-				width*data.get("shrink").getFloat( 0 ),
-				height*data.get("shrink").getFloat( 1 ));
+				1,
+				2);
         setDensity(data.getFloat("density", 0));
 		setFriction(data.getFloat("friction", 0));  /// HE WILL STICK TO WALLS IF YOU FORGET
 		setFixedRotation(true);
@@ -334,7 +354,7 @@ public class DudeModel extends CapsuleObstacle {
 		Fixture sensorFixture2 = body.createFixture( sensorDef2 );
 		sensorFixture2.setUserData(getSensorName());
 
-
+		setMass(1f);
 		return true;
 	}
 
@@ -397,6 +417,9 @@ public class DudeModel extends CapsuleObstacle {
 	}
 
 
+	protected int i;
+	protected int counter = 0;
+	protected final int delay = 50; // adjust this value to change the delay
 	/**
 	 * Updates the object's physics state (NOT GAME LOGIC).
 	 *
@@ -406,6 +429,21 @@ public class DudeModel extends CapsuleObstacle {
 	 */
 	public void update(float dt) {
 		playerController.update();
+		if (animate) {
+			if (filmstrip != null) {
+				if (counter == 0) { // execute setFrame only when counter reaches 0
+					int next = (i++) % 11;
+					filmstrip.setFrame(next);
+					filmstrip_swing.setFrame(next % 3);
+					filmstrip_idle.setFrame(next % 3);
+				}
+				counter = (counter + 1) % delay; // increment counter and reset to 0 when it reaches delay
+			}
+		} else {
+			if (filmstrip != null) {
+				filmstrip.setFrame(0);
+			}
+		}
 		super.update(dt);
 	}
 
@@ -466,7 +504,7 @@ public class DudeModel extends CapsuleObstacle {
 		float x = getWidth()*drawScale.x / 2;
 		float y = getHeight()*drawScale.y / 2;
 
-		float effect = faceRight ? -1.0f : 1.0f;;
+		float effect = playerController.isFacingRight() ? -1.0f : 1.0f;;
 		float upside = (grav == -1) ? -1.0f : 1.0f;
 		if(playerController.isInvincible){
 

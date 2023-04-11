@@ -5,6 +5,7 @@
             "wrapU": "repeated",
             "wrapV": "repeated"
         },
+      "shared:bubble2": "shared/new_bubble.png",
       "shared:ice" : {
         "file":  "shared/icetile.png",
         "wrapU": "repeated",
@@ -55,8 +56,11 @@
         },
         "rocket:crate01": "rocket/crate01.png",
         "rocket:crate02": "rocket/crate02.png",
-        "platform:dude2":  "platform/enemy.gif",
+        "platform:dude2":  "platform/enemy.png",
         "platform:dude":  "platform/dude.png",
+        "platform:dude3":  "platform/dude3.png",
+        "platform:dude4":  "platform/dude4.png",
+        "platform:dude5":  "platform/dude5.png",
         "platform:spike":  "platform/spike.png",
         "platform:rope":  "platform/ropebridge.png",
         "platform:barrier": "platform/barrier.png",

@@ -5,7 +5,7 @@
  * You have to implement the createJoints() method to stick in all of the
  * joints between objects.
  *
- * This is one of the files that you are expected to modify. Please limit changes to 
+ * This is one of the files that you are expected to modify. Please limit changes to
  * the regions that say INSERT CODE HERE.
  *
  * Author: Walker M. White
@@ -18,9 +18,9 @@ import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.joints.*;
+import com.badlogic.gdx.graphics.*;
 
 import com.badlogic.gdx.utils.JsonValue;
-import edu.cornell.gdiac.bubblebound.obstacle.*;
 import edu.cornell.gdiac.bubblebound.obstacle.*;
 
 /**
@@ -49,81 +49,88 @@ public class RopeBridge extends ComplexObstacle {
 	/** The spacing between each link */
 	protected float spacing = 0.0f;
 
+	protected Vector2 anchor3;
+
 	Body bubble;
 	Body avatar;
+	CapsuleObstacle avatarCapsule;
 
 	/**
 	 * Creates a new rope bridge with the given physics data
 	 *
-	 * This bridge is straight horizontal. The coordinates given are the 
+	 * This bridge is straight horizontal. The coordinates given are the
 	 * position of the leftmost anchor.
 	 *
 	 * @param data  	The physics constants for this rope bridge
 	 * @param lwidth	The plank length
 	 * @param lheight	The bridge thickness
 	 */
-	public RopeBridge(JsonValue data, float lwidth, float lheight, Body b, Body a) {
+	public RopeBridge(JsonValue data, float lwidth, float lheight, Body b, CapsuleObstacle a) {
 		//super(data.get("pos").getFloat(0),data.get("pos").getFloat(1));
 		super(b.getPosition().x, b.getPosition().y);
 		// System.out.println(getPosition());
 		setName("bridge");
 		this.data = data;
 		bubble = b;
-		avatar = a;
+		avatar = a.getBody();
+		avatarCapsule = a;
 		float x0 = a.getPosition().x;
 		float y0 = a.getPosition().y;
 		planksize = new Vector2(lwidth,lheight);
 		linksize = planksize.x;
-		// System.out.println(planksize);
-	    // Compute the bridge length
-		dimension = new Vector2(data.getFloat("width",0),data.getFloat("height",0));
-	    // System.out.println("Dimension: " + dimension);
-		float length = dimension.len();
-		length = (float)Math.sqrt(Math.pow(bubble.getPosition().x-avatar.getPosition().x,2)+ Math.pow(bubble.getPosition().y-avatar.getPosition().y,2));
-	    Vector2 norm = new Vector2(dimension);
+
+		anchor3 = new Vector2(0,avatarCapsule.getHeight()/2 * avatarCapsule.grav);
+		dimension = new Vector2(data.getFloat("width",0),0.1f);
+		// System.out.println("Dimension: " + dimension);
+		float length = bubble.getPosition().dst(avatar.getPosition().add(anchor3));
+		//	(float)Math.sqrt(Math.pow(bubble.getPosition().x-avatar.getPosition().x,2)+ Math.pow(bubble.getPosition().y-avatar.getPosition().y,2));
+		Vector2 norm = new Vector2(bubble.getPosition().sub(avatar.getPosition().add(anchor3)));
 		// System.out.println("Norm:" + norm);
-	    norm.nor();
+		norm.nor();
 		// System.out.println("Norm normed:" + norm);
-	    
-	    // If too small, only make one plank.;
-	    int nLinks = (int)(length / linksize);
-	    if (nLinks <= 1) {
-	        nLinks = 1;
-	        linksize = length;
-	        spacing = 0;
-	    } else {
-	        spacing = length - nLinks * linksize;
-	        spacing /= (nLinks-1);
-	    }
-	    	    
-	    // Create the planks
-	    planksize.x = linksize;
+
+		// If too small, only make one plank.;
+		int nLinks = (int)(length / lwidth);
+		if(nLinks > 6)	nLinks -= 3;
+		System.out.println(nLinks);
+		System.out.println();
+		if (nLinks <= 1) {
+			nLinks = 1;
+			linksize = length;
+			spacing = 0;
+		} else {
+			spacing = length - nLinks * linksize;
+			spacing /= (nLinks-1);
+		}
+
+		// Create the planks
+		planksize.x = linksize;
 
 		Vector2 pos = new Vector2();
 
-	    for (int ii = 0; ii < nLinks; ii++) {
-	        float t = ii*(linksize+spacing) + linksize/2.0f;
+		for (int ii = 0; ii < nLinks; ii++) {
+			float t = ii*(linksize+spacing) + linksize/2.0f;
 			// System.out.println("Iteration " + ii);
-	        // System.out.println("init pos: " + pos);
+			// System.out.println("init pos: " + pos);
 			pos.set(norm);
 			// System.out.println("norm pos: " + pos);
-	        pos.scl(t);
+			pos.scl(t);
 			// System.out.println("scale pos: " + pos);
-	        pos.add(x0,y0);
+			pos.add(avatar.getPosition().add(anchor3));
 			// System.out.println("add pos: " + pos);
-	        BoxObstacle plank = new BoxObstacle(pos.x, pos.y, planksize.x, planksize.y);
+			BoxObstacle plank = new BoxObstacle(pos.x, pos.y, planksize.x, planksize.y);
 			plank.isRope = true;
 			plank.setGravityScale(0);
-	        plank.setName("plank"+ii);
-	        plank.setDensity(data.getFloat("density",0));
-	        bodies.add(plank);
-	    }
+			plank.setName("plank"+ii);
+			plank.setDensity(data.getFloat("density",0));
+			bodies.add(plank);
+		}
 	}
 
 	/**
 	 * Creates the joints for this object.
-	 * 
-	 * This method is executed as part of activePhysics. This is the primary method to 
+	 *
+	 * This method is executed as part of activePhysics. This is the primary method to
 	 * override for custom physics objects.
 	 *
 	 * @param world Box2D world to store joints
@@ -132,45 +139,29 @@ public class RopeBridge extends ComplexObstacle {
 	 */
 	protected boolean createJoints(World world) {
 		assert bodies.size > 0;
-		
-		Vector2 anchor1 = new Vector2(); 
+
+		Vector2 anchor1 = new Vector2();
 		Vector2 anchor2 = new Vector2(-linksize / 2, 0);
-		
+		Vector2 anchor3 = new Vector2(0,avatarCapsule.getHeight()/2 * avatarCapsule.grav);
+
 		// Create the leftmost anchor
 		// Normally, we would do this in constructor, but we have
 		// reasons to not add the anchor to the bodies list.
 		Vector2 pos = bodies.get(0).getPosition();
 		pos.x -= linksize / 2;
-//		start = new WheelObstacle(pos.x,pos.y,data.getFloat("pin_radius", 1));
-//		start.setName("pin0");
-//		start.setDensity(data.getFloat("density", 0));
-//		start.setBodyType(BodyDef.BodyType.StaticBody);
-//		start.activatePhysics(world);
-//
-//		// Definition for a revolute joint
-//		DistanceJointDef jointDef = new DistanceJointDef();
 		RevoluteJointDef jointDef = new RevoluteJointDef();
-//
-//		// Initial joint
-//		jointDef.bodyA = start.getBody();
-//		jointDef.bodyB = bodies.get(0).getBody();
-//		jointDef.localAnchorA.set(anchor1);
-//		jointDef.localAnchorB.set(anchor2);
-//		jointDef.collideConnected = false;
 		Joint joint;
-			jointDef.bodyA = bodies.get(0).getBody();
-			jointDef.bodyB = avatar;
-			// System.out.println(bubble);
-			jointDef.localAnchorA.set(anchor2);
-			jointDef.localAnchorB.set(anchor1);
-			jointDef.collideConnected = false;
-			joint = world.createJoint(jointDef);
-			joints.add(joint);
-//		Joint joint = world.createJoint(jointDef);
-//		joints.add(joint);
-
+		jointDef.bodyA = bodies.get(0).getBody();
+		jointDef.bodyB = avatar;
+		// System.out.println(bubble);
+		jointDef.localAnchorA.set(anchor2);
+		jointDef.localAnchorB.set(anchor3);
+		jointDef.collideConnected = false;
+		joint = world.createJoint(jointDef);
+		joints.add(joint);
 		// Link the planks together
 		anchor1.x = linksize / 2;
+		DistanceJointDef distJointDef = new DistanceJointDef();
 		for (int ii = 0; ii < bodies.size-1; ii++) {
 			jointDef.bodyA = bodies.get(ii).getBody();
 			jointDef.bodyB = bodies.get(ii + 1).getBody();
@@ -181,7 +172,17 @@ public class RopeBridge extends ComplexObstacle {
 			joints.add(joint);
 			//#region INSERT CODE HERE
 			// Look at what we did above
-
+			Vector2 anchor11 = new Vector2(0,0);
+			Vector2 anchor22 = new Vector2(0, 0);
+			distJointDef.bodyA = bodies.get(ii).getBody();
+			distJointDef.bodyB = bodies.get(ii + 1).getBody();
+			distJointDef.localAnchorA.set(anchor11);
+			distJointDef.localAnchorB.set(anchor22);
+			distJointDef.collideConnected = false;
+			distJointDef.length = 0.2f;
+			distJointDef.dampingRatio = 2;
+			joint = world.createJoint(distJointDef);
+			joints.add(joint);
 			//#endregion
 		}
 
@@ -203,11 +204,11 @@ public class RopeBridge extends ComplexObstacle {
 		}
 		return true;
 	}
-	
+
 	/**
 	 * Destroys the physics Body(s) of this object if applicable,
 	 * removing them from the world.
-	 * 
+	 *
 	 * @param world Box2D world that stores body
 	 */
 	public void deactivatePhysics(World world) {
@@ -219,7 +220,7 @@ public class RopeBridge extends ComplexObstacle {
 			finish.deactivatePhysics(world);
 		}
 	}
-	
+
 	/**
 	 * Sets the texture for the individual planks
 	 *
@@ -230,7 +231,7 @@ public class RopeBridge extends ComplexObstacle {
 			((SimpleObstacle)body).setTexture(texture);
 		}
 	}
-	
+
 	/**
 	 * Returns the texture for the individual planks
 	 *
