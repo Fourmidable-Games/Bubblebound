@@ -709,7 +709,7 @@ public class PlatformController extends WorldController implements ContactListen
 //				System.out.println("BD1: " + bd1.getName());
 //				System.out.println("BD2: " + bd2.getName());
 				printnum++;
-				System.out.print("PRINT NUM: " + printnum + "\navatar: " + avatar + "\navtarSensorName: " + avatar.getSensorName() +"\n FD1: " + fd1 + "\n fd2: " + fd2 + "\n bd1N: " + bd1 + " \n bd2: " + bd2 +"\n bd1.name: " + bd1.getName() + "\n bd2 name: " + bd2.getName() + "\n");
+				//System.out.print("PRINT NUM: " + printnum + "\navatar: " + avatar + "\navtarSensorName: " + avatar.getSensorName() +"\n FD1: " + fd1 + "\n fd2: " + fd2 + "\n bd1N: " + bd1 + " \n bd2: " + bd2 +"\n bd1.name: " + bd1.getName() + "\n bd2 name: " + bd2.getName() + "\n");
 
 				avatar.setGrounded(true);
 				sensorFixtures.add(avatar == bd1 ? fix2 : fix1); // Could have more than one ground

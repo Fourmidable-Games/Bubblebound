@@ -280,8 +280,8 @@ public class DudeModel extends CapsuleObstacle {
 		// The shrink factors fit the image to a tigher hitbox
 		super(	data.get("pos").getFloat(0),
 				data.get("pos").getFloat(1),
-				width*data.get("shrink").getFloat( 0 ),
-				height*data.get("shrink").getFloat( 1 ));
+				1,
+				2);
         setDensity(data.getFloat("density", 0));
 		setFriction(data.getFloat("friction", 0));  /// HE WILL STICK TO WALLS IF YOU FORGET
 		setFixedRotation(true);
@@ -359,7 +359,7 @@ public class DudeModel extends CapsuleObstacle {
 		// Ground sensor to represent our feet
 		Fixture sensorFixture2 = body.createFixture( sensorDef2 );
 		sensorFixture2.setUserData(getSensorName());
-		//setMass(1f);
+		setMass(1f);
 
 		return true;
 	}

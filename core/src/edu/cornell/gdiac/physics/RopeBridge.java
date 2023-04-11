@@ -49,6 +49,8 @@ public class RopeBridge extends ComplexObstacle {
 	/** The spacing between each link */
 	protected float spacing = 0.0f;
 
+	protected Vector2 anchor3;
+
 	Body bubble;
 	Body avatar;
 	CapsuleObstacle avatarCapsule;
@@ -76,17 +78,22 @@ public class RopeBridge extends ComplexObstacle {
 		float y0 = a.getPosition().y;
 		planksize = new Vector2(lwidth,lheight);
 		linksize = planksize.x;
-		dimension = new Vector2(data.getFloat("width",0),data.getFloat("height",0));
+
+		anchor3 = new Vector2(0,avatarCapsule.getHeight()/2 * avatarCapsule.grav);
+		dimension = new Vector2(data.getFloat("width",0),0.1f);
 	    // System.out.println("Dimension: " + dimension);
-		float length = dimension.len();
-		length = (float)Math.sqrt(Math.pow(bubble.getPosition().x-avatar.getPosition().x,2)+ Math.pow(bubble.getPosition().y-avatar.getPosition().y,2));
-	    Vector2 norm = new Vector2(dimension);
+		float length = bubble.getPosition().dst(avatar.getPosition().add(anchor3));
+			//	(float)Math.sqrt(Math.pow(bubble.getPosition().x-avatar.getPosition().x,2)+ Math.pow(bubble.getPosition().y-avatar.getPosition().y,2));
+	    Vector2 norm = new Vector2(bubble.getPosition().sub(avatar.getPosition().add(anchor3)));
 		// System.out.println("Norm:" + norm);
 	    norm.nor();
 		// System.out.println("Norm normed:" + norm);
 	    
 	    // If too small, only make one plank.;
-	    int nLinks = (int)(length / linksize);
+	    int nLinks = (int)(length / lwidth);
+		if(nLinks > 6)	nLinks -= 3;
+		System.out.println(nLinks);
+		System.out.println();
 	    if (nLinks <= 1) {
 	        nLinks = 1;
 	        linksize = length;
@@ -109,7 +116,7 @@ public class RopeBridge extends ComplexObstacle {
 			// System.out.println("norm pos: " + pos);
 	        pos.scl(t);
 			// System.out.println("scale pos: " + pos);
-	        pos.add(x0,y0);
+	        pos.add(avatar.getPosition().add(anchor3));
 			// System.out.println("add pos: " + pos);
 	        BoxObstacle plank = new BoxObstacle(pos.x, pos.y, planksize.x, planksize.y);
 			plank.isRope = true;
