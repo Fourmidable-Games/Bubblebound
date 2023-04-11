@@ -504,7 +504,7 @@ public class DudeModel extends CapsuleObstacle {
 		float x = getWidth()*drawScale.x / 2;
 		float y = getHeight()*drawScale.y / 2;
 
-		float effect = faceRight ? -1.0f : 1.0f;;
+		float effect = playerController.isFacingRight() ? -1.0f : 1.0f;;
 		float upside = (grav == -1) ? -1.0f : 1.0f;
 		if(playerController.isInvincible){
 
