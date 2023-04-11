@@ -91,7 +91,6 @@ public class RopeBridge extends ComplexObstacle {
 
 		// If too small, only make one plank.;
 		int nLinks = (int)(length / lwidth);
-		if(nLinks > 6)	nLinks -= 3;
 		System.out.println(nLinks);
 		System.out.println();
 		if (nLinks <= 1) {
@@ -100,7 +99,7 @@ public class RopeBridge extends ComplexObstacle {
 			spacing = 0;
 		} else {
 			spacing = length - nLinks * linksize;
-			spacing /= (nLinks-1);
+			spacing /= (nLinks-1) + 1;
 		}
 
 		// Create the planks
@@ -122,7 +121,8 @@ public class RopeBridge extends ComplexObstacle {
 			plank.isRope = true;
 			plank.setGravityScale(0);
 			plank.setName("plank"+ii);
-			plank.setDensity(data.getFloat("density",0));
+			//plank.setDensity(data.getFloat("density",0));
+			plank.setDensity(1f);
 			bodies.add(plank);
 		}
 	}
@@ -170,6 +170,22 @@ public class RopeBridge extends ComplexObstacle {
 			jointDef.collideConnected = false;
 			joint = world.createJoint(jointDef);
 			joints.add(joint);
+			//double that shit?
+			jointDef.bodyA = bodies.get(ii).getBody();
+			jointDef.bodyB = bodies.get(ii + 1).getBody();
+			jointDef.localAnchorA.set(anchor1);
+			jointDef.localAnchorB.set(anchor2);
+			jointDef.collideConnected = false;
+			joint = world.createJoint(jointDef);
+			joints.add(joint);
+			jointDef.bodyA = bodies.get(ii).getBody();
+			jointDef.bodyB = bodies.get(ii + 1).getBody();
+			jointDef.localAnchorA.set(anchor1);
+			jointDef.localAnchorB.set(anchor2);
+			jointDef.collideConnected = false;
+			joint = world.createJoint(jointDef);
+			joints.add(joint);
+
 			//#region INSERT CODE HERE
 			// Look at what we did above
 			Vector2 anchor11 = new Vector2(0,0);
@@ -184,6 +200,30 @@ public class RopeBridge extends ComplexObstacle {
 			joint = world.createJoint(distJointDef);
 			joints.add(joint);
 			//#endregion
+
+			//do that shit again?
+			Vector2 anchor112 = new Vector2(0,0);
+			Vector2 anchor222 = new Vector2(0, 0);
+			distJointDef.bodyA = bodies.get(ii).getBody();
+			distJointDef.bodyB = bodies.get(ii + 1).getBody();
+			distJointDef.localAnchorA.set(anchor112);
+			distJointDef.localAnchorB.set(anchor222);
+			distJointDef.collideConnected = false;
+			distJointDef.length = 0.2f;
+			distJointDef.dampingRatio = 2;
+			joint = world.createJoint(distJointDef);
+			joints.add(joint);
+			Vector2 anchor113 = new Vector2(0,0);
+			Vector2 anchor223 = new Vector2(0, 0);
+			distJointDef.bodyA = bodies.get(ii).getBody();
+			distJointDef.bodyB = bodies.get(ii + 1).getBody();
+			distJointDef.localAnchorA.set(anchor113);
+			distJointDef.localAnchorB.set(anchor223);
+			distJointDef.collideConnected = false;
+			distJointDef.length = 0.2f;
+			distJointDef.dampingRatio = 2;
+			joint = world.createJoint(distJointDef);
+			joints.add(joint);
 		}
 
 		// Create the rightmost anchor
@@ -265,14 +305,13 @@ public class RopeBridge extends ComplexObstacle {
 //		}
 //	}
 
-	public float getFirstLinkRotation(){
+	public Vector2 getFirstLinkRotation(){
 		Vector2 pos1 = avatar.getPosition();
-		Vector2 pos2 = ((bodies.size == -1) ? bodies.get(4).getBody() : bubble).getPosition();
+		Vector2 pos2 = ((bodies.size > 4) ? bodies.get(4).getBody() : bubble).getPosition();
 		float angle = (float) Math.atan((pos1.y-pos2.y)/(pos1.x-pos2.x));
 		angle = (float) Math.toDegrees(angle);
-		System.out.println(angle);
 		//angle -= 180;
-		return (avatarCapsule.grav == 1) ? angle : angle + 180;
+		return pos2.sub(pos1);
 	}
 
 

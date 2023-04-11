@@ -609,6 +609,7 @@ public class PlatformController implements ContactListener, Screen {
 				if(b.isGrappled()){
 					destructRope(rope);
 					avatar.setGrappling(false);
+					b.setGrappled(false);
 				}
 				popBubble(b);
 				i--;
@@ -659,27 +660,35 @@ public class PlatformController implements ContactListener, Screen {
 			placeLocation.x += xoffset;
 			placeLocation.y += yoffset;
 		}else{
-			if(!avatar.isGrounded() && !avatar.isGrappling()){
-				if(avatar.grav > 0){
-					placeLocation = avatar.getPosition().add(avatar.getVX() * 0.6f,2);
-				}else{
-					placeLocation = avatar.getPosition().add(avatar.getVX() * 0.6f,-2);
+			if(!avatar.isGrappling()){
+				if(Math.abs(avatar.getMovement()) < 0.5){
+					placeLocation = avatar.getPosition().add(avatar.getVX() * 0.3f,  2.5f * avatar.grav);
+				}else {
+					placeLocation = avatar.getPosition().add(avatar.getVX() * 0.3f, 2f * avatar.grav);
 				}
+			}else{
+				placeLocation = avatar.getPosition().add(avatar.getVX() * 0.3f,  1f * avatar.grav);
+			}
 
+			/*if(!avatar.isGrounded() && !avatar.isGrappling()){
+				if(avatar.grav > 0){
+					placeLocation = avatar.getPosition().add(avatar.getVX() * 0.5f, avatar.getVY());
+				}else{
+					placeLocation = avatar.getPosition().add(avatar.getVX() * 0.5f, avatar.getVY());
+				}
 			}else if(avatar.isFacingRight()){
 				if(avatar.grav > 0){
-					placeLocation = avatar.getPosition().add(2.5f,1);
+					placeLocation = avatar.getPosition().add(2.5f,avatar.getVY());
 				}else{
-					placeLocation = avatar.getPosition().add(2.5f,-1);
+					placeLocation = avatar.getPosition().add(2.5f,avatar.getVY());
 				}
-
 			}else{
 				if(avatar.grav > 0){
-					placeLocation = avatar.getPosition().add(-2.5f,1);
+					placeLocation = avatar.getPosition().add(-2.5f,avatar.getVY());
 				}else{
-					placeLocation = avatar.getPosition().add(-2.5f,-1);
+					placeLocation = avatar.getPosition().add(-2.5f,avatar.getVY());
 				}
-			}
+			}*/
 		}
 
 		//update bubbles
@@ -741,33 +750,28 @@ public class PlatformController implements ContactListener, Screen {
 
 		if (closest != null) closest.setSelected(true);
 		//System.out.println("got to after bubble check");
+		Vector2 ropeDir = new Vector2(0,0);
 		Vector2 pos = avatar.getPosition();
 		avatar.updateRotation(0);
 		boolean destructRope = false;
 		boolean constructRope = false;
 		if(!spawned) { //temp prevents people from left and right clicking at same time (which breaks for some reason)
 			if (avatar.isGrappling()) {
-
-				avatar.updateRotation(rope.getFirstLinkRotation());
-
+				ropeDir = rope.getFirstLinkRotation();
 				if (InputController.getInstance().didBubble()) {
-
 					destructRope = true;
 				}
-				if (InputController.getInstance().didBubble() && avatar.getPosition().dst(closest.getPosition()) < 5 && !rope.bubble.equals(closest.getBody())) {
-					//				if(spawned){
-					//					System.out.println("Hi");
-					//					destructRope = true;
-					//				}
+				if (InputController.getInstance().didBubble() && avatar.getPosition().dst(closest.getPosition()) < 3.5 && !rope.bubble.equals(closest.getBody())) {
 					constructRope = true;
 				}
 			} else {
-				if (InputController.getInstance().didBubble() && avatar.getPosition().dst(closest.getPosition()) < 5) {
+				if (InputController.getInstance().didBubble() && avatar.getPosition().dst(closest.getPosition()) < 3.5) {
 					constructRope = true;
 				}
 			}
 		}
 		wait++;
+
 		//System.out.println("After destruct construct stuff");
 		// Add a bullet if we fire
 		if (avatar.isShooting()) {
@@ -775,6 +779,8 @@ public class PlatformController implements ContactListener, Screen {
 		}
 		if(destructRope){
 			avatar.setGrappling(false);
+			avatar.setGrappleBoost(true);
+			closest.setGrappled(false);
 			destructRope(rope);
 			releaseRopeSoundId = playSound(releaseRopeSound, releaseRopeSoundId, volume );
 		}
@@ -793,7 +799,7 @@ public class PlatformController implements ContactListener, Screen {
 		//System.out.println("after construct");
 
 		avatar.breathe(); //used for poison gas stuff
-		avatar.applyForce();
+		avatar.applyForce(ropeDir);
 		life = avatar.health / (float)avatar.MAX_HEALTH;//update health bar
 
 		//bubblesleft = bubbles_left - 2;
@@ -838,7 +844,7 @@ public class PlatformController implements ContactListener, Screen {
 		bubble.setGrappled(true);
 		float dwidth  = bridgeTexture.getRegionWidth()/scale.x;
 		float dheight = bridgeTexture.getRegionHeight()/scale.y;
-		RopeBridge bridge = new RopeBridge(constants.get("bridge"), 0.2f,dheight,bubble.getBody(), avatar);
+		RopeBridge bridge = new RopeBridge(constants.get("bridge"), dwidth / 2,dheight,bubble.getBody(), avatar);
 		bridge.setTexture(bridgeTexture);
 		bridge.setDrawScale(scale);
 		addQueuedObject(bridge);
@@ -865,8 +871,7 @@ public class PlatformController implements ContactListener, Screen {
 	}
 
 	public void popBubble(Bubble bubble){
-
-
+		System.out.println("popped a bubble!");
 		bubble.setActive(false);
 		bubble.stopDraw();
 		bubbles.remove(bubble);

@@ -78,12 +78,12 @@ public class NewRopeBridge extends ComplexObstacle {
 		float xn = bubble.getPosition().x;
 		float yn = bubble.getPosition().y;
 
-		linksize = 0.125f;
+		linksize = 0.125f; //0.125
 		// System.out.println("linksize " +linksize);
 	    // Compute the bridge length
 
 		float length = (float)Math.sqrt(Math.pow(bubble.getPosition().x-avatar.getPosition().x,2)+ Math.pow(bubble.getPosition().y-1.0f-avatar.getPosition().y+0.5f,2));
-		dimension = new Vector2(length,0.125f);
+		dimension = new Vector2(length,linksize);
 		// System.out.println("Dimension: " + dimension);
 		float x_diff = bubble.getPosition().x - avatar.getPosition().x;
 		float y_diff = bubble.getPosition().y -1.0f - avatar.getPosition().y + avatarCapsule.getHeight()/2;
@@ -121,7 +121,7 @@ public class NewRopeBridge extends ComplexObstacle {
 		bodies.add(start);
 
 		pos.set(norm);
-		pos.scl(0.125f);
+		pos.scl(linksize);
 		pos.add(x0,y0);
 		pos.add(moveleft);
 		WheelObstacle one = new WheelObstacle(pos.x,pos.y,data.getFloat("pin_radius", 1));
@@ -143,7 +143,7 @@ public class NewRopeBridge extends ComplexObstacle {
 
 	    for (int ii = 0; ii < nLinks; ii++) {
 
-			float t = 0.125f + ii*(0.125f + spacing);
+			float t = linksize + ii*(linksize + spacing);
 
 			pos.set(norm);
 			pos.scl(t);
@@ -232,7 +232,7 @@ public class NewRopeBridge extends ComplexObstacle {
 
 		//JOINT NEXT ONE TO NEXT TWO
 		jointDefDist.bodyB = nextOne;
-		jointDefDist.length = 0.125f;
+		jointDefDist.length = linksize;
 		joint = world.createJoint(jointDefDist);
 		joints.add(joint);
 
@@ -247,31 +247,31 @@ public class NewRopeBridge extends ComplexObstacle {
 			nextTwo = bodies.get(4 + ii).getBody();
 
 			//JOINT Prev1-Next1 (.25)
-			jointDefDist.length = 0.125f;
+			jointDefDist.length = linksize;
 			jointDefDist.bodyA = prevOne;
 			jointDefDist.bodyB = nextOne;
 			joint = world.createJoint(jointDefDist);
 			joints.add(joint);
 			//JOINT Prev2-Next2 (.25)
-			jointDefDist.length = 0.125f;
+			jointDefDist.length = linksize;
 			jointDefDist.bodyA = prevTwo;
 			jointDefDist.bodyB = nextTwo;
 			joint = world.createJoint(jointDefDist);
 			joints.add(joint);
 			//JOINT Prev1-Next2 (.25 root 2)
-			jointDefDist.length = 0.125f * (float)Math.sqrt(2);
+			jointDefDist.length = linksize * (float)Math.sqrt(2);
 			jointDefDist.bodyA = prevOne;
 			jointDefDist.bodyB = nextTwo;
 			joint = world.createJoint(jointDefDist);
 			joints.add(joint);
 			//JOINT Prev2-Next1 (.25 root 2)
-			jointDefDist.length = 0.125f * (float)Math.sqrt(2);
+			jointDefDist.length = linksize * (float)Math.sqrt(2);
 			jointDefDist.bodyA = prevTwo;
 			jointDefDist.bodyB = nextOne;
 			joint = world.createJoint(jointDefDist);
 			joints.add(joint);
 			//JOINT Next1-Next2 (.25)
-			jointDefDist.length = 0.125f;
+			jointDefDist.length = linksize;
 			jointDefDist.bodyA = nextOne;
 			jointDefDist.bodyB = nextTwo;
 			joint = world.createJoint(jointDefDist);
@@ -284,14 +284,14 @@ public class NewRopeBridge extends ComplexObstacle {
 
 		//JOINT PREV ONE TO LAST
 		Body last = bodies.get(bodies.size-1).getBody();
-		jointDefDist.length = 0.125f * (float)Math.sqrt(3);
+		jointDefDist.length = linksize * (float)Math.sqrt(3);
 		jointDefDist.bodyA = prevOne;
 		jointDefDist.bodyB = last;
 		joint = world.createJoint(jointDefDist);
 		joints.add(joint);
 
 		//JOINT PREV TWO TO LAST
-		jointDefDist.length = 0.125f * (float)Math.sqrt(3);
+		jointDefDist.length = linksize * (float)Math.sqrt(3);
 		jointDefDist.bodyA = prevTwo;
 		jointDefDist.bodyB = last;
 		joint = world.createJoint(jointDefDist);
