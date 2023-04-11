@@ -389,7 +389,11 @@ public class DudeModel extends CapsuleObstacle {
 		}else{
 			damp = true;
 		}
-
+		if(getMovement() > 0){
+			faceRight = true;
+		}else if(getMovement() < 0){
+			faceRight = false;
+		}
 		// Don't want to be moving. Damp out player motion
 		if ((getMovement() == 0 || getVX() * getMovement() < 0)  && (!playerController.isGrappling()) ){
 			if(!damp){
@@ -459,7 +463,6 @@ public class DudeModel extends CapsuleObstacle {
 		}
 		super.update(dt);
 	}
-
 	public boolean isInvincible(){
 		return playerController.isInvincible();
 	}
@@ -481,6 +484,10 @@ public class DudeModel extends CapsuleObstacle {
 	}
 
 	public boolean displayBreath = false;
+
+	public void updateRotation(float r){
+		body.setTransform(getPosition(), r);
+	}
 
 	public void breathe(){
 		if(inGas){

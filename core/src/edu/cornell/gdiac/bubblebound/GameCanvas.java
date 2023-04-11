@@ -1162,8 +1162,8 @@ public class GameCanvas {
 	}
 
 
-	private static int PARALLAX_PRIMARY = 2;
-	private static int PARALLAX_SECONDARY = 9;
+	private static float PARALLAX_PRIMARY = 2;
+	private static float PARALLAX_SECONDARY = 5;
 
 	public int wrapX(float x, float w) { //used for 2nd dimension thingy
 		if (x < 0) {

@@ -50,6 +50,9 @@ public class PlayerController {
 
     public int health;
 
+    public int maxbubbles = 4; //default at 4 can be upgraded
+
+
     /** Whether we are actively invincible */
     public boolean isInvincible = false;
 
@@ -94,6 +97,14 @@ public class PlayerController {
         isGrounded = value;
     }
 
+    public int getMaxBubbles(){
+        return maxbubbles;
+    }
+
+    public void upgradeMaxBubbles(){
+        maxbubbles++;
+    }
+
     public boolean justGrounded(){
         boolean output = !isGrappling && !isJumping && isGrounded && !wasGrounded;
         wasGrounded = isGrounded;
@@ -129,7 +140,9 @@ public class PlayerController {
     }
 
     public PlayerController(JsonValue data){
-        health = MAX_HEALTH;
+        health = data.getInt("health", 0);
+
+
         jumpLimit = data.getInt( "jump_cool", 0 );
         shotLimit = data.getInt( "shot_cool", 0 );
         this.data = data;
@@ -193,7 +206,5 @@ public class PlayerController {
         health--;
         setInvincible(true);
     }
-
-
 
 }

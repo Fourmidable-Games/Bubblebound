@@ -11,6 +11,8 @@
 package edu.cornell.gdiac.bubblebound;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.maps.tiled.AtlasTmxMapLoader;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.utils.*;
 import com.badlogic.gdx.audio.*;
@@ -406,9 +408,9 @@ public class PlatformController implements ContactListener, Screen {
 //			enemies.add(enemy); CRASHES GAME
 //			addQueuedObject(enemy); //idk dif between add queued vs add
 		}
-		createLucenGlaze(8, 2, 1);
-		createLucenGlaze(3, 4, 2);
-		createLucenGlaze(10, 12, 3);
+//		createLucenGlaze(8, 2, 1);
+//		createLucenGlaze(3, 4, 2);
+//		createLucenGlaze(10, 12, 3);
 		createLucenGlaze(16, 16, 4);
 		Spike sp = new Spike(6, 1, 1, 1);
 		sp.setBodyType(BodyDef.BodyType.StaticBody);
@@ -604,6 +606,10 @@ public class PlatformController implements ContactListener, Screen {
 			b.initialize(bubble);
 			b.update(3f);
 			if(b.timedOut()){
+				if(b.isGrappled()){
+					destructRope(rope);
+					avatar.setGrappling(false);
+				}
 				popBubble(b);
 				i--;
 			}
@@ -614,7 +620,7 @@ public class PlatformController implements ContactListener, Screen {
 		for(int i = 0; i < enemies.size(); i++){
 			Enemy enemy = enemies.get(i);
 			enemy.initialize(enemyStrip);
-			enemy.update();
+			enemy.update(avatar);
 		}
 	}
 
@@ -736,12 +742,16 @@ public class PlatformController implements ContactListener, Screen {
 		if (closest != null) closest.setSelected(true);
 		//System.out.println("got to after bubble check");
 		Vector2 pos = avatar.getPosition();
+		avatar.updateRotation(0);
 		boolean destructRope = false;
 		boolean constructRope = false;
 		if(!spawned) { //temp prevents people from left and right clicking at same time (which breaks for some reason)
 			if (avatar.isGrappling()) {
+
+				avatar.updateRotation(rope.getFirstLinkRotation());
+
 				if (InputController.getInstance().didBubble()) {
-					avatar.setGrappling(false);
+
 					destructRope = true;
 				}
 				if (InputController.getInstance().didBubble() && avatar.getPosition().dst(closest.getPosition()) < 5 && !rope.bubble.equals(closest.getBody())) {
@@ -749,12 +759,10 @@ public class PlatformController implements ContactListener, Screen {
 					//					System.out.println("Hi");
 					//					destructRope = true;
 					//				}
-					avatar.setGrappling(true);
 					constructRope = true;
 				}
 			} else {
 				if (InputController.getInstance().didBubble() && avatar.getPosition().dst(closest.getPosition()) < 5) {
-					avatar.setGrappling(true);
 					constructRope = true;
 				}
 			}
@@ -766,14 +774,20 @@ public class PlatformController implements ContactListener, Screen {
 			//createBullet();
 		}
 		if(destructRope){
+			avatar.setGrappling(false);
 			destructRope(rope);
 			releaseRopeSoundId = playSound(releaseRopeSound, releaseRopeSoundId, volume );
 		}
 		//System.out.println("After destruct");
 		if(constructRope){
 			//System.out.println("B4: " + pos)
-			rope = createGrapple(closest);
-			shootRopeSoundId = playSound( shootRopeSound, shootRopeSoundId, volume );
+			//if(checkCanRope(closest)) { //TODO:: make this good
+				avatar.setGrappling(true);
+				rope = createGrapple(closest);
+				shootRopeSoundId = playSound(shootRopeSound, shootRopeSoundId, volume);
+			//}else{
+			//	constructRope = false;
+			//}//
 			//avatar.setPosition(pos);
 		}
 		//System.out.println("after construct");
@@ -820,6 +834,7 @@ public class PlatformController implements ContactListener, Screen {
 	}
 
 	private RopeBridge createGrapple(Bubble bubble){
+
 		bubble.setGrappled(true);
 		float dwidth  = bridgeTexture.getRegionWidth()/scale.x;
 		float dheight = bridgeTexture.getRegionHeight()/scale.y;
@@ -850,14 +865,44 @@ public class PlatformController implements ContactListener, Screen {
 	}
 
 	public void popBubble(Bubble bubble){
-		if(bubble.isGrappled()){
-			destructRope(rope);
-			avatar.setGrappling(false);
-		}
-		bubble.markRemoved(true);
+
+
+		bubble.setActive(false);
+		bubble.stopDraw();
 		bubbles.remove(bubble);
 		popSound.setVolume(popID, volume * 10f);
 		popID = playSound(popSound,popID,0.5f);
+
+	}
+	public Vector2 collidePos = new Vector2();
+	public Body collidebody = null;
+
+
+	public boolean checkCanRope(Bubble b){
+		RayCastCallback rcc = new RayCastCallback() {
+			@Override
+			public float reportRayFixture(Fixture fixture, Vector2 point, Vector2 normal, float fraction) {
+				collidePos = fixture.getBody().getPosition();
+				collidebody = fixture.getBody();
+				return 0;
+			}
+		};
+		Vector2 tempPosA = new Vector2();
+		tempPosA.x = avatar.getPosition().x;
+		tempPosA.y = bounds.height - avatar.getPosition().y;
+		Vector2 tempPosB = new Vector2();
+		tempPosB.x = b.getPosition().x;
+		tempPosB.y = bounds.height - b.getPosition().y;
+		world.rayCast(rcc, tempPosA, tempPosB);
+		if(collidebody != null){
+			if(!b.getBody().equals(collidebody)){
+				return false;
+			}
+//			if(collidePos.x == b.getPosition().x && collidePos.y == b.getPosition().y){
+//				return true;
+//			}
+		}
+		return true;
 	}
 
 	
@@ -928,10 +973,10 @@ public class PlatformController implements ContactListener, Screen {
 			if ((bd1.getName().equals("bubble") && (bd2.getName().equals("enemy") || bd2.getName().equals("spike"))) ||
 					(bd2.getName().equals("bubble") && (bd1.getName().equals("enemy") || bd1.getName().equals("spike")))){
 				if(bd1.getName().equals("bubble")){
-					popBubble((Bubble) bd1);
+					((Bubble) bd1).pop_timer = 1;
 
 				}else{
-					popBubble((Bubble) bd2);
+					((Bubble) bd2).pop_timer = 1;
 				}
 			}
 			
@@ -1152,6 +1197,8 @@ public class PlatformController implements ContactListener, Screen {
 		addQueue.clear();
 		zones.clear();
 		world.dispose();
+		lucens.clear();
+
 		objects = null;
 		addQueue = null;
 		bounds = null;
