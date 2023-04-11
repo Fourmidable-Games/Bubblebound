@@ -247,9 +247,9 @@ public class LevelEditorV2 {
 
                             int[] tileData = tileData1.asIntArray();
 
-                            for (int i = 0; i < mapWidth/64; i++) {
+                            for (int i = 0; i < mapHeight/64; i++) {
                                 List<Integer> row = new ArrayList<>();
-                                for (int j = 0; j < mapHeight/64; j++) {
+                                for (int j = 0; j < mapWidth/64; j++) {
                                     int index = i * (mapWidth/64) + j;
                                     if (index < tileData.length) {
                                         row.add(tileData[index]);
@@ -260,8 +260,8 @@ public class LevelEditorV2 {
                                 tileMap.add(row);
                             }
 
-                            for (int i = 0; i < mapHeight/64; i++) {
-                                for (int j = 0; j < mapWidth/64; j++) {
+                            for (int i = 0; i < mapWidth/64; i++) {
+                                for (int j = 0; j < mapHeight/64; j++) {
                                     if (tileMap.get(j).get(i) > 0) {
                                         BoxObstacle wo = new BoxObstacle(
                                                 i,
