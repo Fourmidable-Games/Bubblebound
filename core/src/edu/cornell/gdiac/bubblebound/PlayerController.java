@@ -11,7 +11,7 @@ public class PlayerController {
 
 
     /** The initializing data (to avoid magic numbers) */
-    private final JsonValue data;
+    private JsonValue data; //changed from final maybe change it back later once we got the json  stuff working
 
 
     /** Cooldown (in animation frames) for shooting */
@@ -147,6 +147,23 @@ public class PlayerController {
 
     }
 
+    public PlayerController(){ //magic numbers are cool
+        health = MAX_HEALTH;
+        jumpLimit = 30;
+        shotLimit = 30;
+        shootCooldown = 0;
+        jumpCooldown = 0;
+
+        // Gameplay attributes
+        isGrounded = false;
+        isShooting = false;
+        isJumping = false;
+
+        invincibletimer = 50;
+        isFacingRight = true;
+
+    }
+
     public void update(){
         // Apply cooldowns
         if (isJumping()) {
@@ -174,7 +191,7 @@ public class PlayerController {
             return;
         }
         health--;
-        //setInvincible(true);
+        setInvincible(true);
     }
 
 

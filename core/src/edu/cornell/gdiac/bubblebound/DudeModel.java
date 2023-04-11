@@ -31,7 +31,7 @@ public class DudeModel extends CapsuleObstacle {
 	private PlayerController playerController;
 
 	/** The initializing data (to avoid magic numbers) */
-	private final JsonValue data;
+	private JsonValue data;
 
 	/** The factor to multiply by the input */
 	private final float force;
@@ -304,6 +304,21 @@ public class DudeModel extends CapsuleObstacle {
 		setName("dude");
 	}
 
+	public DudeModel(float x, float y){
+		super(x, y, 1, 2);
+		setFriction(0);
+		setFixedRotation(true);
+		force = 20;
+		damping = 10;
+		gravZone = 1;
+		jump_force = 9.5f;
+		maxspeed = 5f;
+		sensorName = "DudeGroundSensor";
+		this.playerController = new PlayerController();
+		setName("dude");
+
+	}
+
 
 	/**
 	 * Creates the physics Body(s) for this object, adding them to the world.
@@ -330,24 +345,22 @@ public class DudeModel extends CapsuleObstacle {
 		// collisions with the world but has no collision response.
 		Vector2 sensorCenter = new Vector2(0, -getHeight() / 2);
 		FixtureDef sensorDef = new FixtureDef();
-		sensorDef.density = data.getFloat("density",0);
+		//sensorDef.density = data.getFloat("density",0);
 		sensorDef.isSensor = true;
 		sensorShape = new PolygonShape();
-		JsonValue sensorjv = data.get("sensor");
-		sensorShape.setAsBox(sensorjv.getFloat("shrink",0)*getWidth()/2.0f,
-								 sensorjv.getFloat("height",0), sensorCenter, 0.0f);
+		sensorShape.setAsBox(0.9f * getWidth()/2.0f,
+				0.05f, sensorCenter, 0.0f);
 		sensorDef.shape = sensorShape;
 		// Ground sensor to represent our feet
 		Fixture sensorFixture = body.createFixture( sensorDef );
 		sensorFixture.setUserData(getSensorName());
 		Vector2 sensorCenter2 = new Vector2(0, getHeight() / 2);
 		FixtureDef sensorDef2 = new FixtureDef();
-		sensorDef2.density = data.getFloat("density",0);
+		//sensorDef2.density = data.getFloat("density",0);
 		sensorDef2.isSensor = true;
 		PolygonShape sensorShape2 = new PolygonShape();
-		JsonValue sensorjv2 = data.get("sensor");
-		sensorShape2.setAsBox(sensorjv2.getFloat("shrink",0)*getWidth()/2.0f,
-				sensorjv2.getFloat("height",0), sensorCenter2, 0.0f);
+		sensorShape2.setAsBox(0.9f * getWidth()/2.0f,
+				0.05f, sensorCenter2, 0.0f);
 		sensorDef2.shape = sensorShape2;
 
 		// Ground sensor to represent our feet
@@ -506,7 +519,7 @@ public class DudeModel extends CapsuleObstacle {
 
 		float effect = playerController.isFacingRight() ? -1.0f : 1.0f;;
 		float upside = (grav == -1) ? -1.0f : 1.0f;
-		if(playerController.isInvincible){
+		if(playerController.isInvincible && playerController.invincibletimer % 2 == 0){
 
 		}
 		else {

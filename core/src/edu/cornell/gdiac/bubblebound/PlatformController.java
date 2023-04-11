@@ -201,8 +201,8 @@ public class PlatformController implements ContactListener, Screen {
 		Rectangle worldBounds = new Rectangle(0,0,DEFAULT_WIDTH*2,DEFAULT_HEIGHT*2);
 		Vector2 worldGravityVector = new Vector2(0, DEFAULT_GRAVITY);
 		world = new World(worldGravityVector,false);
+		scale = new Vector2(1920/CAMERA_WIDTH,1080/CAMERA_HEIGHT);
 		this.bounds = new Rectangle(worldBounds);
-		this.scale = new Vector2(1,1);
 		complete = false;
 		failed = false;
 		debug  = false;
@@ -365,7 +365,14 @@ public class PlatformController implements ContactListener, Screen {
 			box.setName("box");
 			addObject(box);
 		}
-
+		for(int i = 0; i < 10; i++){
+			BoxObstacle box = new BoxObstacle(1,1 + i,1,1);
+			box.setTexture(localeToTexture(box));
+			box.setBodyType(BodyDef.BodyType.StaticBody);
+			box.setDrawScale(scale);
+			box.setName("box");
+			addObject(box);
+		}
 
 
 
@@ -401,9 +408,7 @@ public class PlatformController implements ContactListener, Screen {
 		}
 
 
-		createLucenGlaze(12, 8);
-
-		Spike sp = new Spike(1, 1, 1, 1);
+		Spike sp = new Spike(6, 1, 1, 1);
 		sp.setBodyType(BodyDef.BodyType.StaticBody);
 		sp.setDrawScale(scale);
 		sp.setName("spike");
@@ -425,7 +430,7 @@ public class PlatformController implements ContactListener, Screen {
 
 		dwidth  = avatarTexture.getRegionWidth()/scale.x;
 		dheight = avatarTexture.getRegionHeight()/scale.y;
-		avatar = new DudeModel(constants.get("dude"), 1, 2);
+		avatar = new DudeModel(3, 3); //3,3 is coord for dude spawn
 		avatar.setDrawScale(scale);
 		avatar.setTexture(avatarTexture);
 		avatar.setTexture(dude);
@@ -452,15 +457,34 @@ public class PlatformController implements ContactListener, Screen {
 		poisons.add(gas);
 	}
 
-	public void createLucenGlaze(float x, float y){ //takes in coords of lucenglaze itself(will adjust for sensor automatically)
-		LucenglazeSensor lgs = new LucenglazeSensor(x, y);
-		lgs.setLucen(createLucenObject(x, y));
+	public void createLucenGlaze(float x, float y, int rotation){ //takes in coords of lucenglaze itself(will adjust for sensor automatically)
+		float xx = 0;
+		float yy = 0;
+		switch (rotation){
+			case 1:
+				yy = 1.5f;
+				break;
+			case 2:
+				xx = 1.5f;
+				break;
+			case 3:
+				yy = -1.5f;
+				break;
+			case 4:
+				xx = -1.5f;
+				break;
+		}
+		int w = (rotation % 2 == 1) ? 3 : 4;
+		int h = (rotation % 2 == 1) ? 4 : 3;
+		LucenglazeSensor lgs = new LucenglazeSensor(x + xx, y + yy, (int) x, (int) y, w, h, rotation);
+		lgs.setLucen(createLucenObject(x, y, rotation));
 		lgs.setDrawScale(scale);
 		addObject(lgs);
 		lucens.add(lgs);
 	}
-	public Lucenglaze createLucenObject(float x, float y){ //called by prev
+	public Lucenglaze createLucenObject(float x, float y, int rotation){ //called by prev
 		Lucenglaze lg = new Lucenglaze(x, y);
+		lg.setRotation(rotation);
 		lg.setDrawScale(scale);
 		lg.setTexture(lucenTexture);
 		addObject(lg);
@@ -524,7 +548,7 @@ public class PlatformController implements ContactListener, Screen {
 	 * This method is called after input is read, but before collisions are resolved.
 	 * The very last thing that it should do is apply forces to the appropriate objects.
 	 *
-	 * @param dt	Number of seconds since last animation frame
+	 *
 	 */
 
 	boolean sbubble = false;
@@ -872,19 +896,19 @@ public class PlatformController implements ContactListener, Screen {
 			if ((bd1 == avatar && (bd2.getName().equals("spike") || bd2.getName().equals("enemy"))) ||
 				(bd2 == avatar && (bd1.getName().equals("spike") || bd2.getName().equals("enemy")))){
 
-				avatar.hurt();
-				life = avatar.getLife();
+
 
 				if(!avatar.isInvincible()) {
-					//avatar.hurt();
+					avatar.hurt();
+					life = avatar.getLife();
 					if(bd1 == avatar){ //move it to player controller
 						//TODO look prev comment
 
-						Vector2 v2 = body1.getPosition().sub(body2.getPosition()).scl(15);
+						Vector2 v2 = body1.getPosition().sub(body2.getPosition()).nor().scl(10);
 						body1.applyLinearImpulse(new Vector2(v2.x, v2.y), body1.getPosition(), true);
 
 					}else{
-						Vector2 v2 = body2.getPosition().sub(body1.getPosition()).scl(15);
+						Vector2 v2 = body2.getPosition().sub(body1.getPosition()).nor().scl(10);
 						body2.applyLinearImpulse(new Vector2(v2.x, v2.y), body2.getPosition(), true);
 
 					}
@@ -1315,7 +1339,7 @@ public class PlatformController implements ContactListener, Screen {
 	 *
 	 * The method draws all objects in the order that they were added.
 	 *
-	 * @param dt	Number of seconds since last animation frame
+	 *
 	 */
 
 	public void updateBubbleCount(int bubbles_left){
@@ -1359,12 +1383,7 @@ public class PlatformController implements ContactListener, Screen {
 		canvas.end();
 //		canvas.shape.end();
 		//canvas.shape.setProjectionMatrix(canvas.camera.combined);
-		canvas.shape.begin(ShapeRenderer.ShapeType.Line);
-		for(Zone z : zones){
-			canvas.shape.setColor(Color.RED);
-			z.sDraw(canvas);
-		}
-		canvas.shape.end();
+
 		// Draw life bar
 
 
