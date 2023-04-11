@@ -305,7 +305,7 @@ public class DudeModel extends CapsuleObstacle {
 	}
 
 	public DudeModel(float x, float y){
-		super(x, y, 1, 2);
+		super(x, y, 0.9f, 1.9f);
 		setFriction(0);
 		setFixedRotation(true);
 		force = 20;

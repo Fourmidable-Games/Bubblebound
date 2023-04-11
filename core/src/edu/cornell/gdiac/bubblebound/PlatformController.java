@@ -406,8 +406,10 @@ public class PlatformController implements ContactListener, Screen {
 //			enemies.add(enemy); CRASHES GAME
 //			addQueuedObject(enemy); //idk dif between add queued vs add
 		}
-
-
+		createLucenGlaze(8, 2, 1);
+		createLucenGlaze(3, 4, 2);
+		createLucenGlaze(10, 12, 3);
+		createLucenGlaze(16, 16, 4);
 		Spike sp = new Spike(6, 1, 1, 1);
 		sp.setBodyType(BodyDef.BodyType.StaticBody);
 		sp.setDrawScale(scale);
