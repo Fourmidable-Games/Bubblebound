@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import edu.cornell.gdiac.bubblebound.obstacle.BoxObstacle;
 //import sun.tools.jstat.Scale;
+import edu.cornell.gdiac.util.FilmStrip;
 
 public class LevelEditor {
 

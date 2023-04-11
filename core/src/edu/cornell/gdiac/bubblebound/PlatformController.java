@@ -24,6 +24,7 @@ import edu.cornell.gdiac.bubblebound.obstacle.Obstacle;
 import edu.cornell.gdiac.bubblebound.obstacle.*;
 import edu.cornell.gdiac.util.PooledList;
 import edu.cornell.gdiac.util.ScreenListener;
+import edu.cornell.gdiac.util.FilmStrip;
 
 import java.util.*;
 
@@ -39,6 +40,12 @@ import java.util.*;
 public class PlatformController implements ContactListener, Screen {
 	/** Texture asset for character avatar */
 	private TextureRegion avatarTexture;
+	protected Texture dudeText;
+	protected FilmStrip dude;
+	protected Texture swingText;
+	protected FilmStrip swingStrip;
+	protected Texture idleText;
+	protected FilmStrip idleStrip;
 	/** Texture asset for the bullet */
 	private TextureRegion bulletTexture;
 	/** Texture asset for the bridge plank */
@@ -108,12 +115,14 @@ public class PlatformController implements ContactListener, Screen {
 	protected TextureRegion iceTile;
 	/** The texture for the exit condition */
 	protected TextureRegion goalTile;
-	protected TextureRegion bubble;
+	protected FilmStrip bubble;
+	protected FilmStrip enemyStrip;
+	protected Texture enemyText;
+	protected Texture bubbleText;
 	/** The font for giving messages to the player */
 	protected TextureRegion background;
 	protected Texture background2;
 	protected TextureRegion losing;
-	protected TextureRegion dudeModel;
 	protected TextureRegion spikeTexture;
 	protected BitmapFont displayFont;
 
@@ -223,6 +232,12 @@ public class PlatformController implements ContactListener, Screen {
 	 */
 	public void gatherAssets(AssetDirectory directory) {
 		avatarTexture  = new TextureRegion(directory.getEntry("platform:dude",Texture.class));
+		dudeText = directory.getEntry("platform:dude3", Texture.class);
+		dude = new FilmStrip(dudeText, 1, 11, 11);
+		swingText = directory.getEntry("platform:dude4", Texture.class);
+		swingStrip = new FilmStrip(swingText, 1, 3, 3);
+		idleText = directory.getEntry("platform:dude5", Texture.class);
+		idleStrip = new FilmStrip(idleText, 1, 3, 3);
 		bulletTexture = new TextureRegion(directory.getEntry("platform:bullet",Texture.class));
 		bridgeTexture = new TextureRegion(directory.getEntry("platform:rope",Texture.class));
 		barrierTexture = new TextureRegion(directory.getEntry("platform:barrier",Texture.class));
@@ -244,14 +259,18 @@ public class PlatformController implements ContactListener, Screen {
 
 		earthTile = new TextureRegion(directory.getEntry( "shared:earth", Texture.class ));
 		iceTile = new TextureRegion(directory.getEntry("shared:ice", Texture.class));
-		dudeModel = new TextureRegion(directory.getEntry( "platform:dude2", Texture.class ));
+//		dudeModel = new TextureRegion(directory.getEntry( "platform:dude2", Texture.class ));
 		spikeTexture = new TextureRegion(directory.getEntry( "platform:spike", Texture.class ));
 		goalTile  = new TextureRegion(directory.getEntry( "shared:goal", Texture.class ));
 		background = new TextureRegion(directory.getEntry("background:underground", Texture.class));
-		bubble = new TextureRegion(directory.getEntry( "shared:bubble", Texture.class ));
+		bubbleText = directory.getEntry( "shared:bubble2", Texture.class );
 		displayFont = directory.getEntry( "shared:retro" ,BitmapFont.class);
 		background2 = directory.getEntry("background:temp", Texture.class);
 		losing = new TextureRegion(directory.getEntry("losing", Texture.class));
+		System.out.println(bubbleText);
+		bubble = new FilmStrip(bubbleText, 1, 8, 8);
+		enemyText = directory.getEntry( "platform:dude2", Texture.class );
+		enemyStrip = new FilmStrip(enemyText, 1, 9, 9);
 	}
 
 	/**
@@ -321,9 +340,6 @@ public class PlatformController implements ContactListener, Screen {
 		// Add level goal
 		float dwidth  = goalTile.getRegionWidth()/scale.x;
 		float dheight = goalTile.getRegionHeight()/scale.y;
-		//Vector2 scale2 = new Vector2(16f, 16f);
-		//scale2.x /= 2;
-		//scale2.y /= 2;
 
 		goalDoor.setBodyType(BodyDef.BodyType.StaticBody);
 		goalDoor.setSensor(true);
@@ -378,7 +394,7 @@ public class PlatformController implements ContactListener, Screen {
 		for (int i = 0; i < enemies.size(); i++) {
 			Enemy enemy = enemies.get(i);
 			enemy.setDrawScale(scale);
-			enemy.setTexture(dudeModel);
+			enemy.setTexture(enemyStrip);
 			addObject(enemy);
 //			enemies.add(enemy); CRASHES GAME
 //			addQueuedObject(enemy); //idk dif between add queued vs add
@@ -409,9 +425,10 @@ public class PlatformController implements ContactListener, Screen {
 
 		dwidth  = avatarTexture.getRegionWidth()/scale.x;
 		dheight = avatarTexture.getRegionHeight()/scale.y;
-		avatar = new DudeModel(constants.get("dude"), dwidth, dheight);
+		avatar = new DudeModel(constants.get("dude"), 1, 2);
 		avatar.setDrawScale(scale);
 		avatar.setTexture(avatarTexture);
+		avatar.setTexture(dude);
 		avatar.setName("avatar");
 		addObject(avatar);
 
@@ -453,7 +470,6 @@ public class PlatformController implements ContactListener, Screen {
 	public Bubble spawnBubble(Vector2 v){
 		if(bubbles_left == 0) return null;
 		Bubble wo2 = new Bubble(v,1, Bubble.BubbleType.FLOATING);
-		//System.out.println("isFiniteBubbles: "+ InputController.getInstance().isFiniteBubbles());
 		if(InputController.getInstance().isFiniteBubbles()){
 			bubbles_left--;
 		}
@@ -515,11 +531,12 @@ public class PlatformController implements ContactListener, Screen {
 	private int wait = 0;
 	public void update(float dt) {
 		updateBubbles();
+		updateEnemies();
 		moveZones();
 		updateSounds();
 		updateCamera(avatar.getX()*scale.x, avatar.getY()*scale.y);
 		updateObjectGravs();
-		for(Enemy e : enemies){e.update();}
+//		for(Enemy e : enemies){e.update();}
 		updateLucens();
 		updatePoisons();
 		updateAvatar();
@@ -558,7 +575,8 @@ public class PlatformController implements ContactListener, Screen {
 		System.out.println("]");*/
 		for(int i = 0; i < bubbles.size(); i++){
 			Bubble b = bubbles.get(i);
-			b.update();
+			b.initialize(bubble);
+			b.update(3f);
 			if(b.timedOut()){
 				popBubble(b);
 				i--;
@@ -566,6 +584,13 @@ public class PlatformController implements ContactListener, Screen {
 		}
 	}
 
+	private void updateEnemies(){
+		for(int i = 0; i < enemies.size(); i++){
+			Enemy enemy = enemies.get(i);
+			enemy.initialize(enemyStrip);
+			enemy.update();
+		}
+	}
 
 	//TODO more efficient
 	private void updateObjectGravs(){
@@ -732,6 +757,12 @@ public class PlatformController implements ContactListener, Screen {
 		life = avatar.health / (float)avatar.MAX_HEALTH;//update health bar
 
 		//bubblesleft = bubbles_left - 2;
+		avatar.initialize(dude, swingStrip, idleStrip);
+		//System.out.println("AAAAA:" + avatar.getForce());
+		if(avatar.isGrappling()) avatar.setTexture(swingStrip);
+		else if(avatar.isGrounded() && avatar.getMovement() == 0.0) avatar.setTexture(idleStrip);
+		else avatar.setTexture(dude);
+		avatar.update(3f);
 
 	}
 
@@ -766,7 +797,7 @@ public class PlatformController implements ContactListener, Screen {
 		bubble.setGrappled(true);
 		float dwidth  = bridgeTexture.getRegionWidth()/scale.x;
 		float dheight = bridgeTexture.getRegionHeight()/scale.y;
-		RopeBridge bridge = new RopeBridge(constants.get("bridge"), dwidth,dheight,bubble.getBody(), avatar.getBody());
+		RopeBridge bridge = new RopeBridge(constants.get("bridge"), 0.2f,dheight,bubble.getBody(), avatar);
 		bridge.setTexture(bridgeTexture);
 		bridge.setDrawScale(scale);
 		addQueuedObject(bridge);
