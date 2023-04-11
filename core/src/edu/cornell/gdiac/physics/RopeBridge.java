@@ -51,6 +51,7 @@ public class RopeBridge extends ComplexObstacle {
 
 	Body bubble;
 	Body avatar;
+	CapsuleObstacle avatarCapsule;
 
 	/**
 	 * Creates a new rope bridge with the given physics data
@@ -62,20 +63,19 @@ public class RopeBridge extends ComplexObstacle {
 	 * @param lwidth	The plank length
 	 * @param lheight	The bridge thickness
 	 */
-	public RopeBridge(JsonValue data, float lwidth, float lheight, Body b, Body a) {
+	public RopeBridge(JsonValue data, float lwidth, float lheight, Body b, CapsuleObstacle a) {
 		//super(data.get("pos").getFloat(0),data.get("pos").getFloat(1));
 		super(b.getPosition().x, b.getPosition().y);
 		// System.out.println(getPosition());
 		setName("bridge");
 		this.data = data;
 		bubble = b;
-		avatar = a;
+		avatar = a.getBody();
+		avatarCapsule = a;
 		float x0 = a.getPosition().x;
 		float y0 = a.getPosition().y;
 		planksize = new Vector2(lwidth,lheight);
 		linksize = planksize.x;
-		// System.out.println(planksize);
-	    // Compute the bridge length
 		dimension = new Vector2(data.getFloat("width",0),data.getFloat("height",0));
 	    // System.out.println("Dimension: " + dimension);
 		float length = dimension.len();
@@ -135,7 +135,8 @@ public class RopeBridge extends ComplexObstacle {
 		
 		Vector2 anchor1 = new Vector2();
 		Vector2 anchor2 = new Vector2(-linksize / 2, 0);
-		
+		Vector2 anchor3 = new Vector2(0,avatarCapsule.getHeight()/2 * avatarCapsule.grav);
+
 		// Create the leftmost anchor
 		// Normally, we would do this in constructor, but we have
 		// reasons to not add the anchor to the bodies list.
@@ -147,7 +148,7 @@ public class RopeBridge extends ComplexObstacle {
 			jointDef.bodyB = avatar;
 			// System.out.println(bubble);
 			jointDef.localAnchorA.set(anchor2);
-			jointDef.localAnchorB.set(anchor1);
+			jointDef.localAnchorB.set(anchor3);
 			jointDef.collideConnected = false;
 			joint = world.createJoint(jointDef);
 			joints.add(joint);
@@ -171,7 +172,9 @@ public class RopeBridge extends ComplexObstacle {
 			distJointDef.localAnchorA.set(anchor11);
 			distJointDef.localAnchorB.set(anchor22);
 			distJointDef.collideConnected = false;
-			joint = world.createJoint(jointDef);
+			distJointDef.length = 0.2f;
+			distJointDef.dampingRatio = 2;
+			joint = world.createJoint(distJointDef);
 			joints.add(joint);
 			//#endregion
 		}
