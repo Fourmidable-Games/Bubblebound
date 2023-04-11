@@ -20,7 +20,7 @@ public class Bubble extends WheelObstacle {
     private boolean isGrappled;
     private boolean animate = true;
 
-    private int pop_timer;
+    public int pop_timer;
     /** FilmStrip pointer to the texture region */
     private FilmStrip filmstrip;
     /** The current animation frame of the avatar */

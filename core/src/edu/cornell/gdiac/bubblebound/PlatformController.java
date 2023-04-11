@@ -11,6 +11,8 @@
 package edu.cornell.gdiac.bubblebound;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.maps.tiled.AtlasTmxMapLoader;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.utils.*;
 import com.badlogic.gdx.audio.*;
@@ -201,8 +203,8 @@ public class PlatformController implements ContactListener, Screen {
 		Rectangle worldBounds = new Rectangle(0,0,DEFAULT_WIDTH*2,DEFAULT_HEIGHT*2);
 		Vector2 worldGravityVector = new Vector2(0, DEFAULT_GRAVITY);
 		world = new World(worldGravityVector,false);
+		scale = new Vector2(1920/CAMERA_WIDTH,1080/CAMERA_HEIGHT);
 		this.bounds = new Rectangle(worldBounds);
-		this.scale = new Vector2(1,1);
 		complete = false;
 		failed = false;
 		debug  = false;
@@ -365,7 +367,14 @@ public class PlatformController implements ContactListener, Screen {
 			box.setName("box");
 			addObject(box);
 		}
-
+		for(int i = 0; i < 10; i++){
+			BoxObstacle box = new BoxObstacle(1,1 + i,1,1);
+			box.setTexture(localeToTexture(box));
+			box.setBodyType(BodyDef.BodyType.StaticBody);
+			box.setDrawScale(scale);
+			box.setName("box");
+			addObject(box);
+		}
 
 
 
@@ -399,11 +408,11 @@ public class PlatformController implements ContactListener, Screen {
 //			enemies.add(enemy); CRASHES GAME
 //			addQueuedObject(enemy); //idk dif between add queued vs add
 		}
-
-
-		createLucenGlaze(12, 8);
-
-		Spike sp = new Spike(1, 1, 1, 1);
+//		createLucenGlaze(8, 2, 1);
+//		createLucenGlaze(3, 4, 2);
+//		createLucenGlaze(10, 12, 3);
+		createLucenGlaze(16, 16, 4);
+		Spike sp = new Spike(6, 1, 1, 1);
 		sp.setBodyType(BodyDef.BodyType.StaticBody);
 		sp.setDrawScale(scale);
 		sp.setName("spike");
@@ -425,7 +434,7 @@ public class PlatformController implements ContactListener, Screen {
 
 		dwidth  = avatarTexture.getRegionWidth()/scale.x;
 		dheight = avatarTexture.getRegionHeight()/scale.y;
-		avatar = new DudeModel(constants.get("dude"), 1, 2);
+		avatar = new DudeModel(3, 3); //3,3 is coord for dude spawn
 		avatar.setDrawScale(scale);
 		avatar.setTexture(avatarTexture);
 		avatar.setTexture(dude);
@@ -452,15 +461,34 @@ public class PlatformController implements ContactListener, Screen {
 		poisons.add(gas);
 	}
 
-	public void createLucenGlaze(float x, float y){ //takes in coords of lucenglaze itself(will adjust for sensor automatically)
-		LucenglazeSensor lgs = new LucenglazeSensor(x, y);
-		lgs.setLucen(createLucenObject(x, y));
+	public void createLucenGlaze(float x, float y, int rotation){ //takes in coords of lucenglaze itself(will adjust for sensor automatically)
+		float xx = 0;
+		float yy = 0;
+		switch (rotation){
+			case 1:
+				yy = 1.5f;
+				break;
+			case 2:
+				xx = 1.5f;
+				break;
+			case 3:
+				yy = -1.5f;
+				break;
+			case 4:
+				xx = -1.5f;
+				break;
+		}
+		int w = (rotation % 2 == 1) ? 3 : 4;
+		int h = (rotation % 2 == 1) ? 4 : 3;
+		LucenglazeSensor lgs = new LucenglazeSensor(x + xx, y + yy, (int) x, (int) y, w, h, rotation);
+		lgs.setLucen(createLucenObject(x, y, rotation));
 		lgs.setDrawScale(scale);
 		addObject(lgs);
 		lucens.add(lgs);
 	}
-	public Lucenglaze createLucenObject(float x, float y){ //called by prev
+	public Lucenglaze createLucenObject(float x, float y, int rotation){ //called by prev
 		Lucenglaze lg = new Lucenglaze(x, y);
+		lg.setRotation(rotation);
 		lg.setDrawScale(scale);
 		lg.setTexture(lucenTexture);
 		addObject(lg);
@@ -524,7 +552,7 @@ public class PlatformController implements ContactListener, Screen {
 	 * This method is called after input is read, but before collisions are resolved.
 	 * The very last thing that it should do is apply forces to the appropriate objects.
 	 *
-	 * @param dt	Number of seconds since last animation frame
+	 *
 	 */
 
 	boolean sbubble = false;
@@ -578,6 +606,10 @@ public class PlatformController implements ContactListener, Screen {
 			b.initialize(bubble);
 			b.update(3f);
 			if(b.timedOut()){
+				if(b.isGrappled()){
+					destructRope(rope);
+					avatar.setGrappling(false);
+				}
 				popBubble(b);
 				i--;
 			}
@@ -588,7 +620,7 @@ public class PlatformController implements ContactListener, Screen {
 		for(int i = 0; i < enemies.size(); i++){
 			Enemy enemy = enemies.get(i);
 			enemy.initialize(enemyStrip);
-			enemy.update();
+			enemy.update(avatar);
 		}
 	}
 
@@ -710,12 +742,16 @@ public class PlatformController implements ContactListener, Screen {
 		if (closest != null) closest.setSelected(true);
 		//System.out.println("got to after bubble check");
 		Vector2 pos = avatar.getPosition();
+		avatar.updateRotation(0);
 		boolean destructRope = false;
 		boolean constructRope = false;
 		if(!spawned) { //temp prevents people from left and right clicking at same time (which breaks for some reason)
 			if (avatar.isGrappling()) {
+
+				avatar.updateRotation(rope.getFirstLinkRotation());
+
 				if (InputController.getInstance().didBubble()) {
-					avatar.setGrappling(false);
+
 					destructRope = true;
 				}
 				if (InputController.getInstance().didBubble() && avatar.getPosition().dst(closest.getPosition()) < 5 && !rope.bubble.equals(closest.getBody())) {
@@ -723,12 +759,10 @@ public class PlatformController implements ContactListener, Screen {
 					//					System.out.println("Hi");
 					//					destructRope = true;
 					//				}
-					avatar.setGrappling(true);
 					constructRope = true;
 				}
 			} else {
 				if (InputController.getInstance().didBubble() && avatar.getPosition().dst(closest.getPosition()) < 5) {
-					avatar.setGrappling(true);
 					constructRope = true;
 				}
 			}
@@ -740,14 +774,20 @@ public class PlatformController implements ContactListener, Screen {
 			//createBullet();
 		}
 		if(destructRope){
+			avatar.setGrappling(false);
 			destructRope(rope);
 			releaseRopeSoundId = playSound(releaseRopeSound, releaseRopeSoundId, volume );
 		}
 		//System.out.println("After destruct");
 		if(constructRope){
 			//System.out.println("B4: " + pos)
-			rope = createGrapple(closest);
-			shootRopeSoundId = playSound( shootRopeSound, shootRopeSoundId, volume );
+			//if(checkCanRope(closest)) { //TODO:: make this good
+				avatar.setGrappling(true);
+				rope = createGrapple(closest);
+				shootRopeSoundId = playSound(shootRopeSound, shootRopeSoundId, volume);
+			//}else{
+			//	constructRope = false;
+			//}//
 			//avatar.setPosition(pos);
 		}
 		//System.out.println("after construct");
@@ -794,6 +834,7 @@ public class PlatformController implements ContactListener, Screen {
 	}
 
 	private RopeBridge createGrapple(Bubble bubble){
+
 		bubble.setGrappled(true);
 		float dwidth  = bridgeTexture.getRegionWidth()/scale.x;
 		float dheight = bridgeTexture.getRegionHeight()/scale.y;
@@ -824,14 +865,44 @@ public class PlatformController implements ContactListener, Screen {
 	}
 
 	public void popBubble(Bubble bubble){
-		if(bubble.isGrappled()){
-			destructRope(rope);
-			avatar.setGrappling(false);
-		}
-		bubble.markRemoved(true);
+
+
+		bubble.setActive(false);
+		bubble.stopDraw();
 		bubbles.remove(bubble);
 		popSound.setVolume(popID, volume * 10f);
 		popID = playSound(popSound,popID,0.5f);
+
+	}
+	public Vector2 collidePos = new Vector2();
+	public Body collidebody = null;
+
+
+	public boolean checkCanRope(Bubble b){
+		RayCastCallback rcc = new RayCastCallback() {
+			@Override
+			public float reportRayFixture(Fixture fixture, Vector2 point, Vector2 normal, float fraction) {
+				collidePos = fixture.getBody().getPosition();
+				collidebody = fixture.getBody();
+				return 0;
+			}
+		};
+		Vector2 tempPosA = new Vector2();
+		tempPosA.x = avatar.getPosition().x;
+		tempPosA.y = bounds.height - avatar.getPosition().y;
+		Vector2 tempPosB = new Vector2();
+		tempPosB.x = b.getPosition().x;
+		tempPosB.y = bounds.height - b.getPosition().y;
+		world.rayCast(rcc, tempPosA, tempPosB);
+		if(collidebody != null){
+			if(!b.getBody().equals(collidebody)){
+				return false;
+			}
+//			if(collidePos.x == b.getPosition().x && collidePos.y == b.getPosition().y){
+//				return true;
+//			}
+		}
+		return true;
 	}
 
 	
@@ -872,19 +943,19 @@ public class PlatformController implements ContactListener, Screen {
 			if ((bd1 == avatar && (bd2.getName().equals("spike") || bd2.getName().equals("enemy"))) ||
 				(bd2 == avatar && (bd1.getName().equals("spike") || bd2.getName().equals("enemy")))){
 
-				avatar.hurt();
-				life = avatar.getLife();
+
 
 				if(!avatar.isInvincible()) {
-					//avatar.hurt();
+					avatar.hurt();
+					life = avatar.getLife();
 					if(bd1 == avatar){ //move it to player controller
 						//TODO look prev comment
 
-						Vector2 v2 = body1.getPosition().sub(body2.getPosition()).scl(15);
+						Vector2 v2 = body1.getPosition().sub(body2.getPosition()).nor().scl(10);
 						body1.applyLinearImpulse(new Vector2(v2.x, v2.y), body1.getPosition(), true);
 
 					}else{
-						Vector2 v2 = body2.getPosition().sub(body1.getPosition()).scl(15);
+						Vector2 v2 = body2.getPosition().sub(body1.getPosition()).nor().scl(10);
 						body2.applyLinearImpulse(new Vector2(v2.x, v2.y), body2.getPosition(), true);
 
 					}
@@ -902,10 +973,10 @@ public class PlatformController implements ContactListener, Screen {
 			if ((bd1.getName().equals("bubble") && (bd2.getName().equals("enemy") || bd2.getName().equals("spike"))) ||
 					(bd2.getName().equals("bubble") && (bd1.getName().equals("enemy") || bd1.getName().equals("spike")))){
 				if(bd1.getName().equals("bubble")){
-					popBubble((Bubble) bd1);
+					((Bubble) bd1).pop_timer = 1;
 
 				}else{
-					popBubble((Bubble) bd2);
+					((Bubble) bd2).pop_timer = 1;
 				}
 			}
 			
@@ -1126,6 +1197,8 @@ public class PlatformController implements ContactListener, Screen {
 		addQueue.clear();
 		zones.clear();
 		world.dispose();
+		lucens.clear();
+
 		objects = null;
 		addQueue = null;
 		bounds = null;
@@ -1315,7 +1388,7 @@ public class PlatformController implements ContactListener, Screen {
 	 *
 	 * The method draws all objects in the order that they were added.
 	 *
-	 * @param dt	Number of seconds since last animation frame
+	 *
 	 */
 
 	public void updateBubbleCount(int bubbles_left){
@@ -1359,12 +1432,7 @@ public class PlatformController implements ContactListener, Screen {
 		canvas.end();
 //		canvas.shape.end();
 		//canvas.shape.setProjectionMatrix(canvas.camera.combined);
-		canvas.shape.begin(ShapeRenderer.ShapeType.Line);
-		for(Zone z : zones){
-			canvas.shape.setColor(Color.RED);
-			z.sDraw(canvas);
-		}
-		canvas.shape.end();
+
 		// Draw life bar
 
 

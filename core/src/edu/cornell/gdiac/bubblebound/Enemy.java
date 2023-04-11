@@ -1,6 +1,7 @@
 package edu.cornell.gdiac.bubblebound;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.Vector2;
 import edu.cornell.gdiac.bubblebound.obstacle.CapsuleObstacle;
 import edu.cornell.gdiac.util.FilmStrip;
 
@@ -14,7 +15,7 @@ public class Enemy extends CapsuleObstacle { //capsule not working for some reas
     private FilmStrip filmstrip;
 
     public Enemy(float x, float y, float width, float height){
-        super(x, y, width, height);
+        super(x, y, 1, 2);
         setDensity(100f);
         setFriction(0f);
         setFixedRotation(true);
@@ -40,10 +41,21 @@ public class Enemy extends CapsuleObstacle { //capsule not working for some reas
         rightBound = rightBounds;
     }
 
+    public boolean checkSpeedUp(DudeModel avatar){
+        Vector2 diff = avatar.getPosition().sub(getPosition());
+        if(faceRight && diff.x > 0 && Math.abs(diff.y) < 3 && diff.x < 10){
+            return true;
+        }else if(!faceRight && diff.x < 0 && Math.abs(diff.y) < 3 && diff.x > -10){
+            return true;
+        }
+
+        return false;
+    }
+
     protected int i;
     protected int counter = 0;
     protected final int delay = 50; // adjust this value to change the delay
-    public void update(){
+    public void update(DudeModel avatar){
         if (animate) {
             if (filmstrip != null) {
                 if (counter == 0) { // execute setFrame only when counter reaches 0
@@ -58,6 +70,7 @@ public class Enemy extends CapsuleObstacle { //capsule not working for some reas
             }
         }
 
+        int multiplier = (checkSpeedUp(avatar)) ? 3 : 1;
         if(grav == -1){
             setGravityScale(-1f);
         }else{
@@ -65,17 +78,17 @@ public class Enemy extends CapsuleObstacle { //capsule not working for some reas
         }
         if(faceRight){
             if(getPosition().x >= rightBound){
-                setVX(-SPEED);
+                setVX(-SPEED * multiplier);
                 faceRight = false;
             }else{
-                setVX(SPEED);
+                setVX(SPEED * multiplier);
             }
         }else{
             if(getPosition().x <= leftBound){
-                setVX(SPEED);
+                setVX(SPEED * multiplier);
                 faceRight = true;
             }else{
-                setVX(-SPEED);
+                setVX(-SPEED * multiplier);
             }
         }
     }

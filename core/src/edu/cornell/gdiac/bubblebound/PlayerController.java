@@ -11,7 +11,7 @@ public class PlayerController {
 
 
     /** The initializing data (to avoid magic numbers) */
-    private final JsonValue data;
+    private JsonValue data; //changed from final maybe change it back later once we got the json  stuff working
 
 
     /** Cooldown (in animation frames) for shooting */
@@ -49,6 +49,9 @@ public class PlayerController {
     /** The current health (in half hearts) of the player */
 
     public int health;
+
+    public int maxbubbles = 4; //default at 4 can be upgraded
+
 
     /** Whether we are actively invincible */
     public boolean isInvincible = false;
@@ -94,6 +97,14 @@ public class PlayerController {
         isGrounded = value;
     }
 
+    public int getMaxBubbles(){
+        return maxbubbles;
+    }
+
+    public void upgradeMaxBubbles(){
+        maxbubbles++;
+    }
+
     public boolean justGrounded(){
         boolean output = !isGrappling && !isJumping && isGrounded && !wasGrounded;
         wasGrounded = isGrounded;
@@ -129,11 +140,30 @@ public class PlayerController {
     }
 
     public PlayerController(JsonValue data){
-        health = MAX_HEALTH;
+        health = data.getInt("health", 0);
+
+
         jumpLimit = data.getInt( "jump_cool", 0 );
         shotLimit = data.getInt( "shot_cool", 0 );
         this.data = data;
 
+        shootCooldown = 0;
+        jumpCooldown = 0;
+
+        // Gameplay attributes
+        isGrounded = false;
+        isShooting = false;
+        isJumping = false;
+
+        invincibletimer = 50;
+        isFacingRight = true;
+
+    }
+
+    public PlayerController(){ //magic numbers are cool
+        health = MAX_HEALTH;
+        jumpLimit = 30;
+        shotLimit = 30;
         shootCooldown = 0;
         jumpCooldown = 0;
 
@@ -174,9 +204,7 @@ public class PlayerController {
             return;
         }
         health--;
-        //setInvincible(true);
+        setInvincible(true);
     }
-
-
 
 }

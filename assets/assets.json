@@ -15,7 +15,7 @@
             "file":  "platform/background2.png"
         },
       "background:temp" : {
-        "file": "platform/background.png"
+        "file": "platform/background1temp.png"
       },
       "losing" : {
         "file" : "shared/losing.png"

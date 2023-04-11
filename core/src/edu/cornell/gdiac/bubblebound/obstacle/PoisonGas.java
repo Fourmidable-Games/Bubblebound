@@ -14,6 +14,8 @@ public class PoisonGas extends BoxObstacle{
     public int timer = 0;
     public boolean faded = false;
 
+    public final int fadeawaytimer = 200;
+
 
 
 
@@ -26,7 +28,7 @@ public class PoisonGas extends BoxObstacle{
     }
 
     public void setFade(boolean val){
-        timer = 200;
+        timer = fadeawaytimer;
     }
 
     public void update(){
