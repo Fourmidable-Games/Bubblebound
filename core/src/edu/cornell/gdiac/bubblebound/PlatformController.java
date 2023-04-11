@@ -306,16 +306,18 @@ public class PlatformController implements ContactListener, Screen {
 
 
 
-		LevelEditor Level1 = new LevelEditor();
+
+		LevelEditorV2 Level2 = new LevelEditorV2();
 		loadTexturesIntoLevelEditor();
-		Level1.readTextures(textures);
-		Level1.readJson();
-		List<BoxObstacle> BoxList = Level1.getBoxes();
-		List<Bubble> bubbleList = Level1.getBubbles();
-		List<Zone> gravityZoneList = Level1.getGravityZones();
-		List<Spike> spikes = Level1.getSpikes();
-		goalDoor = Level1.getGoal();
-		enemies = Level1.getEnemies();
+		Level2.readTextures(textures);
+		Level2.readJson();
+		List<BoxObstacle> BoxList = Level2.getBoxes();
+		List<Bubble> bubbleList = Level2.getBubbles();
+		List<Zone> gravityZoneList = Level2.getGravityZones();
+		List<Spike> spikes = Level2.getSpikes();
+		List<Lucenglaze> glazes = Level2.getGlazes();
+		goalDoor = Level2.getGoal();
+		enemies = Level2.getEnemies();
 
 
 		// Add level goal
@@ -385,14 +387,12 @@ public class PlatformController implements ContactListener, Screen {
 		}
 
 
-		createLucenGlaze(12, 8);
+//		createLucenGlaze(12, 8);
 
-		Spike sp = new Spike(1, 1, 1, 1);
-		sp.setBodyType(BodyDef.BodyType.StaticBody);
-		sp.setDrawScale(scale);
-		sp.setName("spike");
-		sp.setTexture(spikeTexture);
-		addObject(sp);
+		for (int i = 0; i < glazes.size(); i++) {
+			createLucenGlaze(glazes.get(i).getX(), glazes.get(i).getY());
+		}
+
 
 
 
@@ -409,7 +409,7 @@ public class PlatformController implements ContactListener, Screen {
 
 		dwidth  = avatarTexture.getRegionWidth()/scale.x;
 		dheight = avatarTexture.getRegionHeight()/scale.y;
-		avatar = new DudeModel(constants.get("dude"), dwidth, dheight);
+		avatar = Level2.getPlayer();
 		avatar.setDrawScale(scale);
 		avatar.setTexture(avatarTexture);
 		avatar.setName("avatar");
@@ -1284,7 +1284,6 @@ public class PlatformController implements ContactListener, Screen {
 	 *
 	 * The method draws all objects in the order that they were added.
 	 *
-	 * @param dt	Number of seconds since last animation frame
 	 */
 
 	public void updateBubbleCount(int bubbles_left){
