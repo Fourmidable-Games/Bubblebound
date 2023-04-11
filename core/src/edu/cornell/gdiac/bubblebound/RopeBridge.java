@@ -265,7 +265,15 @@ public class RopeBridge extends ComplexObstacle {
 //		}
 //	}
 
-
+	public float getFirstLinkRotation(){
+		Vector2 pos1 = avatar.getPosition();
+		Vector2 pos2 = ((bodies.size == -1) ? bodies.get(4).getBody() : bubble).getPosition();
+		float angle = (float) Math.atan((pos1.y-pos2.y)/(pos1.x-pos2.x));
+		angle = (float) Math.toDegrees(angle);
+		System.out.println(angle);
+		//angle -= 180;
+		return (avatarCapsule.grav == 1) ? angle : angle + 180;
+	}
 
 
 }

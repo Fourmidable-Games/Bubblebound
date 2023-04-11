@@ -486,7 +486,7 @@ public class DudeModel extends CapsuleObstacle {
 	public boolean displayBreath = false;
 
 	public void updateRotation(float r){
-		body.setTransform(getPosition(), r);
+		//body.setTransform(getPosition(), -45f);
 	}
 
 	public void breathe(){
