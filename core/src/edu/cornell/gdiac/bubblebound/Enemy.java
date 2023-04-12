@@ -13,9 +13,11 @@ public class Enemy extends CapsuleObstacle { //capsule not working for some reas
     public float rightBound;
     private boolean animate = true;
     private FilmStrip filmstrip;
+    private int start;
 
     public Enemy(float x, float y, float width, float height){
         super(x, y, 1, 2);
+        start = (int)x;
         setDensity(100f);
         setFriction(0f);
         setFixedRotation(true);
@@ -36,9 +38,9 @@ public class Enemy extends CapsuleObstacle { //capsule not working for some reas
         counter1 = (counter1 + 1) % delay1; // increment counter and reset to 0 when it reaches delay
     }
 
-    public void setBounds(float leftBounds, float rightBounds){
-        leftBound = leftBounds;
-        rightBound = rightBounds;
+    public void setBounds(float leftDisplacement, float rightDisplacement){
+        leftBound = start - leftDisplacement;
+        rightBound = start + rightDisplacement;
     }
 
     public boolean checkSpeedUp(DudeModel avatar){

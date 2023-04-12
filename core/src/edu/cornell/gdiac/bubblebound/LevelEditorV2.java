@@ -15,7 +15,8 @@ import java.util.List;
 
 public class LevelEditorV2 {
 
-    private FileHandle file = Gdx.files.internal("lvl2.json");
+    private String jsonName = "lvl5.json";
+    private FileHandle file = Gdx.files.internal(jsonName);
     private FileHandle file2 = Gdx.files.internal("propertytypes.json");
     private FileHandle file3 = Gdx.files.internal("platform/constants.json");
     private JsonReader jsonReader = new JsonReader();
@@ -58,7 +59,7 @@ public class LevelEditorV2 {
     public void readJson() {
 
         JsonReader json = new JsonReader();
-        JsonValue base = json.parse(Gdx.files.internal("lvl2.json"));
+        JsonValue base = json.parse(Gdx.files.internal(jsonName));
 
         JsonReader json1 = new JsonReader();
         JsonValue base1 = json.parse(Gdx.files.internal("propertytypes.json"));
@@ -149,12 +150,14 @@ public class LevelEditorV2 {
 
                         for (JsonValue grav : gr) {
 
+                            float zone_width = (grav.getFloat("width"))/64;
+                            float zone_height = (grav.getFloat("height"))/64;
 
                             Zone wo = new Zone(
-                                    (grav.getFloat("x")) / 64,
-                                    (mapHeight - (grav.getFloat("y"))) / 64,
-                                    (grav.getFloat("width"))/64,
-                                    (grav.getFloat("height"))/64,
+                                    (grav.getFloat("x")) / 64 - 0.5f,
+                                    (mapHeight - (grav.getFloat("y"))) / 64 - zone_height +0.5f,
+                                    zone_width,
+                                    zone_height,
                                     -1,
                                     new Vector2(0,0)
                             );
@@ -181,19 +184,19 @@ public class LevelEditorV2 {
 
                             JsonValue prop = en.get("properties");
 
-                            int left = 0;
-                            int right = 0;
+                            int left_displacement = 0;
+                            int right_displacement = 0;
 
                             for (JsonValue prop1 : prop) {
                                 if (prop1.getString("name").equals("leftBound")) {
-                                    left = prop1.getInt("value");
+                                    left_displacement = prop1.getInt("value");
                                 }
                                 if (prop1.getString("name").equals("rightBound")) {
-                                    right = prop1.getInt("value");
+                                    right_displacement = prop1.getInt("value");
                                 }
                             }
 
-                            ene.setBounds(left, right-left);
+                            ene.setBounds(left_displacement, right_displacement);
 
                             enemies.add(ene);
 
@@ -209,22 +212,30 @@ public class LevelEditorV2 {
                             System.out.println("fuck");
                             System.out.println(w.getFloat("x"));
 
-                            Lucenglaze wo = new Lucenglaze((w.getFloat("x")) / 64,
-                                    (((mapHeight - w.getFloat("y"))) / 64)+1);
+                            Lucenglaze wo;
+                            wo = new Lucenglaze(0,0);
 
                             if (w.getFloat("rotation") == 90) {
+                                wo= new Lucenglaze((w.getFloat("x")) / 64,
+                                        (((mapHeight - w.getFloat("y"))) / 64));
                                 glazeRotations.add(1);
                             }
 
                             else if (w.getFloat("rotation") == -180) {
+                                wo= new Lucenglaze(((w.getFloat("x")) / 64)-1,
+                                        (((mapHeight - w.getFloat("y"))) / 64));
                                 glazeRotations.add(2);
                             }
 
                             else if (w.getFloat("rotation") == -90) {
+                                wo= new Lucenglaze(((w.getFloat("x")) / 64)-1,
+                                        (((mapHeight - w.getFloat("y"))) / 64)+1);
                                 glazeRotations.add(3);
                             }
 
                             else if (w.getFloat("rotation") == 0) {
+                                wo = new Lucenglaze((w.getFloat("x")) / 64,
+                                        (((mapHeight - w.getFloat("y"))) / 64)+1);
                                 glazeRotations.add(0);
                             }
 
@@ -293,7 +304,7 @@ public class LevelEditorV2 {
 
                         for (int i = 0; i < mapWidth/64; i++) {
                             for (int j = 0; j < mapHeight/64; j++) {
-                                if (tileMap.get(j).get(i) == 8) {
+                                if (tileMap.get(j).get(i) == 18) {
                                     BoxObstacle wo = new BoxObstacle(
                                             i,
                                             (mapHeight/64) - j,
@@ -305,7 +316,7 @@ public class LevelEditorV2 {
 
                                     boxes.add(wo);
                                 }
-                                else if (tileMap.get(j).get(i) == 18) {
+                                else if (tileMap.get(j).get(i) == 19) {
                                     BoxObstacle wo = new BoxObstacle(
                                             i,
                                             (mapHeight/64) - j,
@@ -318,7 +329,7 @@ public class LevelEditorV2 {
                                     boxes.add(wo);
                                 }
 
-                                else if (tileMap.get(j).get(i) == 19) {
+                                else if (tileMap.get(j).get(i) == 20) {
                                     BoxObstacle wo = new BoxObstacle(
                                             i,
                                             (mapHeight/64) - j,
@@ -331,7 +342,7 @@ public class LevelEditorV2 {
                                     boxes.add(wo);
                                 }
 
-                                else if (tileMap.get(j).get(i) == 20) {
+                                else if (tileMap.get(j).get(i) == 21) {
                                     BoxObstacle wo = new BoxObstacle(
                                             i,
                                             (mapHeight/64) - j,
@@ -344,7 +355,7 @@ public class LevelEditorV2 {
                                     boxes.add(wo);
                                 }
 
-                                else if (tileMap.get(j).get(i) == 21) {
+                                else if (tileMap.get(j).get(i) == 22) {
                                     BoxObstacle wo = new BoxObstacle(
                                             i,
                                             (mapHeight/64) - j,
@@ -357,7 +368,7 @@ public class LevelEditorV2 {
                                     boxes.add(wo);
                                 }
 
-                                else if (tileMap.get(j).get(i) == 22) {
+                                else if (tileMap.get(j).get(i) == 24) {
                                     BoxObstacle wo = new BoxObstacle(
                                             i,
                                             (mapHeight/64) - j,
@@ -370,7 +381,7 @@ public class LevelEditorV2 {
                                     boxes.add(wo);
                                 }
 
-                                else if (tileMap.get(j).get(i) == 24) {
+                                else if (tileMap.get(j).get(i) == 25) {
                                     BoxObstacle wo = new BoxObstacle(
                                             i,
                                             (mapHeight/64) - j,
@@ -383,7 +394,7 @@ public class LevelEditorV2 {
                                     boxes.add(wo);
                                 }
 
-                                else if (tileMap.get(j).get(i) == 25) {
+                                else if (tileMap.get(j).get(i) == 26) {
                                     BoxObstacle wo = new BoxObstacle(
                                             i,
                                             (mapHeight/64) - j,
@@ -396,7 +407,7 @@ public class LevelEditorV2 {
                                     boxes.add(wo);
                                 }
 
-                                else if (tileMap.get(j).get(i) == 26) {
+                                else if (tileMap.get(j).get(i) == 27) {
                                     BoxObstacle wo = new BoxObstacle(
                                             i,
                                             (mapHeight/64) - j,

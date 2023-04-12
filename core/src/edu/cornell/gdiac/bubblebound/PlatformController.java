@@ -498,21 +498,21 @@ public class PlatformController implements ContactListener, Screen {
 		float xx = 0;
 		float yy = 0;
 		switch (rotation){
-			case 1:
+			case 0:
 				yy = 1.5f;
 				break;
-			case 2:
+			case 1:
 				xx = 1.5f;
 				break;
-			case 3:
+			case 2:
 				yy = -1.5f;
 				break;
-			case 4:
+			case 3:
 				xx = -1.5f;
 				break;
 		}
-		int w = (rotation % 2 == 1) ? 3 : 4;
-		int h = (rotation % 2 == 1) ? 4 : 3;
+		int w = (rotation % 2 == 0) ? 3 : 4;
+		int h = (rotation % 2 == 0) ? 4 : 3;
 		LucenglazeSensor lgs = new LucenglazeSensor(x + xx, y + yy, (int) x, (int) y, w, h, rotation);
 		lgs.setLucen(createLucenObject(x, y, rotation));
 		lgs.setDrawScale(scale);

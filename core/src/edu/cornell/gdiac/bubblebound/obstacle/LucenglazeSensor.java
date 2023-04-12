@@ -23,12 +23,12 @@ public class LucenglazeSensor extends BoxObstacle{
 
     public LucenglazeSensor(float x, float y, int lucenx, int luceny, int w, int h, int rotation){ //rotation 1 is upright, 2 is facing right, 3 is facing down, 4 is facing left
         super(x, y, w, h); //idk y 1.5
-        if(rotation % 2 == 0 ){
+        if(rotation % 2 == 1 ){
             horizontal = true;
         }else{
             horizontal = false;
         }
-        if(rotation > 2){
+        if(rotation >= 2){
             direction = -1;
         }else{
             direction = 1;
