@@ -107,6 +107,8 @@
         "rocket:crate01": "rocket/crate01.png",
         "rocket:crate02": "rocket/crate02.png",
         "platform:bubblecooldown": "platform/fixedBubbleCooldown.png",
+        "platform:bubblecooldownEmpty": "platform/emptyCooldownBubble.png",
+        "platform:bubblecooldownFull": "platform/fullCooldownBubble.png",
         "platform:dude2":  "platform/enemy.png",
         "platform:dude":  "platform/dude.png",
         "platform:dude3":  "platform/dude3.png",

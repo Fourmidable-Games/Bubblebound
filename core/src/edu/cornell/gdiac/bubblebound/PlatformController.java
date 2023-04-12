@@ -56,6 +56,8 @@ public class PlatformController implements ContactListener, Screen {
 	protected Texture topText;
 	protected FilmStrip topStrip;
 	protected Texture bubblecooldownText;
+	protected TextureRegion emptyBubbleCooldown;
+	protected TextureRegion fullBubbleCooldown;
 	protected FilmStrip bubblecooldownStrip;
 	/** Texture asset for the bullet */
 	private TextureRegion bulletTexture;
@@ -284,6 +286,8 @@ public class PlatformController implements ContactListener, Screen {
 		topStrip = new FilmStrip(topText, 1 ,1 ,1);
 		bubblecooldownText = directory.getEntry("platform:bubblecooldown", Texture.class);
 		bubblecooldownStrip = new FilmStrip(bubblecooldownText, 1, 8, 8);
+		emptyBubbleCooldown = new TextureRegion(directory.get("platform:bubblecooldownEmpty", Texture.class));
+		fullBubbleCooldown = new TextureRegion(directory.get("platform:bubblecooldownFull", Texture.class));
 		bulletTexture = new TextureRegion(directory.getEntry("platform:bullet",Texture.class));
 		bridgeTexture = new TextureRegion(directory.getEntry("platform:rope",Texture.class));
 		barrierTexture = new TextureRegion(directory.getEntry("platform:barrier",Texture.class));
@@ -720,12 +724,30 @@ public class PlatformController implements ContactListener, Screen {
 		// }
 		Vector2 drawPos = new Vector2(cameraCoords.x,cameraCoords.y);
 		System.out.println(bubble_regen_timer);
-		int f =7- (int)(bubble_regen_timer/(bubble_regen_timer_max/8));
+		int f =8- (int)(bubble_regen_timer/(bubble_regen_timer_max/8));
 		System.out.println("FRAME: " + f);
 		bubblecooldownStrip.setFrame(f);
 		Texture t = bubblecooldownStrip.getTexture();
 //		canvas.draw(bubblecooldownStrip,Color.WHITE,drawPos.x + canvas.getWidth()/2 - 400, drawPos.y + canvas.getHeight()/2,t.getWidth()/8*0.25f,t.getHeight()*0.25f);
-		canvas.draw(bubblecooldownStrip,Color.WHITE,drawPos.x + canvas.getWidth()/2 - 400, drawPos.y + canvas.getHeight()/2 - 50,t.getWidth()/8*0.25f,t.getHeight()*0.25f);
+		int curr_bubble = 0;
+		Vector2 current_bubble_pos = new Vector2(drawPos.x + canvas.getWidth()/2 - 400, drawPos.y + canvas.getHeight()/2 - 50);
+		while(curr_bubble < bubbles_left){
+			canvas.draw(fullBubbleCooldown,Color.WHITE,current_bubble_pos.x,current_bubble_pos.y,t.getWidth()/8*0.25f,t.getHeight()*0.25f);
+			curr_bubble ++;
+			current_bubble_pos.add(40,0);
+		}
+		if(curr_bubble == bubbles_left){
+			canvas.draw(bubblecooldownStrip,Color.WHITE,current_bubble_pos.x,current_bubble_pos.y,t.getWidth()/8*0.25f,t.getHeight()*0.25f);
+			curr_bubble ++;
+			current_bubble_pos.add(40,0);
+		}
+		while(curr_bubble < BUBBLE_LIMIT){
+			canvas.draw(emptyBubbleCooldown,Color.WHITE,current_bubble_pos.x,current_bubble_pos.y,t.getWidth()/8*0.25f,t.getHeight()*0.25f);
+			curr_bubble ++;
+			current_bubble_pos.add(40,0);
+		}
+
+
 
 		// int i = 0;
 

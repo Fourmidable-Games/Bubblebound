@@ -118,9 +118,9 @@ public class Bubble extends WheelObstacle {
             white.a = alpha;
 
             if(grav == 1) {
-                canvas.draw(texture,gold,origin.x,origin.y,getX()*drawScale.x,getY()*drawScale.y,getAngle(), 1.4F*getRadius(), 1.4F*getRadius());
+                canvas.draw(texture,gold,origin.x,origin.y,getX()*drawScale.x,getY()*drawScale.y,getAngle(), 2F*getRadius(), 2F*getRadius());
             }else{
-                canvas.draw(texture,white,origin.x,origin.y,getX()*drawScale.x,getY()*drawScale.y,getAngle(), 1.4F*getRadius(), 1.4F*getRadius());
+                canvas.draw(texture,white,origin.x,origin.y,getX()*drawScale.x,getY()*drawScale.y,getAngle(), 2F*getRadius(), 2F*getRadius());
             }
 
         }
