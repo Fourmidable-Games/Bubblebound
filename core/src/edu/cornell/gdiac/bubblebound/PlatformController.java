@@ -167,7 +167,7 @@ public class PlatformController implements ContactListener, Screen {
 	/** The default value of gravity (going down) */
 	protected static final float DEFAULT_GRAVITY = -4.9f;
 
-	private final int MAX_LEVELS = 2;
+	private final int MAX_LEVELS = 3;
 
 	private int currLevel;
 
@@ -496,7 +496,10 @@ public class PlatformController implements ContactListener, Screen {
 
 //		createLucenGlaze(12, 8);
 
+		System.out.println("Lucenglaze length: " + glazes.size() + "glaze rotations length: " + glazeRotations.size());
 		for (int i = 0; i < glazes.size(); i++) {
+			System.out.println("Creating lucenglaze #: " + i);
+
 			createLucenGlaze(glazes.get(i).getX(), glazes.get(i).getY(), glazeRotations.get(i));
 		}
 

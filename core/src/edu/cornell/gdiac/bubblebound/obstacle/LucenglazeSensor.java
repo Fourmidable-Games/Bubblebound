@@ -16,6 +16,8 @@ public class LucenglazeSensor extends BoxObstacle{
     private int x;
     private int y;
     private int resettimer = 0;
+
+    private int spawndelay = 40;
     public final int fadeawaytimer = 200; //for poison
 
     public int timer = -1;
@@ -33,6 +35,7 @@ public class LucenglazeSensor extends BoxObstacle{
         }else{
             direction = 1;
         }
+        spawndelay = 40;
        this.x = lucenx;
        this.y = luceny;
        this.setSensor(true);
@@ -59,15 +62,15 @@ public class LucenglazeSensor extends BoxObstacle{
     public ArrayList<Vector2> update(){
         if(resettimer > 0){
             resettimer++;
-            if(resettimer > fadeawaytimer + 100){
+            if(resettimer > fadeawaytimer + 200){
                 deactivate();
                 resettimer = 0;
                 timer = -1;
             }
         }
-        if(triggered && timer <= 40){
+        if(triggered && timer <= spawndelay + 40){
             timer++;
-            if(timer == 0){
+            if(timer == spawndelay){
                 poison.clear();
                 if(horizontal){
                     poison.add(new Vector2(x,y + 1));
@@ -79,7 +82,7 @@ public class LucenglazeSensor extends BoxObstacle{
                     poison.add(new Vector2(x - 1, y));
                 }
                 return poison;
-            }else if(timer == 20){
+            }else if(timer == spawndelay + 20){
                 poison.clear();
                 if(horizontal){
                     poison.add(new Vector2(x + (direction * 1), y + 1));
@@ -92,7 +95,7 @@ public class LucenglazeSensor extends BoxObstacle{
                 }
 
                 return poison;
-            }else if(timer == 40){
+            }else if(timer == spawndelay + 40){
                 poison.clear();
                 if(horizontal){
                     poison.add(new Vector2(x + (direction * 2), y + 1));

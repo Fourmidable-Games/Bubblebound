@@ -249,7 +249,7 @@ public class LevelEditorV2 {
                                 glazeRotations.add(1);
                             }
 
-                            else if (w.getFloat("rotation") == -180) {
+                            else if (w.getFloat("rotation") == -180 || w.getFloat("rotation") == 180) {
                                 wo= new Lucenglaze(((w.getFloat("x")) / 64)-1,
                                         (((mapHeight - w.getFloat("y"))) / 64));
                                 glazeRotations.add(2);
@@ -265,6 +265,8 @@ public class LevelEditorV2 {
                                 wo = new Lucenglaze((w.getFloat("x")) / 64,
                                         (((mapHeight - w.getFloat("y"))) / 64)+1);
                                 glazeRotations.add(0);
+                            }else{
+                                System.out.println("OH DANG WE MISSED ONE HERE! at " + glazeRotations.size() + " the rot was " + w.getFloat("rotation"));
                             }
 
 
