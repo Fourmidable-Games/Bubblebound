@@ -92,6 +92,7 @@ public class PlatformController implements ContactListener, Screen {
 	private Sound releaseRopeSound;
 	private long releaseRopeSoundId = -1;
 
+	private boolean assetsLoaded = false;
 	private Sound windSound;
 	private long windSoundID = -1;
 	/** The level 1 background music sound.  We want it to loop. */
@@ -108,9 +109,9 @@ public class PlatformController implements ContactListener, Screen {
 	/** Physics constants for initialization */
 	private JsonValue constants;
 
-	private int BUBBLE_LIMIT = 4;
+	private int BUBBLE_LIMIT = 0;
 
-	private int bubbles_left = 4;
+	private int bubbles_left = 0;
 
 	private int bubble_regen_timer_max = 100;
 
@@ -130,6 +131,8 @@ public class PlatformController implements ContactListener, Screen {
 	protected FilmStrip bubble;
 	protected FilmStrip enemyStrip;
 	protected Texture enemyText;
+
+	protected TextureRegion tokenText;
 	protected Texture bubbleText;
 	/** The font for giving messages to the player */
 	protected TextureRegion background;
@@ -229,6 +232,10 @@ public class PlatformController implements ContactListener, Screen {
 
 	private List<PoisonGas> poisons = new ArrayList();
 
+	private Token level4Token;
+
+	private boolean level4TokenCollected = false;
+
 
 	/**
 	 * Creates and initialize a new instance of the platformer game
@@ -286,8 +293,9 @@ public class PlatformController implements ContactListener, Screen {
 		topStrip = new FilmStrip(topText, 1 ,1 ,1);
 		bubblecooldownText = directory.getEntry("platform:bubblecooldown", Texture.class);
 		bubblecooldownStrip = new FilmStrip(bubblecooldownText, 1, 8, 8);
-		emptyBubbleCooldown = new TextureRegion(directory.get("platform:bubblecooldownEmpty", Texture.class));
-		fullBubbleCooldown = new TextureRegion(directory.get("platform:bubblecooldownFull", Texture.class));
+		emptyBubbleCooldown = new TextureRegion(directory.getEntry("platform:emptyCooldownBubble", Texture.class));
+		fullBubbleCooldown = new TextureRegion(directory.getEntry("platform:fullCooldownBubble", Texture.class));
+		tokenText = new TextureRegion(directory.getEntry("platform:token",Texture.class));
 		bulletTexture = new TextureRegion(directory.getEntry("platform:bullet",Texture.class));
 		bridgeTexture = new TextureRegion(directory.getEntry("platform:rope",Texture.class));
 		barrierTexture = new TextureRegion(directory.getEntry("platform:barrier",Texture.class));
@@ -331,7 +339,7 @@ public class PlatformController implements ContactListener, Screen {
 		tileIceNine = new TextureRegion(directory.getEntry("shared:ice9", Texture.class));
 		tileIceTen = new TextureRegion(directory.getEntry("shared:ice10", Texture.class));
 
-
+		assetsLoaded = true;
 	}
 
 	public List<TextureRegion> loadTexturesIntoLevelEditor() {
@@ -359,7 +367,6 @@ public class PlatformController implements ContactListener, Screen {
 			//reset bubbles
 			bubbles_left = BUBBLE_LIMIT;
 			bubble_regen_timer = bubble_regen_timer_max;
-			updateBubbleCount(bubbles_left);
 
 			//reset health
 			life = 1;
@@ -411,7 +418,6 @@ public class PlatformController implements ContactListener, Screen {
 	private void populateLevel(String jsonPath) {
 		System.out.println("Populating Level");
 		setSounds();
-
 
 		LevelEditorV2 Level2 = new LevelEditorV2(playerController,jsonPath);
 		loadTexturesIntoLevelEditor();
@@ -523,16 +529,27 @@ public class PlatformController implements ContactListener, Screen {
 //		dwidth  = avatarTexture.getRegionWidth()/scale.x;
 //		dheight = avatarTexture.getRegionHeight()/scale.y;
 
+		if(currLevel == 1 && !level4TokenCollected){
+
+			level4Token = new Token(new Vector2(5,10), 2);
+			level4Token.setName("token4");
+			level4Token.setBodyType(BodyDef.BodyType.StaticBody);
+			level4Token.setSensor(true);
+			level4Token.setDrawScale(scale);
+			level4Token.setTexture(tokenText);
+			addObject(level4Token);
+		}
 
 		dwidth  = avatarTexture.getRegionWidth()/scale.x;
 		dheight = avatarTexture.getRegionHeight()/scale.y;
-
+//		avatar.setGrappling(false);
 		avatar = needToInitializeSpawn ? Level2.getPlayer(Door.SpawnDirection.RIGHT) : Level2.getPlayerAtLocation(avatarSpawnLocation, avatarSpawnDirection);
 		if(needToInitializeSpawn) {
 			avatarSpawnLocation = avatar.getPosition();
 			avatarSpawnDirection = Door.SpawnDirection.RIGHT;
 			needToInitializeSpawn = false;
 		}
+		avatar.setGrappling(false);
 		avatar.setDrawScale(scale);
 		avatar.setTexture(avatarTexture);
 		avatar.setName("avatar");
@@ -725,23 +742,28 @@ public class PlatformController implements ContactListener, Screen {
 		Vector2 drawPos = new Vector2(cameraCoords.x,cameraCoords.y);
 		System.out.println(bubble_regen_timer);
 		int f =8- (int)(bubble_regen_timer/(bubble_regen_timer_max/8));
+
 		System.out.println("FRAME: " + f);
+		System.out.println("MAX BUB: " +BUBBLE_LIMIT);
+
+		System.out.println("BUBBLES LEFT: " +bubbles_left);
 		bubblecooldownStrip.setFrame(f);
 		Texture t = bubblecooldownStrip.getTexture();
 //		canvas.draw(bubblecooldownStrip,Color.WHITE,drawPos.x + canvas.getWidth()/2 - 400, drawPos.y + canvas.getHeight()/2,t.getWidth()/8*0.25f,t.getHeight()*0.25f);
-		int curr_bubble = 0;
+		int curr_bubble = 1;
 		Vector2 current_bubble_pos = new Vector2(drawPos.x + canvas.getWidth()/2 - 400, drawPos.y + canvas.getHeight()/2 - 50);
-		while(curr_bubble < bubbles_left){
+		while(curr_bubble <= bubbles_left){
+
 			canvas.draw(fullBubbleCooldown,Color.WHITE,current_bubble_pos.x,current_bubble_pos.y,t.getWidth()/8*0.25f,t.getHeight()*0.25f);
 			curr_bubble ++;
 			current_bubble_pos.add(40,0);
 		}
-		if(curr_bubble == bubbles_left){
+		if(bubbles_left <BUBBLE_LIMIT){
 			canvas.draw(bubblecooldownStrip,Color.WHITE,current_bubble_pos.x,current_bubble_pos.y,t.getWidth()/8*0.25f,t.getHeight()*0.25f);
 			curr_bubble ++;
 			current_bubble_pos.add(40,0);
 		}
-		while(curr_bubble < BUBBLE_LIMIT){
+		while(curr_bubble <= BUBBLE_LIMIT){
 			canvas.draw(emptyBubbleCooldown,Color.WHITE,current_bubble_pos.x,current_bubble_pos.y,t.getWidth()/8*0.25f,t.getHeight()*0.25f);
 			curr_bubble ++;
 			current_bubble_pos.add(40,0);
@@ -866,7 +888,6 @@ public class PlatformController implements ContactListener, Screen {
 			if(wait > 20) {
 				if(!InputController.getInstance().isFiniteBubbles() || bubbles_left > 0){
 					closest = spawnBubble(placeLocation);
-					updateBubbleCount(bubbles_left);
 				}
 				wait = 0;
 				spawned = true;
@@ -880,7 +901,6 @@ public class PlatformController implements ContactListener, Screen {
 				if(bubbles_left < BUBBLE_LIMIT){
 					if(bubble_regen_timer <=0){
 						bubbles_left++;
-						updateBubbleCount(bubbles_left);
 						bubble_regen_timer = bubble_regen_timer_max;
 					}
 					bubble_regen_timer--;
@@ -948,7 +968,7 @@ public class PlatformController implements ContactListener, Screen {
 
 		avatar.breathe(); //used for poison gas stuff
 		avatar.applyForce(ropeDir);
-		life = avatar.health / (float)avatar.MAX_HEALTH;//update health bar
+		life = avatar.getLife();//update health bar
 
 		//bubblesleft = bubbles_left - 2;
 		avatar.initialize(dude, swingStrip, idleStrip, jumpStrip, fallStrip, topStrip);
@@ -1154,6 +1174,21 @@ public class PlatformController implements ContactListener, Screen {
 					System.out.println("Switching (" + switchLevel + ") to level " + targetLevel);
 
 				}
+			}
+
+			if ((bd1 == avatar   && bd2.getName().contains("token")) ||
+					(bd1.getName().contains("token") && bd2 == avatar)){
+				Token token = (bd1 == avatar) ? (Token)bd2: (Token)bd1;
+				int old_bubble_limit = BUBBLE_LIMIT;
+
+				BUBBLE_LIMIT = token.getBubbleLimitValue();
+				bubbles_left = bubbles_left + (BUBBLE_LIMIT-old_bubble_limit);
+				if (bd1 == avatar){
+					bd2.markRemoved(true);
+				}else{
+					bd1.markRemoved(true);
+				}
+				level4TokenCollected = true;
 			}
 
 			if ((bd1 == avatar && bd2.getName().equals("gas")) || (bd1.getName().equals("gas") && bd2 == avatar)){
@@ -1559,7 +1594,7 @@ public class PlatformController implements ContactListener, Screen {
 		zones.add(z);
 	}
 
-	int bubblesleft = 8;
+	int bubblesleft = 4;
 
 	/**
 	 * Draw the physics objects to the canvas
@@ -1638,8 +1673,11 @@ public class PlatformController implements ContactListener, Screen {
 		displayFont.setColor(Color.WHITE);
 		displayFont.getData().setScale(0.4f);
 		canvas.begin(); // DO NOT SCALE
-		//canvas.drawText("Current Bubbles: " + bubblesleft, displayFont, cameraCoords.x + (canvas.getWidth() / 2) - 400, cameraCoords.y + (canvas.getHeight() / 2) - 30);
-		updateUI();
+		String additional_part = (BUBBLE_LIMIT == 0) ? "None" : "";
+		canvas.drawText("Bubbles: " +additional_part, displayFont, cameraCoords.x + (canvas.getWidth() / 2) - 575, cameraCoords.y + (canvas.getHeight() / 2) - 25);
+		if(assetsLoaded){
+			updateUI();
+		}
 		canvas.end();
 
 //		canvas.end();
