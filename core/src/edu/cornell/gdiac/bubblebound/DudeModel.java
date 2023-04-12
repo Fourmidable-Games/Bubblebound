@@ -427,12 +427,12 @@ public class DudeModel extends CapsuleObstacle {
 		if(playerController.isGrappling()) {
 			forceCache.set(ropeDir.nor().rotate90(-1).scl(getMovement())).scl(0.5f);
 		}else if(getMovement() != 0){
-			System.out.println("VX: " + getVX());
+			//System.out.println("VX: " + getVX());
 			if(Math.abs(getVX()) < 3.0f){
-				System.out.print(" Speedy!");
+				//System.out.print(" Speedy!");
 				forceCache.set(getMovement() * 10f, 0);
 			}else{
-				System.out.print(" Not Speedy.");
+				//System.out.print(" Not Speedy.");
 				forceCache.set(getMovement() * 1.2f, 0);
 			}
 		}else{

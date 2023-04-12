@@ -363,6 +363,7 @@ public class PlatformController implements ContactListener, Screen {
 		lucens.clear();
 		poisons.clear();
 		addQueue.clear();
+		if(doors!=null) doors.clear();
 
 		
 		world.dispose();
@@ -373,6 +374,7 @@ public class PlatformController implements ContactListener, Screen {
 		setComplete(false);
 		setFailure(false);
 		String nextJsonPath = "lvl" + targetLevelID + ".json";
+		System.out.println("Resetting to " + nextJsonPath);
 		populateLevel(nextJsonPath);
 	}
 
@@ -380,6 +382,7 @@ public class PlatformController implements ContactListener, Screen {
 	 * Lays out the game geography.
 	 */
 	private void populateLevel(String jsonPath) {
+		System.out.println("Populating Level");
 		setSounds();
 
 
@@ -403,6 +406,7 @@ public class PlatformController implements ContactListener, Screen {
 		float dheight = goalTile.getRegionHeight()/scale.y;
 		// Add level goal
 		for(int i = 0; i < doors.size(); i++){
+			System.out.println("Inspecting door number " + i + " in level " + targetLevel);
 			Door door = doors.get(i);
 			door.setBodyType(BodyDef.BodyType.StaticBody);
 			door.setSensor(true);
@@ -412,6 +416,7 @@ public class PlatformController implements ContactListener, Screen {
 			door.isGoal = true;
 			addObject(door);
 			if(door.getTargetLevelID() == currLevel){
+				System.out.println("TARGET DOOR FOUND!");
 				avatarSpawnLocation = door.getPlayerSpawnLocation();
 			}
 		}
@@ -510,8 +515,8 @@ public class PlatformController implements ContactListener, Screen {
 		//avatar.setDensity(0.2F);
 		// Create rope bridge
 		setCamera(avatar.getX(), avatar.getY() + 0.5f);
-		//System.out.println(wo);
-		// System.out.println("change");
+		////System.out.println(wo);
+		// //System.out.println("change");
 
 		volume = constants.getFloat("volume", 1.0f);
 	}
@@ -565,9 +570,9 @@ public class PlatformController implements ContactListener, Screen {
 		if(InputController.getInstance().isFiniteBubbles()){
 			bubbles_left--;
 		}
-		//System.out.println("SPAWNED BUBBLE!, BUBBLES LEFT: " + bubbles_left);
+		////System.out.println("SPAWNED BUBBLE!, BUBBLES LEFT: " + bubbles_left);
 		wo2.setName("bubble");
-		//System.out.print("Timer set for bubble");
+		////System.out.print("Timer set for bubble");
 		wo2.setStatic(false);
 		wo2.setBodyType(BodyDef.BodyType.DynamicBody);
 		wo2.setDrawScale(scale);
@@ -591,7 +596,7 @@ public class PlatformController implements ContactListener, Screen {
 	 * @return whether to process the update loop
 	 */
 	public boolean preUpdate(float dt) {
-		//System.out.println("preupdate");
+		////System.out.println("preupdate");
 		if (!preUpdateHelper(dt)) {
 			return false;
 		}
@@ -659,12 +664,12 @@ public class PlatformController implements ContactListener, Screen {
 	}
 
 	private void updateBubbles(){
-		/*System.out.println("NEXT CYCLE");
-		System.out.print("[" + bubble_timer[0]);
+		/*//System.out.println("NEXT CYCLE");
+		//System.out.print("[" + bubble_timer[0]);
 		for(int i = 1; i < bubble_timer.length; i++){
-			System.out.print(", " + bubble_timer[i]);
+			//System.out.print(", " + bubble_timer[i]);
 		}
-		System.out.println("]");*/
+		//System.out.println("]");*/
 		for(int i = 0; i < bubbles.size(); i++){
 			Bubble b = bubbles.get(i);
 			b.initialize(bubble);
@@ -695,7 +700,7 @@ public class PlatformController implements ContactListener, Screen {
 			Body o = objects.get(i).getBody();
 			objects.get(i).setGrav(1.0f);
 			for(int j = 0; j < zones.size(); j++){
-				//System.out.println(o.getPosition());
+				////System.out.println(o.getPosition());
 				if(zones.get(j).inBounds(o.getPosition().x, o.getPosition().y)){
 					objects.get(i).setGrav(zones.get(j).getGrav());
 				}
@@ -706,7 +711,7 @@ public class PlatformController implements ContactListener, Screen {
 	private TextureRegion localeToTexture(BoxObstacle box){
 		Obstacle o = box;
 			for(int j = 0; j < zones.size(); j++){
-				//System.out.println(o.getPosition());
+				////System.out.println(o.getPosition());
 				if(zones.get(j).inBounds(o.getPosition().x, o.getPosition().y)){
 					return iceTile;
 				}
@@ -717,7 +722,7 @@ public class PlatformController implements ContactListener, Screen {
 	private void updateAvatar(){
 		Vector2 placeLocation;
 		if(InputController.getInstance().isMouseControlls()){
-//			System.out.println("MOUSE");
+//			//System.out.println("MOUSE");
 			placeLocation = InputController.getInstance().getCrossHair();
 			float xoffset = (cameraCoords.x / scale.x) - (CAMERA_WIDTH / 2f); //find bottom left corner of camera
 			float yoffset = (cameraCoords.y / scale.y) - (CAMERA_HEIGHT / 2f);
@@ -776,12 +781,12 @@ public class PlatformController implements ContactListener, Screen {
 		avatar.setMovement(InputController.getInstance().getHorizontal() *avatar.getForce());
 		avatar.setJumping(InputController.getInstance().didPrimary());
 		avatar.setShooting(InputController.getInstance().didSecondary());
-		//System.out.println("got to before bubble check");
+		////System.out.println("got to before bubble check");
 
 		//do bubble stuff
 		boolean spawned = false;
 		if(InputController.getInstance().didTertiary()){
-			//System.out.println("Did Tertiary Action, wait:" + wait);
+			////System.out.println("Did Tertiary Action, wait:" + wait);
 			if(wait > 20) {
 				if(!InputController.getInstance().isFiniteBubbles() || bubbles_left > 0){
 					closest = spawnBubble(placeLocation);
@@ -794,7 +799,7 @@ public class PlatformController implements ContactListener, Screen {
 
 		//regen bubble
 		if(InputController.getInstance().isFiniteBubbles()){
-//			System.out.println("Grounded: " + avatar.isGrounded());
+//			//System.out.println("Grounded: " + avatar.isGrounded());
 			if(avatar.isGrounded() && InputController.getInstance().isReloadBubblesOnGround()){
 				if(bubble_regen_timer <= 0 && bubbles_left < BUBBLE_LIMIT){
 					bubbles_left++;
@@ -808,12 +813,12 @@ public class PlatformController implements ContactListener, Screen {
 			bubbles_left = BUBBLE_LIMIT;
 		}
 		bubble_regen_timer--;
-		//System.out.println("Finite Bubbles?: " + InputController.getInstance().isFiniteBubbles());
-		//System.out.println("Bubbles: " + bubbles_left);
-		//System.out.println("Regen Bubbles?: " + InputController.getInstance().isReloadBubblesOnGround());
+		////System.out.println("Finite Bubbles?: " + InputController.getInstance().isFiniteBubbles());
+		////System.out.println("Bubbles: " + bubbles_left);
+		////System.out.println("Regen Bubbles?: " + InputController.getInstance().isReloadBubblesOnGround());
 
 		if (closest != null) closest.setSelected(true);
-		//System.out.println("got to after bubble check");
+		////System.out.println("got to after bubble check");
 		Vector2 ropeDir = new Vector2(0,0);
 		Vector2 pos = avatar.getPosition();
 		avatar.updateRotation(0);
@@ -836,7 +841,7 @@ public class PlatformController implements ContactListener, Screen {
 		}
 		wait++;
 
-		//System.out.println("After destruct construct stuff");
+		////System.out.println("After destruct construct stuff");
 		// Add a bullet if we fire
 		if (avatar.isShooting()) {
 			//createBullet();
@@ -848,9 +853,9 @@ public class PlatformController implements ContactListener, Screen {
 			destructRope(rope);
 			releaseRopeSoundId = playSound(releaseRopeSound, releaseRopeSoundId, volume );
 		}
-		//System.out.println("After destruct");
+		////System.out.println("After destruct");
 		if(constructRope){
-			//System.out.println("B4: " + pos)
+			////System.out.println("B4: " + pos)
 			//if(checkCanRope(closest)) { //TODO:: make this good
 				avatar.setGrappling(true);
 				rope = createGrapple(closest);
@@ -860,7 +865,7 @@ public class PlatformController implements ContactListener, Screen {
 			//}//
 			//avatar.setPosition(pos);
 		}
-		//System.out.println("after construct");
+		////System.out.println("after construct");
 
 		avatar.breathe(); //used for poison gas stuff
 		avatar.applyForce(ropeDir);
@@ -868,7 +873,7 @@ public class PlatformController implements ContactListener, Screen {
 
 		//bubblesleft = bubbles_left - 2;
 		avatar.initialize(dude, swingStrip, idleStrip);
-		//System.out.println("AAAAA:" + avatar.getForce());
+		////System.out.println("AAAAA:" + avatar.getForce());
 		if(avatar.isGrappling()) avatar.setTexture(swingStrip);
 		else if(avatar.isGrounded() && avatar.getMovement() == 0.0) avatar.setTexture(idleStrip);
 		else avatar.setTexture(dude);
@@ -935,7 +940,7 @@ public class PlatformController implements ContactListener, Screen {
 	}
 
 	public void popBubble(Bubble bubble){
-		System.out.println("popped a bubble!");
+		//System.out.println("popped a bubble!");
 		bubble.setActive(false);
 		bubble.stopDraw();
 		bubbles.remove(bubble);
@@ -997,8 +1002,8 @@ public class PlatformController implements ContactListener, Screen {
 
 			Obstacle bd1 = (Obstacle)body1.getUserData();
 			Obstacle bd2 = (Obstacle)body2.getUserData();
-			//System.out.println("bd1: " + bd1.getName());
-			//System.out.println("bd2: " + bd2.getName());
+			////System.out.println("bd1: " + bd1.getName());
+			////System.out.println("bd2: " + bd2.getName());
 
 			// Test bullet collision with world
 			if (bd1.getName().equals("bullet") && bd2 != avatar) {
@@ -1052,13 +1057,19 @@ public class PlatformController implements ContactListener, Screen {
 			// Check for win condition
 			if ((bd1 == avatar   && bd2.getName().contains("door")) ||
 				(bd1.getName().contains("door") && bd2 == avatar)) {
+
 				Door door = (bd1 == avatar) ? (Door)bd2: (Door)bd1;
+				System.out.println("COLLISION WITH " + door.getName());
 				int nextLevelID = door.getTargetLevelID();
+				System.out.println("Next Level: " + nextLevelID);
 				if (nextLevelID > MAX_LEVELS){
+					System.out.println("COMPLETE becaue " + nextLevelID + ">" + MAX_LEVELS);
 					setComplete(true);
 				}else{
+
 					switchLevel = true;
 					targetLevel = nextLevelID;
+					System.out.println("Switching (" + switchLevel + ") to level " + targetLevel);
 
 				}
 			}
@@ -1350,9 +1361,11 @@ public class PlatformController implements ContactListener, Screen {
 
 		// Handle resets
 		if (input.didReset()) {
+			System.out.println("RESET: r pressed");
 			reset(currLevel);
 		}
 		if (switchLevel){
+			System.out.println("RESET: Switching Level");
 			switchLevel = false;
 			reset(targetLevel);
 		}

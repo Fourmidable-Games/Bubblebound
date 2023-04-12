@@ -77,7 +77,7 @@ public class LevelEditorV2 {
         int mapWidth = base.getInt("width")*64;
         int mapHeight = base.getInt("height")*64;
 
-        System.out.println("Testing Tile -1");
+        //System.out.println("Testing Tile -1");
 
         JsonValue firstLayers = base.get("layers");
 
@@ -85,7 +85,7 @@ public class LevelEditorV2 {
         for (JsonValue obj : firstLayers) {
             if (obj.getInt("id") == 6) {
                 JsonValue secondLayers = obj.get("layers");
-                System.out.println("Testing");
+                //System.out.println("Testing");
 
                 for (JsonValue obj1 : secondLayers) {
 
@@ -95,23 +95,31 @@ public class LevelEditorV2 {
 
 
                         for (JsonValue goals : go) {
-
-
-                            BoxObstacle wo = new BoxObstacle(
-                                    (goals.getFloat("x")) / 64,
-                                    ((mapHeight - (goals.getFloat("y"))) / 64)+2,
-                                    goals.getFloat("width")/64,
-                                    goals.getFloat("height")/64
-                            );
-                            Vector2 door_loc = new Vector2((goals.getFloat("x"))/64,((mapHeight - (goals.getFloat("y")))/64)+2);
-                            //TODO: ADD SPAWN DIRECTION AS PROPERTY IN TILED EDITOR
+//                            System.out.println(go.toString());
+                            JsonValue prop = goals.get("properties");
+                            int targetLevel = 1;
                             Door.SpawnDirection player_spawn_direction = Door.SpawnDirection.RIGHT;
-                            //TODO: ADD target level AS PROPERTY IN TILED EDITOR
-                            int targetLevel = 2;
+
+                            for (JsonValue prop1 : prop) {
+                                if (prop1.getString("name").equals("targetLevel")) {
+                                    targetLevel = prop1.getInt("value");
+                                }
+                                if (prop1.getString("name").equals("direction")) {
+                                    player_spawn_direction = (prop1.getString("value") == "right") ? Door.SpawnDirection.RIGHT : Door.SpawnDirection.LEFT;
+                                }
+                            }
+
+//                            BoxObstacle wo = new BoxObstacle(
+//                                    (goals.getFloat("x")) / 64,
+//                                    ((mapHeight - (goals.getFloat("y"))) / 64)+2,
+//                                    goals.getFloat("width")/64,
+//                                    goals.getFloat("height")/64
+//                            );
+                            Vector2 door_loc = new Vector2((goals.getFloat("x"))/64,((mapHeight - (goals.getFloat("y")))/64)+2);
                             Door d = new Door(door_loc,player_spawn_direction,targetLevel);
 
 //                            wo.isGoal = true;
-                            System.out.println("GOOOALLL");
+                            //System.out.println("GOOOALLL");
 //                            goal = wo;
                             doors.add(d);
                         }
@@ -266,7 +274,7 @@ public class LevelEditorV2 {
 
                         JsonValue bubbleList = obj1.get("objects");
 
-                        System.out.println("Testing bub");
+                        //System.out.println("Testing bub");
 
                         for (JsonValue bub : bubbleList) {
 
@@ -275,7 +283,7 @@ public class LevelEditorV2 {
                                 if (type.getInt("id") == 4) {
 
 
-                                    System.out.println(type.get("members"));
+                                    //System.out.println(type.get("members"));
 
                                     Vector2 v = new Vector2((bub.getFloat("x")) / 64, ((mapHeight - (bub.getFloat("y"))) / 64)+1);
 
@@ -296,7 +304,7 @@ public class LevelEditorV2 {
 
                     if (obj1.getInt("id") == 1) {
 
-                        System.out.println("Testing 2");
+                        //System.out.println("Testing 2");
 
                         JsonValue tileData1 = obj1.get("data");
 
@@ -460,7 +468,7 @@ public class LevelEditorV2 {
         }
 
 
-        System.out.println("Finished Parsing");
+        //System.out.println("Finished Parsing");
     }
 
 

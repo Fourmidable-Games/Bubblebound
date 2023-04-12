@@ -382,6 +382,18 @@
                          "height":192,
                          "id":287,
                          "name":"",
+                         "properties":[
+                          {
+                            "name":"targetLevel",
+                            "type":"int",
+                            "value":2
+                          },
+                          {
+                            "name":"direction",
+                            "type":"string",
+                            "value": "right"
+                          }
+                         ],
                          "rotation":0,
                          "type":"",
                          "visible":true,
