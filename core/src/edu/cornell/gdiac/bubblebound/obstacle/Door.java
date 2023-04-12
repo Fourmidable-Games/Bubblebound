@@ -42,6 +42,10 @@ public class Door extends Goal{
         return targetID;
     }
 
+    public Door.SpawnDirection getSpawnDirection(){
+        return spawnDirection;
+    }
+
     public Vector2 getPlayerSpawnLocation(){return spawnLoc;}
 
 

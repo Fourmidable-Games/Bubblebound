@@ -18,6 +18,7 @@ public class Spike extends SimpleObstacle {
     private Fixture geometry;
     /** Cache of the polygon vertices (for resizing) */
     private float[] vertices;
+    private float rotation;
 
 
     /**
@@ -94,8 +95,12 @@ public class Spike extends SimpleObstacle {
         setDimension(sizeCache);
     }
 
-    public Spike(float x, float y, float width, float height) {
+    public Spike(float x, float y, float width, float height, float angle) {
         super(x,y);
+
+        rotation = angle;
+//        this.origin.x +=0.5;
+        this.setAngle((float)Math.toRadians(-1*angle));
         dimension = new Vector2(width,height);
         sizeCache = new Vector2();
         shape = new PolygonShape();
@@ -160,6 +165,17 @@ public class Spike extends SimpleObstacle {
         canvas.shape.triangle(drawScale.x * (getX()-getWidth()/2f), drawScale.y *(getY()-getHeight()/2f), drawScale.x * (getX()+getWidth()/2f), drawScale.y * (getY()-getHeight()/2f), drawScale.x * getX(),drawScale.y * (getY()+getHeight()/2f));
         //canvas.shape.rect(getX()*drawScale.x-x,getY()*drawScale.y-y,getWidth()*drawScale.x,getHeight()*drawScale.y);
         //canvas.shape.rect(getX()*drawScale.x-x,getY()*drawScale.y-y,x,y,getWidth()*drawScale.x,getHeight()*drawScale.y,1,1,(float)Math.toDegrees(angle));
+    }
+
+    @Override
+    public void draw(GameCanvas canvas) {
+        if (texture != null) {
+            if(grav == 1) {
+                canvas.draw(texture, Color.WHITE, origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.x, getAngle(), 0.75f, 0.75f);
+            }else{
+                canvas.draw(texture, Color.WHITE, origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.x, getAngle(), 0.75f, 0.75f);
+            }
+        }
     }
 
 

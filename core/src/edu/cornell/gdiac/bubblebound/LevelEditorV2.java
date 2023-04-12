@@ -151,13 +151,14 @@ public class LevelEditorV2 {
 
 
                         for (JsonValue goals : sp) {
-
+                            float rotation = goals.getFloat("rotation");
 
                             Spike wo = new Spike(
                                     (goals.getFloat("x")) / 64,
                                     ((mapHeight - (goals.getFloat("y"))) / 64)+1,
                                     goals.getFloat("width")/64,
-                                    goals.getFloat("height")/64
+                                    goals.getFloat("height")/64,
+                                    rotation
                             );
 
 
