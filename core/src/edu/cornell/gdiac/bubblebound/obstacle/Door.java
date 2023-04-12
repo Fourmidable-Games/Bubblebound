@@ -2,67 +2,47 @@ package edu.cornell.gdiac.bubblebound.obstacle;
 
 import com.badlogic.gdx.math.Vector2;
 
-public class Door{
+import java.util.ArrayList;
+
+public class Door extends Goal{
 
     public enum SpawnDirection{
         LEFT,
         RIGHT
     }
-    SpawnDirection spawnDirection;
+    private SpawnDirection spawnDirection;
 
-    private Vector2 location;
-    private Vector2 avatarSpawnLocation;
+    private Vector2 spawnLoc;
 
-    private static int last_used_id = 0;
+    private Vector2 loc;
 
-    private Goal goal;
+    private int targetID;
 
-    private int levelID;
-    private int doorID;
-
-    private int targetLevelID;
-
-    private int targetDoorID;
-
-
-    public Door(Vector2 door_location, SpawnDirection dudeSpawnDirection){
-        goal = new Goal(door_location);
-        targetDoorID = last_used_id + 1;
-        last_used_id ++;
+    public Door(Vector2 door_location, SpawnDirection dudeSpawnDirection, int targetLevelID){
+        super(door_location);
+        this.isGoal = true;
+        loc = door_location;
+        targetID = targetLevelID;
         spawnDirection = dudeSpawnDirection;
-        location = door_location;
         switch (spawnDirection){
             case LEFT:
-                avatarSpawnLocation = location.add(-3,0);
+                spawnLoc = loc.add(-3,0);
                 break;
             case RIGHT:
-                avatarSpawnLocation = location.add(3,0);
+                spawnLoc = loc.add(3,0);
                 break;
             default:
                 //SHOULD NOT GET HERE
-                avatarSpawnLocation = null;
+                spawnLoc = null;
                 break;
         }
     }
 
-    public int getId(){
-        return doorID;
+    public int getTargetLevelID(){
+        return targetID;
     }
 
-    public boolean setTargetID(int t_id){
-        if(t_id <= last_used_id){
-            targetDoorID = t_id;
-            return true;
-        }else{
-            return false;
-        }
-    }
+    public Vector2 getPlayerSpawnLocation(){return spawnLoc;}
 
 
-    public Goal getGoal(){
-        return goal;
-    }
-    public void respawnGoal(){
-//        if
-    }
 }

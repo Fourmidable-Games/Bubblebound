@@ -289,7 +289,7 @@ public class DudeModel extends CapsuleObstacle {
 	 * @param width		The object width in physics units
 	 * @param height	The object width in physics units
 	 */
-	public DudeModel(JsonValue data, float width, float height) {
+	public DudeModel(PlayerController pc, JsonValue data, float width, float height) {
 		// The shrink factors fit the image to a tigher hitbox
 		super(	data.get("pos").getFloat(0),
 				data.get("pos").getFloat(1),
@@ -305,12 +305,12 @@ public class DudeModel extends CapsuleObstacle {
 		jump_force = data.getFloat( "jump_force", 0 )*1f;
 		sensorName = "DudeGroundSensor";
 
-		this.playerController = new PlayerController(data);
+		this.playerController = pc;
 		this.data = data;
 		setName("dude");
 	}
 
-	public DudeModel(JsonValue data, float width, float height, float x, float y) {
+	public DudeModel(PlayerController pc, JsonValue data, float width, float height, float x, float y) {
 		// The shrink factors fit the image to a tigher hitbox
 		super(	x,
 				y,
@@ -327,14 +327,14 @@ public class DudeModel extends CapsuleObstacle {
 		jump_force = data.getFloat( "jump_force", 0 )*1f;
 		sensorName = "DudeGroundSensor";
 
-		this.playerController = new PlayerController(data);
+		this.playerController = pc;
 		this.data = data;
 		setName("dude");
 	}
 
 
 
-	public DudeModel(float x, float y){
+	public DudeModel(PlayerController pc, float x, float y){
 		super(x, y, 0.9f, 1.9f);
 		setFriction(0);
 		setFixedRotation(true);
@@ -344,7 +344,7 @@ public class DudeModel extends CapsuleObstacle {
 		jump_force = 9.5f;
 		maxspeed = 5f;
 		sensorName = "DudeGroundSensor";
-		this.playerController = new PlayerController();
+		this.playerController = pc;
 		setName("dude");
 
 	}

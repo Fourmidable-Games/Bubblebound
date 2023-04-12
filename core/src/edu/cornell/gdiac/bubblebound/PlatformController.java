@@ -162,6 +162,18 @@ public class PlatformController implements ContactListener, Screen {
 	/** The default value of gravity (going down) */
 	protected static final float DEFAULT_GRAVITY = -4.9f;
 
+	private final int MAX_LEVELS = 2;
+
+	private int currLevel;
+
+	private int targetLevel;
+
+	private Vector2 avatarSpawnLocation;
+	private boolean needToInitializeSpawn;
+
+	private boolean switchLevel;
+
+	private PlayerController playerController = new PlayerController();
 
 	/** Reference to the game canvas */
 	protected GameCanvas canvas;
@@ -198,7 +210,9 @@ public class PlatformController implements ContactListener, Screen {
 	/** Reference to the character avatar */
 	private DudeModel avatar;
 	/** Reference to the goalDoor (for collision detection) */
-	private BoxObstacle goalDoor;
+//	private BoxObstacle goalDoor;
+
+	private ArrayList<Door> doors;
 
 	private List<LucenglazeSensor> lucens = new ArrayList<>();
 
@@ -220,6 +234,11 @@ public class PlatformController implements ContactListener, Screen {
 		failed = false;
 		debug  = false;
 		active = false;
+		switchLevel = false;
+		currLevel = 1;
+		targetLevel = 1;
+		avatarSpawnLocation = new Vector2();
+		needToInitializeSpawn = true;
 		countdown = -1;
 		setDebug(false);
 		setComplete(false);
@@ -317,7 +336,7 @@ public class PlatformController implements ContactListener, Screen {
 	 *
 	 * This method disposes of the world and creates a new one.
 	 */
-	public void reset() {
+	public void reset(int targetLevelID) {
 		bubbles_left = BUBBLE_LIMIT;
 		bubble_regen_timer = bubble_regen_timer_max;
 		updateBubbleCount(bubbles_left);
@@ -353,19 +372,20 @@ public class PlatformController implements ContactListener, Screen {
 		
 		setComplete(false);
 		setFailure(false);
-		populateLevel();
+		String nextJsonPath = "lvl" + targetLevelID + ".json";
+		populateLevel(nextJsonPath);
 	}
 
 	/**
 	 * Lays out the game geography.
 	 */
-	private void populateLevel() {
+	private void populateLevel(String jsonPath) {
 		setSounds();
 
 
 
 
-		LevelEditorV2 Level2 = new LevelEditorV2();
+		LevelEditorV2 Level2 = new LevelEditorV2(playerController,jsonPath);
 		loadTexturesIntoLevelEditor();
 		Level2.readTileTextures(textures);
 		Level2.readJson();
@@ -375,24 +395,31 @@ public class PlatformController implements ContactListener, Screen {
 		List<Spike> spikes = Level2.getSpikes();
 		List<Lucenglaze> glazes = Level2.getGlazes();
 		List<Integer> glazeRotations = Level2.getGlazeRotations();
-		goalDoor = Level2.getGoal();
+		doors = Level2.getDoors();
 		enemies = Level2.getEnemies();
 
 
-		// Add level goal
 		float dwidth  = goalTile.getRegionWidth()/scale.x;
 		float dheight = goalTile.getRegionHeight()/scale.y;
+		// Add level goal
+		for(int i = 0; i < doors.size(); i++){
+			Door door = doors.get(i);
+			door.setBodyType(BodyDef.BodyType.StaticBody);
+			door.setSensor(true);
+			door.setDrawScale(scale);
+			door.setTexture(goalTile);
+			door.setName("door_" + targetLevel + "_to_" + door.getTargetLevelID());
+			door.isGoal = true;
+			addObject(door);
+			if(door.getTargetLevelID() == currLevel){
+				avatarSpawnLocation = door.getPlayerSpawnLocation();
+			}
+		}
+		currLevel = targetLevel;
+
 		//Vector2 scale2 = new Vector2(16f, 16f);
 		//scale2.x /= 2;
 		//scale2.y /= 2;
-
-		goalDoor.setBodyType(BodyDef.BodyType.StaticBody);
-		goalDoor.setSensor(true);
-		goalDoor.setDrawScale(scale);
-		goalDoor.setTexture(goalTile);
-		goalDoor.setName("goal");
-		goalDoor.isGoal = true;
-		addObject(goalDoor);
 		for (int i = 0; i < gravityZoneList.size(); i++) {
 			Zone gravZone = gravityZoneList.get(i);
 			gravZone.scale = scale;
@@ -467,7 +494,12 @@ public class PlatformController implements ContactListener, Screen {
 
 		dwidth  = avatarTexture.getRegionWidth()/scale.x;
 		dheight = avatarTexture.getRegionHeight()/scale.y;
-		avatar = Level2.getPlayer();
+
+		avatar = needToInitializeSpawn ? Level2.getPlayer() : Level2.getPlayerAtLocation(avatarSpawnLocation);
+		if(needToInitializeSpawn) {
+			avatarSpawnLocation = avatar.getPosition();
+			needToInitializeSpawn = false;
+		}
 		avatar.setDrawScale(scale);
 		avatar.setTexture(avatarTexture);
 		avatar.setName("avatar");
@@ -1018,9 +1050,17 @@ public class PlatformController implements ContactListener, Screen {
 			}
 			
 			// Check for win condition
-			if ((bd1 == avatar   && bd2 == goalDoor) ||
-				(bd1 == goalDoor && bd2 == avatar)) {
-				setComplete(true);
+			if ((bd1 == avatar   && bd2.getName().contains("door")) ||
+				(bd1.getName().contains("door") && bd2 == avatar)) {
+				Door door = (bd1 == avatar) ? (Door)bd2: (Door)bd1;
+				int nextLevelID = door.getTargetLevelID();
+				if (nextLevelID > MAX_LEVELS){
+					setComplete(true);
+				}else{
+					switchLevel = true;
+					targetLevel = nextLevelID;
+
+				}
 			}
 
 			if ((bd1 == avatar && bd2.getName().equals("gas")) || (bd1.getName().equals("gas") && bd2 == avatar)){
@@ -1310,7 +1350,11 @@ public class PlatformController implements ContactListener, Screen {
 
 		// Handle resets
 		if (input.didReset()) {
-			reset();
+			reset(currLevel);
+		}
+		if (switchLevel){
+			switchLevel = false;
+			reset(targetLevel);
 		}
 
 		// Now it is time to maybe switch screens.
@@ -1332,7 +1376,7 @@ public class PlatformController implements ContactListener, Screen {
 			countdown--;
 		} else if (countdown == 0) {
 			if (failed) {
-				reset();
+				reset(currLevel);
 			} else if (complete) {
 				pause();
 				listener.exitScreen(this, EXIT_NEXT);

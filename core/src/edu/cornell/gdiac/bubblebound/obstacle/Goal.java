@@ -5,7 +5,6 @@ import com.badlogic.gdx.math.Vector2;
 
 
 public class Goal extends BoxObstacle{
-
     private static final Vector2 GOAL_DIMENSIONS = new Vector2(2,3);
 
     public Goal(Vector2 location){
