@@ -15,7 +15,7 @@ import java.util.List;
 
 public class LevelEditorV2 {
 
-    private String jsonName = "lvlA.json";
+    private String jsonName = "lvlB.json";
     private FileHandle file = Gdx.files.internal(jsonName);
     private FileHandle file2 = Gdx.files.internal("propertytypes.json");
     private FileHandle file3 = Gdx.files.internal("platform/constants.json");
@@ -444,6 +444,7 @@ public class LevelEditorV2 {
         }
 
 
+        System.out.println("Finished Parsing");
     }
 
 
