@@ -409,7 +409,7 @@ public class DudeModel extends CapsuleObstacle {
 	 * This method should be called after the force attribute is set.
 	 */
 	public void applyForce(Vector2 ropeDir) {
-		body.setGravityScale(grav * 1.1f);
+		body.setGravityScale(grav * 1f);
 		if (!isActive()) {
 			return;
 		}
@@ -427,7 +427,14 @@ public class DudeModel extends CapsuleObstacle {
 		if(playerController.isGrappling()) {
 			forceCache.set(ropeDir.nor().rotate90(-1).scl(getMovement())).scl(0.5f);
 		}else if(getMovement() != 0){
-			forceCache.set(getMovement() * 2, 0);
+			System.out.println("VX: " + getVX());
+			if(Math.abs(getVX()) < 3.0f){
+				System.out.print(" Speedy!");
+				forceCache.set(getMovement() * 10f, 0);
+			}else{
+				System.out.print(" Not Speedy.");
+				forceCache.set(getMovement() * 1.2f, 0);
+			}
 		}else{
 			forceCache.set(-getDamping() * getVX() * 2f, 0);
 		}
@@ -442,10 +449,8 @@ public class DudeModel extends CapsuleObstacle {
 		if (grappleboost){
 			if(grav > 0){
 				if(getVY() > 0){
-					System.out.println("Pushed up");
 					setVY(getVY()/2);
 				}else{
-					System.out.println("Pushed ALOT to counter");
 					setVY(0);
 				}
 			}else{
@@ -458,11 +463,11 @@ public class DudeModel extends CapsuleObstacle {
 			grappleboost = false;
 		}
 
-		if (getVX() >= getMaxSpeed() * 1.5f) {
-			setVX(getMaxSpeed() * 1.5f);
+		if (getVX() >= getMaxSpeed() * 1.2f) {
+			setVX(getMaxSpeed() * 1.2f);
 		}
-		if (getVX() <= -getMaxSpeed() * 1.5f) {
-			setVX(-getMaxSpeed() * 1.5f);
+		if (getVX() <= -getMaxSpeed() * 1.2f) {
+			setVX(-getMaxSpeed() * 1.2f);
 		}
 		if (getVY() >= 2f * getMaxSpeed() && !isJumping()) {
 			setVY(2f * getMaxSpeed());
@@ -536,7 +541,6 @@ public class DudeModel extends CapsuleObstacle {
 				breath--;
 			}
 			if(breath % 10 == 0) {
-				System.out.println("Breath: " + breath);
 			}
 			displayBreath = true;
 			if(breath == 0){

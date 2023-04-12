@@ -276,7 +276,6 @@ public class PlatformController implements ContactListener, Screen {
 		displayFont = directory.getEntry( "shared:retro" ,BitmapFont.class);
 		background2 = directory.getEntry("background:temp", Texture.class);
 		losing = new TextureRegion(directory.getEntry("losing", Texture.class));
-		System.out.println(bubbleText);
 		bubble = new FilmStrip(bubbleText, 1, 8, 8);
 		enemyText = directory.getEntry( "platform:dude2", Texture.class );
 		enemyStrip = new FilmStrip(enemyText, 1, 9, 9);
@@ -685,8 +684,6 @@ public class PlatformController implements ContactListener, Screen {
 
 	private void updateAvatar(){
 		Vector2 placeLocation;
-		System.out.println("testidiejd");
-		System.out.println(avatar.getY());
 		if(InputController.getInstance().isMouseControlls()){
 //			System.out.println("MOUSE");
 			placeLocation = InputController.getInstance().getCrossHair();

@@ -91,7 +91,6 @@ public class RopeBridge extends ComplexObstacle {
 
 		// If too small, only make one plank.;
 		int nLinks = (int)(length / lwidth);
-		System.out.println(nLinks);
 		System.out.println();
 		if (nLinks <= 1) {
 			nLinks = 1;

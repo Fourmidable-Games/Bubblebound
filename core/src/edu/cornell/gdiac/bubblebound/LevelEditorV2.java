@@ -15,7 +15,7 @@ import java.util.List;
 
 public class LevelEditorV2 {
 
-    private String jsonName = "lvl5.json";
+    private String jsonName = "lvlA.json";
     private FileHandle file = Gdx.files.internal(jsonName);
     private FileHandle file2 = Gdx.files.internal("propertytypes.json");
     private FileHandle file3 = Gdx.files.internal("platform/constants.json");
@@ -83,7 +83,6 @@ public class LevelEditorV2 {
                         JsonValue go = obj1.get("objects");
 
 
-                        System.out.println(go.toString());
 
                         for (JsonValue goals : go) {
 
@@ -209,8 +208,6 @@ public class LevelEditorV2 {
 
                         for (JsonValue w : g) {
 
-                            System.out.println("fuck");
-                            System.out.println(w.getFloat("x"));
 
                             Lucenglaze wo;
                             wo = new Lucenglaze(0,0);
