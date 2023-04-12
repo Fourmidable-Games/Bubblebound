@@ -317,6 +317,8 @@ public class DudeModel extends CapsuleObstacle {
 		this.playerController = new PlayerController();
 		setName("dude");
 
+
+
 	}
 
 
@@ -366,7 +368,6 @@ public class DudeModel extends CapsuleObstacle {
 		// Ground sensor to represent our feet
 		Fixture sensorFixture2 = body.createFixture( sensorDef2 );
 		sensorFixture2.setUserData(getSensorName());
-
 		setMass(1f);
 		return true;
 	}

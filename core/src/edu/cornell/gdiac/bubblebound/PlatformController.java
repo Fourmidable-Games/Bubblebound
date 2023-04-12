@@ -411,13 +411,13 @@ public class PlatformController implements ContactListener, Screen {
 //		createLucenGlaze(8, 2, 1);
 //		createLucenGlaze(3, 4, 2);
 //		createLucenGlaze(10, 12, 3);
-		createLucenGlaze(16, 16, 4);
+		createLucenGlaze(13, 8, 1);
 		Spike sp = new Spike(6, 1, 1, 1);
 		sp.setBodyType(BodyDef.BodyType.StaticBody);
 		sp.setDrawScale(scale);
 		sp.setName("spike");
 		sp.setTexture(spikeTexture);
-		addObject(sp);
+		//addObject(sp);
 
 
 
@@ -781,13 +781,14 @@ public class PlatformController implements ContactListener, Screen {
 		//System.out.println("After destruct");
 		if(constructRope){
 			//System.out.println("B4: " + pos)
-			//if(checkCanRope(closest)) { //TODO:: make this good
+			if(checkCanRope(closest)) { //TODO:: make this good
+
 				avatar.setGrappling(true);
 				rope = createGrapple(closest);
 				shootRopeSoundId = playSound(shootRopeSound, shootRopeSoundId, volume);
-			//}else{
-			//	constructRope = false;
-			//}//
+			}else{
+				constructRope = false;
+			}//
 			//avatar.setPosition(pos);
 		}
 		//System.out.println("after construct");
@@ -876,35 +877,33 @@ public class PlatformController implements ContactListener, Screen {
 	}
 	public Vector2 collidePos = new Vector2();
 	public Body collidebody = null;
+	public int collidedbodies = 0;
 
 
-	public boolean checkCanRope(Bubble b){
+	public boolean checkCanRope(final Bubble b) {
 		RayCastCallback rcc = new RayCastCallback() {
 			@Override
 			public float reportRayFixture(Fixture fixture, Vector2 point, Vector2 normal, float fraction) {
 				collidePos = fixture.getBody().getPosition();
 				collidebody = fixture.getBody();
-				return 0;
+				//System.out.println(point);
+				if (fixture.getBody().equals(b.getBody())) {
+					System.out.println("found bubble");
+					return 0;
+
+				}
+				if (avatar != collidebody.getUserData() && !fixture.isSensor()) {
+					collidedbodies++;
+				}
+
+				return 1;
 			}
 		};
-		Vector2 tempPosA = new Vector2();
-		tempPosA.x = avatar.getPosition().x;
-		tempPosA.y = bounds.height - avatar.getPosition().y;
-		Vector2 tempPosB = new Vector2();
-		tempPosB.x = b.getPosition().x;
-		tempPosB.y = bounds.height - b.getPosition().y;
-		world.rayCast(rcc, tempPosA, tempPosB);
-		if(collidebody != null){
-			if(!b.getBody().equals(collidebody)){
-				return false;
-			}
-//			if(collidePos.x == b.getPosition().x && collidePos.y == b.getPosition().y){
-//				return true;
-//			}
-		}
-		return true;
+		collidedbodies = 0;
+		world.rayCast(rcc, b.getPosition(), avatar.getPosition());
+		System.out.println("collidedbodies: " + collidedbodies);
+		return collidedbodies < 1;
 	}
-
 	
 	/**
 	 * Callback method for the start of a collision

@@ -77,8 +77,8 @@ public class LevelEditor {
                     BoxObstacle myObject2 = new BoxObstacle(
                             object.get("x").asInt() + xo,
                             object.get("y").asInt() + yo,
-                            object.get("width").asInt(),
-                            object.get("height").asInt()
+                            1,
+                            1
                     );
 
                     if ((object.get("texture")).asInt() < 0) {
@@ -167,8 +167,8 @@ public class LevelEditor {
             BoxObstacle wo = new BoxObstacle(
                     object.get("x").asFloat(),
                     object.get("y").asFloat(),
-                    object.get("width").asFloat(),
-                    object.get("height").asFloat()
+                    1,
+                    1
             );
 
             wo.isGoal = true;

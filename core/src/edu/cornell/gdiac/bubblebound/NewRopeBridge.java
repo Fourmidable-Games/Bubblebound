@@ -98,6 +98,7 @@ public class NewRopeBridge extends ComplexObstacle {
 	    
 	    // If too small, only make one plank.;
 	    int nLinks = (int)((length -0.25f)/linksize);
+		//System.out.println("nLinks");
 		spacing = (length - 0.25f) - nLinks * linksize;
 		spacing /= (nLinks);
 //	    if (nLinks <= 1) {
