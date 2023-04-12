@@ -128,6 +128,17 @@ public class PlatformController implements ContactListener, Screen {
 	protected TextureRegion spikeTexture;
 	protected BitmapFont displayFont;
 
+	protected TextureRegion tileIceOne;
+	protected TextureRegion tileIceTwo;
+	protected TextureRegion tileIceThree;
+	protected TextureRegion tileIceFour;
+	protected TextureRegion tileIceFive;
+	protected TextureRegion tileIceSix;
+	protected TextureRegion tileIceSeven;
+	protected TextureRegion tileIceEight;
+	protected TextureRegion tileIceNine;
+	protected TextureRegion tileIceTen;
+
 	/** Exit code for quitting the game */
 	public static final int EXIT_QUIT = 0;
 	/** Exit code for advancing to next level */
@@ -217,12 +228,7 @@ public class PlatformController implements ContactListener, Screen {
 		sensorFixtures = new ObjectSet<Fixture>();
 	}
 
-	public List<TextureRegion> loadTexturesIntoLevelEditor() {
-		textures.add(earthTile);
-		textures.add(iceTile);
-		textures.add(goalTile);
-		return textures;
-	}
+
 
 	/**
 	 * Gather the assets for this controller.
@@ -233,6 +239,7 @@ public class PlatformController implements ContactListener, Screen {
 	 * @param directory	Reference to global asset manager.
 	 */
 	public void gatherAssets(AssetDirectory directory) {
+
 		avatarTexture  = new TextureRegion(directory.getEntry("platform:dude",Texture.class));
 		dudeText = directory.getEntry("platform:dude3", Texture.class);
 		dude = new FilmStrip(dudeText, 1, 11, 11);
@@ -273,6 +280,37 @@ public class PlatformController implements ContactListener, Screen {
 		bubble = new FilmStrip(bubbleText, 1, 8, 8);
 		enemyText = directory.getEntry( "platform:dude2", Texture.class );
 		enemyStrip = new FilmStrip(enemyText, 1, 9, 9);
+
+		tileIceOne = new TextureRegion(directory.getEntry("shared:ice1", Texture.class));
+		tileIceTwo = new TextureRegion(directory.getEntry("shared:ice2", Texture.class));
+		tileIceThree = new TextureRegion(directory.getEntry("shared:ice3", Texture.class));
+		tileIceFour = new TextureRegion(directory.getEntry("shared:ice4", Texture.class));
+		tileIceFive = new TextureRegion(directory.getEntry("shared:ice5", Texture.class));
+		tileIceSix = new TextureRegion(directory.getEntry("shared:ice6", Texture.class));
+		tileIceSeven = new TextureRegion(directory.getEntry("shared:ice7", Texture.class));
+		tileIceEight = new TextureRegion(directory.getEntry("shared:ice8", Texture.class));
+		tileIceNine = new TextureRegion(directory.getEntry("shared:ice9", Texture.class));
+		tileIceTen = new TextureRegion(directory.getEntry("shared:ice10", Texture.class));
+
+
+
+
+
+	}
+
+	public List<TextureRegion> loadTexturesIntoLevelEditor() {
+		textures.add(tileIceOne);
+		textures.add(tileIceTwo);
+		textures.add(tileIceThree);
+		textures.add(tileIceFour);
+		textures.add(tileIceFive);
+		textures.add(tileIceSix);
+		textures.add(tileIceSeven);
+		textures.add(tileIceEight);
+		textures.add(tileIceNine);
+		textures.add(tileIceTen);
+		textures.add(earthTile);
+		return textures;
 	}
 
 	/**
@@ -327,21 +365,27 @@ public class PlatformController implements ContactListener, Screen {
 
 
 
-		LevelEditor Level1 = new LevelEditor();
+
+		LevelEditorV2 Level2 = new LevelEditorV2();
 		loadTexturesIntoLevelEditor();
-		Level1.readTextures(textures);
-		Level1.readJson();
-		List<BoxObstacle> BoxList = Level1.getBoxes();
-		List<Bubble> bubbleList = Level1.getBubbles();
-		List<Zone> gravityZoneList = Level1.getGravityZones();
-		List<Spike> spikes = Level1.getSpikes();
-		goalDoor = Level1.getGoal();
-		enemies = Level1.getEnemies();
+		Level2.readTileTextures(textures);
+		Level2.readJson();
+		List<BoxObstacle> BoxList = Level2.getBoxes();
+		List<Bubble> bubbleList = Level2.getBubbles();
+		List<Zone> gravityZoneList = Level2.getGravityZones();
+		List<Spike> spikes = Level2.getSpikes();
+		List<Lucenglaze> glazes = Level2.getGlazes();
+		List<Integer> glazeRotations = Level2.getGlazeRotations();
+		goalDoor = Level2.getGoal();
+		enemies = Level2.getEnemies();
 
 
 		// Add level goal
 		float dwidth  = goalTile.getRegionWidth()/scale.x;
 		float dheight = goalTile.getRegionHeight()/scale.y;
+		//Vector2 scale2 = new Vector2(16f, 16f);
+		//scale2.x /= 2;
+		//scale2.y /= 2;
 
 		goalDoor.setBodyType(BodyDef.BodyType.StaticBody);
 		goalDoor.setSensor(true);
@@ -358,7 +402,6 @@ public class PlatformController implements ContactListener, Screen {
 
 		for (int i = 0; i < BoxList.size(); i++) {
 			BoxObstacle box = BoxList.get(i);
-			box.setTexture(localeToTexture(box));
 			box.setBodyType(BodyDef.BodyType.StaticBody);
 			box.setDensity(0);
 			box.setFriction(0);
@@ -367,14 +410,7 @@ public class PlatformController implements ContactListener, Screen {
 			box.setName("box");
 			addObject(box);
 		}
-		for(int i = 0; i < 10; i++){
-			BoxObstacle box = new BoxObstacle(1,1 + i,1,1);
-			box.setTexture(localeToTexture(box));
-			box.setBodyType(BodyDef.BodyType.StaticBody);
-			box.setDrawScale(scale);
-			box.setName("box");
-			addObject(box);
-		}
+
 
 
 
@@ -402,29 +438,27 @@ public class PlatformController implements ContactListener, Screen {
 
 		for (int i = 0; i < enemies.size(); i++) {
 			Enemy enemy = enemies.get(i);
-			enemy.setDrawScale(scale);
 			enemy.setTexture(enemyStrip);
+			enemy.setDrawScale(scale);
 			addObject(enemy);
 //			enemies.add(enemy); CRASHES GAME
 //			addQueuedObject(enemy); //idk dif between add queued vs add
 		}
-//		createLucenGlaze(8, 2, 1);
-//		createLucenGlaze(3, 4, 2);
-//		createLucenGlaze(10, 12, 3);
-		createLucenGlaze(16, 16, 4);
-		Spike sp = new Spike(6, 1, 1, 1);
-		sp.setBodyType(BodyDef.BodyType.StaticBody);
-		sp.setDrawScale(scale);
-		sp.setName("spike");
-		sp.setTexture(spikeTexture);
-		addObject(sp);
+
+
+//		createLucenGlaze(12, 8);
+
+		for (int i = 0; i < glazes.size(); i++) {
+			 createLucenGlaze(glazes.get(i).getX(), glazes.get(i).getY(), glazeRotations.get(i));
+		}
+
 
 
 
 		JsonValue defaults = constants.get("defaults");
 
 
-	    // This world is heavier
+		// This world is heavier
 		world.setGravity( new Vector2(0,defaults.getFloat("gravity",0)) );
 
 		// Create dude
@@ -434,10 +468,9 @@ public class PlatformController implements ContactListener, Screen {
 
 		dwidth  = avatarTexture.getRegionWidth()/scale.x;
 		dheight = avatarTexture.getRegionHeight()/scale.y;
-		avatar = new DudeModel(3, 3); //3,3 is coord for dude spawn
+		avatar = Level2.getPlayer();
 		avatar.setDrawScale(scale);
 		avatar.setTexture(avatarTexture);
-		avatar.setTexture(dude);
 		avatar.setName("avatar");
 		addObject(avatar);
 
@@ -651,6 +684,8 @@ public class PlatformController implements ContactListener, Screen {
 
 	private void updateAvatar(){
 		Vector2 placeLocation;
+		System.out.println("testidiejd");
+		System.out.println(avatar.getY());
 		if(InputController.getInstance().isMouseControlls()){
 //			System.out.println("MOUSE");
 			placeLocation = InputController.getInstance().getCrossHair();
@@ -1281,6 +1316,8 @@ public class PlatformController implements ContactListener, Screen {
 			pause();
 			listener.exitScreen(this, EXIT_QUIT);
 			return false;
+
+
 		} else if (input.didAdvance()) {
 			pause();
 			listener.exitScreen(this, EXIT_NEXT);
