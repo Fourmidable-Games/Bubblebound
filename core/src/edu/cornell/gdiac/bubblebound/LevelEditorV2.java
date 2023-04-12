@@ -27,7 +27,7 @@ public class LevelEditorV2 {
     private List<Spike> spikes = new ArrayList<>();
     private List<Enemy> enemies = new ArrayList<>();
     private List<Lucenglaze> glazeList = new ArrayList<>();
-    private ArrayList<Float> glazeRotations;
+    private ArrayList<Float> glazeRotations = new ArrayList<>();
     private TextureRegion earthTile;
     private TextureRegion goalTile;
     private TextureRegion one;

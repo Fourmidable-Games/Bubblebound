@@ -424,7 +424,10 @@ public class PlatformController implements ContactListener, Screen {
 //		createLucenGlaze(12, 8);
 
 		for (int i = 0; i < glazes.size(); i++) {
-			createLucenGlaze(glazes.get(i).getX(), glazes.get(i).getY(), glazeRotations.get(i));
+			createLucenGlaze(glazes.get(i).getX(), glazes.get(i).getY());
+
+			// below code is for including rotation
+			// createLucenGlaze(glazes.get(i).getX(), glazes.get(i).getY(), glazeRotations.get(i));
 		}
 
 
