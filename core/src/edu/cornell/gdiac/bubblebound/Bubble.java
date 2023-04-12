@@ -77,11 +77,13 @@ public class Bubble extends WheelObstacle {
         return isGrappled;
     }
 
+    public boolean setPopped = false;
+
     protected int i;
     protected int counter = 0;
     protected final int delay = 50; // adjust this value to change the delay
 
-    public void update(float dt) {
+    public void update() {
         if (animate) {
             if (filmstrip != null) {
                 if (counter == 0) { // execute setFrame only when counter reaches 0
@@ -98,7 +100,8 @@ public class Bubble extends WheelObstacle {
         if (bubbleType == BubbleType.FLOATING) {
             pop_timer--;
         }
-        super.update(dt);
+
+        //super.update(dt);
     }
     @Override
     public void draw(GameCanvas canvas) {

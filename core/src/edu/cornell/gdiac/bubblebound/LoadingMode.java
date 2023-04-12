@@ -528,7 +528,7 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 	/** 
 	 * Called when a key is typed (UNSUPPORTED)
 	 *
-	 * @param keycode the key typed
+	 *  the key typed
 	 * @return whether to hand the event to other listeners. 
 	 */
 	public boolean keyTyped(char character) { 

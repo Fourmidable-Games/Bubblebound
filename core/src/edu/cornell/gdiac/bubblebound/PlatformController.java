@@ -604,8 +604,8 @@ public class PlatformController implements ContactListener, Screen {
 		for(int i = 0; i < bubbles.size(); i++){
 			Bubble b = bubbles.get(i);
 			b.initialize(bubble);
-			b.update(3f);
-			if(b.timedOut()){
+			b.update();
+			if(b.timedOut() || b.setPopped){
 				if(b.isGrappled()){
 					destructRope(rope);
 					avatar.setGrappling(false);
@@ -972,10 +972,10 @@ public class PlatformController implements ContactListener, Screen {
 			if ((bd1.getName().equals("bubble") && (bd2.getName().equals("enemy") || bd2.getName().equals("spike"))) ||
 					(bd2.getName().equals("bubble") && (bd1.getName().equals("enemy") || bd1.getName().equals("spike")))){
 				if(bd1.getName().equals("bubble")){
-					((Bubble) bd1).pop_timer = 1;
+					((Bubble) bd1).setPopped = true;
 
 				}else{
-					((Bubble) bd2).pop_timer = 1;
+					((Bubble) bd2).setPopped = true;
 				}
 			}
 			
