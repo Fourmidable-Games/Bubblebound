@@ -253,7 +253,13 @@ public class BoxObstacle extends SimpleObstacle {
 		}
 
 		else if (isGoal == true) {
-			canvas.draw(texture, Color.WHITE, origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.x, getAngle(), 1, 1);
+			if(grav == 1){
+				canvas.draw(texture, Color.WHITE, origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.x, getAngle(), 0.5f, 0.5f);
+
+			}else{
+				canvas.draw(texture, Color.WHITE, origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.x, getAngle(), 0.5f, -0.5f);
+
+			}
 					}
 
 

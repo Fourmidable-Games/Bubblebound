@@ -48,6 +48,12 @@ public class PlatformController implements ContactListener, Screen {
 	protected FilmStrip swingStrip;
 	protected Texture idleText;
 	protected FilmStrip idleStrip;
+	protected Texture jumpText;
+	protected FilmStrip jumpStrip;
+	protected Texture fallText;
+	protected FilmStrip fallStrip;
+	protected Texture topText;
+	protected FilmStrip topStrip;
 	/** Texture asset for the bullet */
 	private TextureRegion bulletTexture;
 	/** Texture asset for the bridge plank */
@@ -266,6 +272,12 @@ public class PlatformController implements ContactListener, Screen {
 		swingStrip = new FilmStrip(swingText, 1, 3, 3);
 		idleText = directory.getEntry("platform:dude5", Texture.class);
 		idleStrip = new FilmStrip(idleText, 1, 3, 3);
+		jumpText = directory.getEntry("platform:dude6", Texture.class);
+		jumpStrip = new FilmStrip(jumpText, 1, 1, 1);
+		fallText = directory.getEntry("platform:dude7", Texture.class);
+		fallStrip = new FilmStrip(fallText, 1, 1, 1);
+		topText = directory.getEntry("platform:dude8", Texture.class);
+		topStrip = new FilmStrip(topText, 1 ,1 ,1);
 		bulletTexture = new TextureRegion(directory.getEntry("platform:bullet",Texture.class));
 		bridgeTexture = new TextureRegion(directory.getEntry("platform:rope",Texture.class));
 		barrierTexture = new TextureRegion(directory.getEntry("platform:barrier",Texture.class));
@@ -287,7 +299,6 @@ public class PlatformController implements ContactListener, Screen {
 
 		earthTile = new TextureRegion(directory.getEntry( "shared:earth", Texture.class ));
 		iceTile = new TextureRegion(directory.getEntry("shared:ice", Texture.class));
-//		dudeModel = new TextureRegion(directory.getEntry( "platform:dude2", Texture.class ));
 		spikeTexture = new TextureRegion(directory.getEntry( "platform:spike", Texture.class ));
 		goalTile  = new TextureRegion(directory.getEntry( "shared:goal", Texture.class ));
 		background = new TextureRegion(directory.getEntry("background:underground", Texture.class));
@@ -872,10 +883,13 @@ public class PlatformController implements ContactListener, Screen {
 		life = avatar.health / (float)avatar.MAX_HEALTH;//update health bar
 
 		//bubblesleft = bubbles_left - 2;
-		avatar.initialize(dude, swingStrip, idleStrip);
+		avatar.initialize(dude, swingStrip, idleStrip, jumpStrip, fallStrip, topStrip);
 		////System.out.println("AAAAA:" + avatar.getForce());
 		if(avatar.isGrappling()) avatar.setTexture(swingStrip);
 		else if(avatar.isGrounded() && avatar.getMovement() == 0.0) avatar.setTexture(idleStrip);
+		else if (!avatar.isGrounded() && avatar.getVY() > 0f) avatar.setTexture(jumpStrip);
+		else if (!avatar.isGrounded() && avatar.getVY() > -0.01f && avatar.getVY() < 0.01f) avatar.setTexture(topStrip);
+		else if (!avatar.isGrounded() && avatar.getVY() < 0f) avatar.setTexture(fallStrip);
 		else avatar.setTexture(dude);
 		avatar.update(3f);
 
