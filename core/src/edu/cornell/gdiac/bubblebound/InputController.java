@@ -229,8 +229,10 @@ public class InputController {
 
 	public boolean isFiniteBubbles(){return finiteBubblesPressed; }
 
-	public boolean isReloadBubblesOnGround(){return reloadBubblesOnGroundPressed; }
-	
+
+//	public boolean isReloadBubblesOnGround(){return reloadBubblesOnGroundPressed; }
+	public boolean isReloadBubblesOnGround(){return true; }
+
 	/**
 	 * Creates a new input controller
 	 * 

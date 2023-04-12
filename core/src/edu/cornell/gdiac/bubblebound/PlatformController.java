@@ -27,6 +27,7 @@ import edu.cornell.gdiac.bubblebound.obstacle.*;
 import edu.cornell.gdiac.util.PooledList;
 import edu.cornell.gdiac.util.ScreenListener;
 import edu.cornell.gdiac.util.FilmStrip;
+import org.w3c.dom.Text;
 
 import java.util.*;
 
@@ -54,6 +55,10 @@ public class PlatformController implements ContactListener, Screen {
 	protected FilmStrip fallStrip;
 	protected Texture topText;
 	protected FilmStrip topStrip;
+	protected Texture bubblecooldownText;
+	protected TextureRegion emptyBubbleCooldown;
+	protected TextureRegion fullBubbleCooldown;
+	protected FilmStrip bubblecooldownStrip;
 	/** Texture asset for the bullet */
 	private TextureRegion bulletTexture;
 	/** Texture asset for the bridge plank */
@@ -87,6 +92,7 @@ public class PlatformController implements ContactListener, Screen {
 	private Sound releaseRopeSound;
 	private long releaseRopeSoundId = -1;
 
+	private boolean assetsLoaded = false;
 	private Sound windSound;
 	private long windSoundID = -1;
 	/** The level 1 background music sound.  We want it to loop. */
@@ -103,9 +109,9 @@ public class PlatformController implements ContactListener, Screen {
 	/** Physics constants for initialization */
 	private JsonValue constants;
 
-	private int BUBBLE_LIMIT = 4;
+	private int BUBBLE_LIMIT = 0;
 
-	private int bubbles_left = 4;
+	private int bubbles_left = 0;
 
 	private int bubble_regen_timer_max = 100;
 
@@ -125,6 +131,8 @@ public class PlatformController implements ContactListener, Screen {
 	protected FilmStrip bubble;
 	protected FilmStrip enemyStrip;
 	protected Texture enemyText;
+
+	protected TextureRegion tokenText;
 	protected Texture bubbleText;
 	/** The font for giving messages to the player */
 	protected TextureRegion background;
@@ -224,6 +232,10 @@ public class PlatformController implements ContactListener, Screen {
 
 	private List<PoisonGas> poisons = new ArrayList();
 
+	private Token level4Token;
+
+	private boolean level4TokenCollected = false;
+
 
 	/**
 	 * Creates and initialize a new instance of the platformer game
@@ -279,6 +291,11 @@ public class PlatformController implements ContactListener, Screen {
 		fallStrip = new FilmStrip(fallText, 1, 1, 1);
 		topText = directory.getEntry("platform:dude8", Texture.class);
 		topStrip = new FilmStrip(topText, 1 ,1 ,1);
+		bubblecooldownText = directory.getEntry("platform:bubblecooldown", Texture.class);
+		bubblecooldownStrip = new FilmStrip(bubblecooldownText, 1, 8, 8);
+		emptyBubbleCooldown = new TextureRegion(directory.getEntry("platform:emptyCooldownBubble", Texture.class));
+		fullBubbleCooldown = new TextureRegion(directory.getEntry("platform:fullCooldownBubble", Texture.class));
+		tokenText = new TextureRegion(directory.getEntry("platform:token",Texture.class));
 		bulletTexture = new TextureRegion(directory.getEntry("platform:bullet",Texture.class));
 		bridgeTexture = new TextureRegion(directory.getEntry("platform:rope",Texture.class));
 		barrierTexture = new TextureRegion(directory.getEntry("platform:barrier",Texture.class));
@@ -322,7 +339,7 @@ public class PlatformController implements ContactListener, Screen {
 		tileIceNine = new TextureRegion(directory.getEntry("shared:ice9", Texture.class));
 		tileIceTen = new TextureRegion(directory.getEntry("shared:ice10", Texture.class));
 
-
+		assetsLoaded = true;
 	}
 
 	public List<TextureRegion> loadTexturesIntoLevelEditor() {
@@ -350,7 +367,6 @@ public class PlatformController implements ContactListener, Screen {
 			//reset bubbles
 			bubbles_left = BUBBLE_LIMIT;
 			bubble_regen_timer = bubble_regen_timer_max;
-			updateBubbleCount(bubbles_left);
 
 			//reset health
 			life = 1;
@@ -402,7 +418,6 @@ public class PlatformController implements ContactListener, Screen {
 	private void populateLevel(String jsonPath) {
 		System.out.println("Populating Level");
 		setSounds();
-
 
 		LevelEditorV2 Level2 = new LevelEditorV2(playerController,jsonPath);
 		loadTexturesIntoLevelEditor();
@@ -514,16 +529,29 @@ public class PlatformController implements ContactListener, Screen {
 //		dwidth  = avatarTexture.getRegionWidth()/scale.x;
 //		dheight = avatarTexture.getRegionHeight()/scale.y;
 
+		if(currLevel == 2 && !level4TokenCollected){
+
+//			level4Token = new Token(new Vector2(5,10), 2);
+			level4Token = new Token(new Vector2(55,20), 2);
+
+			level4Token.setName("token4");
+			level4Token.setBodyType(BodyDef.BodyType.StaticBody);
+			level4Token.setSensor(true);
+			level4Token.setDrawScale(scale);
+			level4Token.setTexture(tokenText);
+			addObject(level4Token);
+		}
 
 		dwidth  = avatarTexture.getRegionWidth()/scale.x;
 		dheight = avatarTexture.getRegionHeight()/scale.y;
-
+//		avatar.setGrappling(false);
 		avatar = needToInitializeSpawn ? Level2.getPlayer(Door.SpawnDirection.RIGHT) : Level2.getPlayerAtLocation(avatarSpawnLocation, avatarSpawnDirection);
 		if(needToInitializeSpawn) {
 			avatarSpawnLocation = avatar.getPosition();
 			avatarSpawnDirection = Door.SpawnDirection.RIGHT;
 			needToInitializeSpawn = false;
 		}
+		avatar.setGrappling(false);
 		avatar.setDrawScale(scale);
 		avatar.setTexture(avatarTexture);
 		avatar.setName("avatar");
@@ -694,7 +722,8 @@ public class PlatformController implements ContactListener, Screen {
 		for(int i = 0; i < bubbles.size(); i++){
 			Bubble b = bubbles.get(i);
 			b.initialize(bubble);
-			b.update(3f);
+			b.update();
+			b.canRopeTo = false;
 			if(b.timedOut()){
 				if(b.isGrappled()){
 					destructRope(rope);
@@ -705,6 +734,57 @@ public class PlatformController implements ContactListener, Screen {
 				i--;
 			}
 		}
+	}
+
+	private void updateUI(){
+		// int bubbleDrawIter = 0;
+		// Vector2 drawPos = new Vector2(cameraCoords.x + (canvas.getWidth() / 2) - 400,cameraCoords.y + (canvas.getHeight() / 2) - 30);
+		// while(bubbleDrawIter < bubbles_left){
+		// 	canvas.draw(null, null, dt, bubbleDrawIter, null);
+		// }
+		Vector2 drawPos = new Vector2(cameraCoords.x,cameraCoords.y);
+		System.out.println(bubble_regen_timer);
+		int f =8- (int)(bubble_regen_timer/(bubble_regen_timer_max/8));
+
+		System.out.println("FRAME: " + f);
+		System.out.println("MAX BUB: " +BUBBLE_LIMIT);
+
+		System.out.println("BUBBLES LEFT: " +bubbles_left);
+		bubblecooldownStrip.setFrame(f);
+		Texture t = bubblecooldownStrip.getTexture();
+//		canvas.draw(bubblecooldownStrip,Color.WHITE,drawPos.x + canvas.getWidth()/2 - 400, drawPos.y + canvas.getHeight()/2,t.getWidth()/8*0.25f,t.getHeight()*0.25f);
+		int curr_bubble = 1;
+		Vector2 current_bubble_pos = new Vector2(drawPos.x + canvas.getWidth()/2 - 400, drawPos.y + canvas.getHeight()/2 - 50);
+		while(curr_bubble <= bubbles_left){
+
+			canvas.draw(fullBubbleCooldown,Color.WHITE,current_bubble_pos.x,current_bubble_pos.y,t.getWidth()/8*0.25f,t.getHeight()*0.25f);
+			curr_bubble ++;
+			current_bubble_pos.add(40,0);
+		}
+		if(bubbles_left <BUBBLE_LIMIT){
+			canvas.draw(bubblecooldownStrip,Color.WHITE,current_bubble_pos.x,current_bubble_pos.y,t.getWidth()/8*0.25f,t.getHeight()*0.25f);
+			curr_bubble ++;
+			current_bubble_pos.add(40,0);
+		}
+		while(curr_bubble <= BUBBLE_LIMIT){
+			canvas.draw(emptyBubbleCooldown,Color.WHITE,current_bubble_pos.x,current_bubble_pos.y,t.getWidth()/8*0.25f,t.getHeight()*0.25f);
+			curr_bubble ++;
+			current_bubble_pos.add(40,0);
+		}
+
+
+
+		// int i = 0;
+
+		// while(i < bubbles_left){
+		// 	i++;
+		// }
+		// if(i<BUBBLE_LIMIT){
+		// 	i++;
+		// }
+		// while(i < BUBBLE_LIMIT){
+		// 	i++;
+		// }
 	}
 
 	private void updateEnemies(){
@@ -811,21 +891,26 @@ public class PlatformController implements ContactListener, Screen {
 			if(wait > 20) {
 				if(!InputController.getInstance().isFiniteBubbles() || bubbles_left > 0){
 					closest = spawnBubble(placeLocation);
-					updateBubbleCount(bubbles_left);
 				}
 				wait = 0;
 				spawned = true;
 			}
 		}
 
+		if(avatar.getPosition().dst(closest.getPosition()) < 3.5){
+			closest.canRopeTo = true;
+		}
+
 		//regen bubble
 		if(InputController.getInstance().isFiniteBubbles()){
 //			//System.out.println("Grounded: " + avatar.isGrounded());
 			if(avatar.isGrounded() && InputController.getInstance().isReloadBubblesOnGround()){
-				if(bubble_regen_timer <= 0 && bubbles_left < BUBBLE_LIMIT){
-					bubbles_left++;
-					updateBubbleCount(bubbles_left);
-					bubble_regen_timer = bubble_regen_timer_max;
+				if(bubbles_left < BUBBLE_LIMIT){
+					if(bubble_regen_timer <=0){
+						bubbles_left++;
+						bubble_regen_timer = bubble_regen_timer_max;
+					}
+					bubble_regen_timer--;
 				}
 			}else{
 				bubble_regen_timer = bubble_regen_timer_max;
@@ -833,10 +918,10 @@ public class PlatformController implements ContactListener, Screen {
 		}else{
 			bubbles_left = BUBBLE_LIMIT;
 		}
-		bubble_regen_timer--;
-		////System.out.println("Finite Bubbles?: " + InputController.getInstance().isFiniteBubbles());
-		////System.out.println("Bubbles: " + bubbles_left);
-		////System.out.println("Regen Bubbles?: " + InputController.getInstance().isReloadBubblesOnGround());
+
+		//System.out.println("Finite Bubbles?: " + InputController.getInstance().isFiniteBubbles());
+		//System.out.println("Bubbles: " + bubbles_left);
+		//System.out.println("Regen Bubbles?: " + InputController.getInstance().isReloadBubblesOnGround());
 
 		if (closest != null) closest.setSelected(true);
 		////System.out.println("got to after bubble check");
@@ -890,7 +975,7 @@ public class PlatformController implements ContactListener, Screen {
 
 		avatar.breathe(); //used for poison gas stuff
 		avatar.applyForce(ropeDir);
-		life = avatar.health / (float)avatar.MAX_HEALTH;//update health bar
+		life = avatar.getLife();//update health bar
 
 		//bubblesleft = bubbles_left - 2;
 		avatar.initialize(dude, swingStrip, idleStrip, jumpStrip, fallStrip, topStrip);
@@ -901,7 +986,7 @@ public class PlatformController implements ContactListener, Screen {
 		else if (!avatar.isGrounded() && avatar.getVY() > -0.01f && avatar.getVY() < 0.01f) avatar.setTexture(topStrip);
 		else if (!avatar.isGrounded() && avatar.getVY() < 0f) avatar.setTexture(fallStrip);
 		else avatar.setTexture(dude);
-		avatar.update(3f);
+		avatar.update();
 
 	}
 
@@ -1096,6 +1181,21 @@ public class PlatformController implements ContactListener, Screen {
 					System.out.println("Switching (" + switchLevel + ") to level " + targetLevel);
 
 				}
+			}
+
+			if ((bd1 == avatar   && bd2.getName().contains("token")) ||
+					(bd1.getName().contains("token") && bd2 == avatar)){
+				Token token = (bd1 == avatar) ? (Token)bd2: (Token)bd1;
+				int old_bubble_limit = BUBBLE_LIMIT;
+
+				BUBBLE_LIMIT = token.getBubbleLimitValue();
+				bubbles_left = bubbles_left + (BUBBLE_LIMIT-old_bubble_limit);
+				if (bd1 == avatar){
+					bd2.markRemoved(true);
+				}else{
+					bd1.markRemoved(true);
+				}
+				level4TokenCollected = true;
 			}
 
 			if ((bd1 == avatar && bd2.getName().equals("gas")) || (bd1.getName().equals("gas") && bd2 == avatar)){
@@ -1501,7 +1601,7 @@ public class PlatformController implements ContactListener, Screen {
 		zones.add(z);
 	}
 
-	int bubblesleft = 8;
+	int bubblesleft = 4;
 
 	/**
 	 * Draw the physics objects to the canvas
@@ -1580,7 +1680,11 @@ public class PlatformController implements ContactListener, Screen {
 		displayFont.setColor(Color.WHITE);
 		displayFont.getData().setScale(0.4f);
 		canvas.begin(); // DO NOT SCALE
-		canvas.drawText("Current Bubbles: " + bubblesleft, displayFont, cameraCoords.x + (canvas.getWidth() / 2) - 400, cameraCoords.y + (canvas.getHeight() / 2) - 30);
+		String additional_part = (BUBBLE_LIMIT == 0) ? "None" : "";
+		canvas.drawText("Bubbles: " +additional_part, displayFont, cameraCoords.x + (canvas.getWidth() / 2) - 575, cameraCoords.y + (canvas.getHeight() / 2) - 25);
+		if(assetsLoaded){
+			updateUI();
+		}
 		canvas.end();
 
 //		canvas.end();
