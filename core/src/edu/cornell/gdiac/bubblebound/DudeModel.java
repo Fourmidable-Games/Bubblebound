@@ -304,6 +304,30 @@ public class DudeModel extends CapsuleObstacle {
 		setName("dude");
 	}
 
+	public DudeModel(JsonValue data, float width, float height, float x, float y) {
+		// The shrink factors fit the image to a tigher hitbox
+		super(	x,
+				y,
+				width*data.get("shrink").getFloat( 0 ),
+				height*data.get("shrink").getFloat( 1 ));
+		setDensity(data.getFloat("density", 0));
+		setDensity(data.getFloat("density", 0));
+		setFriction(data.getFloat("friction", 0));  /// HE WILL STICK TO WALLS IF YOU FORGET
+		setFixedRotation(true);
+		maxspeed = data.getFloat("maxspeed", 0);
+		damping = data.getFloat("damping", 0);
+		force = data.getFloat("force", 0)*0.5f;
+		gravZone = 1;
+		jump_force = data.getFloat( "jump_force", 0 )*1f;
+		sensorName = "DudeGroundSensor";
+
+		this.playerController = new PlayerController(data);
+		this.data = data;
+		setName("dude");
+	}
+
+
+
 	public DudeModel(float x, float y){
 		super(x, y, 0.9f, 1.9f);
 		setFriction(0);

@@ -140,7 +140,8 @@ public class PlayerController {
     }
 
     public PlayerController(JsonValue data){
-        health = data.getInt("health", 0);
+        MAX_HEALTH = data.getInt("health",0);
+        health = MAX_HEALTH;
 
 
         jumpLimit = data.getInt( "jump_cool", 0 );

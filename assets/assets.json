@@ -9,6 +9,56 @@
       "shared:ice" : {
         "file":  "shared/icetile.png",
         "wrapU": "repeated",
+        "wrapV": "repeated",
+      },
+      "shared:ice1" : {
+        "file":  "shared/1.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "shared:ice2" : {
+        "file":  "shared/2.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "shared:ice3" : {
+        "file":  "shared/3.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "shared:ice4" : {
+        "file":  "shared/4.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "shared:ice5" : {
+        "file":  "shared/5.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "shared:ice6" : {
+        "file":  "shared/6.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "shared:ice7" : {
+        "file":  "shared/7.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "shared:ice8" : {
+        "file":  "shared/8.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "shared:ice9" : {
+        "file":  "shared/9.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "shared:ice10" : {
+        "file":  "shared/10.png",
+        "wrapU": "repeated",
         "wrapV": "repeated"
       },
         "background:underground" : {
