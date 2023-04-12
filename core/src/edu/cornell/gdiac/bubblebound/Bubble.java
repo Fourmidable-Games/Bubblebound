@@ -13,7 +13,7 @@ public class Bubble extends WheelObstacle {
         FLOATING
     }
     private static int last_used_id=-1;
-    private final int POP_TIME = 400;
+    private final int POP_TIME = 750;
     private BubbleType bubbleType;
    private int id;
 

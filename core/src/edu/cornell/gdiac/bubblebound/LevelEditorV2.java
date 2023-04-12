@@ -53,7 +53,6 @@ public class LevelEditorV2 {
     public LevelEditorV2(PlayerController pc) {
         jsonName = "lvl1.json";
         playerController = pc;
-
     }
 
     public LevelEditorV2(PlayerController pc, String filename){
@@ -132,7 +131,6 @@ public class LevelEditorV2 {
 
                         for (JsonValue pl : sp) {
 
-
                             DudeModel wo = new DudeModel(playerController,
                                     constants.get("dude"),
                                     pl.getFloat("width")/64,
@@ -140,6 +138,7 @@ public class LevelEditorV2 {
                                     (pl.getFloat("x")) / 64,
                                     ((mapHeight - (pl.getFloat("y")))/ 64)+1
                             );
+
 
                             player = wo;
                         }
@@ -484,11 +483,13 @@ public class LevelEditorV2 {
     public List getEnemies() {
         return enemies;
     }
-    public DudeModel getPlayerAtLocation(Vector2 location) {
+    public DudeModel getPlayerAtLocation(Vector2 location, Door.SpawnDirection sd) {
         player.setPosition(location);
+        player.setFacingRight(sd == Door.SpawnDirection.RIGHT);
         return player;
     }
-    public DudeModel getPlayer(){
+    public DudeModel getPlayer(Door.SpawnDirection sd){
+        player.setFacingRight(sd == Door.SpawnDirection.RIGHT);
         return player;
     }
 
