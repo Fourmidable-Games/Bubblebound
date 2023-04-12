@@ -104,7 +104,7 @@ public class LevelEditorV2 {
                                     targetLevel = prop1.getInt("value");
                                 }
                                 if (prop1.getString("name").equals("direction")) {
-                                    player_spawn_direction = (prop1.getString("value") == "right") ? Door.SpawnDirection.RIGHT : Door.SpawnDirection.LEFT;
+                                    player_spawn_direction = (prop1.getString("value").equals("right")) ? Door.SpawnDirection.RIGHT : Door.SpawnDirection.LEFT;
                                 }
                             }
 
@@ -151,7 +151,6 @@ public class LevelEditorV2 {
 
                         for (JsonValue goals : sp) {
                             float rotation = goals.getFloat("rotation");
-
                             Spike wo = new Spike(
                                     (goals.getFloat("x")) / 64,
                                     ((mapHeight - (goals.getFloat("y"))) / 64)+1,
@@ -159,8 +158,16 @@ public class LevelEditorV2 {
                                     goals.getFloat("height")/64,
                                     rotation
                             );
-
-
+                            if (rotation == 180 || rotation == -180){
+                                wo.setX(wo.getX() - 1);
+                                wo.setY(wo.getY() - 1);
+                            }
+                            if (rotation == 90){
+                                wo.setY(wo.getY() - 1);
+                            }
+                            if (rotation == -90){
+                                wo.setX(wo.getX() - 1);
+                            }
 
                             spikes.add(wo);
                         }
