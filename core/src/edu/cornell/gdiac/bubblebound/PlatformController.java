@@ -529,9 +529,11 @@ public class PlatformController implements ContactListener, Screen {
 //		dwidth  = avatarTexture.getRegionWidth()/scale.x;
 //		dheight = avatarTexture.getRegionHeight()/scale.y;
 
-		if(currLevel == 1 && !level4TokenCollected){
+		if(currLevel == 2 && !level4TokenCollected){
 
-			level4Token = new Token(new Vector2(5,10), 2);
+//			level4Token = new Token(new Vector2(5,10), 2);
+			level4Token = new Token(new Vector2(55,20), 2);
+
 			level4Token.setName("token4");
 			level4Token.setBodyType(BodyDef.BodyType.StaticBody);
 			level4Token.setSensor(true);
@@ -720,7 +722,8 @@ public class PlatformController implements ContactListener, Screen {
 		for(int i = 0; i < bubbles.size(); i++){
 			Bubble b = bubbles.get(i);
 			b.initialize(bubble);
-			b.update(3f);
+			b.update();
+			b.canRopeTo = false;
 			if(b.timedOut()){
 				if(b.isGrappled()){
 					destructRope(rope);
@@ -894,6 +897,10 @@ public class PlatformController implements ContactListener, Screen {
 			}
 		}
 
+		if(avatar.getPosition().dst(closest.getPosition()) < 3.5){
+			closest.canRopeTo = true;
+		}
+
 		//regen bubble
 		if(InputController.getInstance().isFiniteBubbles()){
 //			//System.out.println("Grounded: " + avatar.isGrounded());
@@ -979,7 +986,7 @@ public class PlatformController implements ContactListener, Screen {
 		else if (!avatar.isGrounded() && avatar.getVY() > -0.01f && avatar.getVY() < 0.01f) avatar.setTexture(topStrip);
 		else if (!avatar.isGrounded() && avatar.getVY() < 0f) avatar.setTexture(fallStrip);
 		else avatar.setTexture(dude);
-		avatar.update(3f);
+		avatar.update();
 
 	}
 

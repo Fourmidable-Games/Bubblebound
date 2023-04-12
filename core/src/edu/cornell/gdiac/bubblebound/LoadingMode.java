@@ -290,7 +290,7 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 		} else {
 			Color tint = (pressState == 1 ? Color.GRAY: Color.WHITE);
 			canvas.draw(playButton, tint, playButton.getWidth()/2, playButton.getHeight()/2, 
-						centerX + 290, centerY +173, 0, BUTTON_SCALE*scale*0.83f, BUTTON_SCALE*scale*0.83f);
+						centerX, centerY, 0, BUTTON_SCALE*scale*0.83f, BUTTON_SCALE*scale*0.83f);
 		}
 		canvas.end();
 	}
@@ -305,7 +305,7 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 	 * @param canvas The drawing context
 	 */	
 	private void drawProgress(GameCanvas canvas) {
-		float adj = 100f;
+		float adj = 130f;
 		canvas.draw(statusBkgLeft,   Color.WHITE, centerX-width/2, centerY-adj,
 				scale*statusBkgLeft.getRegionWidth(), scale*statusBkgLeft.getRegionHeight());
 		canvas.draw(statusBkgRight,  Color.WHITE,centerX+width/2-scale*statusBkgRight.getRegionWidth(), centerY-adj,
@@ -441,7 +441,7 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 		// Play button is a circle.
 		float button_w = playButton.getWidth()*BUTTON_SCALE*scale*0.83f;
 		float button_h = playButton.getHeight()*BUTTON_SCALE*scale*0.83f;
-		Vector2 button_center = new Vector2(centerX + 290, centerY + 173);
+		Vector2 button_center = new Vector2(centerX, centerY);
 		if(screenX >= button_center.x - button_w/2 && screenX <= button_center.x + button_w/2){
 			if(screenY >= button_center.y - button_h/2 && screenY <= button_center.y + button_h/2){
 				pressState = 1;
