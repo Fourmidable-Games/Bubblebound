@@ -22,6 +22,8 @@ public class Bubble extends WheelObstacle {
 
     public int pop_timer;
     /** FilmStrip pointer to the texture region */
+
+    private boolean popped;
     private FilmStrip filmstrip;
     /** The current animation frame of the avatar */
     private int startFrame;
@@ -33,10 +35,11 @@ public class Bubble extends WheelObstacle {
 
         super(location.x,location.y,radius);
         bubbleType = type;
+        popped = false;
         if(type == BubbleType.FLOATING){
             pop_timer = POP_TIME;
         }else{
-            pop_timer = -1;
+            pop_timer = 400;
         }
         id = last_used_id + 1;
         last_used_id++;
@@ -58,7 +61,7 @@ public class Bubble extends WheelObstacle {
 
 
     public boolean timedOut(){
-        return pop_timer == 0;
+        return pop_timer <=0;
     }
 
     public BubbleType getBubbleType(){
@@ -97,6 +100,7 @@ public class Bubble extends WheelObstacle {
         }
         if (bubbleType == BubbleType.FLOATING) {
             pop_timer--;
+            if(pop_timer <= 0) popped = true;
         }
         super.update(dt);
     }

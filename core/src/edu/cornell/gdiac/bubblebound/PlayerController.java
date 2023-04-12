@@ -42,7 +42,6 @@ public class PlayerController {
     /** Whether we are actively grappling */
     private boolean isGrappling;
 
-
     /** The current maximum health (in half hearts) of the player */
     public int MAX_HEALTH = 4;
 
@@ -76,6 +75,7 @@ public class PlayerController {
     public void setGrappling(boolean value){
         isGrappling = value;
     }
+
 
     public boolean isJumping(){
         return isJumping && isGrounded && jumpCooldown <= 0;
@@ -191,6 +191,7 @@ public class PlayerController {
         } else {
             shootCooldown = Math.max(0, shootCooldown - 1);
         }
+
         if(isInvincible){
             invincibletimer--;
             if(invincibletimer <= 0){

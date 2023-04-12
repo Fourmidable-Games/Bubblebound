@@ -65,6 +65,8 @@ public class DudeModel extends CapsuleObstacle {
 
 	public int invincibletimer = 30;
 
+	private boolean grappleboost;
+
 	public int breath = 50;
 
 	public boolean inGas = false;
@@ -151,6 +153,8 @@ public class DudeModel extends CapsuleObstacle {
 		return playerController.getMaxHealth();
 	}
 
+	public void setGrappleBoost(boolean value){ grappleboost = value;}
+
 
 
 	public boolean isGrappling(){return playerController.isGrappling();}
@@ -164,7 +168,9 @@ public class DudeModel extends CapsuleObstacle {
 		playerController.setShooting(value);
 	}
 
-	public void setGrappling(boolean value){playerController.setGrappling(value);}
+	public void setGrappling(boolean value){
+		playerController.setGrappling(value);
+	}
 
 	/**
 	 * Returns true if the dude is actively jumping.
@@ -402,59 +408,70 @@ public class DudeModel extends CapsuleObstacle {
 	 *
 	 * This method should be called after the force attribute is set.
 	 */
-	public void applyForce() {
-		body.setGravityScale(grav);
+	public void applyForce(Vector2 ropeDir) {
+		body.setGravityScale(grav * 1.1f);
 		if (!isActive()) {
 			return;
 		}
-		if(playerController.isGrappling() && !(getMovement() == 0)){
-			body.setGravityScale(grav * 1.5f);
-			damp = false;
-		}else{
-			damp = true;
+
+		if (playerController.isGrappling()) {
+			body.setGravityScale(grav * 2f);
 		}
-		if(getMovement() > 0){
+
+		if (getMovement() > 0) {
 			faceRight = true;
-		}else if(getMovement() < 0){
+		} else if (getMovement() < 0) {
 			faceRight = false;
 		}
-		// Don't want to be moving. Damp out player motion
-		if ((getMovement() == 0 || getVX() * getMovement() < 0)  && (!playerController.isGrappling()) ){
-			if(!damp){
-				forceCache.set(-getDamping()*getVX()*0.1f,0);
-			}else{
-				forceCache.set(-getDamping()*getVX()*0.5f,0);
-			}
-			body.applyForce(forceCache,getPosition(),true);
-		}
-		/*float regDampFactor = 0.7f;
-		float grapDampFactor = 1.3f;
-		float usedFactor;*/
-		// Velocity too high, clamp it
-		/*if(isGrappling){
-			usedFactor = grapDampFactor;
+
+		if(playerController.isGrappling()) {
+			forceCache.set(ropeDir.nor().rotate90(-1).scl(getMovement())).scl(0.5f);
+		}else if(getMovement() != 0){
+			forceCache.set(getMovement() * 2, 0);
 		}else{
-			usedFactor = regDampFactor;
-		}*/
-
-		if (getVX() >= getMaxSpeed()*1.5f) {
-			setVX(getMaxSpeed()*1.5f);
-		} if (getVX() <= -getMaxSpeed()*1.5f) {
-			setVX(-getMaxSpeed()*1.5f);
-		} if (getVY() >= 2f*getMaxSpeed()) {
-			setVY(2f * getMaxSpeed());
+			forceCache.set(-getDamping() * getVX() * 2f, 0);
 		}
 
-		forceCache.set(getMovement(),0);
-		body.applyForce(forceCache,getPosition(),true);
-
-
+		body.applyForce(forceCache, getPosition(), true);
 
 		if (isJumping()) {
-			forceCache.set(0, grav * jump_force);
-			forceCache.x *= 3;
-			body.applyLinearImpulse(forceCache,getPosition(),true);
+			forceCache.set(0, grav * jump_force * 1.5f);
+			//forceCache.x *= 5;
+			body.applyLinearImpulse(forceCache, getPosition(), true);
 		}
+		if (grappleboost){
+			if(grav > 0){
+				if(getVY() > 0){
+					System.out.println("Pushed up");
+					setVY(getVY()/2);
+				}else{
+					System.out.println("Pushed ALOT to counter");
+					setVY(0);
+				}
+			}else{
+				if(getVY() < 0){
+					setVY(getVY()/2);
+				}else{
+					setVY(0);
+				}
+			}
+			grappleboost = false;
+		}
+
+		if (getVX() >= getMaxSpeed() * 1.5f) {
+			setVX(getMaxSpeed() * 1.5f);
+		}
+		if (getVX() <= -getMaxSpeed() * 1.5f) {
+			setVX(-getMaxSpeed() * 1.5f);
+		}
+		if (getVY() >= 2f * getMaxSpeed() && !isJumping()) {
+			setVY(2f * getMaxSpeed());
+		}
+		if (getVY() <= -2f * getMaxSpeed() && !isJumping()) {
+			setVY(-2f * getMaxSpeed());
+		}
+
+
 	}
 
 
