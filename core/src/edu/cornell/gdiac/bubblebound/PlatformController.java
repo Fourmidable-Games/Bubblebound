@@ -27,6 +27,7 @@ import edu.cornell.gdiac.bubblebound.obstacle.*;
 import edu.cornell.gdiac.util.PooledList;
 import edu.cornell.gdiac.util.ScreenListener;
 import edu.cornell.gdiac.util.FilmStrip;
+import org.w3c.dom.Text;
 
 import java.util.*;
 
@@ -54,6 +55,8 @@ public class PlatformController implements ContactListener, Screen {
 	protected FilmStrip fallStrip;
 	protected Texture topText;
 	protected FilmStrip topStrip;
+	protected Texture bubblecooldownText;
+	protected FilmStrip bubblecooldownStrip;
 	/** Texture asset for the bullet */
 	private TextureRegion bulletTexture;
 	/** Texture asset for the bridge plank */
@@ -279,6 +282,8 @@ public class PlatformController implements ContactListener, Screen {
 		fallStrip = new FilmStrip(fallText, 1, 1, 1);
 		topText = directory.getEntry("platform:dude8", Texture.class);
 		topStrip = new FilmStrip(topText, 1 ,1 ,1);
+		bubblecooldownText = directory.getEntry("platform:bubblecooldown", Texture.class);
+		bubblecooldownStrip = new FilmStrip(bubblecooldownText, 1, 8, 8);
 		bulletTexture = new TextureRegion(directory.getEntry("platform:bullet",Texture.class));
 		bridgeTexture = new TextureRegion(directory.getEntry("platform:rope",Texture.class));
 		barrierTexture = new TextureRegion(directory.getEntry("platform:barrier",Texture.class));
@@ -707,6 +712,34 @@ public class PlatformController implements ContactListener, Screen {
 		}
 	}
 
+	private void updateUI(){
+		// int bubbleDrawIter = 0;
+		// Vector2 drawPos = new Vector2(cameraCoords.x + (canvas.getWidth() / 2) - 400,cameraCoords.y + (canvas.getHeight() / 2) - 30);
+		// while(bubbleDrawIter < bubbles_left){
+		// 	canvas.draw(null, null, dt, bubbleDrawIter, null);
+		// }
+		Vector2 drawPos = new Vector2(cameraCoords.x,cameraCoords.y);
+		System.out.println(bubble_regen_timer);
+		int f =7- (int)(bubble_regen_timer/(bubble_regen_timer_max/8));
+		System.out.println("FRAME: " + f);
+		bubblecooldownStrip.setFrame(f);
+		Texture t = bubblecooldownStrip.getTexture();
+//		canvas.draw(bubblecooldownStrip,Color.WHITE,drawPos.x + canvas.getWidth()/2 - 400, drawPos.y + canvas.getHeight()/2,t.getWidth()/8*0.25f,t.getHeight()*0.25f);
+		canvas.draw(bubblecooldownStrip,Color.WHITE,drawPos.x + canvas.getWidth()/2 - 400, drawPos.y + canvas.getHeight()/2 - 50,t.getWidth()/8*0.25f,t.getHeight()*0.25f);
+
+		// int i = 0;
+
+		// while(i < bubbles_left){
+		// 	i++;
+		// }
+		// if(i<BUBBLE_LIMIT){
+		// 	i++;
+		// }
+		// while(i < BUBBLE_LIMIT){
+		// 	i++;
+		// }
+	}
+
 	private void updateEnemies(){
 		for(int i = 0; i < enemies.size(); i++){
 			Enemy enemy = enemies.get(i);
@@ -822,10 +855,13 @@ public class PlatformController implements ContactListener, Screen {
 		if(InputController.getInstance().isFiniteBubbles()){
 //			//System.out.println("Grounded: " + avatar.isGrounded());
 			if(avatar.isGrounded() && InputController.getInstance().isReloadBubblesOnGround()){
-				if(bubble_regen_timer <= 0 && bubbles_left < BUBBLE_LIMIT){
-					bubbles_left++;
-					updateBubbleCount(bubbles_left);
-					bubble_regen_timer = bubble_regen_timer_max;
+				if(bubbles_left < BUBBLE_LIMIT){
+					if(bubble_regen_timer <=0){
+						bubbles_left++;
+						updateBubbleCount(bubbles_left);
+						bubble_regen_timer = bubble_regen_timer_max;
+					}
+					bubble_regen_timer--;
 				}
 			}else{
 				bubble_regen_timer = bubble_regen_timer_max;
@@ -833,10 +869,10 @@ public class PlatformController implements ContactListener, Screen {
 		}else{
 			bubbles_left = BUBBLE_LIMIT;
 		}
-		bubble_regen_timer--;
-		////System.out.println("Finite Bubbles?: " + InputController.getInstance().isFiniteBubbles());
-		////System.out.println("Bubbles: " + bubbles_left);
-		////System.out.println("Regen Bubbles?: " + InputController.getInstance().isReloadBubblesOnGround());
+
+		//System.out.println("Finite Bubbles?: " + InputController.getInstance().isFiniteBubbles());
+		//System.out.println("Bubbles: " + bubbles_left);
+		//System.out.println("Regen Bubbles?: " + InputController.getInstance().isReloadBubblesOnGround());
 
 		if (closest != null) closest.setSelected(true);
 		////System.out.println("got to after bubble check");
@@ -1580,7 +1616,8 @@ public class PlatformController implements ContactListener, Screen {
 		displayFont.setColor(Color.WHITE);
 		displayFont.getData().setScale(0.4f);
 		canvas.begin(); // DO NOT SCALE
-		canvas.drawText("Current Bubbles: " + bubblesleft, displayFont, cameraCoords.x + (canvas.getWidth() / 2) - 400, cameraCoords.y + (canvas.getHeight() / 2) - 30);
+		//canvas.drawText("Current Bubbles: " + bubblesleft, displayFont, cameraCoords.x + (canvas.getWidth() / 2) - 400, cameraCoords.y + (canvas.getHeight() / 2) - 30);
+		updateUI();
 		canvas.end();
 
 //		canvas.end();
