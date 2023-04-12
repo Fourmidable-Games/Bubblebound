@@ -117,6 +117,17 @@ public class PlatformController implements ContactListener, Screen {
 	protected TextureRegion spikeTexture;
 	protected BitmapFont displayFont;
 
+	protected TextureRegion tileIceOne;
+	protected TextureRegion tileIceTwo;
+	protected TextureRegion tileIceThree;
+	protected TextureRegion tileIceFour;
+	protected TextureRegion tileIceFive;
+	protected TextureRegion tileIceSix;
+	protected TextureRegion tileIceSeven;
+	protected TextureRegion tileIceEight;
+	protected TextureRegion tileIceNine;
+	protected TextureRegion tileIceTen;
+
 	/** Exit code for quitting the game */
 	public static final int EXIT_QUIT = 0;
 	/** Exit code for advancing to next level */
@@ -206,12 +217,7 @@ public class PlatformController implements ContactListener, Screen {
 		sensorFixtures = new ObjectSet<Fixture>();
 	}
 
-	public List<TextureRegion> loadTexturesIntoLevelEditor() {
-		textures.add(earthTile);
-		textures.add(iceTile);
-		textures.add(goalTile);
-		return textures;
-	}
+
 
 	/**
 	 * Gather the assets for this controller.
@@ -252,6 +258,34 @@ public class PlatformController implements ContactListener, Screen {
 		displayFont = directory.getEntry( "shared:retro" ,BitmapFont.class);
 		background2 = directory.getEntry("background:temp", Texture.class);
 		losing = new TextureRegion(directory.getEntry("losing", Texture.class));
+
+		tileIceOne = new TextureRegion(directory.getEntry("shared:ice1", Texture.class));
+		tileIceTwo = new TextureRegion(directory.getEntry("shared:ice2", Texture.class));
+		tileIceThree = new TextureRegion(directory.getEntry("shared:ice3", Texture.class));
+		tileIceFour = new TextureRegion(directory.getEntry("shared:ice4", Texture.class));
+		tileIceFive = new TextureRegion(directory.getEntry("shared:ice5", Texture.class));
+		tileIceSix = new TextureRegion(directory.getEntry("shared:ice6", Texture.class));
+		tileIceSeven = new TextureRegion(directory.getEntry("shared:ice7", Texture.class));
+		tileIceEight = new TextureRegion(directory.getEntry("shared:ice8", Texture.class));
+		tileIceNine = new TextureRegion(directory.getEntry("shared:ice9", Texture.class));
+		tileIceTen = new TextureRegion(directory.getEntry("shared:ice10", Texture.class));
+
+
+	}
+
+	public List<TextureRegion> loadTexturesIntoLevelEditor() {
+		textures.add(tileIceOne);
+		textures.add(tileIceTwo);
+		textures.add(tileIceThree);
+		textures.add(tileIceFour);
+		textures.add(tileIceFive);
+		textures.add(tileIceSix);
+		textures.add(tileIceSeven);
+		textures.add(tileIceEight);
+		textures.add(tileIceNine);
+		textures.add(tileIceTen);
+		textures.add(earthTile);
+		return textures;
 	}
 
 	/**
@@ -309,13 +343,14 @@ public class PlatformController implements ContactListener, Screen {
 
 		LevelEditorV2 Level2 = new LevelEditorV2();
 		loadTexturesIntoLevelEditor();
-		Level2.readTextures(textures);
+		Level2.readTileTextures(textures);
 		Level2.readJson();
 		List<BoxObstacle> BoxList = Level2.getBoxes();
 		List<Bubble> bubbleList = Level2.getBubbles();
 		List<Zone> gravityZoneList = Level2.getGravityZones();
 		List<Spike> spikes = Level2.getSpikes();
 		List<Lucenglaze> glazes = Level2.getGlazes();
+		List<Float> glazeRotations = Level2.getGlazeRotations();
 		goalDoor = Level2.getGoal();
 		enemies = Level2.getEnemies();
 
@@ -342,7 +377,6 @@ public class PlatformController implements ContactListener, Screen {
 
 		for (int i = 0; i < BoxList.size(); i++) {
 			BoxObstacle box = BoxList.get(i);
-			box.setTexture(localeToTexture(box));
 			box.setBodyType(BodyDef.BodyType.StaticBody);
 			box.setDensity(0);
 			box.setFriction(0);
@@ -390,7 +424,7 @@ public class PlatformController implements ContactListener, Screen {
 //		createLucenGlaze(12, 8);
 
 		for (int i = 0; i < glazes.size(); i++) {
-			createLucenGlaze(glazes.get(i).getX(), glazes.get(i).getY());
+			createLucenGlaze(glazes.get(i).getX(), glazes.get(i).getY(), glazeRotations.get(i));
 		}
 
 
