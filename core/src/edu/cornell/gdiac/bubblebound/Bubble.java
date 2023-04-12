@@ -13,7 +13,7 @@ public class Bubble extends WheelObstacle {
         FLOATING
     }
     private static int last_used_id=-1;
-    private final int POP_TIME = 400;
+    private final int POP_TIME = 750;
     private BubbleType bubbleType;
    private int id;
 
@@ -56,7 +56,7 @@ public class Bubble extends WheelObstacle {
             f.setFrame(ii++ % 8);
         }
         counter1 = (counter1 + 1) % delay1; // increment counter and reset to 0 when it reaches delay
-        //System.out.println("strips:" + filmstrip);
+        ////System.out.println("strips:" + filmstrip);
     }
 
 

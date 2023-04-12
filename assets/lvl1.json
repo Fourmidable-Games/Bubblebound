@@ -84,7 +84,7 @@
                          "height":64,
                          "id":290,
                          "name":"",
-                         "rotation":0,
+                         "rotation":00,
                          "type":"",
                          "visible":true,
                          "width":64,
@@ -382,6 +382,18 @@
                          "height":192,
                          "id":287,
                          "name":"",
+                         "properties":[
+                          {
+                            "name":"targetLevel",
+                            "type":"int",
+                            "value":2
+                          },
+                          {
+                            "name":"direction",
+                            "type":"string",
+                            "value": "right"
+                          }
+                         ],
                          "rotation":0,
                          "type":"",
                          "visible":true,

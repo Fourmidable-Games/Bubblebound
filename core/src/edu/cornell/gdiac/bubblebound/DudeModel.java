@@ -80,6 +80,9 @@ public class DudeModel extends CapsuleObstacle {
 	private FilmStrip filmstrip;
 	private FilmStrip filmstrip_swing;
 	private FilmStrip filmstrip_idle;
+	private FilmStrip filmstrip_jump;
+	private FilmStrip filmstrip_fall;
+	private FilmStrip filmstrip_top;
 
 	/**
 	 * Returns left/right movement of this character.
@@ -95,14 +98,20 @@ public class DudeModel extends CapsuleObstacle {
 	protected int ii = 0;
 	protected int counter1 = 0;
 	protected final int delay1 = 6; // adjust this value to change the delay
-	public void initialize(FilmStrip f, FilmStrip f1, FilmStrip f2) {
+	public void initialize(FilmStrip f, FilmStrip f1, FilmStrip f2, FilmStrip f3, FilmStrip f4, FilmStrip f5) {
 		filmstrip = f;
 		filmstrip_swing = f1;
 		filmstrip_idle = f2;
+		filmstrip_jump = f3;
+		filmstrip_fall = f4;
+		filmstrip_top = f5;
 		if (counter1 == 0) { // execute setFrame only when counter reaches 0
 			f.setFrame(ii++ % 11);
 			f1.setFrame(ii++ % 3);
 			f2.setFrame(ii++ % 3);
+			f3.setFrame(ii++ % 1);
+			f4.setFrame(ii++ % 1);
+			f5.setFrame(ii++ % 1);
 		}
 		counter1 = (counter1 + 1) % delay1; // increment counter and reset to 0 when it reaches delay
 	}
@@ -289,7 +298,7 @@ public class DudeModel extends CapsuleObstacle {
 	 * @param width		The object width in physics units
 	 * @param height	The object width in physics units
 	 */
-	public DudeModel(JsonValue data, float width, float height) {
+	public DudeModel(PlayerController pc, JsonValue data, float width, float height) {
 		// The shrink factors fit the image to a tigher hitbox
 		super(	data.get("pos").getFloat(0),
 				data.get("pos").getFloat(1),
@@ -305,12 +314,12 @@ public class DudeModel extends CapsuleObstacle {
 		jump_force = data.getFloat( "jump_force", 0 )*1f;
 		sensorName = "DudeGroundSensor";
 
-		this.playerController = new PlayerController(data);
+		this.playerController = pc;
 		this.data = data;
 		setName("dude");
 	}
 
-	public DudeModel(JsonValue data, float width, float height, float x, float y) {
+	public DudeModel(PlayerController pc, JsonValue data, float width, float height, float x, float y) {
 		// The shrink factors fit the image to a tigher hitbox
 		super(	x,
 				y,
@@ -327,14 +336,14 @@ public class DudeModel extends CapsuleObstacle {
 		jump_force = data.getFloat( "jump_force", 0 )*1f;
 		sensorName = "DudeGroundSensor";
 
-		this.playerController = new PlayerController(data);
+		this.playerController = pc;
 		this.data = data;
 		setName("dude");
 	}
 
 
 
-	public DudeModel(float x, float y){
+	public DudeModel(PlayerController pc, float x, float y){
 		super(x, y, 0.9f, 1.9f);
 		setFriction(0);
 		setFixedRotation(true);
@@ -344,7 +353,7 @@ public class DudeModel extends CapsuleObstacle {
 		jump_force = 9.5f;
 		maxspeed = 5f;
 		sensorName = "DudeGroundSensor";
-		this.playerController = new PlayerController();
+		this.playerController = pc;
 		setName("dude");
 
 	}
@@ -427,12 +436,12 @@ public class DudeModel extends CapsuleObstacle {
 		if(playerController.isGrappling()) {
 			forceCache.set(ropeDir.nor().rotate90(-1).scl(getMovement())).scl(0.5f);
 		}else if(getMovement() != 0){
-			System.out.println("VX: " + getVX());
+			//System.out.println("VX: " + getVX());
 			if(Math.abs(getVX()) < 3.0f){
-				System.out.print(" Speedy!");
+				//System.out.print(" Speedy!");
 				forceCache.set(getMovement() * 10f, 0);
 			}else{
-				System.out.print(" Not Speedy.");
+				//System.out.print(" Not Speedy.");
 				forceCache.set(getMovement() * 1.2f, 0);
 			}
 		}else{
@@ -499,6 +508,9 @@ public class DudeModel extends CapsuleObstacle {
 					filmstrip.setFrame(next);
 					filmstrip_swing.setFrame(next % 3);
 					filmstrip_idle.setFrame(next % 3);
+					filmstrip_jump.setFrame(next % 1);
+					filmstrip_fall.setFrame(next % 1);
+					filmstrip_top.setFrame(next % 1);
 				}
 				counter = (counter + 1) % delay; // increment counter and reset to 0 when it reaches delay
 			}
@@ -575,7 +587,7 @@ public class DudeModel extends CapsuleObstacle {
 
 		}
 		else {
-			canvas.draw(texture, Color.WHITE,origin.x,origin.y,getX()*drawScale.x,getY()*drawScale.y,getAngle(),effect,upside);
+			canvas.draw(texture, Color.WHITE,origin.x,origin.y,getX()*drawScale.x,getY()*drawScale.y,getAngle(),0.5f*effect,0.5f*upside);
 		}
 
 

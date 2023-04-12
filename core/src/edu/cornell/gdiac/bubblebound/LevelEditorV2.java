@@ -4,9 +4,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import edu.cornell.gdiac.bubblebound.obstacle.BoxObstacle;
+import edu.cornell.gdiac.bubblebound.obstacle.Door;
 import edu.cornell.gdiac.bubblebound.obstacle.Lucenglaze;
 import edu.cornell.gdiac.bubblebound.obstacle.WheelObstacle;
 
@@ -15,13 +17,13 @@ import java.util.List;
 
 public class LevelEditorV2 {
 
-    private String jsonName = "lvlB.json";
-    private FileHandle file = Gdx.files.internal(jsonName);
+    private String jsonName;
+//    private FileHandle file = Gdx.files.internal(jsonName);
     private FileHandle file2 = Gdx.files.internal("propertytypes.json");
     private FileHandle file3 = Gdx.files.internal("platform/constants.json");
     private JsonReader jsonReader = new JsonReader();
     private JsonValue constants = jsonReader.parse(file3);
-    public JsonValue jsonValue = jsonReader.parse(file);
+//    public JsonValue jsonValue = jsonReader.parse(file);
     private List<BoxObstacle> boxes = new ArrayList<>();
     private List<Bubble> bubbles = new ArrayList<>();
     private List<Zone> gravityZones = new ArrayList<>();
@@ -29,6 +31,7 @@ public class LevelEditorV2 {
     private List<Enemy> enemies = new ArrayList<>();
     private List<Lucenglaze> glazeList = new ArrayList<>();
     private ArrayList<Integer> glazeRotations = new ArrayList<>();
+    private ArrayList<Door> doors = new ArrayList<>();
     private TextureRegion earthTile;
     private TextureRegion goalTile;
     private TextureRegion one;
@@ -42,13 +45,19 @@ public class LevelEditorV2 {
     private TextureRegion nine;
     private ArrayList<String> textureStrings;
     private ArrayList<TextureRegion> textureObjects;
-    private BoxObstacle goal;
+//    private BoxObstacle goal;
     private List<List<Integer>> tileMap = new ArrayList<>();
     private DudeModel player;
+    private PlayerController playerController;
 
-    public LevelEditorV2() {
+    public LevelEditorV2(PlayerController pc) {
+        jsonName = "lvl1.json";
+        playerController = pc;
+    }
 
-
+    public LevelEditorV2(PlayerController pc, String filename){
+        jsonName =filename;
+        playerController = pc;
     }
 
     public void readTileTextures(ArrayList<TextureRegion> textures) {
@@ -67,7 +76,7 @@ public class LevelEditorV2 {
         int mapWidth = base.getInt("width")*64;
         int mapHeight = base.getInt("height")*64;
 
-        System.out.println("Testing Tile -1");
+        //System.out.println("Testing Tile -1");
 
         JsonValue firstLayers = base.get("layers");
 
@@ -75,7 +84,7 @@ public class LevelEditorV2 {
         for (JsonValue obj : firstLayers) {
             if (obj.getInt("id") == 6) {
                 JsonValue secondLayers = obj.get("layers");
-                System.out.println("Testing");
+                //System.out.println("Testing");
 
                 for (JsonValue obj1 : secondLayers) {
 
@@ -85,19 +94,33 @@ public class LevelEditorV2 {
 
 
                         for (JsonValue goals : go) {
+//                            System.out.println(go.toString());
+                            JsonValue prop = goals.get("properties");
+                            int targetLevel = 1;
+                            Door.SpawnDirection player_spawn_direction = Door.SpawnDirection.RIGHT;
 
+                            for (JsonValue prop1 : prop) {
+                                if (prop1.getString("name").equals("targetLevel")) {
+                                    targetLevel = prop1.getInt("value");
+                                }
+                                if (prop1.getString("name").equals("direction")) {
+                                    player_spawn_direction = (prop1.getString("value") == "right") ? Door.SpawnDirection.RIGHT : Door.SpawnDirection.LEFT;
+                                }
+                            }
 
-                            BoxObstacle wo = new BoxObstacle(
-                                    (goals.getFloat("x")) / 64,
-                                    ((mapHeight - (goals.getFloat("y"))) / 64)+2,
-                                    goals.getFloat("width")/64,
-                                    goals.getFloat("height")/64
-                            );
+//                            BoxObstacle wo = new BoxObstacle(
+//                                    (goals.getFloat("x")) / 64,
+//                                    ((mapHeight - (goals.getFloat("y"))) / 64)+2,
+//                                    goals.getFloat("width")/64,
+//                                    goals.getFloat("height")/64
+//                            );
+                            Vector2 door_loc = new Vector2((goals.getFloat("x"))/64,((mapHeight - (goals.getFloat("y")))/64)+2);
+                            Door d = new Door(door_loc,player_spawn_direction,targetLevel);
 
-
-                            wo.isGoal = true;
-                            System.out.println("GOOOALLL");
-                            goal = wo;
+//                            wo.isGoal = true;
+                            //System.out.println("GOOOALLL");
+//                            goal = wo;
+                            doors.add(d);
                         }
 
                     }
@@ -108,14 +131,14 @@ public class LevelEditorV2 {
 
                         for (JsonValue pl : sp) {
 
-
-                            DudeModel wo = new DudeModel(
+                            DudeModel wo = new DudeModel(playerController,
                                     constants.get("dude"),
                                     pl.getFloat("width")/64,
                                     pl.getFloat("height")/64,
                                     (pl.getFloat("x")) / 64,
                                     ((mapHeight - (pl.getFloat("y")))/ 64)+1
                             );
+
 
                             player = wo;
                         }
@@ -127,13 +150,14 @@ public class LevelEditorV2 {
 
 
                         for (JsonValue goals : sp) {
-
+                            float rotation = goals.getFloat("rotation");
 
                             Spike wo = new Spike(
                                     (goals.getFloat("x")) / 64,
                                     ((mapHeight - (goals.getFloat("y"))) / 64)+1,
                                     goals.getFloat("width")/64,
-                                    goals.getFloat("height")/64
+                                    goals.getFloat("height")/64,
+                                    rotation
                             );
 
 
@@ -250,7 +274,7 @@ public class LevelEditorV2 {
 
                         JsonValue bubbleList = obj1.get("objects");
 
-                        System.out.println("Testing bub");
+                        //System.out.println("Testing bub");
 
                         for (JsonValue bub : bubbleList) {
 
@@ -259,7 +283,7 @@ public class LevelEditorV2 {
                                 if (type.getInt("id") == 4) {
 
 
-                                    System.out.println(type.get("members"));
+                                    //System.out.println(type.get("members"));
 
                                     Vector2 v = new Vector2((bub.getFloat("x")) / 64, ((mapHeight - (bub.getFloat("y"))) / 64)+1);
 
@@ -280,7 +304,7 @@ public class LevelEditorV2 {
 
                     if (obj1.getInt("id") == 1) {
 
-                        System.out.println("Testing 2");
+                        //System.out.println("Testing 2");
 
                         JsonValue tileData1 = obj1.get("data");
 
@@ -444,7 +468,7 @@ public class LevelEditorV2 {
         }
 
 
-        System.out.println("Finished Parsing");
+        //System.out.println("Finished Parsing");
     }
 
 
@@ -459,13 +483,17 @@ public class LevelEditorV2 {
     public List getEnemies() {
         return enemies;
     }
-    public DudeModel getPlayer() {
+    public DudeModel getPlayerAtLocation(Vector2 location, Door.SpawnDirection sd) {
+        player.setPosition(location);
+        player.setFacingRight(sd == Door.SpawnDirection.RIGHT);
+        return player;
+    }
+    public DudeModel getPlayer(Door.SpawnDirection sd){
+        player.setFacingRight(sd == Door.SpawnDirection.RIGHT);
         return player;
     }
 
-    public BoxObstacle getGoal() {
-        return goal;
-    }
+    public ArrayList<Door> getDoors() { return doors;}
 
     public List getSpikes() {
         return spikes;
