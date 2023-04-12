@@ -63,6 +63,6 @@ public class Door{
         return goal;
     }
     public void respawnGoal(){
-        if
+//        if
     }
 }
