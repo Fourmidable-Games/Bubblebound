@@ -498,9 +498,8 @@ public class DudeModel extends CapsuleObstacle {
 	 *
 	 * We use this method to reset cooldowns.
 	 *
-	 * @param dt	Number of seconds since last animation frame
 	 */
-	public void update(float dt) {
+	public void update() {
 		playerController.update();
 		if (animate) {
 			if (filmstrip != null) {
@@ -520,7 +519,7 @@ public class DudeModel extends CapsuleObstacle {
 				filmstrip.setFrame(0);
 			}
 		}
-		super.update(dt);
+//		super.update(dt);
 	}
 	public boolean isInvincible(){
 		return playerController.isInvincible();

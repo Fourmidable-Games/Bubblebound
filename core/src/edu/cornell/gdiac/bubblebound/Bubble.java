@@ -1,4 +1,5 @@
 package edu.cornell.gdiac.bubblebound;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.graphics.*;
 
@@ -84,7 +85,7 @@ public class Bubble extends WheelObstacle {
     protected int counter = 0;
     protected final int delay = 50; // adjust this value to change the delay
 
-    public void update(float dt) {
+    public void update() {
         if (animate) {
             if (filmstrip != null) {
                 if (counter == 0) { // execute setFrame only when counter reaches 0
@@ -102,7 +103,21 @@ public class Bubble extends WheelObstacle {
             pop_timer--;
             if(pop_timer <= 0) popped = true;
         }
-        super.update(dt);
+//        super.update(dt);
+    }
+    public boolean canRopeTo = false;
+
+    public void setCanRopeTo(boolean b){
+        canRopeTo = b;
+    }
+
+    public void outline(GameCanvas canvas){
+        canvas.end();
+        canvas.shape.begin(ShapeRenderer.ShapeType.Filled);
+        canvas.shape.setColor(Color.BLACK);
+        canvas.shape.circle(getX()*drawScale.x,getY()*drawScale.y,getRadius()*drawScale.x*1.15f);
+        canvas.shape.end();
+        canvas.begin();
     }
     @Override
     public void draw(GameCanvas canvas) {
@@ -117,13 +132,17 @@ public class Bubble extends WheelObstacle {
             Color white = new Color(Color.WHITE);
             white.a = alpha;
 
+            if(canRopeTo){
+                outline(canvas);
+            }
             if(grav == 1) {
-                canvas.draw(texture,gold,origin.x,origin.y,getX()*drawScale.x,getY()*drawScale.y,getAngle(), 1.4F*getRadius(), 1.4F*getRadius());
+                canvas.draw(texture,gold,origin.x,origin.y,getX()*drawScale.x,getY()*drawScale.y,getAngle(), 2F*getRadius(), 2F*getRadius());
             }else{
-                canvas.draw(texture,white,origin.x,origin.y,getX()*drawScale.x,getY()*drawScale.y,getAngle(), 1.4F*getRadius(), 1.4F*getRadius());
+                canvas.draw(texture,white,origin.x,origin.y,getX()*drawScale.x,getY()*drawScale.y,getAngle(), 2F*getRadius(), 2F*getRadius());
             }
 
         }
+
     }
 
 
