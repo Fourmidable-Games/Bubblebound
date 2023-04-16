@@ -108,19 +108,13 @@ public class RopeBridge extends ComplexObstacle {
 
 		for (int ii = 0; ii < nLinks; ii++) {
 			float t = ii*(linksize+spacing) + linksize/2.0f;
-			// //System.out.println("Iteration " + ii);
-			// //System.out.println("init pos: " + pos);
 			pos.set(norm);
-			// //System.out.println("norm pos: " + pos);
 			pos.scl(t);
-			// //System.out.println("scale pos: " + pos);
 			pos.add(avatar.getPosition().add(anchor3));
-			// //System.out.println("add pos: " + pos);
 			BoxObstacle plank = new BoxObstacle(pos.x, pos.y, planksize.x, planksize.y);
 			plank.isRope = true;
 			plank.setGravityScale(0);
 			plank.setName("plank"+ii);
-			//plank.setDensity(data.getFloat("density",0));
 			plank.setDensity(1f);
 			bodies.add(plank);
 		}
@@ -152,7 +146,6 @@ public class RopeBridge extends ComplexObstacle {
 		Joint joint;
 		jointDef.bodyA = bodies.get(0).getBody();
 		jointDef.bodyB = avatar;
-		// //System.out.println(bubble);
 		jointDef.localAnchorA.set(anchor2);
 		jointDef.localAnchorB.set(anchor3);
 		jointDef.collideConnected = false;
@@ -195,7 +188,7 @@ public class RopeBridge extends ComplexObstacle {
 			distJointDef.localAnchorB.set(anchor22);
 			distJointDef.collideConnected = false;
 			distJointDef.length = 0.2f;
-			distJointDef.dampingRatio = 2;
+			distJointDef.dampingRatio = 1;
 			joint = world.createJoint(distJointDef);
 			joints.add(joint);
 			//#endregion
@@ -209,7 +202,7 @@ public class RopeBridge extends ComplexObstacle {
 			distJointDef.localAnchorB.set(anchor222);
 			distJointDef.collideConnected = false;
 			distJointDef.length = 0.2f;
-			distJointDef.dampingRatio = 2;
+			distJointDef.dampingRatio = 1;
 			joint = world.createJoint(distJointDef);
 			joints.add(joint);
 			Vector2 anchor113 = new Vector2(0,0);
@@ -220,9 +213,44 @@ public class RopeBridge extends ComplexObstacle {
 			distJointDef.localAnchorB.set(anchor223);
 			distJointDef.collideConnected = false;
 			distJointDef.length = 0.2f;
-			distJointDef.dampingRatio = 2;
+			distJointDef.dampingRatio = 1;
 			joint = world.createJoint(distJointDef);
 			joints.add(joint);
+			Vector2 anchor114 = new Vector2(0,0);
+			Vector2 anchor224 = new Vector2(0, 0);
+			distJointDef.bodyA = bodies.get(ii).getBody();
+			distJointDef.bodyB = bodies.get(ii + 1).getBody();
+			distJointDef.localAnchorA.set(anchor114);
+			distJointDef.localAnchorB.set(anchor224);
+			distJointDef.collideConnected = false;
+			distJointDef.length = 0.2f;
+			distJointDef.dampingRatio = 1;
+			joint = world.createJoint(distJointDef);
+			joints.add(joint);
+			Vector2 anchor115 = new Vector2(0,0);
+			Vector2 anchor225 = new Vector2(0, 0);
+			distJointDef.bodyA = bodies.get(ii).getBody();
+			distJointDef.bodyB = bodies.get(ii + 1).getBody();
+			distJointDef.localAnchorA.set(anchor115);
+			distJointDef.localAnchorB.set(anchor225);
+			distJointDef.collideConnected = false;
+			distJointDef.length = 0.2f;
+			distJointDef.dampingRatio = 1;
+			joint = world.createJoint(distJointDef);
+			joints.add(joint);
+			Vector2 anchor116 = new Vector2(0,0);
+			Vector2 anchor226 = new Vector2(0, 0);
+			distJointDef.bodyA = bodies.get(ii).getBody();
+			distJointDef.bodyB = bodies.get(ii + 1).getBody();
+			distJointDef.localAnchorA.set(anchor116);
+			distJointDef.localAnchorB.set(anchor226);
+			distJointDef.collideConnected = false;
+			distJointDef.length = 0.2f;
+			distJointDef.dampingRatio = 1;
+			joint = world.createJoint(distJointDef);
+			joints.add(joint);
+
+
 		}
 
 		// Create the rightmost anchor

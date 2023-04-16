@@ -67,6 +67,9 @@ public class DudeModel extends CapsuleObstacle {
 
 	private boolean grappleboost;
 
+	private Bubble grappledBubble;
+
+	private float grappledBubbleDist;
 	public int breath = 50;
 
 	public boolean inGas = false;
@@ -175,6 +178,14 @@ public class DudeModel extends CapsuleObstacle {
 	 */
 	public void setShooting(boolean value) {
 		playerController.setShooting(value);
+	}
+
+	public void setGrappledBubble(Bubble bubble){
+		grappledBubble = bubble;
+	}
+
+	public void setGrappledBubbleDist(float value){
+		grappledBubbleDist = value;
 	}
 
 	public void setGrappling(boolean value){
@@ -433,9 +444,17 @@ public class DudeModel extends CapsuleObstacle {
 			faceRight = false;
 		}
 
+		float grappleDistanceBuffer = 0.01f;
 		if(playerController.isGrappling()) {
 			forceCache.set(ropeDir.nor().rotate90((int) -grav).scl(getMovement())).scl(0.5f);
-			forceCache.add(0, grav * 10f);
+			forceCache.add(0,grav*10f);
+			float dif = getPosition().dst(grappledBubble.getPosition()) - grappledBubbleDist;
+			forceCache.add(0,grav*10f*dif);
+			/*if(dif > grappleDistanceBuffer){
+				System.out.println(ropeDir.nor());
+				forceCache.add(ropeDir.nor().scl(grav * ((1+dif)*20f)));
+			}*/
+			forceCache.add(0, grav *2f);
 		}else if(getMovement() != 0){
 			//System.out.println("VX: " + getVX());
 			if(Math.abs(getVX()) < 3.0f){
@@ -443,7 +462,7 @@ public class DudeModel extends CapsuleObstacle {
 				forceCache.set(getMovement() * 10f, 0);
 			}else{
 				//System.out.print(" Not Speedy.");
-				forceCache.set(getMovement() * 1.2f, 0);
+				forceCache.set(getMovement() * 5f, 0);
 			}
 		}else{
 			forceCache.set(-getDamping() * getVX() * 2f, 0);

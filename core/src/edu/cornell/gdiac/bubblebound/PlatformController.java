@@ -113,7 +113,7 @@ public class PlatformController implements ContactListener, Screen {
 
 	private int bubbles_left = 0;
 
-	private int bubble_regen_timer_max = 100;
+	private int bubble_regen_timer_max = 8;
 
 	private  int bubble_regen_timer = bubble_regen_timer_max;
 
@@ -743,13 +743,13 @@ public class PlatformController implements ContactListener, Screen {
 		// 	canvas.draw(null, null, dt, bubbleDrawIter, null);
 		// }
 		Vector2 drawPos = new Vector2(cameraCoords.x,cameraCoords.y);
-		System.out.println(bubble_regen_timer);
+		//System.out.println(bubble_regen_timer);
 		int f =8- (int)(bubble_regen_timer/(bubble_regen_timer_max/8));
 
-		System.out.println("FRAME: " + f);
-		System.out.println("MAX BUB: " +BUBBLE_LIMIT);
+		//System.out.println("FRAME: " + f);
+		//System.out.println("MAX BUB: " +BUBBLE_LIMIT);
 
-		System.out.println("BUBBLES LEFT: " +bubbles_left);
+		//System.out.println("BUBBLES LEFT: " +bubbles_left);
 		bubblecooldownStrip.setFrame(f);
 		Texture t = bubblecooldownStrip.getTexture();
 //		canvas.draw(bubblecooldownStrip,Color.WHITE,drawPos.x + canvas.getWidth()/2 - 400, drawPos.y + canvas.getHeight()/2,t.getWidth()/8*0.25f,t.getHeight()*0.25f);
@@ -933,6 +933,7 @@ public class PlatformController implements ContactListener, Screen {
 		if(!spawned) { //temp prevents people from left and right clicking at same time (which breaks for some reason)
 			if (avatar.isGrappling()) {
 				ropeDir = rope.getFirstLinkRotation();
+				//System.out.println("we updatin' the 00");
 				if (InputController.getInstance().didBubble()) {
 					destructRope = true;
 				}
@@ -964,6 +965,8 @@ public class PlatformController implements ContactListener, Screen {
 			////System.out.println("B4: " + pos)
 			//if(checkCanRope(closest)) { //TODO:: make this good
 			avatar.setGrappling(true);
+			avatar.setGrappledBubble(closest);
+			avatar.setGrappledBubbleDist(avatar.getPosition().dst(closest.getPosition()));
 			rope = createGrapple(closest);
 			shootRopeSoundId = playSound(shootRopeSound, shootRopeSoundId, volume);
 			//}else{
