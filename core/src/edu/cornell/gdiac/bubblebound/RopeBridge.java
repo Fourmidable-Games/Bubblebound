@@ -51,6 +51,8 @@ public class RopeBridge extends ComplexObstacle {
 
 	protected Vector2 anchor3;
 
+	private float grav;
+
 	Body bubble;
 	Body avatar;
 	CapsuleObstacle avatarCapsule;
@@ -113,9 +115,10 @@ public class RopeBridge extends ComplexObstacle {
 			pos.add(avatar.getPosition().add(anchor3));
 			BoxObstacle plank = new BoxObstacle(pos.x, pos.y, planksize.x, planksize.y);
 			plank.isRope = true;
-			plank.setGravityScale(0);
 			plank.setName("plank"+ii);
-			plank.setDensity(1f);
+			plank.setDensity(6f);
+			plank.setMass(2f);
+			plank.setGravityScale(2*avatarCapsule.grav);
 			bodies.add(plank);
 		}
 	}
@@ -163,7 +166,7 @@ public class RopeBridge extends ComplexObstacle {
 			joint = world.createJoint(jointDef);
 			joints.add(joint);
 			//double that shit?
-			jointDef.bodyA = bodies.get(ii).getBody();
+			/*jointDef.bodyA = bodies.get(ii).getBody();
 			jointDef.bodyB = bodies.get(ii + 1).getBody();
 			jointDef.localAnchorA.set(anchor1);
 			jointDef.localAnchorB.set(anchor2);
@@ -176,7 +179,7 @@ public class RopeBridge extends ComplexObstacle {
 			jointDef.localAnchorB.set(anchor2);
 			jointDef.collideConnected = false;
 			joint = world.createJoint(jointDef);
-			joints.add(joint);
+			joints.add(joint);*/
 
 			//#region INSERT CODE HERE
 			// Look at what we did above
@@ -194,7 +197,7 @@ public class RopeBridge extends ComplexObstacle {
 			//#endregion
 
 			//do that shit again?
-			Vector2 anchor112 = new Vector2(0,0);
+			/*Vector2 anchor112 = new Vector2(0,0);
 			Vector2 anchor222 = new Vector2(0, 0);
 			distJointDef.bodyA = bodies.get(ii).getBody();
 			distJointDef.bodyB = bodies.get(ii + 1).getBody();
@@ -248,7 +251,7 @@ public class RopeBridge extends ComplexObstacle {
 			distJointDef.length = 0.2f;
 			distJointDef.dampingRatio = 1;
 			joint = world.createJoint(distJointDef);
-			joints.add(joint);
+			joints.add(joint);*/
 
 
 		}

@@ -857,7 +857,7 @@ public class PlatformController implements ContactListener, Screen {
 					placeLocation = avatar.getPosition().add(-2.5f,avatar.getVY());
 				}else{
 					placeLocation = avatar.getPosition().add(-2.5f,avatar.getVY());
-				}
+				}a
 			}*/
 		}
 
@@ -933,6 +933,7 @@ public class PlatformController implements ContactListener, Screen {
 		if(!spawned) { //temp prevents people from left and right clicking at same time (which breaks for some reason)
 			if (avatar.isGrappling()) {
 				ropeDir = rope.getFirstLinkRotation();
+				ropeDir = closest.getPosition().sub(avatar.getPosition());
 				//System.out.println("we updatin' the 00");
 				if (InputController.getInstance().didBubble()) {
 					destructRope = true;
