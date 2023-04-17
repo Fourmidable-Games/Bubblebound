@@ -492,11 +492,11 @@ public class PlatformController implements ContactListener, Screen {
 			wo.setBodyType(BodyDef.BodyType.DynamicBody);
 			wo.setStatic(true);
 			wo.setDrawScale(scale);
-			wo.activatePhysics(world);
+			//wo.activatePhysics(world);
 			wo.setDensity(1000f);
 			wo.setTexture(bubble);
 			bubbles.add(wo);
-			addQueuedObject(wo);
+			addObject(wo);
 		}
 
 		for (int i = 0; i < enemies.size(); i++) {
@@ -624,7 +624,7 @@ public class PlatformController implements ContactListener, Screen {
 		wo2.setStatic(false);
 		wo2.setBodyType(BodyDef.BodyType.DynamicBody);
 		wo2.setDrawScale(scale);
-		wo2.activatePhysics(world);
+		//wo2.activatePhysics(world);
 		wo2.setDensity(10000f);
 		wo2.setTexture(bubble);
 		bubbles.add(wo2);
