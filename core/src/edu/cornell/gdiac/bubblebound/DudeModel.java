@@ -435,7 +435,9 @@ public class DudeModel extends CapsuleObstacle {
 		}
 
 		if (playerController.isGrappling()) {
-			body.setGravityScale(grav * 2f);
+			body.setGravityScale(grav * 1f);
+		}else{
+			body.setGravityScale(grav);
 		}
 
 		if (getMovement() > 0) {
@@ -446,15 +448,14 @@ public class DudeModel extends CapsuleObstacle {
 
 		float grappleDistanceBuffer = 0.01f;
 		if(playerController.isGrappling()) {
-			forceCache.set(ropeDir.nor().rotate90((int) -grav).scl(getMovement())).scl(0.5f);
-			forceCache.add(0,grav*10f);
+			forceCache.set(ropeDir.nor().rotate90((int) -grav).scl(getMovement())).scl(1f);
+			forceCache.set(getMovement() * 2f, 0);
+
+			/*forceCache.add(0,grav*10f);
 			float dif = getPosition().dst(grappledBubble.getPosition()) - grappledBubbleDist;
 			forceCache.add(0,grav*10f*dif);
-			/*if(dif > grappleDistanceBuffer){
-				System.out.println(ropeDir.nor());
-				forceCache.add(ropeDir.nor().scl(grav * ((1+dif)*20f)));
-			}*/
-			forceCache.add(0, grav *2f);
+			*/
+			//System.out.println("VX: " + getVX());
 		}else if(getMovement() != 0){
 			//System.out.println("VX: " + getVX());
 			if(Math.abs(getVX()) < 3.0f){
