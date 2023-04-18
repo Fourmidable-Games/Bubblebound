@@ -986,9 +986,11 @@ public class PlatformController implements ContactListener, Screen {
 		////System.out.println("AAAAA:" + avatar.getForce());
 		if(avatar.isGrappling()) avatar.setTexture(swingStrip);
 		else if(avatar.isGrounded() && avatar.getMovement() == 0.0) avatar.setTexture(idleStrip);
-		else if (!avatar.isGrounded() && avatar.getVY() > 0f) avatar.setTexture(jumpStrip);
+		else if ((avatar.getGravZone() == 1 && !avatar.isGrounded() && avatar.getVY() > 0f) ||
+				(avatar.getGravZone() == -1 && !avatar.isGrounded() && avatar.getVY() < 0f)) avatar.setTexture(jumpStrip);
 		else if (!avatar.isGrounded() && avatar.getVY() > -0.01f && avatar.getVY() < 0.01f) avatar.setTexture(topStrip);
-		else if (!avatar.isGrounded() && avatar.getVY() < 0f) avatar.setTexture(fallStrip);
+		else if ((avatar.getGravZone() == 1 && !avatar.isGrounded() && avatar.getVY() < 0f) ||
+				(avatar.getGravZone() == -1 && !avatar.isGrounded() && avatar.getVY() > 0f)) avatar.setTexture(fallStrip);
 		else avatar.setTexture(dude);
 		avatar.update();
 
