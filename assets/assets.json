@@ -5,8 +5,59 @@
             "wrapU": "repeated",
             "wrapV": "repeated"
         },
+      "shared:bubble2": "shared/new_bubble.png",
       "shared:ice" : {
         "file":  "shared/icetile.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated",
+      },
+      "shared:ice1" : {
+        "file":  "shared/1.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "shared:ice2" : {
+        "file":  "shared/2.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "shared:ice3" : {
+        "file":  "shared/3.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "shared:ice4" : {
+        "file":  "shared/4.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "shared:ice5" : {
+        "file":  "shared/5.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "shared:ice6" : {
+        "file":  "shared/6.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "shared:ice7" : {
+        "file":  "shared/7.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "shared:ice8" : {
+        "file":  "shared/8.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "shared:ice9" : {
+        "file":  "shared/9.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "shared:ice10" : {
+        "file":  "shared/10.png",
         "wrapU": "repeated",
         "wrapV": "repeated"
       },
@@ -14,7 +65,7 @@
             "file":  "platform/background2.png"
         },
       "background:temp" : {
-        "file": "platform/background.png"
+        "file": "platform/background1temp.png"
       },
       "losing" : {
         "file" : "shared/losing.png"
@@ -55,12 +106,24 @@
         },
         "rocket:crate01": "rocket/crate01.png",
         "rocket:crate02": "rocket/crate02.png",
-        "platform:dude2":  "platform/enemy.gif",
+        "platform:bubblecooldown": "platform/fixedBubbleCooldown.png",
+        "platform:emptyCooldownBubble": "platform/emptyCooldownBubble.png",
+        "platform:fullCooldownBubble": "platform/fullCooldownBubble.png",
+        "platform:dude2":  "platform/enemy.png",
         "platform:dude":  "platform/dude.png",
+        "platform:dude3":  "platform/dude3.png",
+        "platform:dude4":  "platform/dude4.png",
+        "platform:dude5":  "platform/dude5.png",
+        "platform:dude6":  "platform/dude6.png",
+        "platform:dude7":  "platform/dude7.png",
+        "platform:dude8":  "platform/dude8.png",
         "platform:spike":  "platform/spike.png",
+        "platform:token": "platform/token.png",
         "platform:rope":  "platform/ropebridge.png",
         "platform:barrier": "platform/barrier.png",
         "platform:bullet":  "platform/bullet.png",
+        "platform:gas": "platform/poisongas.png",
+        "platform:lucenglaze": "platform/lucenglaze.png",
         "ragdoll:bubble": "ragdoll/bubble.png",
         "ragdoll:torso":  "ragdoll/tux_body.png",
         "ragdoll:head":   "ragdoll/Iris.png",
