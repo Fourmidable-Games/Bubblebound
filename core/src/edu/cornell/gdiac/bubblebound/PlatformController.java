@@ -433,6 +433,8 @@ public class PlatformController implements ContactListener, Screen {
 		enemies = Level2.getEnemies();
 
 
+
+
 		float dwidth  = goalTile.getRegionWidth()/scale.x;
 		float dheight = goalTile.getRegionHeight()/scale.y;
 		// Add level goal
@@ -455,6 +457,20 @@ public class PlatformController implements ContactListener, Screen {
 			}
 		}
 		currLevel = targetLevel;
+		dwidth  = avatarTexture.getRegionWidth()/scale.x;
+		dheight = avatarTexture.getRegionHeight()/scale.y;
+//		avatar.setGrappling(false);
+		avatar = needToInitializeSpawn ? Level2.getPlayer(Door.SpawnDirection.RIGHT) : Level2.getPlayerAtLocation(avatarSpawnLocation, avatarSpawnDirection);
+		if(needToInitializeSpawn) {
+			avatarSpawnLocation = avatar.getPosition();
+			avatarSpawnDirection = Door.SpawnDirection.RIGHT;
+			needToInitializeSpawn = false;
+		}
+		avatar.setGrappling(false);
+		avatar.setDrawScale(scale);
+		avatar.setTexture(avatarTexture);
+		avatar.setName("avatar");
+		addObject(avatar);
 
 		//Vector2 scale2 = new Vector2(16f, 16f);
 		//scale2.x /= 2;
@@ -542,20 +558,7 @@ public class PlatformController implements ContactListener, Screen {
 			addObject(level4Token);
 		}
 
-		dwidth  = avatarTexture.getRegionWidth()/scale.x;
-		dheight = avatarTexture.getRegionHeight()/scale.y;
-//		avatar.setGrappling(false);
-		avatar = needToInitializeSpawn ? Level2.getPlayer(Door.SpawnDirection.RIGHT) : Level2.getPlayerAtLocation(avatarSpawnLocation, avatarSpawnDirection);
-		if(needToInitializeSpawn) {
-			avatarSpawnLocation = avatar.getPosition();
-			avatarSpawnDirection = Door.SpawnDirection.RIGHT;
-			needToInitializeSpawn = false;
-		}
-		avatar.setGrappling(false);
-		avatar.setDrawScale(scale);
-		avatar.setTexture(avatarTexture);
-		avatar.setName("avatar");
-		addObject(avatar);
+
 
 
 		//avatar.setGravityScale(-1);
