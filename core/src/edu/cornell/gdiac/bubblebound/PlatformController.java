@@ -28,6 +28,7 @@ import edu.cornell.gdiac.util.PooledList;
 import edu.cornell.gdiac.util.ScreenListener;
 import edu.cornell.gdiac.util.FilmStrip;
 import org.w3c.dom.Text;
+import sun.security.ec.point.ProjectivePoint;
 
 import java.util.*;
 
@@ -221,6 +222,8 @@ public class PlatformController implements ContactListener, Screen {
 	private List<Bubble> bubbles = new ArrayList<Bubble>();
 
 	private List<Enemy> enemies = new ArrayList<Enemy>();
+
+	private List<ProjEnemy> projenemies = new ArrayList<>();
 	/** Reference to the character avatar */
 	private DudeModel avatar;
 	/** Reference to the goalDoor (for collision detection) */
@@ -533,7 +536,7 @@ public class PlatformController implements ContactListener, Screen {
 
 			createLucenGlaze(glazes.get(i).getX(), glazes.get(i).getY(), glazeRotations.get(i));
 		}
-
+		createProjEnemy(15, 17, 3);
 
 		JsonValue defaults = constants.get("defaults");
 
@@ -560,7 +563,6 @@ public class PlatformController implements ContactListener, Screen {
 
 
 
-
 		//avatar.setGravityScale(-1);
 		//avatar.setDensity(0.2F);
 		// Create rope bridge
@@ -569,6 +571,45 @@ public class PlatformController implements ContactListener, Screen {
 		// //System.out.println("change");
 
 		volume = constants.getFloat("volume", 1.0f);
+	}
+
+	public void createProjEnemy(float x, float y, int rotation){
+		float xx = 0;
+		float yy = 0;
+		int w = 10;
+		int h = 10;
+		float offset = (h / 2f) - 0.5f;
+		switch (rotation){
+			case 0:
+				yy = offset;
+				break;
+			case 1:
+				xx = offset;
+				break;
+			case 2:
+				yy = -offset;
+				break;
+			case 3:
+				xx = -offset;
+				break;
+		}
+		h = (rotation % 2 == 0) ? h : w;
+		w = (rotation % 2 == 0) ? w : h;
+		ProjEnemySensor pes = new ProjEnemySensor(x + xx, y + yy, w, h, rotation);
+		pes.setPE(createPE(x, y, rotation));
+		pes.setDrawScale(scale);
+		addObject(pes);
+
+	}
+
+	public ProjEnemy createPE(float x, float y, int rotation){
+		ProjEnemy pe = new ProjEnemy(x, y, rotation);
+		pe.setDrawScale(scale);
+		pe.setTexture(lucenTexture);
+		addObject(pe);
+		projenemies.add(pe);
+		System.out.println("pe pos" + pe.getPosition());
+		return pe;
 	}
 
 	public void createPoisonGas(float x, float y, boolean fade){
@@ -796,6 +837,15 @@ public class PlatformController implements ContactListener, Screen {
 			enemy.initialize(enemyStrip);
 			enemy.update(avatar);
 		}
+
+		for(int i = 0; i < projenemies.size(); i++){
+			ProjEnemy pe = projenemies.get(i);
+			if(pe.update()){
+				if(canShoot(pe)) {
+					createBullet(pe);
+				}
+			}
+		}
 	}
 
 	//TODO more efficient
@@ -954,9 +1004,7 @@ public class PlatformController implements ContactListener, Screen {
 
 		////System.out.println("After destruct construct stuff");
 		// Add a bullet if we fire
-		if (avatar.isShooting()) {
-			//createBullet();
-		}
+
 		if(destructRope){
 			avatar.setGrappling(false);
 			avatar.setGrappleBoost(true);
@@ -967,15 +1015,15 @@ public class PlatformController implements ContactListener, Screen {
 		////System.out.println("After destruct");
 		if(constructRope){
 			////System.out.println("B4: " + pos)
-			//if(checkCanRope(closest)) { //TODO:: make this good
-			avatar.setGrappling(true);
-			avatar.setGrappledBubble(closest);
-			avatar.setGrappledBubbleDist(avatar.getPosition().dst(closest.getPosition()));
-			rope = createGrapple(closest);
-			shootRopeSoundId = playSound(shootRopeSound, shootRopeSoundId, volume);
-			//}else{
-			//	constructRope = false;
-			//}//
+			if(canShoot(closest)) { //TODO:: make this good
+				avatar.setGrappling(true);
+				avatar.setGrappledBubble(closest);
+				avatar.setGrappledBubbleDist(avatar.getPosition().dst(closest.getPosition()));
+				rope = createGrapple(closest);
+				shootRopeSoundId = playSound(shootRopeSound, shootRopeSoundId, volume);
+			}else{
+				constructRope = false;
+			}//
 			//avatar.setPosition(pos);
 		}
 		////System.out.println("after construct");
@@ -1039,6 +1087,23 @@ public class PlatformController implements ContactListener, Screen {
 		return bridge;
 	}
 
+	public void createBullet(ProjEnemy pe){
+		Vector2 dir = avatar.getPosition().sub(pe.getPosition());
+		float radius = 0.5f;
+		int[][] offsets = {{0,1}, {1,0}, {0,-1}, {-1,0}};
+		int[] offset = offsets[pe.getRotation()];
+		Bullet bullet = new Bullet(pe.getX() + offset[0], pe.getY() + offset[1], radius);
+		bullet.setGravityScale(0f);
+		bullet.setDrawScale(scale);
+		bullet.setTexture(lucenTexture);
+		bullet.setBullet(true);
+		float speed = 15f;
+		bullet.setLinearVelocity(dir.nor().scl(speed));
+		addQueuedObject(bullet);
+
+	}
+
+
 	/**
 	 * Remove a new bullet from the world.
 	 *
@@ -1046,6 +1111,7 @@ public class PlatformController implements ContactListener, Screen {
 	 */
 	public void removeBullet(Obstacle bullet) {
 		bullet.markRemoved(true);
+		System.out.println("hiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
 		plopId = playSound( plopSound, plopId );
 	}
 
@@ -1069,34 +1135,30 @@ public class PlatformController implements ContactListener, Screen {
 
 	public Vector2 collidePos = new Vector2();
 	public Body collidebody = null;
+	public int collidedbodies = 0;
 
 
-	public boolean checkCanRope(Bubble b){
+	public boolean canShoot(Obstacle b) {
 		RayCastCallback rcc = new RayCastCallback() {
 			@Override
 			public float reportRayFixture(Fixture fixture, Vector2 point, Vector2 normal, float fraction) {
 				collidePos = fixture.getBody().getPosition();
 				collidebody = fixture.getBody();
-				return 0;
+				//System.out.println(point);
+				if (avatar != collidebody.getUserData() && !fixture.isSensor()) {
+					System.out.println(((Obstacle)fixture.getBody().getUserData()).getName());
+					collidedbodies++;
+				}
+
+				return 1;
 			}
 		};
-		Vector2 tempPosA = new Vector2();
-		tempPosA.x = avatar.getPosition().x;
-		tempPosA.y = bounds.height - avatar.getPosition().y;
-		Vector2 tempPosB = new Vector2();
-		tempPosB.x = b.getPosition().x;
-		tempPosB.y = bounds.height - b.getPosition().y;
-		world.rayCast(rcc, tempPosA, tempPosB);
-		if(collidebody != null){
-			if(!b.getBody().equals(collidebody)){
-				return false;
-			}
-//			if(collidePos.x == b.getPosition().x && collidePos.y == b.getPosition().y){
-//				return true;
-//			}
-		}
-		return true;
+		collidedbodies = 0;
+		world.rayCast(rcc, b.getPosition(), avatar.getPosition());
+		System.out.println("collidedbodies: " + collidedbodies);
+		return collidedbodies < 1;
 	}
+
 
 
 	/**
@@ -1117,6 +1179,8 @@ public class PlatformController implements ContactListener, Screen {
 
 		Object fd1 = fix1.getUserData();
 		Object fd2 = fix2.getUserData();
+
+
 		try {
 
 			Obstacle bd1 = (Obstacle)body1.getUserData();
@@ -1125,16 +1189,24 @@ public class PlatformController implements ContactListener, Screen {
 			////System.out.println("bd2: " + bd2.getName());
 
 			// Test bullet collision with world
-			if (bd1.getName().equals("bullet") && bd2 != avatar) {
+			if (bd1.getName().equals("bullet") && !bd2.getName().contains("projenemy")) {
 				removeBullet(bd1);
 			}
 
-			if (bd2.getName().equals("bullet") && bd1 != avatar) {
+			if (bd2.getName().equals("bullet") && !bd1.getName().contains("projenemy")) {
 				removeBullet(bd2);
 			}
+			if((bd1 == avatar && bd2.getName().equals("projenemysensor")) || (bd2 == avatar && bd2.getName().equals("projenemysensor"))){
+				if (bd1 == avatar) {
+					((ProjEnemySensor)bd2).activate();
+				} else {
+					((ProjEnemySensor)bd2).activate();
+				}
 
-			if ((bd1 == avatar && (bd2.getName().equals("spike") || bd2.getName().equals("enemy"))) ||
-					(bd2 == avatar && (bd1.getName().equals("spike") || bd2.getName().equals("enemy")))){
+			}
+
+			if ((bd1 == avatar && (bd2.getName().equals("spike") || bd2.getName().equals("enemy") || bd2.getName().equals("bullet"))) ||
+					(bd2 == avatar && (bd1.getName().equals("spike") || bd2.getName().equals("enemy") || bd2.getName().equals("bullet")))){
 
 
 				if(!avatar.isInvincible()) {
@@ -1155,8 +1227,8 @@ public class PlatformController implements ContactListener, Screen {
 			}
 
 			// See if we have landed on the ground.
-			if ((avatar.getSensorName().equals(fd2) && avatar != bd1 && !bd1.getName().equals("bubble") && !bd1.getName().contains("plank") && !bd1.getName().equals("lucenglazesensor") && !bd1.getName().contains("gas")) ||
-					(avatar.getSensorName().equals(fd1) && avatar != bd2 && !bd2.getName().equals("bubble") && !bd2.getName().contains("plank") && !bd2.getName().equals("lucenglazesensor") && !bd2.getName().contains("gas"))) {
+			if ((avatar.getSensorName().equals(fd2) && avatar != bd1 && !bd1.getName().equals("bubble") && !bd1.getName().contains("plank") && !bd1.getName().equals("lucenglazesensor") && !bd1.getName().contains("gas") && !bd1.isSensor()) ||
+					(avatar.getSensorName().equals(fd1) && avatar != bd2 && !bd2.getName().equals("bubble") && !bd2.getName().contains("plank") && !bd2.getName().equals("lucenglazesensor") && !bd2.getName().contains("gas") && !bd2.isSensor())) {
 
 				avatar.setGrounded(true);
 				sensorFixtures.add(avatar == bd1 ? fix2 : fix1); // Could have more than one ground
@@ -1264,8 +1336,17 @@ public class PlatformController implements ContactListener, Screen {
 				if(avatar.gas == 0){
 					avatar.setInGas(false);
 				}
+			}
+
+			if((cd1 == avatar && cd2.getName().equals("projenemysensor")) || (cd2 == avatar && cd2.getName().equals("projenemysensor"))){
+				if (bd1 == avatar) {
+					((ProjEnemySensor)bd2).deactivate();
+				} else {
+					((ProjEnemySensor)bd2).deactivate();
+				}
 
 			}
+
 		}catch(Exception e){
 			e.printStackTrace();
 		}
