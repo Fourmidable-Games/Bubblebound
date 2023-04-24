@@ -659,6 +659,215 @@ public class LevelEditorV2 {
                                     boxes.add(wo);
                                 }
 
+                                else if (tileMap.get(j).get(i) == 42) {
+                                    BoxObstacle wo = new BoxObstacle(
+                                            i,
+                                            (mapHeight/64) - j,
+                                            1,
+                                            1
+                                    );
+
+                                    wo.setTexture(textureObjects.get(25));
+
+                                    boxes.add(wo);
+                                }
+
+                                else if (tileMap.get(j).get(i) == 43) {
+                                    BoxObstacle wo = new BoxObstacle(
+                                            i,
+                                            (mapHeight/64) - j,
+                                            1,
+                                            1
+                                    );
+
+                                    wo.setTexture(textureObjects.get(26));
+
+                                    boxes.add(wo);
+                                }
+
+
+                                else if (tileMap.get(j).get(i) == 45) {
+                                    BoxObstacle wo = new BoxObstacle(
+                                            i,
+                                            (mapHeight/64) - j,
+                                            1,
+                                            1
+                                    );
+
+                                    wo.setTexture(textureObjects.get(27));
+
+                                    boxes.add(wo);
+                                }
+
+                                else if (tileMap.get(j).get(i) == 46) {
+                                    BoxObstacle wo = new BoxObstacle(
+                                            i,
+                                            (mapHeight/64) - j,
+                                            1,
+                                            1
+                                    );
+
+                                    wo.setTexture(textureObjects.get(28));
+
+                                    boxes.add(wo);
+                                }
+
+                                else if (tileMap.get(j).get(i) == 47) {
+                                    BoxObstacle wo = new BoxObstacle(
+                                            i,
+                                            (mapHeight/64) - j,
+                                            1,
+                                            1
+                                    );
+
+                                    wo.setTexture(textureObjects.get(29));
+
+                                    boxes.add(wo);
+                                }
+
+                                else if (tileMap.get(j).get(i) == 48) {
+                                    BoxObstacle wo = new BoxObstacle(
+                                            i,
+                                            (mapHeight/64) - j,
+                                            1,
+                                            1
+                                    );
+
+                                    wo.setTexture(textureObjects.get(30));
+
+                                    boxes.add(wo);
+                                }
+
+                                else if (tileMap.get(j).get(i) == 49) {
+                                    BoxObstacle wo = new BoxObstacle(
+                                            i,
+                                            (mapHeight/64) - j,
+                                            1,
+                                            1
+                                    );
+
+                                    wo.setTexture(textureObjects.get(31));
+
+                                    boxes.add(wo);
+                                }
+
+                                else if (tileMap.get(j).get(i) == 50) {
+                                    BoxObstacle wo = new BoxObstacle(
+                                            i,
+                                            (mapHeight/64) - j,
+                                            1,
+                                            1
+                                    );
+
+                                    wo.setTexture(textureObjects.get(32));
+
+                                    boxes.add(wo);
+                                }
+
+                                else if (tileMap.get(j).get(i) == 51) {
+                                    BoxObstacle wo = new BoxObstacle(
+                                            i,
+                                            (mapHeight/64) - j,
+                                            1,
+                                            1
+                                    );
+
+                                    wo.setTexture(textureObjects.get(33));
+
+                                    boxes.add(wo);
+                                }
+
+                                else if (tileMap.get(j).get(i) == 52) {
+                                    BoxObstacle wo = new BoxObstacle(
+                                            i,
+                                            (mapHeight/64) - j,
+                                            1,
+                                            1
+                                    );
+
+                                    wo.setTexture(textureObjects.get(34));
+
+                                    boxes.add(wo);
+                                }
+
+                                else if (tileMap.get(j).get(i) == 53) {
+                                    BoxObstacle wo = new BoxObstacle(
+                                            i,
+                                            (mapHeight/64) - j,
+                                            1,
+                                            1
+                                    );
+
+                                    wo.setTexture(textureObjects.get(35));
+
+                                    boxes.add(wo);
+                                }
+
+                                else if (tileMap.get(j).get(i) == 54) {
+                                    BoxObstacle wo = new BoxObstacle(
+                                            i,
+                                            (mapHeight/64) - j,
+                                            1,
+                                            1
+                                    );
+
+                                    wo.setTexture(textureObjects.get(36));
+
+                                    boxes.add(wo);
+                                }
+
+                                else if (tileMap.get(j).get(i) == 55) {
+                                    BoxObstacle wo = new BoxObstacle(
+                                            i,
+                                            (mapHeight/64) - j,
+                                            1,
+                                            1
+                                    );
+
+                                    wo.setTexture(textureObjects.get(37));
+
+                                    boxes.add(wo);
+                                }
+
+                                else if (tileMap.get(j).get(i) == 56) {
+                                    BoxObstacle wo = new BoxObstacle(
+                                            i,
+                                            (mapHeight/64) - j,
+                                            1,
+                                            1
+                                    );
+
+                                    wo.setTexture(textureObjects.get(38));
+
+                                    boxes.add(wo);
+                                }
+
+                                else if (tileMap.get(j).get(i) == 57) {
+                                    BoxObstacle wo = new BoxObstacle(
+                                            i,
+                                            (mapHeight/64) - j,
+                                            1,
+                                            1
+                                    );
+
+                                    wo.setTexture(textureObjects.get(39));
+
+                                    boxes.add(wo);
+                                }
+
+                                else if (tileMap.get(j).get(i) == 58) {
+                                    BoxObstacle wo = new BoxObstacle(
+                                            i,
+                                            (mapHeight/64) - j,
+                                            1,
+                                            1
+                                    );
+
+                                    wo.setTexture(textureObjects.get(40));
+
+                                    boxes.add(wo);
+                                }
+
 
 
                             }
