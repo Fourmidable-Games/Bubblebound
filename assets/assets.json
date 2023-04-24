@@ -267,6 +267,7 @@
         "platform:dude6":  "platform/dude6.png",
         "platform:dude7":  "platform/dude7.png",
         "platform:dude8":  "platform/dude8.png",
+        "platform:dudeUp":  "platform/Straight-Up.png",
         "platform:spike":  "platform/spike.png",
         "platform:token": "platform/token.png",
         "platform:rope":  "platform/ropebridge.png",
