@@ -7,12 +7,10 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
-import edu.cornell.gdiac.bubblebound.obstacle.BoxObstacle;
-import edu.cornell.gdiac.bubblebound.obstacle.Door;
-import edu.cornell.gdiac.bubblebound.obstacle.Lucenglaze;
-import edu.cornell.gdiac.bubblebound.obstacle.WheelObstacle;
+import edu.cornell.gdiac.bubblebound.obstacle.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class LevelEditorV2 {
@@ -32,6 +30,8 @@ public class LevelEditorV2 {
     private List<Lucenglaze> glazeList = new ArrayList<>();
     private ArrayList<Integer> glazeRotations = new ArrayList<>();
     private ArrayList<Door> doors = new ArrayList<>();
+    private ArrayList<ProjEnemy> projEnemies = new ArrayList<>();
+    private List<List<Float>> projEnemyData = new ArrayList<>();
     private TextureRegion earthTile;
     private TextureRegion goalTile;
     private TextureRegion one;
@@ -141,6 +141,50 @@ public class LevelEditorV2 {
 
 
                             player = wo;
+                        }
+
+                    }
+
+                    if (obj1.getInt("id") == 15) {
+
+                        JsonValue prop = obj1.get("objects");
+
+                        for (JsonValue ene : prop) {
+
+                            float rotation = 0;
+                            int x_offset= 0;
+                            int y_offset = 0;
+
+
+                            if (ene.getFloat("rotation") == 90) {
+                                rotation = 3;
+                                y_offset = y_offset - 4;
+                            }
+
+                            else if (ene.getFloat("rotation") == -180 || ene.getFloat("rotation") == 180) {
+                                rotation = 2;
+                                x_offset = -1;
+                                y_offset = y_offset + 2;
+                            }
+
+                            else if (ene.getFloat("rotation") == -90) {
+                                rotation = 1;
+                                x_offset = -1;
+                                y_offset = 1 - 6;
+                            }
+
+                            else if (ene.getFloat("rotation") == 0) {
+                                y_offset = 1;
+                            }
+
+                            List<Float> data = new ArrayList<>();
+                            data.add((ene.getFloat("x")/64) + x_offset);
+                            data.add((ene.getFloat("y")/64) + y_offset);
+                            data.add(rotation);
+
+                            projEnemyData.add(data);
+
+
                         }
 
                     }
@@ -922,6 +966,8 @@ public class LevelEditorV2 {
     public List getGlazes() {return glazeList; }
 
     public List getGlazeRotations() {return glazeRotations;}
+
+    public List getProjEnemyData() {return projEnemyData;}
 
 
 

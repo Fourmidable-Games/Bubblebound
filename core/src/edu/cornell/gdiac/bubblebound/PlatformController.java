@@ -524,6 +524,7 @@ public class PlatformController implements ContactListener, Screen {
 		List<Spike> spikes = Level2.getSpikes();
 		List<Lucenglaze> glazes = Level2.getGlazes();
 		List<Integer> glazeRotations = Level2.getGlazeRotations();
+		List<List<Float>> projEnemyData = Level2.getProjEnemyData();
 		doors = Level2.getDoors();
 		enemies = Level2.getEnemies();
 
@@ -628,7 +629,14 @@ public class PlatformController implements ContactListener, Screen {
 
 			createLucenGlaze(glazes.get(i).getX(), glazes.get(i).getY(), glazeRotations.get(i));
 		}
-		createProjEnemy(15, 17, 3);
+
+		for (int i = 0; i < projEnemyData.size(); i++) {
+			System.out.println("creating ProjEnemy");
+			createProjEnemy(projEnemyData.get(i).get(0),projEnemyData.get(i).get(1), Math.round(projEnemyData.get(i).get(2)));
+		}
+
+
+//		createProjEnemy(15, 17, 3);
 
 		JsonValue defaults = constants.get("defaults");
 
