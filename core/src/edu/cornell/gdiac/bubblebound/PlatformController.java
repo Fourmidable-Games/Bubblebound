@@ -152,6 +152,20 @@ public class PlatformController implements ContactListener, Screen {
 	protected TextureRegion tileIceEight;
 	protected TextureRegion tileIceNine;
 	protected TextureRegion tileIceTen;
+	protected TextureRegion tileIce11;
+	protected TextureRegion tileIce12;
+	protected TextureRegion tileIce13;
+	protected TextureRegion tileIce14;
+	protected TextureRegion tileIce15;
+	protected TextureRegion tileIce16;
+	protected TextureRegion tileIce17;
+	protected TextureRegion tileIce18;
+	protected TextureRegion tileIce19;
+	protected TextureRegion tileIce20;
+	protected TextureRegion tileIce21;
+	protected TextureRegion tileIce22;
+	protected TextureRegion tileIce23;
+	protected TextureRegion tileIce24;
 
 	/** Exit code for quitting the game */
 	public static final int EXIT_QUIT = 0;
@@ -341,6 +355,20 @@ public class PlatformController implements ContactListener, Screen {
 		tileIceEight = new TextureRegion(directory.getEntry("shared:ice8", Texture.class));
 		tileIceNine = new TextureRegion(directory.getEntry("shared:ice9", Texture.class));
 		tileIceTen = new TextureRegion(directory.getEntry("shared:ice10", Texture.class));
+		tileIce11 = new TextureRegion(directory.getEntry("shared:ice11", Texture.class));
+		tileIce12 = new TextureRegion(directory.getEntry("shared:ice12", Texture.class));
+		tileIce13 = new TextureRegion(directory.getEntry("shared:ice13", Texture.class));
+		tileIce14 = new TextureRegion(directory.getEntry("shared:ice14", Texture.class));
+		tileIce15 = new TextureRegion(directory.getEntry("shared:ice15", Texture.class));
+		tileIce16 = new TextureRegion(directory.getEntry("shared:ice16", Texture.class));
+		tileIce17 = new TextureRegion(directory.getEntry("shared:ice17", Texture.class));
+		tileIce18 = new TextureRegion(directory.getEntry("shared:ice18", Texture.class));
+		tileIce19 = new TextureRegion(directory.getEntry("shared:ice19", Texture.class));
+		tileIce20 = new TextureRegion(directory.getEntry("shared:ice20", Texture.class));
+		tileIce21 = new TextureRegion(directory.getEntry("shared:ice21", Texture.class));
+		tileIce22 = new TextureRegion(directory.getEntry("shared:ice22", Texture.class));
+		tileIce23 = new TextureRegion(directory.getEntry("shared:ice23", Texture.class));
+		tileIce24 = new TextureRegion(directory.getEntry("shared:ice24", Texture.class));
 
 		assetsLoaded = true;
 	}
@@ -357,6 +385,20 @@ public class PlatformController implements ContactListener, Screen {
 		textures.add(tileIceNine);
 		textures.add(tileIceTen);
 		textures.add(earthTile);
+		textures.add(tileIce11);
+		textures.add(tileIce12);
+		textures.add(tileIce13);
+		textures.add(tileIce14);
+		textures.add(tileIce15);
+		textures.add(tileIce16);
+		textures.add(tileIce17);
+		textures.add(tileIce18);
+		textures.add(tileIce19);
+		textures.add(tileIce20);
+		textures.add(tileIce21);
+		textures.add(tileIce22);
+		textures.add(tileIce23);
+		textures.add(tileIce24);
 		return textures;
 	}
 

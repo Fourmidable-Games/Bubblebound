@@ -61,6 +61,76 @@
         "wrapU": "repeated",
         "wrapV": "repeated"
       },
+      "shared:ice11" : {
+        "file":  "shared/11.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "shared:ice12" : {
+        "file":  "shared/12.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "shared:ice13" : {
+        "file":  "shared/13.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "shared:ice14" : {
+        "file":  "shared/14.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "shared:ice15" : {
+        "file":  "shared/15.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "shared:ice16" : {
+        "file":  "shared/16.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "shared:ice17" : {
+        "file":  "shared/17.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "shared:ice18" : {
+        "file":  "shared/18.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "shared:ice19" : {
+        "file":  "shared/19.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "shared:ice20" : {
+        "file":  "shared/20.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "shared:ice21" : {
+        "file":  "shared/21.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "shared:ice22" : {
+        "file":  "shared/22.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "shared:ice23" : {
+        "file":  "shared/23.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "shared:ice24" : {
+        "file":  "shared/24.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
         "background:underground" : {
             "file":  "platform/background2.png"
         },
