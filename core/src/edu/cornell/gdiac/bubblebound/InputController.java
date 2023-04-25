@@ -50,6 +50,12 @@ public class InputController {
 	// Fields to manage buttons
 	/** Whether the reset button was pressed. */
 	private boolean resetPressed;
+
+	private boolean doorPressed;
+	private boolean doorPrevious;
+	private boolean healthRestorePressed;
+
+	private boolean healthRestorePrevious;
 	private boolean resetPrevious;
 	/** Whether the button to advanced worlds was pressed. */
 	private boolean nextPressed;
@@ -184,6 +190,9 @@ public class InputController {
 	public boolean didReset() {
 		return resetPressed && !resetPrevious;
 	}
+	public boolean didDoor() {return doorPressed && !doorPrevious;}
+
+	public boolean didHealthRestore(){return healthRestorePressed && !healthRestorePrevious;}
 
 	/**
 	 * Returns true if the player wants to go to the next level.
@@ -267,6 +276,8 @@ public class InputController {
 		primePrevious  = primePressed;
 		secondPrevious = secondPressed;
 		resetPrevious  = resetPressed;
+		doorPrevious = doorPressed;
+		healthRestorePrevious = healthRestorePressed;
 		debugPrevious  = debugPressed;
 		exitPrevious = exitPressed;
 		bubblePrevious = bubblePressed;
@@ -297,6 +308,8 @@ public class InputController {
 	 */
 	private void readGamepad(Rectangle bounds, Vector2 scale) {
 		resetPressed = xbox.getStart();
+		doorPressed = xbox.getDPadLeft();
+		healthRestorePressed = xbox.getDPadUp();
 		exitPressed  = xbox.getBack();
 		bubblePressed = xbox.getB();
 		nextPressed  = xbox.getRBumper();
@@ -324,6 +337,10 @@ public class InputController {
 		clampPosition(bounds);
 	}
 
+	public void clearDoor(){
+		doorPressed = false;
+	}
+
 	/**
 	 * Reads input from the keyboard.
 	 *
@@ -336,6 +353,8 @@ public class InputController {
 	private void readKeyboard(Rectangle bounds, Vector2 scale, boolean secondary) {
 		// Give priority to gamepad results
 		resetPressed = (secondary && resetPressed) || (Gdx.input.isKeyPressed(Input.Keys.R));
+		doorPressed = (secondary && doorPressed) || (Gdx.input.isKeyPressed(Input.Keys.E));
+		healthRestorePressed = (secondary && healthRestorePressed) || (Gdx.input.isKeyPressed(Input.Keys.Q));
 		debugPressed = (secondary && debugPressed) || (Gdx.input.isKeyPressed(Input.Keys.L));
 		primePressed = (secondary && primePressed) || (Gdx.input.isKeyPressed(Input.Keys.UP) || (Gdx.input.isKeyPressed(Input.Keys.W)));
 		secondPressed = (secondary && secondPressed) || (Gdx.input.isKeyPressed(Input.Keys.SPACE));
@@ -350,6 +369,10 @@ public class InputController {
 			}
 		}
 
+//		if(Gdx.input.isKeyJustPressed(Input.Keys.E)){
+//			doorPressed = true;
+//		}
+
 		if(controlMapping == ControlMapping.KEYBOARD){
 			bubblePressed = (secondary && bubblePressed) || (Gdx.input.isKeyJustPressed(Input.Keys.J));
 		}else{
@@ -360,18 +383,18 @@ public class InputController {
 			finiteBubblesPressed = !finiteBubblesPressed;
 
 			if(finiteBubblesPressed == true){
-				////System.out.println("finitebubbles :(");
+				//////system.out.println("finitebubbles :(");
 			}else{
-				////System.out.println("INFINITE BUBBLES :)");
+				//////system.out.println("INFINITE BUBBLES :)");
 			}
 		}
-		////System.out.println("Finite Bubbles in IC?: "+ finiteBubblesPressed);
+		//////system.out.println("Finite Bubbles in IC?: "+ finiteBubblesPressed);
 		if ((secondary && reloadBubblesOnGroundPressed) || (Gdx.input.isKeyJustPressed(Input.Keys.NUM_4))) {
 			reloadBubblesOnGroundPressed = !reloadBubblesOnGroundPressed;
 			if(reloadBubblesOnGroundPressed == true){
-				//System.out.println("Ready to RELOAD");
+				////system.out.println("Ready to RELOAD");
 			}else{
-				//System.out.println("not reloadin' not ever!");
+				////system.out.println("not reloadin' not ever!");
 			}
 		}
 

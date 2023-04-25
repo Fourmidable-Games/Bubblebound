@@ -230,8 +230,10 @@ public class CapsuleObstacle extends SimpleObstacle {
 	 * @param height	The object width in physics units
 	 */
 	public CapsuleObstacle(float width, float height) {
+
 	    this(0,0,width,height,
 		    (width > height ? Orientation.HORIZONTAL : Orientation.VERTICAL));
+		fixture.filter.groupIndex = -2;
 	}
 
 	/**
@@ -409,7 +411,9 @@ public class CapsuleObstacle extends SimpleObstacle {
 			posCache.y = center.y+center.height;
 			end1.setPosition(posCache);
 			fixture.shape = end1;
+			fixture.filter.groupIndex =-2;
 			cap1 = body.createFixture(fixture);
+
 			cap2 = null;
 			break;
 		case VERTICAL:
@@ -420,6 +424,7 @@ public class CapsuleObstacle extends SimpleObstacle {
 			posCache.y = center.y;
 			end2.setPosition(posCache);
 			fixture.shape = end2;
+			fixture.filter.groupIndex =-2;
 			cap2 = body.createFixture(fixture);
 			break;
 		case BOTTOM:
@@ -427,12 +432,14 @@ public class CapsuleObstacle extends SimpleObstacle {
 			posCache.y = center.y;
 			end2.setPosition(posCache);
 			fixture.shape = end2;
+			fixture.filter.groupIndex =-2;
 			cap2 = body.createFixture(fixture);
 			break;
 		case LEFT:
 			posCache.x = center.x;
 			end1.setPosition(posCache);
 			fixture.shape = end1;
+			fixture.filter.groupIndex =-2;
 			cap1 = body.createFixture(fixture);
 			cap2 = null;		
 			break;
@@ -444,6 +451,7 @@ public class CapsuleObstacle extends SimpleObstacle {
 			posCache.x = center.x+center.width;
 			end2.setPosition(posCache);
 			fixture.shape = end2;
+			fixture.filter.groupIndex =-2;
 			cap2 = body.createFixture(fixture);
 			break;
 		case RIGHT:
@@ -451,6 +459,7 @@ public class CapsuleObstacle extends SimpleObstacle {
 			posCache.x = center.x+center.width;
 			end2.setPosition(posCache);
 			fixture.shape = end2;
+			fixture.filter.groupIndex =-2;
 			cap2 = body.createFixture(fixture);
 			break;
 		}

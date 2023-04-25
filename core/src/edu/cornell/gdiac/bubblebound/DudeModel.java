@@ -151,6 +151,13 @@ public class DudeModel extends CapsuleObstacle {
 		return grav;
 	}
 
+	@Override
+	public void setGrav(float g){
+		//system.out.println("Setting player gravity to: " + g);
+		setGravityScale(g);
+		grav = g;
+	}
+
 	/**
 	 * Returns true if the dude is actively firing.
 	 *
@@ -422,7 +429,6 @@ public class DudeModel extends CapsuleObstacle {
 		sensorFixture2.setUserData(getSensorName());
 
 		setMass(1f);
-		fixture.filter.groupIndex = -2;
 		return true;
 	}
 
@@ -466,9 +472,9 @@ public class DudeModel extends CapsuleObstacle {
 			float dif = getPosition().dst(grappledBubble.getPosition()) - grappledBubbleDist;
 			forceCache.add(0,grav*10f*dif);
 			*/
-			//System.out.println("VX: " + getVX());
+			////system.out.println("VX: " + getVX());
 		}else if(getMovement() != 0){
-			//System.out.println("VX: " + getVX());
+			////system.out.println("VX: " + getVX());
 			if(Math.abs(getVX()) < 3.0f){
 				//System.out.print(" Speedy!");
 				forceCache.set(getMovement() * 10f, 0);
@@ -534,6 +540,11 @@ public class DudeModel extends CapsuleObstacle {
 	 *
 	 */
 	public void update() {
+//		if(isGrappling()){
+//			setMass(1f);
+//		}else{
+//			setMass(1f);
+//		}
 		playerController.update();
 		if (animate) {
 			if (filmstrip != null) {
