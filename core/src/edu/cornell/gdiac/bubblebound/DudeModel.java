@@ -370,6 +370,7 @@ public class DudeModel extends CapsuleObstacle {
 		this.playerController = pc;
 		setName("dude");
 
+
 	}
 
 
@@ -421,6 +422,7 @@ public class DudeModel extends CapsuleObstacle {
 		sensorFixture2.setUserData(getSensorName());
 
 		setMass(1f);
+		fixture.filter.groupIndex = -2;
 		return true;
 	}
 
@@ -452,7 +454,8 @@ public class DudeModel extends CapsuleObstacle {
 		float grappleDistanceBuffer = 0.01f;
 		if(playerController.isGrappling()) {
 			forceCache.set(ropeDir.nor().rotate90((int) -grav).scl(getMovement())).scl(1f);
-			forceCache.set(getMovement() * 2f, 0);
+			float scaler = (ropeDir.len() > 3f) ? 1.3f : 1f;
+			forceCache.set(getMovement() * 2f * scaler, 0);
 
 			/*forceCache.add(0,grav*10f);
 			float dif = getPosition().dst(grappledBubble.getPosition()) - grappledBubbleDist;
@@ -512,6 +515,9 @@ public class DudeModel extends CapsuleObstacle {
 
 	}
 
+	public void restoreHealth(){
+		playerController.restoreHealth();
+	}
 
 	protected int i;
 	protected int counter = 0;
@@ -559,6 +565,10 @@ public class DudeModel extends CapsuleObstacle {
 
 	public void hurt(){
 		playerController.hurt();
+	}
+
+	public void kill(){
+		playerController.kill();
 	}
 
 	public void setInGas(boolean b){

@@ -31,6 +31,8 @@ public class ProjEnemy extends BoxObstacle{
         this.rotation = rotation;
         fixture.filter.groupIndex = -1;
 
+        setSensor(true);
+
     }
 
     public void activate(){

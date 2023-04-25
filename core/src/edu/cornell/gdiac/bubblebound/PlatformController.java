@@ -112,11 +112,11 @@ public class PlatformController implements ContactListener, Screen {
 	/** Physics constants for initialization */
 	private JsonValue constants;
 
-	private int BUBBLE_LIMIT = 0;
+	private int BUBBLE_LIMIT = 2;
 
 	private int bubbles_left = 0;
 
-	private int bubble_regen_timer_max = 8;
+	private int bubble_regen_timer_max = 80;
 
 	private  int bubble_regen_timer = bubble_regen_timer_max;
 
@@ -142,6 +142,7 @@ public class PlatformController implements ContactListener, Screen {
 	protected Texture background2;
 	protected TextureRegion losing;
 	protected TextureRegion spikeTexture;
+	protected TextureRegion spikeTexture2;
 	protected BitmapFont displayFont;
 
 	protected TextureRegion tileIceOne;
@@ -185,6 +186,11 @@ public class PlatformController implements ContactListener, Screen {
 	protected TextureRegion b14;
 	protected TextureRegion b15;
 	protected TextureRegion b16;
+
+	protected TextureRegion heart;
+	protected TextureRegion brokenheart;
+	protected TextureRegion dormantlucen;
+	protected TextureRegion sundropTexture;
 
 	/** Exit code for quitting the game */
 	public static final int EXIT_QUIT = 0;
@@ -250,7 +256,7 @@ public class PlatformController implements ContactListener, Screen {
 	/** Countdown active for winning or losing */
 	private int countdown;
 
-	public ArrayList<TextureRegion> textures = new ArrayList<TextureRegion>();
+	public TextureRegion[] textures = new TextureRegion[28]; //18 for now for ice textures
 
 	private List<Bubble> bubbles = new ArrayList<Bubble>();
 
@@ -338,7 +344,8 @@ public class PlatformController implements ContactListener, Screen {
 		bridgeTexture = new TextureRegion(directory.getEntry("platform:rope",Texture.class));
 		barrierTexture = new TextureRegion(directory.getEntry("platform:barrier",Texture.class));
 		poisonTexture = new TextureRegion(directory.getEntry("platform:gas", Texture.class));
-		lucenTexture = new TextureRegion(directory.getEntry("platform:lucenglaze", Texture.class));
+		lucenTexture = new TextureRegion(directory.getEntry("platform:activatedlucen", Texture.class));
+		dormantlucen = new TextureRegion(directory.getEntry("platform:dormantlucen",Texture.class));
 
 		jumpSound = directory.getEntry( "bubbleboundsfx:jump", Sound.class );
 		fireSound = directory.getEntry( "bubbleboundsfx:ropeshoot", Sound.class );
@@ -356,6 +363,7 @@ public class PlatformController implements ContactListener, Screen {
 		earthTile = new TextureRegion(directory.getEntry( "shared:earth", Texture.class ));
 		iceTile = new TextureRegion(directory.getEntry("shared:ice", Texture.class));
 		spikeTexture = new TextureRegion(directory.getEntry( "platform:spike", Texture.class ));
+		spikeTexture2 = new TextureRegion(directory.getEntry("platform:spike2", Texture.class));
 		goalTile  = new TextureRegion(directory.getEntry( "shared:goal", Texture.class ));
 		background = new TextureRegion(directory.getEntry("background:underground", Texture.class));
 		bubbleText = directory.getEntry( "shared:bubble2", Texture.class );
@@ -366,95 +374,34 @@ public class PlatformController implements ContactListener, Screen {
 		enemyText = directory.getEntry( "platform:dude2", Texture.class );
 		enemyStrip = new FilmStrip(enemyText, 1, 9, 9);
 
-		tileIceOne = new TextureRegion(directory.getEntry("shared:ice1", Texture.class));
-		tileIceTwo = new TextureRegion(directory.getEntry("shared:ice2", Texture.class));
-		tileIceThree = new TextureRegion(directory.getEntry("shared:ice3", Texture.class));
-		tileIceFour = new TextureRegion(directory.getEntry("shared:ice4", Texture.class));
-		tileIceFive = new TextureRegion(directory.getEntry("shared:ice5", Texture.class));
-		tileIceSix = new TextureRegion(directory.getEntry("shared:ice6", Texture.class));
-		tileIceSeven = new TextureRegion(directory.getEntry("shared:ice7", Texture.class));
-		tileIceEight = new TextureRegion(directory.getEntry("shared:ice8", Texture.class));
-		tileIceNine = new TextureRegion(directory.getEntry("shared:ice9", Texture.class));
-		tileIceTen = new TextureRegion(directory.getEntry("shared:ice10", Texture.class));
-		tileIce11 = new TextureRegion(directory.getEntry("shared:ice11", Texture.class));
-		tileIce12 = new TextureRegion(directory.getEntry("shared:ice12", Texture.class));
-		tileIce13 = new TextureRegion(directory.getEntry("shared:ice13", Texture.class));
-		tileIce14 = new TextureRegion(directory.getEntry("shared:ice14", Texture.class));
-		tileIce15 = new TextureRegion(directory.getEntry("shared:ice15", Texture.class));
-		tileIce16 = new TextureRegion(directory.getEntry("shared:ice16", Texture.class));
-		tileIce17 = new TextureRegion(directory.getEntry("shared:ice17", Texture.class));
-		tileIce18 = new TextureRegion(directory.getEntry("shared:ice18", Texture.class));
-		tileIce19 = new TextureRegion(directory.getEntry("shared:ice19", Texture.class));
-		tileIce20 = new TextureRegion(directory.getEntry("shared:ice20", Texture.class));
-		tileIce21 = new TextureRegion(directory.getEntry("shared:ice21", Texture.class));
-		tileIce22 = new TextureRegion(directory.getEntry("shared:ice22", Texture.class));
-		tileIce23 = new TextureRegion(directory.getEntry("shared:ice23", Texture.class));
-		tileIce24 = new TextureRegion(directory.getEntry("shared:ice24", Texture.class));
 
-		b1 = new TextureRegion(directory.getEntry("shared:sky1", Texture.class));
-		b2 = new TextureRegion(directory.getEntry("shared:sky2", Texture.class));
-		b3 = new TextureRegion(directory.getEntry("shared:sky3", Texture.class));
-		b4 = new TextureRegion(directory.getEntry("shared:sky4", Texture.class));
-		b5 = new TextureRegion(directory.getEntry("shared:sky5", Texture.class));
-		b6 = new TextureRegion(directory.getEntry("shared:sky6", Texture.class));
-		b7 = new TextureRegion(directory.getEntry("shared:sky7", Texture.class));
-		b8 = new TextureRegion(directory.getEntry("shared:sky8", Texture.class));
-		b9 = new TextureRegion(directory.getEntry("shared:sky9", Texture.class));
-		b10 = new TextureRegion(directory.getEntry("shared:sky10", Texture.class));
-		b11 = new TextureRegion(directory.getEntry("shared:sky11", Texture.class));
-		b12 = new TextureRegion(directory.getEntry("shared:sky12", Texture.class));
-		b13 = new TextureRegion(directory.getEntry("shared:sky13", Texture.class));
-		b14 = new TextureRegion(directory.getEntry("shared:sky14", Texture.class));
-		b15 = new TextureRegion(directory.getEntry("shared:sky15", Texture.class));
-		b16 = new TextureRegion(directory.getEntry("shared:sky16", Texture.class));
+//		tileIceOne = new TextureRegion(directory.getEntry("shared:ice1", Texture.class));
+//		tileIceTwo = new TextureRegion(directory.getEntry("shared:ice2", Texture.class));
+//		tileIceThree = new TextureRegion(directory.getEntry("shared:ice3", Texture.class));
+//		tileIceFour = new TextureRegion(directory.getEntry("shared:ice4", Texture.class));
+//		tileIceFive = new TextureRegion(directory.getEntry("shared:ice5", Texture.class));
+//		tileIceSix = new TextureRegion(directory.getEntry("shared:ice6", Texture.class));
+//		tileIceSeven = new TextureRegion(directory.getEntry("shared:ice7", Texture.class));
+//		tileIceEight = new TextureRegion(directory.getEntry("shared:ice8", Texture.class));
+//		tileIceNine = new TextureRegion(directory.getEntry("shared:ice9", Texture.class));
+//		tileIceTen = new TextureRegion(directory.getEntry("shared:ice10", Texture.class));
+		for(int i = 1; i <= 18; i++){ //load in ice tiles
+			textures[i-1] = new TextureRegion(directory.getEntry("platform:ice" + i, Texture.class));
+		}
+		for(int i = 1; i <= 10; i++){
+			textures[17 + i] = new TextureRegion(directory.getEntry("platform:sky" + i, Texture.class));
+		}
+
+
+		heart = new TextureRegion(directory.getEntry("platform:heart", Texture.class));
+		brokenheart = new TextureRegion(directory.getEntry("platform:brokenheart",Texture.class));
+		sundropTexture = new TextureRegion(directory.getEntry("platform:sundrop",Texture.class));
+
 
 		assetsLoaded = true;
 	}
 
-	public List<TextureRegion> loadTexturesIntoLevelEditor() {
-		textures.add(tileIceOne);
-		textures.add(tileIceTwo);
-		textures.add(tileIceThree);
-		textures.add(tileIceFour);
-		textures.add(tileIceFive);
-		textures.add(tileIceSix);
-		textures.add(tileIceSeven);
-		textures.add(tileIceEight);
-		textures.add(tileIceNine);
-		textures.add(tileIceTen);
-		textures.add(earthTile);
-		textures.add(tileIce11);
-		textures.add(tileIce12);
-		textures.add(tileIce13);
-		textures.add(tileIce14);
-		textures.add(tileIce15);
-		textures.add(tileIce16);
-		textures.add(tileIce17);
-		textures.add(tileIce18);
-		textures.add(tileIce19);
-		textures.add(tileIce20);
-		textures.add(tileIce21);
-		textures.add(tileIce22);
-		textures.add(tileIce23);
-		textures.add(tileIce24);
-		textures.add(b1);
-		textures.add(b2);
-		textures.add(b3);
-		textures.add(b4);
-		textures.add(b5);
-		textures.add(b6);
-		textures.add(b7);
-		textures.add(b8);
-		textures.add(b9);
-		textures.add(b10);
-		textures.add(b11);
-		textures.add(b12);
-		textures.add(b13);
-		textures.add(b14);
-		textures.add(b15);
-		textures.add(b16);
-		return textures;
-	}
+
 
 	/**
 	 * Resets the status of the game so that we can play again.
@@ -519,7 +466,6 @@ public class PlatformController implements ContactListener, Screen {
 		setSounds();
 
 		LevelEditorV2 Level2 = new LevelEditorV2(playerController,jsonPath);
-		loadTexturesIntoLevelEditor();
 		Level2.readTileTextures(textures);
 		Level2.readJson();
 		List<BoxObstacle> BoxList = Level2.getBoxes();
@@ -556,6 +502,12 @@ public class PlatformController implements ContactListener, Screen {
 				System.out.println(avatarSpawnDirection);
 			}
 		}
+		for (int i = 0; i < glazes.size(); i++) {
+			System.out.println("Creating lucenglaze #: " + i);
+
+			createLucenGlaze(glazes.get(i).getX(), glazes.get(i).getY(), glazeRotations.get(i));
+		}
+
 		currLevel = targetLevel;
 		dwidth  = avatarTexture.getRegionWidth()/scale.x;
 		dheight = avatarTexture.getRegionHeight()/scale.y;
@@ -569,6 +521,7 @@ public class PlatformController implements ContactListener, Screen {
 		avatar.setGrappling(false);
 		avatar.setDrawScale(scale);
 		avatar.setTexture(avatarTexture);
+		avatar.restoreHealth();
 		avatar.setName("avatar");
 		addObject(avatar);
 
@@ -599,6 +552,7 @@ public class PlatformController implements ContactListener, Screen {
 			spike.setDrawScale(scale);
 			spike.setName("spike");
 			spike.setTexture(spikeTexture);
+			spike.setTexture2(spikeTexture2);
 			addObject(spike);
 		}
 
@@ -625,9 +579,10 @@ public class PlatformController implements ContactListener, Screen {
 		}
 
 
-//		createLucenGlaze(12, 8);
+		createLucenGlaze(14, 8, 0);
 
 		System.out.println("Lucenglaze length: " + glazes.size() + "glaze rotations length: " + glazeRotations.size());
+
 		for (int i = 0; i < glazes.size(); i++) {
 			System.out.println("Creating lucenglaze #: " + i);
 
@@ -640,7 +595,7 @@ public class PlatformController implements ContactListener, Screen {
 		}
 
 
-//		createProjEnemy(15, 17, 3);
+
 
 		JsonValue defaults = constants.get("defaults");
 
@@ -709,7 +664,9 @@ public class PlatformController implements ContactListener, Screen {
 	public ProjEnemy createPE(float x, float y, int rotation){
 		ProjEnemy pe = new ProjEnemy(x, y, rotation);
 		pe.setDrawScale(scale);
-		pe.setTexture(lucenTexture);
+
+		pe.setTexture(sundropTexture);
+
 		addObject(pe);
 		projenemies.add(pe);
 		System.out.println("pe pos" + pe.getPosition());
@@ -756,6 +713,7 @@ public class PlatformController implements ContactListener, Screen {
 		lg.setRotation(rotation);
 		lg.setDrawScale(scale);
 		lg.setTexture(lucenTexture);
+		lg.setTexture2(dormantlucen);
 		addObject(lg);
 		return lg;
 	}
@@ -921,6 +879,22 @@ public class PlatformController implements ContactListener, Screen {
 		}
 
 
+		Vector2 curr_heart_pos = new Vector2(drawPos.x - (canvas.getWidth() / 2) + 30, drawPos.y + (canvas.getHeight() / 2) - 50);
+		for(int i = 0; i < avatar.getMaxHealth(); i++){
+			if(i < avatar.getHealth()){
+				canvas.draw(heart,Color.WHITE, curr_heart_pos.x, curr_heart_pos.y, heart.getRegionWidth()/2f, heart.getRegionHeight()/2f);
+			}else{
+				canvas.draw(brokenheart,Color.WHITE, curr_heart_pos.x, curr_heart_pos.y, heart.getRegionWidth()/2f, heart.getRegionHeight()/2f);
+			}
+			curr_heart_pos.add(40,0);
+//			System.out.println(curr_heart_pos);
+//			System.out.println("aaa" + i);
+		}
+		avatar.getMaxHealth();
+
+		//canvas.shape.rect( cameraCoords.x - (canvas.getWidth() / 2) + 10, cameraCoords.y + (canvas.getHeight() / 2) - 30, 200 * life, 20);
+
+
 
 		// int i = 0;
 
@@ -1023,11 +997,11 @@ public class PlatformController implements ContactListener, Screen {
 		float min = Float.MAX_VALUE;
 		for(int i = 0; i < bubbles.size(); i++){
 			Bubble b = bubbles.get(i);
-			if(b.statc){
-				b.setLinearVelocity(new Vector2(0, 0));
-			}else{
-				b.setLinearVelocity(new Vector2(0, b.grav));
-			}
+//			if(b.statc){
+//				b.setLinearVelocity(new Vector2(0, 0));
+//			}else{
+//				b.setLinearVelocity(new Vector2(0, b.grav));
+//			}
 			float d = b.getPosition().dst(placeLocation);
 			b.setSelected(false);
 			if(d < min){
@@ -1045,16 +1019,18 @@ public class PlatformController implements ContactListener, Screen {
 		boolean spawned = false;
 		if(InputController.getInstance().didTertiary()){
 			////System.out.println("Did Tertiary Action, wait:" + wait);
-			if(wait > 20) {
-				if(!InputController.getInstance().isFiniteBubbles() || bubbles_left > 0){
-					closest = spawnBubble(placeLocation);
+			if(canBubble(placeLocation)) {
+				if (wait > 20) {
+					if (!InputController.getInstance().isFiniteBubbles() || bubbles_left > 0) {
+						closest = spawnBubble(placeLocation);
+					}
+					wait = 0;
+					spawned = true;
 				}
-				wait = 0;
-				spawned = true;
 			}
 		}
 
-		if(avatar.getPosition().dst(closest.getPosition()) < 3.5){
+		if(avatar.getPosition().dst(closest.getPosition()) < 4.5 && canShoot(closest)){
 			closest.canRopeTo = true;
 		}
 
@@ -1095,11 +1071,11 @@ public class PlatformController implements ContactListener, Screen {
 				if (InputController.getInstance().didBubble()) {
 					destructRope = true;
 				}
-				if (InputController.getInstance().didBubble() && avatar.getPosition().dst(closest.getPosition()) < 3.5 && !rope.bubble.equals(closest.getBody())) {
+				if (InputController.getInstance().didBubble() && closest.canRopeTo && !rope.bubble.equals(closest.getBody())) {
 					constructRope = true;
 				}
 			} else {
-				if (InputController.getInstance().didBubble() && avatar.getPosition().dst(closest.getPosition()) < 3.5) {
+				if (InputController.getInstance().didBubble() && closest.canRopeTo) {
 					constructRope = true;
 				}
 			}
@@ -1196,15 +1172,20 @@ public class PlatformController implements ContactListener, Screen {
 
 	public void createBullet(ProjEnemy pe){
 		Vector2 dir = avatar.getPosition().sub(pe.getPosition());
-		float radius = 0.5f;
+
+		float radius = 0.3f;
+
 		int[][] offsets = {{0,1}, {1,0}, {0,-1}, {-1,0}};
 		int[] offset = offsets[pe.getRotation()];
 		Bullet bullet = new Bullet(pe.getX() + offset[0], pe.getY() + offset[1], radius);
 		bullet.setGravityScale(0f);
 		bullet.setDrawScale(scale);
-		bullet.setTexture(lucenTexture);
+
+		bullet.setTexture(bulletTexture);
 		bullet.setBullet(true);
-		float speed = 15f;
+
+		float speed = 5f;
+
 		bullet.setLinearVelocity(dir.nor().scl(speed));
 		addQueuedObject(bullet);
 
@@ -1245,6 +1226,43 @@ public class PlatformController implements ContactListener, Screen {
 	public int collidedbodies = 0;
 
 
+	public boolean canBubble(Vector2 p){
+
+		RayCastCallback rcc = new RayCastCallback() {
+			@Override
+			public float reportRayFixture(Fixture fixture, Vector2 point, Vector2 normal, float fraction) {
+				collidePos = fixture.getBody().getPosition();
+				collidebody = fixture.getBody();
+				//System.out.println(point);
+
+				if (!fixture.isSensor() && !collidebody.isBullet() && collidebody.getUserData() != avatar) {
+					//System.out.println(((Obstacle)fixture.getBody().getUserData()).getName());
+
+					collidedbodies++;
+				}
+
+				return 1;
+			}
+		};
+		collidedbodies = 0;
+
+		Vector2 left = p.cpy();
+		left.x -= 1;
+		left.y -= 1;
+
+		Vector2 right = p.cpy();
+		right.x += 1;
+		right.y += 1;
+
+		world.rayCast(rcc, left, right);
+		left.y += 2;
+		right.y -= 2;
+		world.rayCast(rcc, left, right);
+		System.out.println("collidedbodies: " + collidedbodies);
+		return collidedbodies < 1;
+	}
+
+
 	public boolean canShoot(Obstacle b) {
 		RayCastCallback rcc = new RayCastCallback() {
 			@Override
@@ -1261,6 +1279,7 @@ public class PlatformController implements ContactListener, Screen {
 			}
 		};
 		collidedbodies = 0;
+
 		world.rayCast(rcc, b.getPosition(), avatar.getPosition());
 		System.out.println("collidedbodies: " + collidedbodies);
 		return collidedbodies < 1;
@@ -1296,11 +1315,13 @@ public class PlatformController implements ContactListener, Screen {
 			////System.out.println("bd2: " + bd2.getName());
 
 			// Test bullet collision with world
-			if (bd1.getName().equals("bullet") && !bd2.getName().contains("projenemy")) {
+
+			if (bd1.getName().equals("bullet") && !bd2.getName().contains("projenemy") && !bd2.isSensor()) {
 				removeBullet(bd1);
 			}
 
-			if (bd2.getName().equals("bullet") && !bd1.getName().contains("projenemy")) {
+			if (bd2.getName().equals("bullet") && !bd1.getName().contains("projenemy") && !bd1.isSensor()) {
+
 				removeBullet(bd2);
 			}
 			if((bd1 == avatar && bd2.getName().equals("projenemysensor")) || (bd2 == avatar && bd2.getName().equals("projenemysensor"))){
@@ -1309,7 +1330,29 @@ public class PlatformController implements ContactListener, Screen {
 				} else {
 					((ProjEnemySensor)bd2).activate();
 				}
-
+			}
+			if((bd1 == avatar && bd2.getName().equals("bubble")) || bd2 == avatar && bd1.getName().equals("bubble")){
+				Vector2 temp;
+				if(bd1 == avatar){
+					temp = avatar.getPosition().sub(bd2.getPosition());
+					if(temp.y * bd2.grav >  0.8f){
+						avatar.getBody().applyLinearImpulse(new Vector2(0, 15), avatar.getPosition(), true);
+						Bubble b = (Bubble) bd2;
+						if(!b.statc){
+							b.pop_timer = 8;
+						}
+					}
+				}
+				else{
+					temp = avatar.getPosition().sub(bd1.getPosition());
+					if(temp.y * bd1.grav > 0.8f){
+						avatar.getBody().applyLinearImpulse(new Vector2(0, 15), avatar.getPosition(), true);
+						Bubble b = (Bubble) bd1;
+						if(!b.statc){
+							b.pop_timer = 8;
+						}
+					}
+				}
 			}
 
 			if ((bd1 == avatar && (bd2.getName().equals("spike") || bd2.getName().equals("enemy") || bd2.getName().equals("bullet"))) ||
@@ -1317,19 +1360,20 @@ public class PlatformController implements ContactListener, Screen {
 
 
 				if(!avatar.isInvincible()) {
-					avatar.hurt();
-					life = avatar.getLife();
-					if(bd1 == avatar){ //move it to player controller
-						//TODO look prev comment
+						avatar.hurt();
+						life = avatar.getLife();
+						if (bd1 == avatar) { //move it to player controller
+							//TODO look prev comment
 
-						Vector2 v2 = body1.getPosition().sub(body2.getPosition()).nor().scl(10);
-						body1.applyLinearImpulse(new Vector2(v2.x, v2.y), body1.getPosition(), true);
+							Vector2 v2 = body1.getPosition().sub(body2.getPosition()).nor().scl(10);
+							body1.applyLinearImpulse(new Vector2(v2.x, v2.y), body1.getPosition(), true);
 
-					}else{
-						Vector2 v2 = body2.getPosition().sub(body1.getPosition()).nor().scl(10);
-						body2.applyLinearImpulse(new Vector2(v2.x, v2.y), body2.getPosition(), true);
+						} else {
+							Vector2 v2 = body2.getPosition().sub(body1.getPosition()).nor().scl(10);
+							body2.applyLinearImpulse(new Vector2(v2.x, v2.y), body2.getPosition(), true);
 
-					}
+						}
+
 				}
 			}
 
@@ -1341,8 +1385,8 @@ public class PlatformController implements ContactListener, Screen {
 				sensorFixtures.add(avatar == bd1 ? fix2 : fix1); // Could have more than one ground
 			}
 
-			if ((bd1.getName().equals("bubble") && (bd2.getName().equals("enemy") || bd2.getName().equals("spike"))) ||
-					(bd2.getName().equals("bubble") && (bd1.getName().equals("enemy") || bd1.getName().equals("spike")))){
+			if ((bd1.getName().equals("bubble") && (bd2.getName().equals("enemy") || bd2.getName().equals("spike") || bd2.getName().equals("bullet"))) ||
+					(bd2.getName().equals("bubble") && (bd1.getName().equals("enemy") || bd1.getName().equals("spike") || bd1.getName().equals("bullet")))){
 				if(bd1.getName().equals("bubble")){
 					((Bubble) bd1).pop_timer = 1;
 
@@ -1768,7 +1812,7 @@ public class PlatformController implements ContactListener, Screen {
 	}
 
 	public void updateCamera(float x, float y){
-		Vector2 temp = new Vector2(x + CAMERA_WIDTH*scale.x/10, y + CAMERA_HEIGHT *scale.y/5);
+		Vector2 temp = new Vector2(x + CAMERA_WIDTH*scale.x/10, y + CAMERA_HEIGHT * avatar.grav *scale.y/5);
 		temp.sub(cameraCoords).scl(0.1f, 0.5f); //0.01 is how much it lags in terms of x (smaller means it mvoes slower)
 		boolean movex = true;                           //0.5 is how much it lags in terms of y
 		boolean movey = true;
@@ -1857,17 +1901,17 @@ public class PlatformController implements ContactListener, Screen {
 
 
 		canvas.shape.setProjectionMatrix(canvas.camera.combined);
-		canvas.shape.begin(ShapeRenderer.ShapeType.Filled);
-		canvas.shape.setColor(Color.RED);
-		canvas.shape.rect( cameraCoords.x - (canvas.getWidth() / 2) + 10, cameraCoords.y + (canvas.getHeight() / 2) - 30, 200 * life, 20);
-		canvas.shape.end();
-
-		// Draw life bar label
-		displayFont.setColor(Color.WHITE);
-		displayFont.getData().setScale(0.4f);
-		canvas.begin(); // DO NOT SCALE
-		canvas.drawText("Life", displayFont, cameraCoords.x - (canvas.getWidth() / 2) + 20, cameraCoords.y + (canvas.getHeight() / 2) -  34);
-		canvas.end();
+//		canvas.shape.begin(ShapeRenderer.ShapeType.Filled);
+//		canvas.shape.setColor(Color.RED);
+//		canvas.shape.rect( cameraCoords.x - (canvas.getWidth() / 2) + 10, cameraCoords.y + (canvas.getHeight() / 2) - 30, 200 * life, 20);
+//		canvas.shape.end();
+//
+//		// Draw life bar label
+//		displayFont.setColor(Color.WHITE);
+//		displayFont.getData().setScale(0.4f);
+//		canvas.begin(); // DO NOT SCALE
+//		canvas.drawText("Life", displayFont, cameraCoords.x - (canvas.getWidth() / 2) + 20, cameraCoords.y + (canvas.getHeight() / 2) -  34);
+//		canvas.end();
 
 		// Draw energy bar
 		//TODO: implement energy bar usage
@@ -1878,7 +1922,7 @@ public class PlatformController implements ContactListener, Screen {
 		displayFont.getData().setScale(0.4f);
 		canvas.begin(); // DO NOT SCALE
 		String additional_part = (BUBBLE_LIMIT == 0) ? "None" : "";
-		canvas.drawText("Bubbles: " +additional_part, displayFont, cameraCoords.x + (canvas.getWidth() / 2) - 575, cameraCoords.y + (canvas.getHeight() / 2) - 25);
+		//canvas.drawText("Bubbles: " +additional_part, displayFont, cameraCoords.x + (canvas.getWidth() / 2) - 575, cameraCoords.y + (canvas.getHeight() / 2) - 25);
 		if(assetsLoaded){
 			updateUI();
 		}
