@@ -9,6 +9,7 @@
  * Updated asset version, 2/6/2021
  */
 package edu.cornell.gdiac.bubblebound;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.AtlasTmxMapLoader;
@@ -84,8 +85,10 @@ public class PlatformController implements ContactListener, Screen {
 	private long fireId = -1;
 	/** The weapon pop sound.  We only want to play once. */
 	private Sound plopSound;
+	private int nextLevelID;
 
 	private Sound popSound;
+	private boolean doored = false;
 	private long popID = -1;
 	private long plopId = -1;
 	/** The shoot rope sound.  We only want to play once. */
@@ -215,7 +218,7 @@ public class PlatformController implements ContactListener, Screen {
 	/** The default value of gravity (going down) */
 	protected static final float DEFAULT_GRAVITY = -4.9f;
 
-	private final int MAX_LEVELS = 5;
+	private final int MAX_LEVELS = 3;
 
 	private int currLevel;
 
@@ -409,6 +412,7 @@ public class PlatformController implements ContactListener, Screen {
 	 * This method disposes of the world and creates a new one.
 	 */
 	public void reset(int targetLevelID) {
+		doored = false;
 		if(currLevel == targetLevelID){
 			//reset bubbles
 			bubbles_left = BUBBLE_LIMIT;
@@ -450,7 +454,9 @@ public class PlatformController implements ContactListener, Screen {
 
 		world = new World(gravity,false);
 		world.setContactListener(this);
-
+		if (complete == true){
+			Gdx.app.exit();
+		}
 		setComplete(false);
 		setFailure(false);
 		String nextJsonPath = "lvl" + targetLevelID + ".json";
@@ -849,8 +855,9 @@ public class PlatformController implements ContactListener, Screen {
 		// }
 		Vector2 drawPos = new Vector2(cameraCoords.x,cameraCoords.y);
 		////system.out.println(bubble_regen_timer);
-		int f =8- (int)(bubble_regen_timer/(bubble_regen_timer_max/8));
 
+		int f =8- (int)(bubble_regen_timer/(bubble_regen_timer_max/8));
+		if(f == 8){ f = 7;}
 		////system.out.println("FRAME: " + f);
 		////system.out.println("MAX BUB: " +BUBBLE_LIMIT);
 
@@ -1395,23 +1402,16 @@ public class PlatformController implements ContactListener, Screen {
 			}
 
 			// Check for win condition
-			if ((bd1 == avatar   && bd2.getName().contains("door")) ||
-					(bd1.getName().contains("door") && bd2 == avatar)) {
+			if (((bd1 == avatar   && bd2.getName().contains("door")) ||
+					(bd1.getName().contains("door") && bd2 == avatar))) {
 
+				doored = true;
 				Door door = (bd1 == avatar) ? (Door)bd2: (Door)bd1;
+
 				//system.out.println("COLLISION WITH " + door.getName());
-				int nextLevelID = door.getTargetLevelID();
+				nextLevelID = door.getTargetLevelID();
 				//system.out.println("Next Level: " + nextLevelID);
-				if (nextLevelID > MAX_LEVELS){
-					//system.out.println("COMPLETE becaue " + nextLevelID + ">" + MAX_LEVELS);
-					setComplete(true);
-				}else{
 
-					switchLevel = true;
-					targetLevel = nextLevelID;
-					//system.out.println("Switching (" + switchLevel + ") to level " + targetLevel);
-
-				}
 			}
 
 			if ((bd1 == avatar   && bd2.getName().contains("token")) ||
@@ -1480,6 +1480,11 @@ public class PlatformController implements ContactListener, Screen {
 
 			Obstacle cd1 = (Obstacle) body1.getUserData(); //idk man
 			Obstacle cd2 = (Obstacle) body2.getUserData(); //copied begin contact but bd was already taken so used cd
+			if (((cd1 == avatar   && cd2.getName().contains("door")) ||
+					(cd1.getName().contains("door") && cd2 == avatar))) {
+				doored = false;
+			}
+
 			if ((cd1 == avatar && cd2.getName().equals("gas")) || (cd1.getName().equals("gas") && cd2 == avatar)) {
 				avatar.gas--;
 				assert avatar.gas >= 0;
@@ -1717,7 +1722,20 @@ public class PlatformController implements ContactListener, Screen {
 		if (listener == null) {
 			return true;
 		}
+		System.out.println("DOORED: " + doored);
+//		System.out.println("did door: " +input.didDoor());
+		if (doored && input.didDoor()){
+			if (nextLevelID > MAX_LEVELS){
+				//system.out.println("COMPLETE becaue " + nextLevelID + ">" + MAX_LEVELS);
+				setComplete(true);
+			}else{
 
+				switchLevel = true;
+				targetLevel = nextLevelID;
+				//system.out.println("Switching (" + switchLevel + ") to level " + targetLevel);
+
+			}
+		}
 		// Toggle debug
 		if (input.didDebug()) {
 			debug = !debug;
@@ -1727,6 +1745,10 @@ public class PlatformController implements ContactListener, Screen {
 		if (input.didReset()) {
 			//system.out.println("RESET: r pressed");
 			reset(currLevel);
+		}
+
+		if (input.didHealthRestore()){
+			avatar.restoreHealth();
 		}
 		if (switchLevel){
 			//system.out.println("RESET: Switching Level");

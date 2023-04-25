@@ -116,14 +116,15 @@ public class RopeBridge extends ComplexObstacle {
 			pos.scl(t);
 			pos.add(avatar.getPosition().add(anchor3));
 			BoxObstacle plank = new BoxObstacle(pos.x, pos.y, planksize.x, planksize.y);
+//			plank.setSensor(true);
 			plank.isRope = true;
 			plank.idk();
 
 			plank.setName("plank"+ii);
 			plank.setDensity(6f);
 			plank.setMass(2f);
-			plank.setGravityScale(0);
-//			plank.setGravityScale(2*avatarCapsule.grav);
+//			plank.setGravityScale(0);
+			plank.setGravityScale(2*avatarCapsule.grav);
 			plank.draworder = ii / (nLinks / 3);
 			plank.draworder *= 3;
 			bodies.add(plank);
@@ -164,6 +165,7 @@ public class RopeBridge extends ComplexObstacle {
 		// Link the planks together
 		anchor1.x = linksize / 2;
 		DistanceJointDef distJointDef = new DistanceJointDef();
+		RopeJointDef ropeJointDef = new RopeJointDef();
 		for (int ii = 0; ii < bodies.size-1; ii++) {
 			jointDef.bodyA = bodies.get(ii).getBody();
 			jointDef.bodyB = bodies.get(ii + 1).getBody();
@@ -201,6 +203,17 @@ public class RopeBridge extends ComplexObstacle {
 			distJointDef.dampingRatio = 1;
 			joint = world.createJoint(distJointDef);
 			joints.add(joint);
+
+			ropeJointDef.bodyB = bodies.get(ii + 1).getBody();
+			ropeJointDef.localAnchorA.set(new Vector2());
+			ropeJointDef.localAnchorB.set(new Vector2());
+			ropeJointDef.bodyA = avatar;
+			ropeJointDef.maxLength = 50f;
+			ropeJointDef.collideConnected = false;
+			joint = world.createJoint(ropeJointDef);
+			joints.add(joint);
+
+
 			//#endregion
 
 			//do that shit again?

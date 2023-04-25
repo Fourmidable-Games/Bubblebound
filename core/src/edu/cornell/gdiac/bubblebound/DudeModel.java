@@ -540,11 +540,11 @@ public class DudeModel extends CapsuleObstacle {
 	 *
 	 */
 	public void update() {
-		if(isGrappling()){
-			setMass(3f);
-		}else{
-			setMass(1f);
-		}
+//		if(isGrappling()){
+//			setMass(1f);
+//		}else{
+//			setMass(1f);
+//		}
 		playerController.update();
 		if (animate) {
 			if (filmstrip != null) {

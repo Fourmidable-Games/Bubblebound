@@ -72,7 +72,7 @@ public class Enemy extends CapsuleObstacle { //capsule not working for some reas
             }
         }
 
-        float multiplier = (checkSpeedUp(avatar)) ? 2.5f : 1f;
+        float multiplier = (checkSpeedUp(avatar)) ? 2f : 1f;
         if(grav == -1){
             setGravityScale(-1f);
         }else{
