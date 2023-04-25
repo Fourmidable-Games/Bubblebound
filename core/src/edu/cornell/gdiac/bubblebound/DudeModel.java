@@ -433,6 +433,11 @@ public class DudeModel extends CapsuleObstacle {
 	 *
 	 * This method should be called after the force attribute is set.
 	 */
+
+	public void idk(){
+		fixture.filter.groupIndex = -2;
+	}
+
 	public void applyForce(Vector2 ropeDir) {
 		body.setGravityScale(grav * 1f);
 		if (!isActive()) {
@@ -454,7 +459,7 @@ public class DudeModel extends CapsuleObstacle {
 		float grappleDistanceBuffer = 0.01f;
 		if(playerController.isGrappling()) {
 			forceCache.set(ropeDir.nor().rotate90((int) -grav).scl(getMovement())).scl(1f);
-			float scaler = (ropeDir.len() > 3f) ? 1.3f : 1f;
+			float scaler = (ropeDir.len() > 3f) ? 1.1f : 1f;
 			forceCache.set(getMovement() * 2f * scaler, 0);
 
 			/*forceCache.add(0,grav*10f);

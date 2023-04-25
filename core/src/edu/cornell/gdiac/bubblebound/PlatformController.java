@@ -116,7 +116,7 @@ public class PlatformController implements ContactListener, Screen {
 
 	private int bubbles_left = 0;
 
-	private int bubble_regen_timer_max = 80;
+	private int bubble_regen_timer_max = 40;
 
 	private  int bubble_regen_timer = bubble_regen_timer_max;
 
@@ -578,9 +578,6 @@ public class PlatformController implements ContactListener, Screen {
 //			addQueuedObject(enemy); //idk dif between add queued vs add
 		}
 
-
-		createLucenGlaze(14, 8, 0);
-
 		System.out.println("Lucenglaze length: " + glazes.size() + "glaze rotations length: " + glazeRotations.size());
 
 		for (int i = 0; i < glazes.size(); i++) {
@@ -591,6 +588,7 @@ public class PlatformController implements ContactListener, Screen {
 
 		for (int i = 0; i < projEnemyData.size(); i++) {
 			System.out.println("creating ProjEnemy");
+			System.out.println("PROJ ENEMY LOCATION: " +  projEnemyData.get(i).get(0) + ", " + projEnemyData.get(i).get(1));
 			createProjEnemy(projEnemyData.get(i).get(0),projEnemyData.get(i).get(1), Math.round(projEnemyData.get(i).get(2)));
 		}
 
@@ -626,6 +624,7 @@ public class PlatformController implements ContactListener, Screen {
 		//avatar.setDensity(0.2F);
 		// Create rope bridge
 		setCamera(avatar.getX(), avatar.getY() + 0.5f);
+		avatar.idk();
 		////System.out.println(wo);
 		// //System.out.println("change");
 
@@ -1734,6 +1733,9 @@ public class PlatformController implements ContactListener, Screen {
 			switchLevel = false;
 			reset(targetLevel);
 		}
+		if(failed){
+			reset(currLevel);
+		}
 
 		// Now it is time to maybe switch screens.
 		if (input.didExit()) {
@@ -1812,7 +1814,7 @@ public class PlatformController implements ContactListener, Screen {
 	}
 
 	public void updateCamera(float x, float y){
-		Vector2 temp = new Vector2(x + CAMERA_WIDTH*scale.x/10, y + CAMERA_HEIGHT * avatar.grav *scale.y/5);
+		Vector2 temp = new Vector2(x, y);
 		temp.sub(cameraCoords).scl(0.1f, 0.5f); //0.01 is how much it lags in terms of x (smaller means it mvoes slower)
 		boolean movex = true;                           //0.5 is how much it lags in terms of y
 		boolean movey = true;
@@ -1945,11 +1947,6 @@ public class PlatformController implements ContactListener, Screen {
 			canvas.drawText("VICTORY", displayFont, cameraCoords.x-90, cameraCoords.y);
 			canvas.end();
 		} else if (failed) {
-			displayFont.setColor(Color.RED);
-			canvas.begin(); // DO NOT SCALE
-			canvas.drawText("FAILURE!", displayFont, cameraCoords.x-90, cameraCoords.y);
-			canvas.draw(losing,cameraCoords.x - canvas.getWidth()/2, cameraCoords.y - canvas.getHeight()/2);
-			canvas.end();
 		}
 	}
 

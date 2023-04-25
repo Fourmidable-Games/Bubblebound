@@ -167,6 +167,10 @@ public class BoxObstacle extends SimpleObstacle {
 		shape.set(vertices);
 	}
 
+
+	public void idk(){
+		fixture.filter.groupIndex = -2;
+	}
 	/**
 	 * Create new fixtures for this body, defining the shape
 	 *

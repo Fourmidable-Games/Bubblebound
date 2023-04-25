@@ -178,7 +178,7 @@ public class Spike extends SimpleObstacle {
             if(grav == 1) {
                 canvas.draw(texture, Color.WHITE, origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.x, getAngle(), 0.75f, 0.75f);
             }else{
-                canvas.draw(texture2, Color.WHITE, origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.x, getAngle(), 0.75f, 0.75f);
+                canvas.draw(texture2, Color.WHITE, origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.x, getAngle(), 0.5f, 0.5f);
             }
         }
     }

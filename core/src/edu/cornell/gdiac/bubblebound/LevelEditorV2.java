@@ -161,20 +161,20 @@ public class LevelEditorV2 {
 
 
                             if (ene.getFloat("rotation") == 90) {
-                                rotation = 3;
-                                y_offset = y_offset - 4;
+                                rotation = 1;
+                                y_offset = y_offset;
                             }
 
                             else if (ene.getFloat("rotation") == -180 || ene.getFloat("rotation") == 180) {
                                 rotation = 2;
                                 x_offset = -1;
-                                y_offset = y_offset + 2;
+                                y_offset = y_offset;
                             }
 
                             else if (ene.getFloat("rotation") == -90) {
-                                rotation = 1;
+                                rotation = 3;
                                 x_offset = -1;
-                                y_offset = 1 - 6;
+                                y_offset = 1;
                             }
 
                             else if (ene.getFloat("rotation") == 0) {
@@ -183,7 +183,7 @@ public class LevelEditorV2 {
 
                             List<Float> data = new ArrayList<>();
                             data.add((ene.getFloat("x")/64) + x_offset);
-                            data.add((ene.getFloat("y")/64) + y_offset);
+                            data.add(((mapHeight - ene.getFloat("y"))/64) + y_offset);
                             data.add(rotation);
 
                             projEnemyData.add(data);

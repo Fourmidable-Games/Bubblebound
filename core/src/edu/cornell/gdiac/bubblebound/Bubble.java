@@ -14,8 +14,8 @@ public class Bubble extends WheelObstacle {
         FLOATING
     }
     private static int last_used_id=-1;
-    private final int POP_TIME = 700;
-    private final float bubble_speed = 1.75f;
+    private final int POP_TIME = 900;
+    private final float bubble_speed = 1.45f;
     private BubbleType bubbleType;
    private int id;
     private boolean isGrappled;

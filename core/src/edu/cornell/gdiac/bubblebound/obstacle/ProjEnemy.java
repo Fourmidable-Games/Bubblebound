@@ -13,7 +13,7 @@ public class ProjEnemy extends BoxObstacle{
     //implies 9x9 with flower moving thing at bottom middle for upwards rotation
 
     int shoottimer = 0; //shoot every 100 frames;
-    int shootcooldown = 100;
+    int shootcooldown = 200;
     boolean shooting = false;
     private int rotation;
 

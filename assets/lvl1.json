@@ -4,7 +4,7 @@
  "layers":[
         {
          "id":3,
-         "image":"LevelEditorAssets\/background (1).png",
+         "image":"..\/Downloads\/betaleveleditor-20230425T072402Z-001\/betaleveleditor\/LevelEditorAssets\/background (1).png",
          "name":"Image Layer 1",
          "offsetx":1920,
          "offsety":-2560,
@@ -23,7 +23,6 @@
                  "id":15,
                  "name":"Projectile Enemy",
                  "objects":[],
-
                  "opacity":1,
                  "type":"objectgroup",
                  "visible":true,
@@ -323,7 +322,6 @@
          "y":0
         }],
  "nextlayerid":16,
-
  "nextobjectid":372,
  "orientation":"orthogonal",
  "renderorder":"right-down",
@@ -332,7 +330,7 @@
  "tilesets":[
         {
          "firstgid":1,
-         "source":"tiles.tsx"
+         "source":"..\/Downloads\/betaleveleditor-20230425T072402Z-001\/betaleveleditor\/tiles.tsx"
         }],
  "tilewidth":64,
  "type":"map",

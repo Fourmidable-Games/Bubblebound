@@ -6,8 +6,6 @@
          "id":3,
          "image":"..\/Downloads\/betaleveleditor-20230425T072402Z-001\/betaleveleditor\/LevelEditorAssets\/background (1).png",
          "name":"Image Layer 1",
-         "offsetx":1920,
-         "offsety":-2560,
          "opacity":1,
          "repeatx":true,
          "type":"imagelayer",
@@ -115,7 +113,7 @@
                          "visible":true,
                          "width":64,
                          "x":192,
-                         "y":1280
+                         "y":1472
                         }, 
                         {
                          "gid":7,
@@ -127,19 +125,7 @@
                          "visible":true,
                          "width":64,
                          "x":192,
-                         "y":896
-                        }, 
-                        {
-                         "gid":7,
-                         "height":64,
-                         "id":435,
-                         "name":"",
-                         "rotation":90,
-                         "type":"",
-                         "visible":true,
-                         "width":64,
-                         "x":192,
-                         "y":512
+                         "y":960
                         }, 
                         {
                          "gid":7,
@@ -151,7 +137,7 @@
                          "visible":true,
                          "width":64,
                          "x":704,
-                         "y":768
+                         "y":704
                         }, 
                         {
                          "gid":7,
@@ -163,19 +149,7 @@
                          "visible":true,
                          "width":64,
                          "x":704,
-                         "y":1152
-                        }, 
-                        {
-                         "gid":7,
-                         "height":64,
-                         "id":438,
-                         "name":"",
-                         "rotation":-90,
-                         "type":"",
-                         "visible":true,
-                         "width":64,
-                         "x":704,
-                         "y":1536
+                         "y":1280
                         }],
                  "opacity":1,
                  "type":"objectgroup",
@@ -187,7 +161,18 @@
                  "draworder":"topdown",
                  "id":11,
                  "name":"gravity zones",
-                 "objects":[],
+                 "objects":[
+                        {
+                         "height":2048,
+                         "id":457,
+                         "name":"",
+                         "rotation":0,
+                         "type":"",
+                         "visible":false,
+                         "width":4096,
+                         "x":0,
+                         "y":0
+                        }],
                  "opacity":1,
                  "type":"objectgroup",
                  "visible":true,
@@ -1187,7 +1172,7 @@
          "y":0
         }],
  "nextlayerid":16,
- "nextobjectid":457,
+ "nextobjectid":458,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.10.1",
