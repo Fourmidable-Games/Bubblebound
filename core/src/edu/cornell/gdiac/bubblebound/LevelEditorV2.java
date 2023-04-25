@@ -7,10 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
-import edu.cornell.gdiac.bubblebound.obstacle.BoxObstacle;
-import edu.cornell.gdiac.bubblebound.obstacle.Door;
-import edu.cornell.gdiac.bubblebound.obstacle.Lucenglaze;
-import edu.cornell.gdiac.bubblebound.obstacle.WheelObstacle;
+import edu.cornell.gdiac.bubblebound.obstacle.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -334,14 +331,25 @@ public class LevelEditorV2 {
 
                         for (int i = 0; i < mapWidth/64; i++) {
                             for (int j = 0; j < mapHeight/64; j++) {
+//                                BoxObstacle wo = new BoxObstacle(
+//                                        i,
+//                                        (mapHeight/64) - j,
+//                                        1,
+//                                        1
+//                                );
+//
+//                                wo.setTexture(textureObjects.get(tileMap.get(j).get(i) - 17));
+//                                boxes.add(wo);
+
+
                                 if (tileMap.get(j).get(i) == 18) {
+
                                     BoxObstacle wo = new BoxObstacle(
                                             i,
                                             (mapHeight/64) - j,
                                             1,
                                             1
                                     );
-
                                     wo.setTexture(textureObjects.get(0));
 
                                     boxes.add(wo);
@@ -481,15 +489,15 @@ public class LevelEditorV2 {
     }
 
 
-    public List getBoxes() {
+    public List<BoxObstacle> getBoxes() {
         return boxes;
     }
 
-    public List getBubbles() {
+    public List<Bubble> getBubbles() {
         return bubbles;
     }
 
-    public List getEnemies() {
+    public List<Enemy> getEnemies() {
         return enemies;
     }
     public DudeModel getPlayerAtLocation(Vector2 location, Door.SpawnDirection sd) {
@@ -504,15 +512,15 @@ public class LevelEditorV2 {
 
     public ArrayList<Door> getDoors() { return doors;}
 
-    public List getSpikes() {
+    public List<Spike> getSpikes() {
         return spikes;
     }
 
-    public List getGravityZones() {
+    public List<Zone> getGravityZones() {
         return gravityZones;
     }
 
-    public List getGlazes() {return glazeList; }
+    public List<Lucenglaze> getGlazes() {return glazeList; }
 
     public List getGlazeRotations() {return glazeRotations;}
 

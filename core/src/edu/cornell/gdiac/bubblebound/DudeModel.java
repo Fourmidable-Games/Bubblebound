@@ -367,6 +367,7 @@ public class DudeModel extends CapsuleObstacle {
 		this.playerController = pc;
 		setName("dude");
 
+
 	}
 
 
@@ -418,6 +419,7 @@ public class DudeModel extends CapsuleObstacle {
 		sensorFixture2.setUserData(getSensorName());
 
 		setMass(1f);
+		fixture.filter.groupIndex = -2;
 		return true;
 	}
 
@@ -555,6 +557,10 @@ public class DudeModel extends CapsuleObstacle {
 
 	public void hurt(){
 		playerController.hurt();
+	}
+
+	public void kill(){
+		playerController.kill();
 	}
 
 	public void setInGas(boolean b){

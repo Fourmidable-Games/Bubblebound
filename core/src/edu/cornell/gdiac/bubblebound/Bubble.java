@@ -14,15 +14,17 @@ public class Bubble extends WheelObstacle {
         FLOATING
     }
     private static int last_used_id=-1;
-    private final int POP_TIME = 750;
+    private final int POP_TIME = 500;
     private BubbleType bubbleType;
    private int id;
-
     private boolean isGrappled;
     private boolean animate = true;
+    private int blink = 0; //blinks every blink frames
 
     public int pop_timer;
     /** FilmStrip pointer to the texture region */
+
+    public int hang_timer;
 
     private boolean popped;
     private FilmStrip filmstrip;
@@ -44,7 +46,7 @@ public class Bubble extends WheelObstacle {
         }
         id = last_used_id + 1;
         last_used_id++;
-
+        hang_timer = 50;
     }
     // TODO
     protected int ii = 0;
@@ -84,7 +86,7 @@ public class Bubble extends WheelObstacle {
     protected int i;
     protected int counter = 0;
     protected final int delay = 50; // adjust this value to change the delay
-
+    private int blink_time = 5;
     public void update() {
         if (animate) {
             if (filmstrip != null) {
@@ -101,11 +103,24 @@ public class Bubble extends WheelObstacle {
         }
         if (bubbleType == BubbleType.FLOATING) {
             pop_timer--;
+            if(pop_timer < 150 && pop_timer >= 10){
+                blink = pop_timer / 5;
+                blink_time = blink / 5;
+            }
             if(pop_timer <= 0) popped = true;
+        }
+        hang_timer--;
+        if(statc){
+            setLinearVelocity(new Vector2(0, 0));
+        }
+        if(!statc && hang_timer < 0){
+            setVY(grav);
         }
 //        super.update(dt);
     }
     public boolean canRopeTo = false;
+
+    public boolean bounced;
 
     public void setCanRopeTo(boolean b){
         canRopeTo = b;
@@ -121,26 +136,30 @@ public class Bubble extends WheelObstacle {
     }
     @Override
     public void draw(GameCanvas canvas) {
-        if (texture != null && getD()) {
-            float alpha =1;
-            if(bubbleType == BubbleType.FLOATING) {
-                alpha = 1 - (((float) POP_TIME - (float) pop_timer) / ((float) POP_TIME));
-            }
-            Color gold = new Color(Color.GOLD);
-            gold.a =alpha;
+        if(blink == 0 || pop_timer % blink < blink_time) {
+            if (texture != null && getD()) {
+                float alpha = 1;
+                if (bubbleType == BubbleType.FLOATING) {
+                    alpha = 1 - (((float) POP_TIME - (float) pop_timer) / ((float) POP_TIME));
+                }
+                Color gold = new Color(Color.GOLD);
+                //gold.a = alpha;
 
-            Color white = new Color(Color.WHITE);
-            white.a = alpha;
+                Color white = new Color(Color.WHITE);
+                //white.a = alpha;
 
-            if(canRopeTo){
-                outline(canvas);
-            }
-            if(grav == 1) {
-                canvas.draw(texture,gold,origin.x,origin.y,getX()*drawScale.x,getY()*drawScale.y,getAngle(), 2F*getRadius(), 2F*getRadius());
-            }else{
-                canvas.draw(texture,white,origin.x,origin.y,getX()*drawScale.x,getY()*drawScale.y,getAngle(), 2F*getRadius(), 2F*getRadius());
-            }
+                if (canRopeTo) {
+                    outline(canvas);
+                }
+                if (grav == 1) {
+                    canvas.draw(texture, gold, origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.y, getAngle(), 2F * getRadius(), 2F * getRadius());
+                } else {
+                    canvas.draw(texture, white, origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.y, getAngle(), 2F * getRadius(), 2F * getRadius());
+                }
 
+            }
+        }else{
+            System.out.println("blink");
         }
 
     }

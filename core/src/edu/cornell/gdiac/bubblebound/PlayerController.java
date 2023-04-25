@@ -208,5 +208,8 @@ public class PlayerController {
         health--;
         setInvincible(true);
     }
+    public void kill(){
+        health = 0;
+    }
 
 }

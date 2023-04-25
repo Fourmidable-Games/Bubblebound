@@ -60,6 +60,7 @@ public class LucenglazeSensor extends BoxObstacle{
         lucen.triggered = false;
     }
     public ArrayList<Vector2> update(){
+        lucen.fixture.filter.groupIndex = -2;
         if(resettimer > 0){
             resettimer++;
             if(resettimer > fadeawaytimer + 200){
@@ -73,10 +74,12 @@ public class LucenglazeSensor extends BoxObstacle{
             if(timer == spawndelay){
                 poison.clear();
                 if(horizontal){
+                    poison.add(new Vector2(x,y));
                     poison.add(new Vector2(x,y + 1));
                     poison.add(new Vector2(x, y -1));
                     poison.add(new Vector2(x + (direction * 1), y));
                 }else {
+                    poison.add(new Vector2(x,y));
                     poison.add(new Vector2(x, y + (direction * 1)));
                     poison.add(new Vector2(x + 1, y));
                     poison.add(new Vector2(x - 1, y));

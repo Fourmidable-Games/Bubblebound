@@ -244,14 +244,18 @@ public class BoxObstacle extends SimpleObstacle {
 
 	}
 
+	public int draworder = 0;
+	public int drawtimer = 0;
+
 	@Override
 	public void draw(GameCanvas canvas) {
 
 		if (isRope == true) {
-			canvas.draw(texture, Color.WHITE, origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.x, getAngle(), 1, 1);
-
+			if(drawtimer >= draworder){
+				canvas.draw(texture, Color.WHITE, origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.x, getAngle(), 1, 1);
+			}
+			drawtimer++;
 		}
-
 		else if (isGoal == true) {
 			if(grav == 1){
 				canvas.draw(texture, Color.WHITE, origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.x, getAngle(), 0.5f, 0.5f);

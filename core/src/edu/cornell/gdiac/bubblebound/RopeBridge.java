@@ -119,6 +119,8 @@ public class RopeBridge extends ComplexObstacle {
 			plank.setDensity(6f);
 			plank.setMass(2f);
 			plank.setGravityScale(2*avatarCapsule.grav);
+			plank.draworder = ii / (nLinks / 3);
+			plank.draworder *= 3;
 			bodies.add(plank);
 		}
 	}
