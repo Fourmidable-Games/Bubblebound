@@ -8,9 +8,12 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import edu.cornell.gdiac.bubblebound.obstacle.*;
+
 import org.w3c.dom.Text;
 
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class LevelEditorV2 {
@@ -30,6 +33,8 @@ public class LevelEditorV2 {
     private List<Lucenglaze> glazeList = new ArrayList<>();
     private ArrayList<Integer> glazeRotations = new ArrayList<>();
     private ArrayList<Door> doors = new ArrayList<>();
+    private ArrayList<ProjEnemy> projEnemies = new ArrayList<>();
+    private List<List<Float>> projEnemyData = new ArrayList<>();
     private TextureRegion earthTile;
     private TextureRegion goalTile;
     private TextureRegion one;
@@ -143,7 +148,52 @@ public class LevelEditorV2 {
 
                     }
 
-                    if (obj1.getInt("id") == 9 || obj1.getInt("id") == 59) {
+
+                    if (obj1.getInt("id") == 15) {
+
+                        JsonValue prop = obj1.get("objects");
+
+                        for (JsonValue ene : prop) {
+
+                            float rotation = 0;
+                            int x_offset= 0;
+                            int y_offset = 0;
+
+
+                            if (ene.getFloat("rotation") == 90) {
+                                rotation = 3;
+                                y_offset = y_offset - 4;
+                            }
+
+                            else if (ene.getFloat("rotation") == -180 || ene.getFloat("rotation") == 180) {
+                                rotation = 2;
+                                x_offset = -1;
+                                y_offset = y_offset + 2;
+                            }
+
+                            else if (ene.getFloat("rotation") == -90) {
+                                rotation = 1;
+                                x_offset = -1;
+                                y_offset = 1 - 6;
+                            }
+
+                            else if (ene.getFloat("rotation") == 0) {
+                                y_offset = 1;
+                            }
+
+                            List<Float> data = new ArrayList<>();
+                            data.add((ene.getFloat("x")/64) + x_offset);
+                            data.add((ene.getFloat("y")/64) + y_offset);
+                            data.add(rotation);
+
+                            projEnemyData.add(data);
+
+
+                        }
+
+                    }
+
+                    if (obj1.getInt("id") == 9) {
                         JsonValue sp = obj1.get("objects");
 
 
@@ -358,139 +408,7 @@ public class LevelEditorV2 {
                                 System.out.println(k);
                                 wo.setTexture(textureObjects[k-61]);
                                 boxes.add(wo);
-//                                wo.setTexture(textureObjects.get(tileMap.get(j).get(i) - 17));
-//                                boxes.add(wo);
 
-//
-//                                if (tileMap.get(j).get(i) == 18) {
-//
-//                                    BoxObstacle wo = new BoxObstacle(
-//                                            i,
-//                                            (mapHeight/64) - j,
-//                                            1,
-//                                            1
-//                                    );
-//                                    wo.setTexture(textureObjects.get(0));
-//
-//                                    boxes.add(wo);
-//                                }
-//                                else if (tileMap.get(j).get(i) == 19) {
-//                                    BoxObstacle wo = new BoxObstacle(
-//                                            i,
-//                                            (mapHeight/64) - j,
-//                                            1,
-//                                            1
-//                                    );
-//
-//                                    wo.setTexture(textureObjects.get(1));
-//
-//                                    boxes.add(wo);
-//                                }
-//
-//                                else if (tileMap.get(j).get(i) == 20) {
-//                                    BoxObstacle wo = new BoxObstacle(
-//                                            i,
-//                                            (mapHeight/64) - j,
-//                                            1,
-//                                            1
-//                                    );
-//
-//                                    wo.setTexture(textureObjects.get(2));
-//
-//                                    boxes.add(wo);
-//                                }
-//
-//                                else if (tileMap.get(j).get(i) == 21) {
-//                                    BoxObstacle wo = new BoxObstacle(
-//                                            i,
-//                                            (mapHeight/64) - j,
-//                                            1,
-//                                            1
-//                                    );
-//
-//                                    wo.setTexture(textureObjects.get(3));
-//
-//                                    boxes.add(wo);
-//                                }
-//
-//                                else if (tileMap.get(j).get(i) == 22) {
-//                                    BoxObstacle wo = new BoxObstacle(
-//                                            i,
-//                                            (mapHeight/64) - j,
-//                                            1,
-//                                            1
-//                                    );
-//
-//                                    wo.setTexture(textureObjects.get(4));
-//
-//                                    boxes.add(wo);
-//                                }
-//
-//                                else if (tileMap.get(j).get(i) == 24) {
-//                                    BoxObstacle wo = new BoxObstacle(
-//                                            i,
-//                                            (mapHeight/64) - j,
-//                                            1,
-//                                            1
-//                                    );
-//
-//                                    wo.setTexture(textureObjects.get(6));
-//
-//                                    boxes.add(wo);
-//                                }
-//
-//                                else if (tileMap.get(j).get(i) == 25) {
-//                                    BoxObstacle wo = new BoxObstacle(
-//                                            i,
-//                                            (mapHeight/64) - j,
-//                                            1,
-//                                            1
-//                                    );
-//
-//                                    wo.setTexture(textureObjects.get(7));
-//
-//                                    boxes.add(wo);
-//                                }
-//
-//                                else if (tileMap.get(j).get(i) == 26) {
-//                                    BoxObstacle wo = new BoxObstacle(
-//                                            i,
-//                                            (mapHeight/64) - j,
-//                                            1,
-//                                            1
-//                                    );
-//
-//                                    wo.setTexture(textureObjects.get(8));
-//
-//                                    boxes.add(wo);
-//                                }
-//
-//                                else if (tileMap.get(j).get(i) == 27) {
-//                                    BoxObstacle wo = new BoxObstacle(
-//                                            i,
-//                                            (mapHeight/64) - j,
-//                                            1,
-//                                            1
-//                                    );
-//
-//                                    wo.setTexture(textureObjects.get(9));
-//
-//                                    boxes.add(wo);
-//                                }
-//
-//                                else if (tileMap.get(j).get(i) == 2) {
-//                                    BoxObstacle wo = new BoxObstacle(
-//                                            i,
-//                                            (mapHeight/64) - j,
-//                                            1,
-//                                            1
-//                                    );
-//
-//                                    wo.setTexture(textureObjects.get(10));
-//
-//                                    boxes.add(wo);
-//                                }
-//
                             }
                         }
 
@@ -543,6 +461,8 @@ public class LevelEditorV2 {
     public List<Lucenglaze> getGlazes() {return glazeList; }
 
     public List getGlazeRotations() {return glazeRotations;}
+
+    public List getProjEnemyData() {return projEnemyData;}
 
 
 

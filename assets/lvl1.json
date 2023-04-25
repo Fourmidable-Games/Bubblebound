@@ -23,6 +23,7 @@
                  "id":15,
                  "name":"Projectile Enemy",
                  "objects":[],
+
                  "opacity":1,
                  "type":"objectgroup",
                  "visible":true,
@@ -322,6 +323,7 @@
          "y":0
         }],
  "nextlayerid":16,
+
  "nextobjectid":372,
  "orientation":"orthogonal",
  "renderorder":"right-down",

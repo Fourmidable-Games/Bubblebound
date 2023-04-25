@@ -61,6 +61,156 @@
         "wrapU": "repeated",
         "wrapV": "repeated"
       },
+      "shared:ice11" : {
+        "file":  "shared/11.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "shared:ice12" : {
+        "file":  "shared/12.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "shared:ice13" : {
+        "file":  "shared/13.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "shared:ice14" : {
+        "file":  "shared/14.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "shared:ice15" : {
+        "file":  "shared/15.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "shared:ice16" : {
+        "file":  "shared/16.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "shared:ice17" : {
+        "file":  "shared/17.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "shared:ice18" : {
+        "file":  "shared/18.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "shared:ice19" : {
+        "file":  "shared/19.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "shared:ice20" : {
+        "file":  "shared/20.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "shared:ice21" : {
+        "file":  "shared/21.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "shared:ice22" : {
+        "file":  "shared/22.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "shared:ice23" : {
+        "file":  "shared/23.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "shared:ice24" : {
+        "file":  "shared/24.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "shared:sky1" : {
+        "file":  "shared/b1.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "shared:sky2" : {
+        "file":  "shared/b2.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "shared:sky3" : {
+        "file":  "shared/b3.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "shared:sky4" : {
+        "file":  "shared/b4.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "shared:sky5" : {
+        "file":  "shared/b5.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "shared:sky6" : {
+        "file":  "shared/b6.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "shared:sky7" : {
+        "file":  "shared/b7.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "shared:sky8" : {
+        "file":  "shared/b8.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "shared:sky9" : {
+        "file":  "shared/b9.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "shared:sky10" : {
+        "file":  "shared/b10.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "shared:sky11" : {
+        "file":  "shared/b11.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "shared:sky12" : {
+        "file":  "shared/b12.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "shared:sky13" : {
+        "file":  "shared/b13.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "shared:sky14" : {
+        "file":  "shared/b14.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "shared:sky15" : {
+        "file":  "shared/b15.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "shared:sky16" : {
+        "file":  "shared/b16.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
         "background:underground" : {
             "file":  "platform/background2.png"
         },
@@ -117,6 +267,7 @@
         "platform:dude6":  "platform/dude6.png",
         "platform:dude7":  "platform/dude7.png",
         "platform:dude8":  "platform/dude8.png",
+        "platform:dudeUp":  "platform/Straight-Up.png",
         "platform:spike":  "platform/spike.png",
         "platform:spike2": "platform/spike2.png",
         "platform:token": "platform/token.png",
