@@ -70,7 +70,9 @@ public class RopeBridge extends ComplexObstacle {
 	public RopeBridge(JsonValue data, float lwidth, float lheight, Body b, CapsuleObstacle a) {
 		//super(data.get("pos").getFloat(0),data.get("pos").getFloat(1));
 		super(b.getPosition().x, b.getPosition().y);
-		// //System.out.println(getPosition());
+		fixture.filter.groupIndex = -2;
+
+		// ////system.out.println(getPosition());
 		setName("bridge");
 		this.data = data;
 		bubble = b;
@@ -83,17 +85,17 @@ public class RopeBridge extends ComplexObstacle {
 
 		anchor3 = new Vector2(0,avatarCapsule.getHeight()/2 * avatarCapsule.grav);
 		dimension = new Vector2(data.getFloat("width",0),0.1f);
-		// //System.out.println("Dimension: " + dimension);
+		// ////system.out.println("Dimension: " + dimension);
 		float length = bubble.getPosition().dst(avatar.getPosition().add(anchor3));
 		//	(float)Math.sqrt(Math.pow(bubble.getPosition().x-avatar.getPosition().x,2)+ Math.pow(bubble.getPosition().y-avatar.getPosition().y,2));
 		Vector2 norm = new Vector2(bubble.getPosition().sub(avatar.getPosition().add(anchor3)));
-		// //System.out.println("Norm:" + norm);
+		// ////system.out.println("Norm:" + norm);
 		norm.nor();
-		// //System.out.println("Norm normed:" + norm);
+		// ////system.out.println("Norm normed:" + norm);
 
 		// If too small, only make one plank.;
 		int nLinks = (int)(length / lwidth);
-		//System.out.println();
+		////system.out.println();
 		if (nLinks <= 1) {
 			nLinks = 1;
 			linksize = length;
@@ -116,10 +118,12 @@ public class RopeBridge extends ComplexObstacle {
 			BoxObstacle plank = new BoxObstacle(pos.x, pos.y, planksize.x, planksize.y);
 			plank.isRope = true;
 			plank.idk();
+
 			plank.setName("plank"+ii);
 			plank.setDensity(6f);
 			plank.setMass(2f);
-			plank.setGravityScale(2*avatarCapsule.grav);
+			plank.setGravityScale(0);
+//			plank.setGravityScale(2*avatarCapsule.grav);
 			plank.draworder = ii / (nLinks / 3);
 			plank.draworder *= 3;
 			bodies.add(plank);
@@ -268,7 +272,7 @@ public class RopeBridge extends ComplexObstacle {
 			anchor2.y = 0;
 			jointDef.bodyA = last.getBody();
 			jointDef.bodyB = bubble;
-			// //System.out.println(bubble);
+			// ////system.out.println(bubble);
 			jointDef.localAnchorA.set(anchor1);
 			jointDef.localAnchorB.set(anchor2);
 			jointDef.collideConnected = false;

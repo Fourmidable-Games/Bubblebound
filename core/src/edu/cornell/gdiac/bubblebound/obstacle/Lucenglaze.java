@@ -59,7 +59,7 @@ public class Lucenglaze extends BoxObstacle{
                     angle = 90;
                     break;
                 default:
-                    //System.out.println("uh oh");
+                    ////system.out.println("uh oh");
                     break;
             }
             TextureRegion temp = (triggered) ? texture : dormant;

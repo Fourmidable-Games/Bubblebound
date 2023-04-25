@@ -44,8 +44,8 @@ public class ProjEnemy extends BoxObstacle{
     }
 
     public boolean update(){
-//        System.out.println(shooting);
-//        System.out.println(shoottimer);
+//        //system.out.println(shooting);
+//        //system.out.println(shoottimer);
         if(shooting && shoottimer == 0){
             shoottimer++;
             return true;
@@ -87,7 +87,7 @@ public class ProjEnemy extends BoxObstacle{
                     angle = 90;
                     break;
                 default:
-                    //System.out.println("uh oh");
+                    ////system.out.println("uh oh");
                     break;
             }
 
