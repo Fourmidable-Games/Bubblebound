@@ -579,7 +579,7 @@ public class PlatformController implements ContactListener, Screen {
 		}
 
 
-		createLucenGlaze(14, 8, 0);
+		//createLucenGlaze(14, 8, 0);
 
 		System.out.println("Lucenglaze length: " + glazes.size() + "glaze rotations length: " + glazeRotations.size());
 
@@ -1729,6 +1729,9 @@ public class PlatformController implements ContactListener, Screen {
 			System.out.println("RESET: r pressed");
 			reset(currLevel);
 		}
+		if(failed){
+			reset(currLevel);
+		}
 		if (switchLevel){
 			System.out.println("RESET: Switching Level");
 			switchLevel = false;
@@ -1812,7 +1815,7 @@ public class PlatformController implements ContactListener, Screen {
 	}
 
 	public void updateCamera(float x, float y){
-		Vector2 temp = new Vector2(x + CAMERA_WIDTH*scale.x/10, y + CAMERA_HEIGHT * avatar.grav *scale.y/5);
+		Vector2 temp = new Vector2(x, y);
 		temp.sub(cameraCoords).scl(0.1f, 0.5f); //0.01 is how much it lags in terms of x (smaller means it mvoes slower)
 		boolean movex = true;                           //0.5 is how much it lags in terms of y
 		boolean movey = true;
@@ -1945,11 +1948,11 @@ public class PlatformController implements ContactListener, Screen {
 			canvas.drawText("VICTORY", displayFont, cameraCoords.x-90, cameraCoords.y);
 			canvas.end();
 		} else if (failed) {
-			displayFont.setColor(Color.RED);
-			canvas.begin(); // DO NOT SCALE
-			canvas.drawText("FAILURE!", displayFont, cameraCoords.x-90, cameraCoords.y);
-			canvas.draw(losing,cameraCoords.x - canvas.getWidth()/2, cameraCoords.y - canvas.getHeight()/2);
-			canvas.end();
+//			displayFont.setColor(Color.RED);
+//			canvas.begin(); // DO NOT SCALE
+//			canvas.drawText("FAILURE!", displayFont, cameraCoords.x-90, cameraCoords.y);
+//			canvas.draw(losing,cameraCoords.x - canvas.getWidth()/2, cameraCoords.y - canvas.getHeight()/2);
+//			canvas.end();
 		}
 	}
 
