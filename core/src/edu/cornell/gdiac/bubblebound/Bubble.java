@@ -14,7 +14,8 @@ public class Bubble extends WheelObstacle {
         FLOATING
     }
     private static int last_used_id=-1;
-    private final int POP_TIME = 500;
+    private final int POP_TIME = 700;
+    private final float bubble_speed = 1.75f;
     private BubbleType bubbleType;
    private int id;
     private boolean isGrappled;
@@ -114,7 +115,7 @@ public class Bubble extends WheelObstacle {
             setLinearVelocity(new Vector2(0, 0));
         }
         if(!statc && hang_timer < 0){
-            setVY(grav);
+            setVY(bubble_speed * grav);
         }
 //        super.update(dt);
     }
@@ -159,7 +160,7 @@ public class Bubble extends WheelObstacle {
 
             }
         }else{
-            System.out.println("blink");
+            //System.out.println("blink");
         }
 
     }

@@ -211,5 +211,8 @@ public class PlayerController {
     public void kill(){
         health = 0;
     }
+    public void restoreHealth(){
+        health = getMaxHealth();
+    }
 
 }
