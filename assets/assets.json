@@ -225,6 +225,7 @@
         "wrapU": "repeated",
         "wrapV": "repeated"
       },
+        "shared:range": "shared/range.png",
         "shared:goal":   "shared/goaldoor.png",
         "rocket:rocket": "rocket/rocket.png",
         "rocket:main":  {

@@ -135,11 +135,13 @@ public class PlatformController implements ContactListener, Screen {
 	/** The texture for the exit condition */
 	protected TextureRegion goalTile;
 	protected FilmStrip bubble;
+	protected FilmStrip range;
 	protected FilmStrip enemyStrip;
 	protected Texture enemyText;
 
 	protected TextureRegion tokenText;
 	protected Texture bubbleText;
+	protected Texture rangeText;
 	/** The font for giving messages to the player */
 	protected TextureRegion background;
 	protected Texture background2;
@@ -373,7 +375,9 @@ public class PlatformController implements ContactListener, Screen {
 		displayFont = directory.getEntry( "shared:retro" ,BitmapFont.class);
 		background2 = directory.getEntry("background:temp", Texture.class);
 		losing = new TextureRegion(directory.getEntry("losing", Texture.class));
+		rangeText = directory.getEntry("shared:range", Texture.class);
 		bubble = new FilmStrip(bubbleText, 1, 8, 8);
+		range = new FilmStrip(rangeText, 1, 8, 8);
 		enemyText = directory.getEntry( "platform:dude2", Texture.class );
 		enemyStrip = new FilmStrip(enemyText, 1, 9, 9);
 
@@ -571,6 +575,7 @@ public class PlatformController implements ContactListener, Screen {
 			//wo.activatePhysics(world);
 			wo.setDensity(1000f);
 			wo.setTexture(bubble);
+			wo.setRange(range);
 			bubbles.add(wo);
 			addObject(wo);
 		}
@@ -738,6 +743,7 @@ public class PlatformController implements ContactListener, Screen {
 		//wo2.activatePhysics(world);
 		wo2.setDensity(10000f);
 		wo2.setTexture(bubble);
+		wo2.setRange(range);
 		bubbles.add(wo2);
 		addQueuedObject(wo2);
 		return wo2;

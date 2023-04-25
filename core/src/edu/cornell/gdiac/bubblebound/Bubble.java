@@ -29,6 +29,7 @@ public class Bubble extends WheelObstacle {
 
     private boolean popped;
     private FilmStrip filmstrip;
+    private FilmStrip rangeFS;
     /** The current animation frame of the avatar */
     private int startFrame;
     /** The rotational center of the filmstrip */
@@ -54,6 +55,9 @@ public class Bubble extends WheelObstacle {
     protected int counter1 = 0;
     protected final int delay1 = 6; // adjust this value to change the delay
 
+    public void setRange(FilmStrip f){
+        rangeFS = f;
+    }
     public void initialize(FilmStrip f) {
         filmstrip = f;
         if (counter1 == 0) { // execute setFrame only when counter reaches 0
@@ -128,12 +132,8 @@ public class Bubble extends WheelObstacle {
     }
 
     public void outline(GameCanvas canvas){
-        canvas.end();
-        canvas.shape.begin(ShapeRenderer.ShapeType.Filled);
-        canvas.shape.setColor(Color.BLACK);
-        canvas.shape.circle(getX()*drawScale.x,getY()*drawScale.y,getRadius()*drawScale.x*1.15f);
-        canvas.shape.end();
-        canvas.begin();
+        canvas.draw(rangeFS, Color.WHITE, origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.y, getAngle(), 2.5F * drawScale.x, 2.5F * drawScale.y);
+
     }
     @Override
     public void draw(GameCanvas canvas) {
