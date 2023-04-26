@@ -259,7 +259,7 @@ public class PlatformController implements ContactListener, Screen {
 	/** Countdown active for winning or losing */
 	private int countdown;
 
-	public TextureRegion[] textures = new TextureRegion[28]; //18 for now for ice textures
+	public TextureRegion[] textures = new TextureRegion[34]; //18 for now for ice textures
 
 	private List<Bubble> bubbles = new ArrayList<Bubble>();
 
@@ -377,22 +377,11 @@ public class PlatformController implements ContactListener, Screen {
 		enemyText = directory.getEntry( "platform:dude2", Texture.class );
 		enemyStrip = new FilmStrip(enemyText, 1, 9, 9);
 
-
-//		tileIceOne = new TextureRegion(directory.getEntry("shared:ice1", Texture.class));
-//		tileIceTwo = new TextureRegion(directory.getEntry("shared:ice2", Texture.class));
-//		tileIceThree = new TextureRegion(directory.getEntry("shared:ice3", Texture.class));
-//		tileIceFour = new TextureRegion(directory.getEntry("shared:ice4", Texture.class));
-//		tileIceFive = new TextureRegion(directory.getEntry("shared:ice5", Texture.class));
-//		tileIceSix = new TextureRegion(directory.getEntry("shared:ice6", Texture.class));
-//		tileIceSeven = new TextureRegion(directory.getEntry("shared:ice7", Texture.class));
-//		tileIceEight = new TextureRegion(directory.getEntry("shared:ice8", Texture.class));
-//		tileIceNine = new TextureRegion(directory.getEntry("shared:ice9", Texture.class));
-//		tileIceTen = new TextureRegion(directory.getEntry("shared:ice10", Texture.class));
-		for(int i = 1; i <= 18; i++){ //load in ice tiles
-			textures[i-1] = new TextureRegion(directory.getEntry("platform:ice" + i, Texture.class));
+		for(int i = 1; i < 29; i++){ //load in ice tiles
+			textures[i-1] = new TextureRegion(directory.getEntry("shared:ice" + i, Texture.class));
 		}
-		for(int i = 1; i <= 10; i++){
-			textures[17 + i] = new TextureRegion(directory.getEntry("platform:sky" + i, Texture.class));
+		for(int i = 1; i < 5; i++){
+			textures[28 + i] = new TextureRegion(directory.getEntry("shared:sky" + i, Texture.class));
 		}
 
 

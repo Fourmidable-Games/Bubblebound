@@ -405,7 +405,7 @@ public class LevelEditorV2 {
                                         1,
                                         1
                                 );
-                                //system.out.println(k);
+
                                 wo.setTexture(textureObjects[k-61]);
                                 boxes.add(wo);
 
