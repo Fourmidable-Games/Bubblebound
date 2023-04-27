@@ -542,6 +542,12 @@
  "renderorder":"right-down",
  "tiledversion":"1.10.0",
  "tileheight":64,
+  "properties":[
+    {
+      "name":"ran",
+      "type":"int",
+      "value":1
+    }],
  "tilesets":[
         {
          "firstgid":1,

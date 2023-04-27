@@ -15,6 +15,7 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 public class LevelEditorV2 {
 
@@ -70,6 +71,9 @@ public class LevelEditorV2 {
 
     public void readJson() {
 
+        // 0 is no, 1 is yes to randomize solid ice and non corner snow blocks
+        int randomizeTiles = 0;
+
         JsonReader json = new JsonReader();
         JsonValue base = json.parse(Gdx.files.internal(jsonName));
 
@@ -78,6 +82,15 @@ public class LevelEditorV2 {
 
         int mapWidth = base.getInt("width")*64;
         int mapHeight = base.getInt("height")*64;
+
+        JsonValue mapProperties = base.get("properties");
+
+        for (JsonValue prop : mapProperties) {
+
+            if (prop.getString("name").equals("ran")) {
+                randomizeTiles = prop.getInt("value");
+            }
+        }
 
         ////system.out.println("Testing Tile -1");
 
@@ -386,16 +399,59 @@ public class LevelEditorV2 {
                                 if(tileMap.get(j).get(i) < 60){
                                     continue;
                                 }
-                                if(k <= 66 && k >= 61){
-                                    k = 61 + (int)(Math.random() * 6);
-                                    if(k == 68){
-                                        k = 67;
-                                    }
-                                }
-                                if(k >= 84 && k <= 88){
-                                    k = 84 + (int)(Math.random() * 5);
-                                    if(k == 89){
-                                        k--;
+//                                if(k <= 66 && k >= 61){
+//                                    k = 61 + (int)(Math.random() * 6);
+//                                    if(k == 68){
+//                                        k = 67;
+//                                    }
+//                                }
+//                                if(k >= 84 && k <= 88){
+//                                    k = 84 + (int)(Math.random() * 5);
+//                                    if(k == 89){
+//                                        k--;
+//                                    }
+//                                }
+
+                                if (randomizeTiles == 1) {
+
+                                    Random ran = new Random();
+                                    int randomInt;
+                                    int offset;
+                                    if ((k >= 69 && k <= 72) || (k >= 83 && k <= 86)) {
+                                        // We will create a random int to choose a solid ice block at random
+                                        // which is a block with no snow and is a square
+                                        randomInt = ran.nextInt(2);
+                                        offset = ran.nextInt(3);
+
+                                        switch (randomInt) {
+
+                                            case 0:
+                                                k = offset + 69;
+                                                break;
+
+                                            case 1:
+                                                k = offset + 83;
+
+                                        }
+
+                                    } else if ((k >= 63 && k <= 66) || (k >= 77 && k <= 80)) {
+                                        // We will create a random int to choose a snow block at random
+                                        // This excludes the corner snow block with ID 61 and 75
+                                        // Also excludes sloped snow blocs
+                                        randomInt = ran.nextInt(2);
+                                        offset = ran.nextInt(3);
+
+                                        switch (randomInt) {
+
+                                            case 0:
+                                                k = offset + 63;
+                                                break;
+
+                                            case 1:
+                                                k = offset + 77;
+
+                                        }
+
                                     }
                                 }
 

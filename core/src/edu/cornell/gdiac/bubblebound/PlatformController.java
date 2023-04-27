@@ -380,7 +380,7 @@ public class PlatformController implements ContactListener, Screen {
 		for(int i = 1; i < 29; i++){ //load in ice tiles
 			textures[i-1] = new TextureRegion(directory.getEntry("shared:ice" + i, Texture.class));
 		}
-		for(int i = 1; i < 5; i++){
+		for(int i = 1; i < 6; i++){
 			textures[28 + i] = new TextureRegion(directory.getEntry("shared:sky" + i, Texture.class));
 		}
 

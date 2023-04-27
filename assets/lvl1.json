@@ -540,6 +540,12 @@
  "nextobjectid":388,
  "orientation":"orthogonal",
  "renderorder":"right-down",
+  "properties":[
+    {
+      "name":"ran",
+      "type":"int",
+      "value":1
+    }],
  "tiledversion":"1.10.0",
  "tileheight":64,
  "tilesets":[

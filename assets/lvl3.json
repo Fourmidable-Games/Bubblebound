@@ -1605,6 +1605,12 @@
  "nextlayerid":16,
  "nextobjectid":590,
  "orientation":"orthogonal",
+ "properties":[
+  {
+   "name":"ran",
+   "type":"int",
+   "value":1
+  }],
  "renderorder":"right-down",
  "tiledversion":"1.10.1",
  "tileheight":64,
