@@ -137,6 +137,8 @@ public class Bubble extends WheelObstacle {
     }
     @Override
     public void draw(GameCanvas canvas) {
+        float sx = drawScale.x / 64;
+        float sy = drawScale.y / 64;
         if(blink == 0 || pop_timer % blink < blink_time) {
             if (texture != null && getD()) {
                 float alpha = 1;
@@ -152,11 +154,13 @@ public class Bubble extends WheelObstacle {
                 if (canRopeTo) {
                     outline(canvas);
                 }
+
                 if (grav == 1) {
-                    canvas.draw(texture, gold, origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.y, getAngle(), 2F * getRadius(), 2F * getRadius());
+                    canvas.draw(texture, gold, origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.y, getAngle(), sx, sy);
                 } else {
-                    canvas.draw(texture, white, origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.y, getAngle(), 2F * getRadius(), 2F * getRadius());
+                    canvas.draw(texture, white, origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.y, getAngle(), sx, sy);
                 }
+
 
             }
         }else{

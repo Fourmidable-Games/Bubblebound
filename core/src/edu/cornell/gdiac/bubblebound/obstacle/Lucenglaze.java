@@ -32,6 +32,8 @@ public class Lucenglaze extends BoxObstacle{
     }
     @Override
     public void draw(GameCanvas canvas){
+        float sx = drawScale.x / 64;
+        float sy = drawScale.y / 64;
         if(texture != null){
 
             float ox = origin.x;
@@ -63,7 +65,7 @@ public class Lucenglaze extends BoxObstacle{
                     break;
             }
             TextureRegion temp = (triggered) ? texture : dormant;
-            canvas.draw(temp, Color.WHITE, ox, oy, getX() * drawScale.x, getY() * drawScale.x, (float)Math.toRadians(angle), 0.5F, 0.5F);
+            canvas.draw(temp, Color.WHITE, ox, oy, getX() * drawScale.x, getY() * drawScale.x, (float)Math.toRadians(angle), sx, sy);
         }
 
     }

@@ -95,6 +95,8 @@ public class RopeBridge extends ComplexObstacle {
 
 		// If too small, only make one plank.;
 		int nLinks = (int)(length / lwidth);
+		System.out.println("length: " + length);
+		System.out.println("nlinks: " + nLinks);
 		////system.out.println();
 		if (nLinks <= 1) {
 			nLinks = 1;
@@ -128,6 +130,7 @@ public class RopeBridge extends ComplexObstacle {
 			plank.draworder = ii / (nLinks / 3);
 			plank.draworder *= 3;
 			bodies.add(plank);
+//			System.out.println("plank mass: " + plank.getMass());
 		}
 	}
 
@@ -204,14 +207,14 @@ public class RopeBridge extends ComplexObstacle {
 			joint = world.createJoint(distJointDef);
 			joints.add(joint);
 
-			ropeJointDef.bodyB = bodies.get(ii + 1).getBody();
-			ropeJointDef.localAnchorA.set(new Vector2());
-			ropeJointDef.localAnchorB.set(new Vector2());
-			ropeJointDef.bodyA = avatar;
-			ropeJointDef.maxLength = 50f;
-			ropeJointDef.collideConnected = false;
-			joint = world.createJoint(ropeJointDef);
-			joints.add(joint);
+//			ropeJointDef.bodyB = bodies.get(ii + 1).getBody();
+//			ropeJointDef.localAnchorA.set(new Vector2());
+//			ropeJointDef.localAnchorB.set(new Vector2());
+//			ropeJointDef.bodyA = avatar;
+//			ropeJointDef.maxLength = 50f;
+//			ropeJointDef.collideConnected = false;
+//			joint = world.createJoint(ropeJointDef);
+//			joints.add(joint);
 
 
 			//#endregion

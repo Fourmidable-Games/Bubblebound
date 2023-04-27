@@ -630,6 +630,9 @@ public class DudeModel extends CapsuleObstacle {
 
 		float x = getWidth()*drawScale.x / 2;
 		float y = getHeight()*drawScale.y / 2;
+		float sx = drawScale.x / 64;
+		float sy = drawScale.y / 64;
+
 
 		float effect = playerController.isFacingRight() ? -1.0f : 1.0f;;
 		float upside = (grav == -1) ? -1.0f : 1.0f;
@@ -637,7 +640,7 @@ public class DudeModel extends CapsuleObstacle {
 
 		}
 		else {
-			canvas.draw(texture, Color.WHITE,origin.x,origin.y,getX()*drawScale.x,getY()*drawScale.y,getAngle(),0.5f*effect,0.5f*upside);
+			canvas.draw(texture, Color.WHITE,origin.x,origin.y,getX()*drawScale.x,getY()*drawScale.y,getAngle(),sx*effect,sy*upside);
 		}
 
 

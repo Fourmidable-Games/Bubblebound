@@ -307,7 +307,12 @@
         "platform:sky7": "platform/sky7.png",
         "platform:sky8": "platform/sky8.png",
         "platform:sky9": "platform/sky9.png",
-        "platform:sky10": "platform/sky10.png"
+        "platform:sky10": "platform/sky10.png",
+        "platform:border0": "platform/border0.png",
+        "platform:border1": "platform/border1.png",
+        "platform:border2": "platform/border2.png",
+        "platform:border3": "platform/border3.png",
+        "platform:border4": "platform/border4.png"
     },
     "jsons"  : {
         "rocket:constants":  "rocket/constants.json",

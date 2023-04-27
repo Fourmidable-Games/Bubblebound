@@ -21,6 +21,8 @@ import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.physics.box2d.*;
 
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import edu.cornell.gdiac.assets.AssetDirectory;
 import edu.cornell.gdiac.bubblebound.obstacle.BoxObstacle;
 import edu.cornell.gdiac.bubblebound.obstacle.Obstacle;
@@ -281,6 +283,7 @@ public class PlatformController implements ContactListener, Screen {
 
 	private boolean level4TokenCollected = false;
 
+	private Viewport vp;
 
 	/**
 	 * Creates and initialize a new instance of the platformer game
@@ -291,7 +294,7 @@ public class PlatformController implements ContactListener, Screen {
 		Rectangle worldBounds = new Rectangle(0,0,DEFAULT_WIDTH*2,DEFAULT_HEIGHT*2);
 		Vector2 worldGravityVector = new Vector2(0, DEFAULT_GRAVITY);
 		world = new World(worldGravityVector,false);
-		scale = new Vector2(1920/CAMERA_WIDTH,1080/CAMERA_HEIGHT);
+		scale = new Vector2(0, 0);
 		this.bounds = new Rectangle(worldBounds);
 		complete = false;
 		failed = false;
@@ -394,7 +397,9 @@ public class PlatformController implements ContactListener, Screen {
 		for(int i = 1; i <= 10; i++){
 			textures[17 + i] = new TextureRegion(directory.getEntry("platform:sky" + i, Texture.class));
 		}
-
+		for(int i = 0; i < 5; i++){
+			borderTextures[i] = new TextureRegion(directory.getEntry("platform:border" + i, Texture.class));
+		}
 
 		heart = new TextureRegion(directory.getEntry("platform:heart", Texture.class));
 		brokenheart = new TextureRegion(directory.getEntry("platform:brokenheart",Texture.class));
@@ -445,6 +450,7 @@ public class PlatformController implements ContactListener, Screen {
 		lucens.clear();
 		poisons.clear();
 		addQueue.clear();
+		borders.clear();
 		if(doors!=null) doors.clear();
 
 
@@ -539,6 +545,9 @@ public class PlatformController implements ContactListener, Screen {
 			gravZone.scale = scale;
 			addZone(gravZone);
 		}
+		Zone z = new Zone(4.5f, 4.5f, 5, 5, -1, new Vector2(0,0));
+		z.scale = scale;
+		addZone(z);
 
 		for (int i = 0; i < BoxList.size(); i++) {
 			BoxObstacle box = BoxList.get(i);
@@ -600,7 +609,6 @@ public class PlatformController implements ContactListener, Screen {
 
 
 
-
 		JsonValue defaults = constants.get("defaults");
 
 
@@ -633,8 +641,9 @@ public class PlatformController implements ContactListener, Screen {
 		avatar.idk();
 		//////system.out.println(wo);
 		// ////system.out.println("change");
-
+		System.out.println("drawscale = " + scale);
 		volume = constants.getFloat("volume", 1.0f);
+		System.out.println("mass:   " + avatar.getMass());
 	}
 
 	public void createProjEnemy(float x, float y, int rotation){
@@ -797,6 +806,8 @@ public class PlatformController implements ContactListener, Screen {
 		updateLucens();
 		updatePoisons();
 		updateAvatar();
+
+
 	}
 
 	private void updateLucens(){
@@ -1168,6 +1179,11 @@ public class PlatformController implements ContactListener, Screen {
 		bubble.setGrappled(true);
 		float dwidth  = bridgeTexture.getRegionWidth()/scale.x;
 		float dheight = bridgeTexture.getRegionHeight()/scale.y;
+		dwidth = 0.3125f;
+		dheight = 0.125f;
+
+		System.out.println(dwidth);
+		System.out.println(dheight);
 		RopeBridge bridge = new RopeBridge(constants.get("bridge"), dwidth / 2,dheight,bubble.getBody(), avatar);
 		bridge.setTexture(bridgeTexture);
 		bridge.setDrawScale(scale);
@@ -1611,12 +1627,15 @@ public class PlatformController implements ContactListener, Screen {
 	 */
 
 	public static int CAMERA_WIDTH = 32;
-	public static int CAMERA_HEIGHT = 18;
+	public static int CAMERA_HEIGHT = 18	;
 
 	public void setCanvas(GameCanvas canvas) {
 		this.canvas = canvas;
 		this.scale.x = canvas.getWidth()/CAMERA_WIDTH;
 		this.scale.y = canvas.getHeight()/CAMERA_HEIGHT;
+
+//		scale.x = 1024f/CAMERA_WIDTH;
+//		scale.y = 576f/CAMERA_HEIGHT;
 	}
 
 
@@ -1722,7 +1741,6 @@ public class PlatformController implements ContactListener, Screen {
 		if (listener == null) {
 			return true;
 		}
-		System.out.println("DOORED: " + doored);
 //		System.out.println("did door: " +input.didDoor());
 		if (doored && input.didDoor()){
 			if (nextLevelID > MAX_LEVELS){
@@ -1856,15 +1874,65 @@ public class PlatformController implements ContactListener, Screen {
 
 		canvas.camera.position.set(cameraCoords, 0);
 		canvas.camera.update();
+		vp = new FitViewport(32, 18, canvas.camera);
+//		vp.apply(true);
 	}
 
 	public List<Zone> zones = new ArrayList<>();
 
 	float life = 1;
 
+
+	private List<Border> borders = new ArrayList<>();
+	private TextureRegion[] borderTextures = new TextureRegion[5]; //TODO load in border textures
 	public void addZone(Zone z){
+
 		zones.add(z);
+
+		//adds borders
+		for(int i = 0; i < z.height; i++){
+			if(checkAndRemoveBorder(z.xpos, z.ypos + i, true)){ //left side
+				Border b = new Border(z.xpos, z.ypos + i, true);
+				b.setDrawScale(scale);
+				b.setTexture(borderTextures[i % 5]);
+				borders.add(b);
+			}
+			if(checkAndRemoveBorder(z.xpos + z.width, z.ypos + i, true)){
+				Border b = new Border(z.xpos + z.width, z.ypos + i, true);
+				b.setDrawScale(scale);
+				b.setTexture(borderTextures[i % 5]);
+				borders.add(b);
+			}
+		}
+		for(int i = 0; i < z.width; i++){
+			if(checkAndRemoveBorder(z.xpos + i, z.ypos, false)){ //bottom side
+				Border b = new Border(z.xpos + i, z.ypos, false);
+				b.setDrawScale(scale);
+				b.setTexture(borderTextures[i % 5]);
+				borders.add(b);
+			}
+			if(checkAndRemoveBorder(z.xpos + i, z.ypos + z.height, false)){ //top side
+				Border b = new Border(z.xpos + i, z.ypos + z.height, false);
+				b.setDrawScale(scale);
+				b.setTexture(borderTextures[i % 5]);
+				borders.add(b);
+			}
+		}
 	}
+
+	//returns true if border not present
+	//if present removes the border and returns false
+	public boolean checkAndRemoveBorder(float x, float y, boolean vertical){
+		for(int i = 0; i < borders.size(); i++){
+			Border b = borders.get(i);
+			if(b.compare(x, y, vertical)){
+				borders.remove(b);
+				return false;
+			}
+		}
+		return true;
+	}
+
 
 	int bubblesleft = 4;
 
@@ -1906,6 +1974,7 @@ public class PlatformController implements ContactListener, Screen {
 //			TextureRegion temp = new TextureRegion(text, x, y,(int)(z.width*scale.x), (int)(z.height * scale.y)); //select only needed part of image
 //			canvas.draw(temp, z.xpos * scale.x, z.ypos * scale.y);
 		}
+
 		canvas.resetColor();
 		canvas.end();
 		canvas.begin();
@@ -1915,6 +1984,9 @@ public class PlatformController implements ContactListener, Screen {
 			obj.draw(canvas); ////!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 			//obj.sdraw(canvas);
 			canvas.resetColor();
+		}
+		for(Border b: borders){
+			b.draw(canvas);
 		}
 
 		canvas.end();

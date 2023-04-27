@@ -254,30 +254,38 @@ public class BoxObstacle extends SimpleObstacle {
 	@Override
 	public void draw(GameCanvas canvas) {
 
+		float sx = drawScale.x / 64; //tile size
+		float sy = drawScale.x / 64;
+
 		if (isRope == true) {
 			if(drawtimer >= draworder){
-				canvas.draw(texture, Color.WHITE, origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.x, getAngle(), 1, 1);
+				sx *= 2;
+				canvas.draw(texture, Color.WHITE, origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.x, getAngle(), sx, sy);
 			}
 			drawtimer++;
 		}
-		else if (isGoal == true) {
-			if(grav == 1){
-				canvas.draw(texture, Color.WHITE, origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.x, getAngle(), 0.5f, 0.5f);
-
-			}else{
-				canvas.draw(texture, Color.WHITE, origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.x, getAngle(), 0.5f, -0.5f);
-
-			}
-					}
-
-
-		else if (texture != null) {
-			if(grav == 1) {
-				canvas.draw(texture, Color.WHITE, origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.x, getAngle(), 0.5F, 0.5F);
-			}else{
-				canvas.draw(texture, Color.WHITE, origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.x, getAngle(), 0.5F, 0.5F);
+		else{
+			if(texture != null) {
+				canvas.draw(texture, Color.WHITE, origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.x, getAngle(), sx, sy);
 			}
 		}
+//			if(grav == 1){
+//				canvas.draw(texture, Color.WHITE, origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.x, getAngle(), sx, sy);
+//
+//			}else{
+//				canvas.draw(texture, Color.WHITE, origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.x, getAngle(), sx, sy);
+//
+//			}
+//					}
+//
+//
+//		else if (texture != null) {
+//			if(grav == 1) {
+//				canvas.draw(texture, Color.WHITE, origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.x, getAngle(), 0.5F, 0.5F);
+//			}else{
+//				canvas.draw(texture, Color.WHITE, origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.x, getAngle(), 0.5F, 0.5F);
+//			}
+//		}
 
 
 	}
