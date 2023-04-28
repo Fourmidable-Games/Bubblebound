@@ -9,31 +9,29 @@
  * Updated asset version, 2/6/2021
  */
 package edu.cornell.gdiac.bubblebound;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.maps.tiled.AtlasTmxMapLoader;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.math.*;
-import com.badlogic.gdx.utils.*;
-import com.badlogic.gdx.audio.*;
-import com.badlogic.gdx.graphics.*;
-import com.badlogic.gdx.graphics.g2d.*;
+import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
-
-import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.JsonValue;
+import com.badlogic.gdx.utils.ObjectSet;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import edu.cornell.gdiac.assets.AssetDirectory;
-import edu.cornell.gdiac.bubblebound.obstacle.BoxObstacle;
-import edu.cornell.gdiac.bubblebound.obstacle.Obstacle;
 import edu.cornell.gdiac.bubblebound.obstacle.*;
+import edu.cornell.gdiac.util.FilmStrip;
 import edu.cornell.gdiac.util.PooledList;
 import edu.cornell.gdiac.util.ScreenListener;
-import edu.cornell.gdiac.util.FilmStrip;
-import org.w3c.dom.Text;
-import sun.security.ec.point.ProjectivePoint;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Gameplay specific controller for the platformer game.  
@@ -117,7 +115,7 @@ public class PlatformController implements ContactListener, Screen {
 	/** Physics constants for initialization */
 	private JsonValue constants;
 
-	private int BUBBLE_LIMIT = 2;
+	private int BUBBLE_LIMIT = 100;
 
 	private int bubbles_left = 0;
 
@@ -143,54 +141,14 @@ public class PlatformController implements ContactListener, Screen {
 	protected TextureRegion tokenText;
 	protected Texture bubbleText;
 	/** The font for giving messages to the player */
-	protected TextureRegion background;
-	protected Texture background2;
+	protected TextureRegion skybackground;
+	protected Texture icebackground;
+
 	protected TextureRegion losing;
 	protected TextureRegion spikeTexture;
 	protected TextureRegion spikeTexture2;
 	protected BitmapFont displayFont;
 
-	protected TextureRegion tileIceOne;
-	protected TextureRegion tileIceTwo;
-	protected TextureRegion tileIceThree;
-	protected TextureRegion tileIceFour;
-	protected TextureRegion tileIceFive;
-	protected TextureRegion tileIceSix;
-	protected TextureRegion tileIceSeven;
-	protected TextureRegion tileIceEight;
-	protected TextureRegion tileIceNine;
-	protected TextureRegion tileIceTen;
-	protected TextureRegion tileIce11;
-	protected TextureRegion tileIce12;
-	protected TextureRegion tileIce13;
-	protected TextureRegion tileIce14;
-	protected TextureRegion tileIce15;
-	protected TextureRegion tileIce16;
-	protected TextureRegion tileIce17;
-	protected TextureRegion tileIce18;
-	protected TextureRegion tileIce19;
-	protected TextureRegion tileIce20;
-	protected TextureRegion tileIce21;
-	protected TextureRegion tileIce22;
-	protected TextureRegion tileIce23;
-	protected TextureRegion tileIce24;
-
-	protected TextureRegion b1;
-	protected TextureRegion b2;
-	protected TextureRegion b3;
-	protected TextureRegion b4;
-	protected TextureRegion b5;
-	protected TextureRegion b6;
-	protected TextureRegion b7;
-	protected TextureRegion b8;
-	protected TextureRegion b9;
-	protected TextureRegion b10;
-	protected TextureRegion b11;
-	protected TextureRegion b12;
-	protected TextureRegion b13;
-	protected TextureRegion b14;
-	protected TextureRegion b15;
-	protected TextureRegion b16;
 
 	protected TextureRegion heart;
 	protected TextureRegion brokenheart;
@@ -295,7 +253,7 @@ public class PlatformController implements ContactListener, Screen {
 		Vector2 worldGravityVector = new Vector2(0, DEFAULT_GRAVITY);
 		world = new World(worldGravityVector,false);
 		scale = new Vector2(0, 0);
-		this.bounds = new Rectangle(worldBounds);
+		//this.bounds = new Rectangle(worldBounds);
 		complete = false;
 		failed = false;
 		debug  = false;
@@ -371,10 +329,10 @@ public class PlatformController implements ContactListener, Screen {
 		spikeTexture = new TextureRegion(directory.getEntry( "platform:spike", Texture.class ));
 		spikeTexture2 = new TextureRegion(directory.getEntry("platform:spike2", Texture.class));
 		goalTile  = new TextureRegion(directory.getEntry( "shared:goal", Texture.class ));
-		background = new TextureRegion(directory.getEntry("background:underground", Texture.class));
+
 		bubbleText = directory.getEntry( "shared:bubble2", Texture.class );
 		displayFont = directory.getEntry( "shared:retro" ,BitmapFont.class);
-		background2 = directory.getEntry("background:temp", Texture.class);
+
 		losing = new TextureRegion(directory.getEntry("losing", Texture.class));
 		bubble = new FilmStrip(bubbleText, 1, 8, 8);
 		enemyText = directory.getEntry( "platform:dude2", Texture.class );
@@ -404,6 +362,10 @@ public class PlatformController implements ContactListener, Screen {
 		heart = new TextureRegion(directory.getEntry("platform:heart", Texture.class));
 		brokenheart = new TextureRegion(directory.getEntry("platform:brokenheart",Texture.class));
 		sundropTexture = new TextureRegion(directory.getEntry("platform:sundrop",Texture.class));
+
+
+		skybackground = new TextureRegion(directory.getEntry("background:skybackground", Texture.class));
+		icebackground = directory.getEntry("background:icebackground", Texture.class);
 
 
 		assetsLoaded = true;
@@ -489,8 +451,9 @@ public class PlatformController implements ContactListener, Screen {
 		List<List<Float>> projEnemyData = Level2.getProjEnemyData();
 		doors = Level2.getDoors();
 		enemies = Level2.getEnemies();
-
-
+		this.bounds = new Rectangle(0, 0, Level2.getMapWidth(), Level2.getMapHeight());
+		this.bounds = new Rectangle(0,0,128, 32);
+		setParallax(skybackground);
 
 
 		float dwidth  = goalTile.getRegionWidth()/scale.x;
@@ -540,17 +503,15 @@ public class PlatformController implements ContactListener, Screen {
 		//Vector2 scale2 = new Vector2(16f, 16f);
 		//scale2.x /= 2;
 		//scale2.y /= 2;
-		for (int i = 0; i < gravityZoneList.size(); i++) {
-			Zone gravZone = gravityZoneList.get(i);
+		for (Zone gravZone : gravityZoneList) {
 			gravZone.scale = scale;
 			addZone(gravZone);
 		}
-		Zone z = new Zone(4.5f, 4.5f, 5, 5, -1, new Vector2(0,0));
+		Zone z = new Zone(8.5f, 4.5f, 5, 10, -1, new Vector2(0,0));
 		z.scale = scale;
 		addZone(z);
 
-		for (int i = 0; i < BoxList.size(); i++) {
-			BoxObstacle box = BoxList.get(i);
+		for (BoxObstacle box : BoxList) {
 			box.setBodyType(BodyDef.BodyType.StaticBody);
 			box.setDensity(0);
 			box.setFriction(0);
@@ -561,8 +522,7 @@ public class PlatformController implements ContactListener, Screen {
 		}
 
 
-		for (int i = 0; i < spikes.size(); i++) {
-			Spike spike = spikes.get(i);
+		for (Spike spike : spikes) {
 			spike.setBodyType(BodyDef.BodyType.StaticBody);
 			spike.setDrawScale(scale);
 			spike.setName("spike");
@@ -571,8 +531,7 @@ public class PlatformController implements ContactListener, Screen {
 			addObject(spike);
 		}
 
-		for (int i = 0; i < bubbleList.size(); i++) {
-			Bubble wo = bubbleList.get(i);
+		for (Bubble wo : bubbleList) {
 			wo.setName("Bubble");
 			wo.setBodyType(BodyDef.BodyType.DynamicBody);
 			wo.setStatic(true);
@@ -641,9 +600,7 @@ public class PlatformController implements ContactListener, Screen {
 		avatar.idk();
 		//////system.out.println(wo);
 		// ////system.out.println("change");
-		System.out.println("drawscale = " + scale);
 		volume = constants.getFloat("volume", 1.0f);
-		System.out.println("mass:   " + avatar.getMass());
 	}
 
 	public void createProjEnemy(float x, float y, int rotation){
@@ -1182,8 +1139,6 @@ public class PlatformController implements ContactListener, Screen {
 		dwidth = 0.3125f;
 		dheight = 0.125f;
 
-		System.out.println(dwidth);
-		System.out.println(dheight);
 		RopeBridge bridge = new RopeBridge(constants.get("bridge"), dwidth / 2,dheight,bubble.getBody(), avatar);
 		bridge.setTexture(bridgeTexture);
 		bridge.setDrawScale(scale);
@@ -1855,26 +1810,25 @@ public class PlatformController implements ContactListener, Screen {
 
 	public void updateCamera(float x, float y){
 		Vector2 temp = new Vector2(x, y);
-		temp.sub(cameraCoords).scl(0.1f, 0.5f); //0.01 is how much it lags in terms of x (smaller means it mvoes slower)
-		boolean movex = true;                           //0.5 is how much it lags in terms of y
-		boolean movey = true;
+		 //0.01 is how much it lags in terms of x (smaller means it mvoes slower)
 
-		if((temp.x > 0 && cameraCoords.x + (scale.x * CAMERA_WIDTH / 2) >= bounds.getWidth() * scale.x) || (temp.x < 0 && cameraCoords.x - (scale.x * CAMERA_WIDTH / 2) <= 0) ){
-			movex = false; //check if camera reached left or right edge
+
+		if(x + (scale.x * CAMERA_WIDTH / 2) >= bounds.getWidth() * scale.x){
+			x = (bounds.getWidth() - (CAMERA_WIDTH / 2f)) * scale.x; //right side
+		}else if(x - (scale.x * CAMERA_WIDTH / 2) <= 0){
+			x = (CAMERA_WIDTH / 2f) * scale.x; //left side
 		}
-		if((temp.y > 0 && cameraCoords.y + (scale.y * CAMERA_HEIGHT / 2) >= bounds.getHeight() * scale.y) || (temp.y < 0 && cameraCoords.y - (scale.y * CAMERA_HEIGHT / 2) <= 5) ){
-			movey = false; //check if camera reached top or bottom
-		}
-		if(movex){
-			cameraCoords.x += temp.x;
-		}
-		if(movey){
-			cameraCoords.y += temp.y;
+		if(y + (scale.y * CAMERA_HEIGHT / 2) >= bounds.getHeight() * scale.y){
+			y = (bounds.getHeight() - (CAMERA_HEIGHT / 2f)) * scale.y;
+		} else if(y - (scale.y * CAMERA_HEIGHT / 2) <= 0){
+			y = (CAMERA_HEIGHT / 2f) * scale.y;
 		}
 
+		cameraCoords.x = x;
+		cameraCoords.y = y;
 		canvas.camera.position.set(cameraCoords, 0);
 		canvas.camera.update();
-		vp = new FitViewport(32, 18, canvas.camera);
+//		vp = new FitViewport(32, 18, canvas.camera);
 //		vp.apply(true);
 	}
 
@@ -1952,11 +1906,71 @@ public class PlatformController implements ContactListener, Screen {
 	}
 
 
+	private float horizontal_parallax;
+	private float vertical_parallax;
+
+	public void setParallax(TextureRegion bg){
+		float wpixels = bounds.getWidth()*scale.x;
+		float hpixels = bounds.getHeight()*scale.y;
+		System.out.println("wpixels: " + wpixels);
+		System.out.println("hpixels: " + hpixels);
+		System.out.println(bg.getRegionWidth());
+		System.out.println(bg.getRegionHeight());
+		horizontal_parallax = (float)(bg.getRegionWidth() - 250f) / wpixels;
+		vertical_parallax = (float)(bg.getRegionHeight() - 250f) / hpixels;
+//		horizontal_parallax = (horizontal_parallax > 1) ? 1 : horizontal_parallax;
+//		vertical_parallax = (vertical_parallax > 1) ? 1 : vertical_parallax;
+		System.out.println("hparallax: " + horizontal_parallax);
+		System.out.println("vparallax: " + vertical_parallax);
+	}
+
+	public void drawPrimaryBackground(TextureRegion bg){
+		Vector2 temp = cameraCoords.cpy();
+//		System.out.println("horizontal" + horizontal_parallax);
+
+		temp.x -= canvas.getWidth() / 2f;
+		temp.y -= canvas.getHeight() / 2f;
+
+		temp.x *= horizontal_parallax;
+//		temp.y *= vertical_parallax;
+		temp.x -= 250; //offset so player doesn'
+		temp.y -= 250;
+		//System.out.println("camera: " + cameraCoords);
+		System.out.println("diff: " +  temp.sub(cameraCoords));
+
+		canvas.draw(bg, temp.x, temp.y);
+	}
+
+	public void drawSecondaryBackground(Texture bg, Zone z){
+		Vector2 temp = cameraCoords.cpy();
+//		System.out.println("horizontal" + horizontal_parallax);
+		temp.x -= canvas.getWidth() / 2f;
+		temp.y -= canvas.getHeight() / 2f;
+		temp.x *= horizontal_parallax;
+//		temp.y *= vertical_parallax;
+		temp.x = (z.xpos * scale.x) - temp.x;
+		temp.y = (z.ypos * scale.y) - temp.y;
+		float y = bg.getHeight() - temp.y - (z.height * scale.y); //finds y coord
+		TextureRegion br = new TextureRegion(bg, (int)temp.x, (int)y, (int)(z.width * scale.x), (int)(z.height * scale.y));
+//		System.out.println(temp.x);
+//		System.out.println(y);
+//		System.out.println(z.width * scale.x);
+//		System.out.println(z.height * scale.y);
+//		System.out.println(br.getRegionWidth());
+//		System.out.println(br.getRegionHeight());
+		canvas.draw(br, Color.WHITE, z.xpos * scale.x, z.ypos * scale.y,br.getRegionWidth(), br.getRegionHeight());
+
+	}
+
+
+
 	public void draw(float dt) {
 		canvas.clear();
 		canvas.begin();
 		canvas.resetColor();
-		canvas.drawWrapped(background, cameraCoords.x, 0f);
+		//System.out.println(cameraCoords);
+		//drawPrimaryBackground(skybackground);
+		canvas.drawWrapped(skybackground, cameraCoords.x, 0);
 
 
 //		canvas.shape.setProjectionMatrix(canvas.camera.combined); TEST
@@ -1968,7 +1982,8 @@ public class PlatformController implements ContactListener, Screen {
 
 		canvas.begin();
 		for(Zone z: zones){ //draws the backgrounds of the zones
-			z.drawBackground(background2, canvas, cameraCoords.x);
+		//	drawSecondaryBackground(icebackground, z);
+			z.drawBackground(icebackground, canvas, cameraCoords.x);
 //			int y = background2.getHeight() - (int)(z.ypos * scale.y) - (int)(z.height * scale.y); //finds y coord
 //			int x = canvas.wrapX(cameraCoords.x, background2.getWidth()) + (int)(z.xpos*scale.x); //find parallaxed x coord
 //			TextureRegion temp = new TextureRegion(text, x, y,(int)(z.width*scale.x), (int)(z.height * scale.y)); //select only needed part of image

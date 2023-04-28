@@ -465,7 +465,7 @@ public class DudeModel extends CapsuleObstacle {
 		float grappleDistanceBuffer = 0.01f;
 		if(playerController.isGrappling()) {
 			forceCache.set(ropeDir.nor().rotate90((int) -grav).scl(getMovement())).scl(1f);
-			float scaler = (ropeDir.len() > 3f) ? 1.1f : 1f;
+			float scaler = (ropeDir.len() > 2.5f) ? 1.2f : 1f;
 			forceCache.set(getMovement() * 2f * scaler, 0);
 
 			/*forceCache.add(0,grav*10f);

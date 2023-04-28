@@ -9,7 +9,7 @@
       "shared:ice" : {
         "file":  "shared/icetile.png",
         "wrapU": "repeated",
-        "wrapV": "repeated",
+        "wrapV": "repeated"
       },
       "shared:ice1" : {
         "file":  "shared/1.png",
@@ -211,11 +211,11 @@
         "wrapU": "repeated",
         "wrapV": "repeated"
       },
-        "background:underground" : {
-            "file":  "platform/background2.png"
+        "background:skybackground" : {
+            "file":  "platform/skybackground.png"
         },
-      "background:temp" : {
-        "file": "platform/background1temp.png"
+      "background:icebackground" : {
+        "file": "platform/icebackground.png"
       },
       "losing" : {
         "file" : "shared/losing.png"

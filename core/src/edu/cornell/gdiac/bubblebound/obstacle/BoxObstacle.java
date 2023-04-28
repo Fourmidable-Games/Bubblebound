@@ -74,7 +74,7 @@ public class BoxObstacle extends SimpleObstacle {
 		markDirty(true);
 		resize(width, height);
 	}
-	
+
 	/**
 	 * Returns the box width
 	 *
@@ -259,7 +259,7 @@ public class BoxObstacle extends SimpleObstacle {
 
 		if (isRope == true) {
 			if(drawtimer >= draworder){
-				sx *= 2;
+				sx *= 2; //TODO: change
 				canvas.draw(texture, Color.WHITE, origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.x, getAngle(), sx, sy);
 			}
 			drawtimer++;

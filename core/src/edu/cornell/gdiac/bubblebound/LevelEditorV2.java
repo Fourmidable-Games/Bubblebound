@@ -67,6 +67,16 @@ public class LevelEditorV2 {
         textureObjects = textures;
     }
 
+    private int mapWidth;
+    private int mapHeight;
+
+    public int getMapWidth(){
+        return mapWidth / 64;
+    }
+
+    public int getMapHeight(){
+        return mapHeight / 64;
+    }
 
     public void readJson() {
 
@@ -76,8 +86,8 @@ public class LevelEditorV2 {
         JsonReader json1 = new JsonReader();
         JsonValue base1 = json.parse(Gdx.files.internal("propertytypes.json"));
 
-        int mapWidth = base.getInt("width")*64;
-        int mapHeight = base.getInt("height")*64;
+        mapWidth = base.getInt("width")*64;
+        mapHeight = base.getInt("height")*64;
 
         ////system.out.println("Testing Tile -1");
 

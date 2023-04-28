@@ -23,6 +23,7 @@ import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.glutils.*;
 import com.badlogic.gdx.physics.box2d.*;
+import org.w3c.dom.Text;
 
 /**
  * Primary view class for the game, abstracting the basic graphics calls.
@@ -1162,8 +1163,17 @@ public class GameCanvas {
 	}
 
 
-	private static float PARALLAX_PRIMARY = 2;
-	private static float PARALLAX_SECONDARY = 5;
+
+
+	private static float PARALLAX_HORIZONTAL = 2;
+	private static float PARALLAX_VERTICAL = 5;
+
+	public void setParallax(float bwidth, float bheight, Vector2 drawscale, Texture background){
+		float maxhorizontal = bwidth * drawscale.x;
+		float maxvertical = bheight * drawscale.y;
+
+	}
+
 
 	public int wrapX(float x, float w) { //used for 2nd dimension thingy
 		if (x < 0) {
@@ -1172,7 +1182,7 @@ public class GameCanvas {
 		} else if (x > 0) {
 			x %= w;
 		}
-		x /= PARALLAX_SECONDARY; //default is 3
+		x /= PARALLAX_HORIZONTAL; //default is 3
 		return (int)x;
 	}
 
@@ -1185,7 +1195,7 @@ public class GameCanvas {
 		} else if (pos.x > 0) {
 			pos.x %= w;
 		}
-		pos.x /= PARALLAX_PRIMARY; // change 3 to smaller to increase parallax effect
+		pos.x /= PARALLAX_HORIZONTAL; // change 3 to smaller to increase parallax effect
 		return pos;
 	}
 	public void resetColor(){
