@@ -259,7 +259,7 @@ public class PlatformController implements ContactListener, Screen {
 	/** Countdown active for winning or losing */
 	private int countdown;
 
-	public TextureRegion[] textures = new TextureRegion[34]; //18 for now for ice textures
+	public ArrayList textures = new ArrayList(); //18 for now for ice textures
 
 	private List<Bubble> bubbles = new ArrayList<Bubble>();
 
@@ -377,11 +377,11 @@ public class PlatformController implements ContactListener, Screen {
 		enemyText = directory.getEntry( "platform:dude2", Texture.class );
 		enemyStrip = new FilmStrip(enemyText, 1, 9, 9);
 
-		for(int i = 1; i < 29; i++){ //load in ice tiles
-			textures[i-1] = new TextureRegion(directory.getEntry("shared:ice" + i, Texture.class));
+		for(int i = 1; i < 30; i++){ //load in ice tiles
+			textures.add(new TextureRegion(directory.getEntry("shared:ice" + i, Texture.class)));
 		}
 		for(int i = 1; i < 6; i++){
-			textures[28 + i] = new TextureRegion(directory.getEntry("shared:sky" + i, Texture.class));
+			textures.add(new TextureRegion(directory.getEntry("shared:sky" + i, Texture.class)));
 		}
 
 

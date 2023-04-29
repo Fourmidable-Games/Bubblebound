@@ -48,7 +48,7 @@ public class LevelEditorV2 {
     private TextureRegion eight;
     private TextureRegion nine;
     private ArrayList<String> textureStrings;
-    private TextureRegion[] textureObjects;
+    private ArrayList<TextureRegion> textureObjects;
 //    private BoxObstacle goal;
     private List<List<Integer>> tileMap = new ArrayList<>();
     private DudeModel player;
@@ -64,7 +64,7 @@ public class LevelEditorV2 {
         playerController = pc;
     }
 
-    public void readTileTextures(TextureRegion[] textures) {
+    public void readTileTextures(ArrayList<TextureRegion> textures) {
         textureObjects = textures;
     }
 
@@ -462,7 +462,7 @@ public class LevelEditorV2 {
                                         1
                                 );
 
-                                wo.setTexture(textureObjects[k-61]);
+                                wo.setTexture(textureObjects.get(k-61));
                                 boxes.add(wo);
 
                             }
