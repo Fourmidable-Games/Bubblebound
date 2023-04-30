@@ -132,8 +132,9 @@ public class PlatformController implements ContactListener, Screen {
 
 	protected TextureRegion earthTile;
 	protected TextureRegion iceTile;
+	FilmStrip goalStrip;
 	/** The texture for the exit condition */
-	protected TextureRegion goalTile;
+	protected Texture goalText;
 	protected FilmStrip bubble;
 	protected FilmStrip enemyStrip;
 	protected Texture enemyText;
@@ -367,7 +368,8 @@ public class PlatformController implements ContactListener, Screen {
 		iceTile = new TextureRegion(directory.getEntry("shared:ice", Texture.class));
 		spikeTexture = new TextureRegion(directory.getEntry( "platform:spike", Texture.class ));
 		spikeTexture2 = new TextureRegion(directory.getEntry("platform:spike2", Texture.class));
-		goalTile  = new TextureRegion(directory.getEntry( "shared:goal", Texture.class ));
+		goalText  = directory.getEntry( "shared:goal", Texture.class );
+		goalStrip = new FilmStrip(goalText, 1, 8, 8);
 		background = new TextureRegion(directory.getEntry("background:underground", Texture.class));
 		bubbleText = directory.getEntry( "shared:bubble2", Texture.class );
 		displayFont = directory.getEntry( "shared:retro" ,BitmapFont.class);
@@ -476,8 +478,8 @@ public class PlatformController implements ContactListener, Screen {
 
 
 
-		float dwidth  = goalTile.getRegionWidth()/scale.x;
-		float dheight = goalTile.getRegionHeight()/scale.y;
+		float dwidth  = goalStrip.getRegionWidth()/scale.x;
+		float dheight = goalStrip.getRegionHeight()/scale.y;
 		// Add level goal
 		for(int i = 0; i < doors.size(); i++){
 			//system.out.println("Inspecting door number " + i + " in level " + targetLevel);
@@ -485,7 +487,7 @@ public class PlatformController implements ContactListener, Screen {
 			door.setBodyType(BodyDef.BodyType.StaticBody);
 			door.setSensor(true);
 			door.setDrawScale(scale);
-			door.setTexture(goalTile);
+			door.setTexture(goalStrip);
 			door.setName("door_" + targetLevel + "_to_" + door.getTargetLevelID());
 			door.isGoal = true;
 			addObject(door);
@@ -785,6 +787,7 @@ public class PlatformController implements ContactListener, Screen {
 //		for(Enemy e : enemies){e.update();}
 		updateLucens();
 		updatePoisons();
+		updateDoors();
 		updateAvatar();
 	}
 
@@ -902,6 +905,14 @@ public class PlatformController implements ContactListener, Screen {
 		// while(i < BUBBLE_LIMIT){
 		// 	i++;
 		// }
+	}
+
+	private void updateDoors(){
+		for(int i = 0; i < doors.size(); i++){
+			Door door = doors.get(i);
+			door.initialize(goalStrip);
+			door.update();
+		}
 	}
 
 	private void updateEnemies(){
