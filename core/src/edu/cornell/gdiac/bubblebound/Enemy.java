@@ -7,7 +7,7 @@ import edu.cornell.gdiac.util.FilmStrip;
 
 public class Enemy extends CapsuleObstacle { //capsule not working for some reasons
 
-    private static float SPEED = 1f;
+    private static float SPEED = 2.5f;
     private boolean faceRight = true;
     public float leftBound;
     public float rightBound;
@@ -16,7 +16,7 @@ public class Enemy extends CapsuleObstacle { //capsule not working for some reas
     private int start;
 
     public Enemy(float x, float y, float width, float height){
-        super(x, y, 1, 2);
+        super(x, y, 1, 1.5f);
         start = (int)x;
         setDensity(100f);
         setFriction(0f);
@@ -72,7 +72,7 @@ public class Enemy extends CapsuleObstacle { //capsule not working for some reas
             }
         }
 
-        int multiplier = (checkSpeedUp(avatar)) ? 3 : 1;
+        float multiplier = (checkSpeedUp(avatar)) ? 2f : 1f;
         if(grav == -1){
             setGravityScale(-1f);
         }else{
@@ -107,8 +107,8 @@ public class Enemy extends CapsuleObstacle { //capsule not working for some reas
         float y = getHeight()*drawScale.y / 2;
 
         float effect = faceRight ? 1.0f : -1.0f;;
-        float upside = (grav == -1) ? -1.0f : 1.0f;
-        ////System.out.println(texture);
+        float upside = (grav == -1) ? -1.5f : 1.5f;
+        //////system.out.println(texture);
         canvas.draw(texture, Color.WHITE,origin.x,origin.y,getX()*drawScale.x,getY()*drawScale.y,getAngle(),effect,upside);
 
 

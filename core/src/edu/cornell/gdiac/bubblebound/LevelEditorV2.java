@@ -7,13 +7,15 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
-import edu.cornell.gdiac.bubblebound.obstacle.BoxObstacle;
-import edu.cornell.gdiac.bubblebound.obstacle.Door;
-import edu.cornell.gdiac.bubblebound.obstacle.Lucenglaze;
-import edu.cornell.gdiac.bubblebound.obstacle.WheelObstacle;
+import edu.cornell.gdiac.bubblebound.obstacle.*;
+
+import org.w3c.dom.Text;
+
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 public class LevelEditorV2 {
 
@@ -32,6 +34,8 @@ public class LevelEditorV2 {
     private List<Lucenglaze> glazeList = new ArrayList<>();
     private ArrayList<Integer> glazeRotations = new ArrayList<>();
     private ArrayList<Door> doors = new ArrayList<>();
+    private ArrayList<ProjEnemy> projEnemies = new ArrayList<>();
+    private List<List<Float>> projEnemyData = new ArrayList<>();
     private TextureRegion earthTile;
     private TextureRegion goalTile;
     private TextureRegion one;
@@ -67,6 +71,9 @@ public class LevelEditorV2 {
 
     public void readJson() {
 
+        // 0 is no, 1 is yes to randomize solid ice and non corner snow blocks
+        int randomizeTiles = 0;
+
         JsonReader json = new JsonReader();
         JsonValue base = json.parse(Gdx.files.internal(jsonName));
 
@@ -76,7 +83,16 @@ public class LevelEditorV2 {
         int mapWidth = base.getInt("width")*64;
         int mapHeight = base.getInt("height")*64;
 
-        //System.out.println("Testing Tile -1");
+        JsonValue mapProperties = base.get("properties");
+
+        for (JsonValue prop : mapProperties) {
+
+            if (prop.getString("name").equals("ran")) {
+                randomizeTiles = prop.getInt("value");
+            }
+        }
+
+        ////system.out.println("Testing Tile -1");
 
         JsonValue firstLayers = base.get("layers");
 
@@ -84,7 +100,7 @@ public class LevelEditorV2 {
         for (JsonValue obj : firstLayers) {
             if (obj.getInt("id") == 6) {
                 JsonValue secondLayers = obj.get("layers");
-                //System.out.println("Testing");
+                ////system.out.println("Testing");
 
                 for (JsonValue obj1 : secondLayers) {
 
@@ -94,7 +110,7 @@ public class LevelEditorV2 {
 
 
                         for (JsonValue goals : go) {
-//                            System.out.println(go.toString());
+//                            //system.out.println(go.toString());
                             JsonValue prop = goals.get("properties");
                             int targetLevel = 1;
                             Door.SpawnDirection player_spawn_direction = Door.SpawnDirection.RIGHT;
@@ -118,7 +134,7 @@ public class LevelEditorV2 {
                             Door d = new Door(door_loc,player_spawn_direction,targetLevel);
 
 //                            wo.isGoal = true;
-                            //System.out.println("GOOOALLL");
+                            ////system.out.println("GOOOALLL");
 //                            goal = wo;
                             doors.add(d);
                         }
@@ -141,6 +157,51 @@ public class LevelEditorV2 {
 
 
                             player = wo;
+                        }
+
+                    }
+
+
+                    if (obj1.getInt("id") == 15) {
+
+                        JsonValue prop = obj1.get("objects");
+
+                        for (JsonValue ene : prop) {
+
+                            float rotation = 0;
+                            int x_offset= 0;
+                            int y_offset = 0;
+
+
+                            if (ene.getFloat("rotation") == 90) {
+                                rotation = 1;
+                                y_offset = y_offset;
+                            }
+
+                            else if (ene.getFloat("rotation") == -180 || ene.getFloat("rotation") == 180) {
+                                rotation = 2;
+                                x_offset = -1;
+                                y_offset = y_offset;
+                            }
+
+                            else if (ene.getFloat("rotation") == -90) {
+                                rotation = 3;
+                                x_offset = -1;
+                                y_offset = 1;
+                            }
+
+                            else if (ene.getFloat("rotation") == 0) {
+                                y_offset = 1;
+                            }
+
+                            List<Float> data = new ArrayList<>();
+                            data.add((ene.getFloat("x")/64) + x_offset);
+                            data.add(((mapHeight - ene.getFloat("y"))/64) + y_offset);
+                            data.add(rotation);
+
+                            projEnemyData.add(data);
+
+
                         }
 
                     }
@@ -266,7 +327,7 @@ public class LevelEditorV2 {
                                         (((mapHeight - w.getFloat("y"))) / 64)+1);
                                 glazeRotations.add(0);
                             }else{
-                                System.out.println("OH DANG WE MISSED ONE HERE! at " + glazeRotations.size() + " the rot was " + w.getFloat("rotation"));
+                                //system.out.println("OH DANG WE MISSED ONE HERE! at " + glazeRotations.size() + " the rot was " + w.getFloat("rotation"));
                             }
 
 
@@ -283,7 +344,7 @@ public class LevelEditorV2 {
 
                         JsonValue bubbleList = obj1.get("objects");
 
-                        //System.out.println("Testing bub");
+                        ////system.out.println("Testing bub");
 
                         for (JsonValue bub : bubbleList) {
 
@@ -292,7 +353,7 @@ public class LevelEditorV2 {
                                 if (type.getInt("id") == 4) {
 
 
-                                    //System.out.println(type.get("members"));
+                                    ////system.out.println(type.get("members"));
 
                                     Vector2 v = new Vector2((bub.getFloat("x")) / 64, ((mapHeight - (bub.getFloat("y"))) / 64)+1);
 
@@ -313,7 +374,7 @@ public class LevelEditorV2 {
 
                     if (obj1.getInt("id") == 1) {
 
-                        //System.out.println("Testing 2");
+                        ////system.out.println("Testing 2");
 
                         JsonValue tileData1 = obj1.get("data");
 
@@ -334,134 +395,77 @@ public class LevelEditorV2 {
 
                         for (int i = 0; i < mapWidth/64; i++) {
                             for (int j = 0; j < mapHeight/64; j++) {
-                                if (tileMap.get(j).get(i) == 18) {
-                                    BoxObstacle wo = new BoxObstacle(
-                                            i,
-                                            (mapHeight/64) - j,
-                                            1,
-                                            1
-                                    );
-
-                                    wo.setTexture(textureObjects.get(0));
-
-                                    boxes.add(wo);
+                                int k = tileMap.get(j).get(i);
+                                if(tileMap.get(j).get(i) < 60){
+                                    continue;
                                 }
-                                else if (tileMap.get(j).get(i) == 19) {
-                                    BoxObstacle wo = new BoxObstacle(
-                                            i,
-                                            (mapHeight/64) - j,
-                                            1,
-                                            1
-                                    );
+//                                if(k <= 66 && k >= 61){
+//                                    k = 61 + (int)(Math.random() * 6);
+//                                    if(k == 68){
+//                                        k = 67;
+//                                    }
+//                                }
+//                                if(k >= 84 && k <= 88){
+//                                    k = 84 + (int)(Math.random() * 5);
+//                                    if(k == 89){
+//                                        k--;
+//                                    }
+//                                }
 
-                                    wo.setTexture(textureObjects.get(1));
+                                if (randomizeTiles == 1) {
 
-                                    boxes.add(wo);
-                                }
+                                    Random ran = new Random();
+                                    int randomInt;
+                                    int offset;
+                                    if ((k >= 69 && k <= 72) || (k >= 83 && k <= 86)) {
+                                        // We will create a random int to choose a solid ice block at random
+                                        // which is a block with no snow and is a square
+                                        randomInt = ran.nextInt(2);
+                                        offset = ran.nextInt(3);
 
-                                else if (tileMap.get(j).get(i) == 20) {
-                                    BoxObstacle wo = new BoxObstacle(
-                                            i,
-                                            (mapHeight/64) - j,
-                                            1,
-                                            1
-                                    );
+                                        switch (randomInt) {
 
-                                    wo.setTexture(textureObjects.get(2));
+                                            case 0:
+                                                k = offset + 69;
+                                                break;
 
-                                    boxes.add(wo);
-                                }
+                                            case 1:
+                                                k = offset + 83;
 
-                                else if (tileMap.get(j).get(i) == 21) {
-                                    BoxObstacle wo = new BoxObstacle(
-                                            i,
-                                            (mapHeight/64) - j,
-                                            1,
-                                            1
-                                    );
+                                        }
 
-                                    wo.setTexture(textureObjects.get(3));
+                                    } else if ((k >= 63 && k <= 66) || (k >= 77 && k <= 80)) {
+                                        // We will create a random int to choose a snow block at random
+                                        // This excludes the corner snow block with ID 61 and 75
+                                        // Also excludes sloped snow blocs
+                                        randomInt = ran.nextInt(2);
+                                        offset = ran.nextInt(3);
 
-                                    boxes.add(wo);
-                                }
+                                        switch (randomInt) {
 
-                                else if (tileMap.get(j).get(i) == 22) {
-                                    BoxObstacle wo = new BoxObstacle(
-                                            i,
-                                            (mapHeight/64) - j,
-                                            1,
-                                            1
-                                    );
+                                            case 0:
+                                                k = offset + 63;
+                                                break;
 
-                                    wo.setTexture(textureObjects.get(4));
+                                            case 1:
+                                                k = offset + 77;
 
-                                    boxes.add(wo);
+                                        }
+
+                                    }
                                 }
 
-                                else if (tileMap.get(j).get(i) == 24) {
-                                    BoxObstacle wo = new BoxObstacle(
-                                            i,
-                                            (mapHeight/64) - j,
-                                            1,
-                                            1
-                                    );
+                                BoxObstacle wo = new BoxObstacle(
+                                        i,
+                                        (mapHeight/64) - j,
+                                        1,
+                                        1
+                                );
 
-                                    wo.setTexture(textureObjects.get(6));
 
-                                    boxes.add(wo);
-                                }
 
-                                else if (tileMap.get(j).get(i) == 25) {
-                                    BoxObstacle wo = new BoxObstacle(
-                                            i,
-                                            (mapHeight/64) - j,
-                                            1,
-                                            1
-                                    );
-
-                                    wo.setTexture(textureObjects.get(7));
-
-                                    boxes.add(wo);
-                                }
-
-                                else if (tileMap.get(j).get(i) == 26) {
-                                    BoxObstacle wo = new BoxObstacle(
-                                            i,
-                                            (mapHeight/64) - j,
-                                            1,
-                                            1
-                                    );
-
-                                    wo.setTexture(textureObjects.get(8));
-
-                                    boxes.add(wo);
-                                }
-
-                                else if (tileMap.get(j).get(i) == 27) {
-                                    BoxObstacle wo = new BoxObstacle(
-                                            i,
-                                            (mapHeight/64) - j,
-                                            1,
-                                            1
-                                    );
-
-                                    wo.setTexture(textureObjects.get(9));
-
-                                    boxes.add(wo);
-                                }
-
-                                else if (tileMap.get(j).get(i) == 2) {
-                                    BoxObstacle wo = new BoxObstacle(
-                                            i,
-                                            (mapHeight/64) - j,
-                                            1,
-                                            1
-                                    );
-
-                                    wo.setTexture(textureObjects.get(10));
-
-                                    boxes.add(wo);
-                                }
+                                wo.setTexture(textureObjects.get(k-61));
+                                boxes.add(wo);
 
                             }
                         }
@@ -477,19 +481,19 @@ public class LevelEditorV2 {
         }
 
 
-        //System.out.println("Finished Parsing");
+        ////system.out.println("Finished Parsing");
     }
 
 
-    public List getBoxes() {
+    public List<BoxObstacle> getBoxes() {
         return boxes;
     }
 
-    public List getBubbles() {
+    public List<Bubble> getBubbles() {
         return bubbles;
     }
 
-    public List getEnemies() {
+    public List<Enemy> getEnemies() {
         return enemies;
     }
     public DudeModel getPlayerAtLocation(Vector2 location, Door.SpawnDirection sd) {
@@ -504,17 +508,19 @@ public class LevelEditorV2 {
 
     public ArrayList<Door> getDoors() { return doors;}
 
-    public List getSpikes() {
+    public List<Spike> getSpikes() {
         return spikes;
     }
 
-    public List getGravityZones() {
+    public List<Zone> getGravityZones() {
         return gravityZones;
     }
 
-    public List getGlazes() {return glazeList; }
+    public List<Lucenglaze> getGlazes() {return glazeList; }
 
     public List getGlazeRotations() {return glazeRotations;}
+
+    public List getProjEnemyData() {return projEnemyData;}
 
 
 

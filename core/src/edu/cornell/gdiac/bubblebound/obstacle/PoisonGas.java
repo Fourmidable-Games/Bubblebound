@@ -40,11 +40,14 @@ public class PoisonGas extends BoxObstacle{
 
     @Override
     public void draw(GameCanvas canvas){
+        Color c = new Color(Color.LIME);
+        c.a = 0.6f;
+
         if (texture != null) {
             if(grav == 1) {
-                canvas.draw(texture, new Color(230,230,250,0.8f), origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.x, getAngle(), 0.5F, 0.5F);
+                canvas.draw(texture, c, origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.x, getAngle(), 0.5F, 0.5F);
             }else{
-                canvas.draw(texture, new Color(230,230,230,0.8f), origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.x, getAngle(), 0.5F, 0.5F);
+                canvas.draw(texture, c, origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.x, getAngle(), 0.5F, 0.5F);
             }
         }
     }

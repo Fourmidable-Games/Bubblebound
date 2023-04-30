@@ -61,6 +61,131 @@
         "wrapU": "repeated",
         "wrapV": "repeated"
       },
+      "shared:ice11" : {
+        "file":  "shared/11.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "shared:ice12" : {
+        "file":  "shared/12.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "shared:ice13" : {
+        "file":  "shared/13.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "shared:ice14" : {
+        "file":  "shared/14.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "shared:ice15" : {
+        "file":  "shared/15.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "shared:ice16" : {
+        "file":  "shared/16.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "shared:ice17" : {
+        "file":  "shared/17.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "shared:ice18" : {
+        "file":  "shared/18.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "shared:ice19" : {
+        "file":  "shared/19.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "shared:ice20" : {
+        "file":  "shared/20.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "shared:ice21" : {
+        "file":  "shared/21.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "shared:ice22" : {
+        "file":  "shared/22.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "shared:ice23" : {
+        "file":  "shared/23.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "shared:ice24" : {
+        "file":  "shared/24.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "shared:ice25" : {
+        "file":  "shared/25.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "shared:ice26" : {
+        "file":  "shared/26.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "shared:ice27" : {
+        "file":  "shared/27.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "shared:ice28" : {
+        "file":  "shared/28.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "shared:ice29" : {
+        "file":  "shared/29.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "shared:sky1" : {
+        "file":  "shared/b1.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "shared:sky2" : {
+        "file":  "shared/b2.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "shared:sky3" : {
+        "file":  "shared/b3.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "shared:sky4" : {
+        "file":  "shared/b4.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "shared:sky5" : {
+        "file":  "shared/b5.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "shared:connect" : {
+        "file":  "shared/connect.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
         "background:underground" : {
             "file":  "platform/background2.png"
         },
@@ -76,36 +201,6 @@
         "wrapV": "repeated"
       },
         "shared:goal":   "shared/goaldoor.png",
-        "rocket:rocket": "rocket/rocket.png",
-        "rocket:main":  {
-            "file" : "rocket/flames.png",
-            "sprites" : {
-                "fire": {
-                    "rows": 1,
-                    "cols": 4
-                }
-            }
-        },
-        "rocket:left": {
-            "file" : "rocket/flames-left.png",
-            "sprites" : {
-                "fire": {
-                    "rows": 1,
-                    "cols": 4
-                }
-            }
-        },
-        "rocket:right": {
-            "file" : "rocket/flames-right.png",
-            "sprites" : {
-                "fire": {
-                    "rows": 1,
-                    "cols": 4
-                }
-            }
-        },
-        "rocket:crate01": "rocket/crate01.png",
-        "rocket:crate02": "rocket/crate02.png",
         "platform:bubblecooldown": "platform/fixedBubbleCooldown.png",
         "platform:emptyCooldownBubble": "platform/emptyCooldownBubble.png",
         "platform:fullCooldownBubble": "platform/fullCooldownBubble.png",
@@ -117,34 +212,25 @@
         "platform:dude6":  "platform/dude6.png",
         "platform:dude7":  "platform/dude7.png",
         "platform:dude8":  "platform/dude8.png",
+        "platform:dudeUp":  "platform/Straight-Up.png",
         "platform:spike":  "platform/spike.png",
+        "platform:spike2": "platform/spike2.png",
         "platform:token": "platform/token.png",
         "platform:rope":  "platform/ropebridge.png",
         "platform:barrier": "platform/barrier.png",
-        "platform:bullet":  "platform/bullet.png",
         "platform:gas": "platform/poisongas.png",
-        "platform:lucenglaze": "platform/lucenglaze.png",
-        "ragdoll:bubble": "ragdoll/bubble.png",
-        "ragdoll:torso":  "ragdoll/tux_body.png",
-        "ragdoll:head":   "ragdoll/Iris.png",
-        "ragdoll:thigh":  "ragdoll/tux_thigh.png",
-        "ragdoll:shin":   "ragdoll/tux_shin.png",
-        "ragdoll:arm":    "ragdoll/tux_arm.png",
-        "ragdoll:forearm":    "ragdoll/tux_forearm.png",
-        "ragdoll:crosshair":  "ragdoll/crosshair.png",
-        "ragdoll:foreground": "ragdoll/foreground.png",
-        "ragdoll:background": "ragdoll/background.png"
+        "platform:activatedlucen": "platform/activatedlumen.png",
+        "platform:dormantlucen": "platform/dormantlumen.png",
+        "platform:heart": "platform/heart.png",
+        "platform:brokenheart": "platform/brokenheart.png",
+        "platform:sundrop": "platform/sundrop.png",
+        "platform:bullet": "platform/sundropshot.png",
     },
     "jsons"  : {
-        "rocket:constants":  "rocket/constants.json",
         "platform:constants": "platform/constants.json",
         "ragdoll:constants":  "ragdoll/constants.json"
     },
     "sounds" : {
-        "rocket:bump" : "rocket/bump.mp3",
-        "rocket:mainburn" : "rocket/afterburner.mp3",
-        "rocket:leftburn" : "rocket/sideburner-left.mp3",
-        "rocket:rightburn": "rocket/sideburner-right.mp3",
         "platform:jump" : "platform/jump.mp3",
         "platform:pew"  : "platform/pew.mp3",
         "platform:plop" : "platform/plop.mp3",

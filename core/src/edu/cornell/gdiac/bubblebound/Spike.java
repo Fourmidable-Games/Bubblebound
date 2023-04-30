@@ -1,6 +1,7 @@
 package edu.cornell.gdiac.bubblebound;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
@@ -19,7 +20,7 @@ public class Spike extends SimpleObstacle {
     /** Cache of the polygon vertices (for resizing) */
     private float[] vertices;
     private float rotation;
-
+    private TextureRegion texture2;
 
     /**
      * Returns the dimensions of this box
@@ -74,6 +75,10 @@ public class Spike extends SimpleObstacle {
     public void setWidth(float value) {
         sizeCache.set(value,dimension.y);
         setDimension(sizeCache);
+    }
+
+    public void setTexture2(TextureRegion t){
+        texture2 = t;
     }
 
     /**
@@ -173,7 +178,7 @@ public class Spike extends SimpleObstacle {
             if(grav == 1) {
                 canvas.draw(texture, Color.WHITE, origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.x, getAngle(), 0.75f, 0.75f);
             }else{
-                canvas.draw(texture, Color.WHITE, origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.x, getAngle(), 0.75f, 0.75f);
+                canvas.draw(texture2, Color.WHITE, origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.x, getAngle(), 0.5f, 0.5f);
             }
         }
     }
