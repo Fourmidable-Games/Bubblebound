@@ -69,13 +69,13 @@
                         {
                          "gid":6,
                          "height":128,
-                         "id":475,
+                         "id":460,
                          "name":"",
                          "rotation":0,
                          "type":"",
                          "visible":true,
                          "width":64,
-                         "x":512,
+                         "x":64,
                          "y":1728
                         }],
                  "opacity":1,
@@ -322,7 +322,7 @@
          "y":0
         }],
  "nextlayerid":16,
- "nextobjectid":476,
+ "nextobjectid":475,
  "orientation":"orthogonal",
  "properties":[
         {

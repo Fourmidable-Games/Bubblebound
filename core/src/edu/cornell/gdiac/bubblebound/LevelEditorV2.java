@@ -462,6 +462,8 @@ public class LevelEditorV2 {
                                         1
                                 );
 
+
+
                                 wo.setTexture(textureObjects.get(k-61));
                                 boxes.add(wo);
 
