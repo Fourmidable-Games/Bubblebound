@@ -218,7 +218,7 @@ public class PlatformController implements ContactListener, Screen {
 	/** The default value of gravity (going down) */
 	protected static final float DEFAULT_GRAVITY = -4.9f;
 
-	private final int MAX_LEVELS = 3;
+	private final int MAX_LEVELS = 4;
 
 	private int currLevel;
 
@@ -603,7 +603,7 @@ public class PlatformController implements ContactListener, Screen {
 		if(currLevel == 4 && !level4TokenCollected){
 
 //			level4Token = new Token(new Vector2(5,10), 2);
-			level4Token = new Token(new Vector2(42,5), 2);
+			level4Token = new Token(new Vector2(120,3), 1);
 
 			level4Token.setName("token4");
 			level4Token.setBodyType(BodyDef.BodyType.StaticBody);

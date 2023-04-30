@@ -4,7 +4,7 @@
  "layers":[
         {
          "id":3,
-         "image":"..\/LevelEditorAssets\/background (1).png",
+         "image":"..\/..\/..\/Bubblebound Level Editor\/LEVEL EDITOR FILES UPDATED\/LevelEditorAssets\/background (1).png",
          "name":"Image Layer 1",
          "opacity":1,
          "repeatx":true,
@@ -336,7 +336,7 @@
  "tilesets":[
         {
          "firstgid":1,
-         "source":"tiles.tsx"
+         "source":"..\/..\/..\/Bubblebound Level Editor\/LEVEL EDITOR FILES UPDATED\/tiles.tsx"
         }],
  "tilewidth":64,
  "type":"map",
