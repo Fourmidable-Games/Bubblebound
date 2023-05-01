@@ -57,6 +57,8 @@ public class PlatformController implements ContactListener, Screen {
 	protected FilmStrip fallStrip;
 	protected Texture upText;
 	protected FilmStrip upStrip;
+	protected Texture downText;
+	protected FilmStrip downStrip;
 	protected Texture topText;
 	protected FilmStrip topStrip;
 	protected Texture bubblecooldownText;
@@ -339,6 +341,8 @@ public class PlatformController implements ContactListener, Screen {
 		topStrip = new FilmStrip(topText, 1 ,1 ,1);
 		upText = directory.getEntry("platform:dudeUp", Texture.class);
 		upStrip = new FilmStrip(upText, 1 ,1 ,1);
+		downText = directory.getEntry("platform:dudeDown", Texture.class);
+		downStrip = new FilmStrip(downText, 1 ,1 ,1);
 		bubblecooldownText = directory.getEntry("platform:bubblecooldown", Texture.class);
 		bubblecooldownStrip = new FilmStrip(bubblecooldownText, 1, 8, 8);
 		emptyBubbleCooldown = new TextureRegion(directory.getEntry("platform:emptyCooldownBubble", Texture.class));
@@ -1119,18 +1123,23 @@ public class PlatformController implements ContactListener, Screen {
 		life = avatar.getLife();//update health bar
 
 		//bubblesleft = bubbles_left - 2;
-		avatar.initialize(dude, swingStrip, idleStrip, jumpStrip, fallStrip, topStrip, upStrip);
+		avatar.initialize(dude, swingStrip, idleStrip, jumpStrip, fallStrip, topStrip, upStrip, downStrip);
 		//////system.out.println("AAAAA:" + avatar.getForce());
 		if(avatar.isGrappling()) avatar.setTexture(swingStrip);
 		else if(avatar.isGrounded() && avatar.getMovement() == 0.0) avatar.setTexture(idleStrip);
+		//Jumping up
 		else if ((avatar.getGravZone() == 1 && !avatar.isGrounded() && avatar.getVY() > 0f) ||
 				(avatar.getGravZone() == -1 && !avatar.isGrounded() && avatar.getVY() < 0f)) {
 			if(Math.abs(avatar.getVX()) < 0.1) avatar.setTexture(upStrip);
 			else avatar.setTexture(jumpStrip);
 		}
 		else if (!avatar.isGrounded() && avatar.getVY() > -0.01f && avatar.getVY() < 0.01f) avatar.setTexture(topStrip);
+		//Falling down
 		else if ((avatar.getGravZone() == 1 && !avatar.isGrounded() && avatar.getVY() < 0f) ||
-				(avatar.getGravZone() == -1 && !avatar.isGrounded() && avatar.getVY() > 0f)) avatar.setTexture(fallStrip);
+				(avatar.getGravZone() == -1 && !avatar.isGrounded() && avatar.getVY() > 0f)) {
+			if(Math.abs(avatar.getVX()) < 0.1) avatar.setTexture(downStrip);
+			else avatar.setTexture(fallStrip);
+		}
 		else avatar.setTexture(dude);
 		avatar.update();
 

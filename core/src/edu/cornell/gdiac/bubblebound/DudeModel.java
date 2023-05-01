@@ -87,6 +87,7 @@ public class DudeModel extends CapsuleObstacle {
 	private FilmStrip filmstrip_fall;
 	private FilmStrip filmstrip_top;
 	private FilmStrip filmstrip_up;
+	private FilmStrip filmstrip_down;
 
 	/**
 	 * Returns left/right movement of this character.
@@ -101,8 +102,9 @@ public class DudeModel extends CapsuleObstacle {
 
 	protected int ii = 0;
 	protected int counter1 = 0;
-	protected final int delay1 = 6; // adjust this value to change the delay
-	public void initialize(FilmStrip f, FilmStrip f1, FilmStrip f2, FilmStrip f3, FilmStrip f4, FilmStrip f5, FilmStrip f6) {
+	protected final int delay1 = 3; // adjust this value to change the delay
+	public void initialize(FilmStrip f, FilmStrip f1, FilmStrip f2, FilmStrip f3, FilmStrip f4,
+						   FilmStrip f5, FilmStrip f6, FilmStrip f7) {
 		filmstrip = f;
 		filmstrip_swing = f1;
 		filmstrip_idle = f2;
@@ -110,16 +112,18 @@ public class DudeModel extends CapsuleObstacle {
 		filmstrip_fall = f4;
 		filmstrip_top = f5;
 		filmstrip_up = f6;
+		filmstrip_down = f7;
 		if (counter1 == 0) { // execute setFrame only when counter reaches 0
-			f.setFrame(ii++ % 11);
-			f1.setFrame(ii++ % 3);
-			f2.setFrame(ii++ % 3);
-			f3.setFrame(ii++ % 1);
-			f4.setFrame(ii++ % 1);
-			f5.setFrame(ii++ % 1);
+			f.setFrame(0);
+			f1.setFrame(0);
+			f2.setFrame(0);
+			f3.setFrame(0);
+			f4.setFrame(0);
+			f5.setFrame(0);
 			f6.setFrame(0);
+			f7.setFrame(0);
 		}
-		counter1 = (counter1 + 1) % delay1; // increment counter and reset to 0 when it reaches delay
+		//counter1 = (counter1 + 1) % delay1; // increment counter and reset to 0 when it reaches delay
 	}
 
 	/**
@@ -530,35 +534,33 @@ public class DudeModel extends CapsuleObstacle {
 		playerController.restoreHealth();
 	}
 
-	protected int i;
-	protected int counter = 0;
-	protected final int delay = 50; // adjust this value to change the delay
 	/**
 	 * Updates the object's physics state (NOT GAME LOGIC).
 	 *
 	 * We use this method to reset cooldowns.
 	 *
 	 */
+	int counter_idle = 0;
+	int delay_idle = 40;
 	public void update() {
-//		if(isGrappling()){
-//			setMass(1f);
-//		}else{
-//			setMass(1f);
-//		}
 		playerController.update();
 		if (animate) {
 			if (filmstrip != null) {
-				if (counter == 0) { // execute setFrame only when counter reaches 0
-					int next = (i++) % 11;
-					filmstrip.setFrame(next);
-					filmstrip_swing.setFrame(next % 3);
-					filmstrip_idle.setFrame(next % 3);
+				if (counter1 == 0) { // execute setFrame only when counter reaches 0
+					int next = ii++;
+					filmstrip.setFrame(next % 11);
 					filmstrip_jump.setFrame(next % 1);
 					filmstrip_fall.setFrame(next % 1);
 					filmstrip_top.setFrame(next % 1);
 					filmstrip_up.setFrame(0);
+					filmstrip_down.setFrame(0);
 				}
-				counter = (counter + 1) % delay; // increment counter and reset to 0 when it reaches delay
+				if (counter_idle == 0) {
+					filmstrip_idle.setFrame(ii % 3);
+					filmstrip_swing.setFrame(ii % 3);
+				}
+				counter_idle = (counter_idle + 1) % delay_idle;
+				counter1 = (counter1 + 1) % delay1; // increment counter and reset to 0 when it reaches delay
 			}
 		} else {
 			if (filmstrip != null) {

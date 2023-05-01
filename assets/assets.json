@@ -213,6 +213,7 @@
         "platform:dude7":  "platform/dude7.png",
         "platform:dude8":  "platform/dude8.png",
         "platform:dudeUp":  "platform/Straight-Up.png",
+        "platform:dudeDown":  "platform/Straight-Down.png",
         "platform:spike":  "platform/spike.png",
         "platform:spike2": "platform/spike2.png",
         "platform:token": "platform/token.png",
