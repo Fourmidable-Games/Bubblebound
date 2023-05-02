@@ -193,6 +193,8 @@ public class PlatformController implements ContactListener, Screen {
 	protected TextureRegion b15;
 	protected TextureRegion b16;
 
+
+
 	protected TextureRegion heart;
 	protected TextureRegion brokenheart;
 	protected TextureRegion dormantlucen;
@@ -267,6 +269,8 @@ public class PlatformController implements ContactListener, Screen {
 	private List<Bubble> bubbles = new ArrayList<Bubble>();
 
 	private List<Enemy> enemies = new ArrayList<Enemy>();
+
+	private ArrayList spikeTextureList = new ArrayList<TextureRegion>();
 
 	private List<ProjEnemy> projenemies = new ArrayList<>();
 	/** Reference to the character avatar */
@@ -383,12 +387,25 @@ public class PlatformController implements ContactListener, Screen {
 		enemyText = directory.getEntry( "platform:dude2", Texture.class );
 		enemyStrip = new FilmStrip(enemyText, 1, 9, 9);
 
-		for(int i = 1; i < 30; i++){ //load in ice tiles
+		for(int i = 1; i < 35; i++){ //load in ice tiles
 			textures.add(new TextureRegion(directory.getEntry("shared:ice" + i, Texture.class)));
+			if (i == 22 || i == 27 || i == 28) {
+				spikeTextureList.add(new TextureRegion(directory.getEntry("shared:ice" + i, Texture.class)));
+			}
 		}
-		for(int i = 1; i < 6; i++){
+		for(int i = 1; i < 30; i++){
 			textures.add(new TextureRegion(directory.getEntry("shared:sky" + i, Texture.class)));
 		}
+		for(int i = 1; i < 4; i++){
+			textures.add(new TextureRegion(directory.getEntry("shared:con" + i, Texture.class)));
+		}
+
+		textures.add(new TextureRegion(directory.getEntry("shared:error", Texture.class)));
+
+		spikeTextureList.add(spikeTexture2);
+		spikeTextureList.add(new TextureRegion(directory.getEntry("shared:skyspike", Texture.class)));
+		spikeTextureList.add(spikeTexture);
+
 
 
 		heart = new TextureRegion(directory.getEntry("platform:heart", Texture.class));
@@ -467,7 +484,7 @@ public class PlatformController implements ContactListener, Screen {
 		setSounds();
 
 		LevelEditorV2 Level2 = new LevelEditorV2(playerController,jsonPath);
-		Level2.readTileTextures(textures);
+		Level2.readTileTextures(textures, spikeTextureList);
 		Level2.readJson();
 		List<BoxObstacle> BoxList = Level2.getBoxes();
 		List<Bubble> bubbleList = Level2.getBubbles();
@@ -552,7 +569,7 @@ public class PlatformController implements ContactListener, Screen {
 			spike.setBodyType(BodyDef.BodyType.StaticBody);
 			spike.setDrawScale(scale);
 			spike.setName("spike");
-			spike.setTexture(spikeTexture);
+//			spike.setTexture(spikeTexture);
 			spike.setTexture2(spikeTexture2);
 			addObject(spike);
 		}

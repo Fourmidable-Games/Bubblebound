@@ -2,6 +2,7 @@ package edu.cornell.gdiac.bubblebound;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
@@ -53,6 +54,7 @@ public class LevelEditorV2 {
     private List<List<Integer>> tileMap = new ArrayList<>();
     private DudeModel player;
     private PlayerController playerController;
+    private ArrayList<TextureRegion> spikeTextures;
 
     public LevelEditorV2(PlayerController pc) {
         jsonName = "lvl1.json";
@@ -64,8 +66,9 @@ public class LevelEditorV2 {
         playerController = pc;
     }
 
-    public void readTileTextures(ArrayList<TextureRegion> textures) {
+    public void readTileTextures(ArrayList<TextureRegion> textures, ArrayList<TextureRegion> spike) {
         textureObjects = textures;
+        spikeTextures = spike;
     }
 
 
@@ -230,8 +233,45 @@ public class LevelEditorV2 {
                                 wo.setX(wo.getX() - 1);
                             }
 
+                            if (goals.getInt("gid") == 206) {
+
+                                wo.setTexture(spikeTextures.get(4));
+
+                            }
+
+                            else if (goals.getInt("gid") == 60) {
+
+                                wo.setTexture(spikeTextures.get(3));
+
+                            }
+
+                            else if (goals.getInt("gid") == 87) {
+
+                                wo.setTexture(spikeTextures.get(0));
+
+                            }
+
+                            else if (goals.getInt("gid") == 88) {
+
+                                wo.setTexture(spikeTextures.get(1));
+
+                            }
+
+                            else if (goals.getInt("gid") == 82) {
+
+                                wo.setTexture(spikeTextures.get(2));
+
+                            }
+
+                            else {
+                                wo.setTexture(spikeTextures.get(5));
+                            }
+
                             spikes.add(wo);
+
                         }
+
+
 
                     }
 
@@ -462,10 +502,92 @@ public class LevelEditorV2 {
                                         1
                                 );
 
+                                int arrayOffset = 60;
+
+                                boolean flip = false;
 
 
-                                wo.setTexture(textureObjects.get(k-61));
-                                boxes.add(wo);
+//                                if (k == 153 || k == 154) {
+//                                    arrayOffset = arrayOffset + 63;
+//                                }
+//
+//                                else if (k > 94 && k < 140) {
+//                                    arrayOffset = arrayOffset;
+//                                }
+//
+                                if (k == 153) {
+                                    k = arrayOffset + 35;
+                                }
+
+                                else if ((k - arrayOffset) > textureObjects.size() -1 || k < 0) {
+                                    flip = true;
+                                }
+
+//                                else if (k > 200) {
+//
+//                                    flip = true;
+//                                    int flippedH = k | 0x80000000;;
+//                                    int flippedV = k ^ 0x40000000;
+//                                    int flippedBoth = k | 0xC0000000;
+//
+//
+//                                    boolean flippedHbool = (k & flippedH) == flippedH;
+//                                    boolean flippedVbool = (k & flippedV) == flippedV;
+//                                    boolean flippedBothbool = (k & flippedBoth) == flippedBoth;
+//
+//                                    if (originalTile == 152 || originalTile == 153) {
+//                                        arrayOffset = arrayOffset + 63;
+//                                    }
+//
+//                                    else if (originalTile > 94 && originalTile < 140) {
+//                                        arrayOffset = arrayOffset + 4;
+//                                    }
+//
+//                                    if (flippedHbool) {
+//
+//                                        TextureRegion result = textureObjects.get(originalTile-arrayOffset);
+//                                        result.flip(true, false);
+//
+//                                        wo.setTexture(result);
+//                                        boxes.add(wo);
+//
+//                                    }
+//
+//                                    else if (flippedVbool) {
+//
+//                                        TextureRegion result = textureObjects.get(originalTile-arrayOffset);
+//                                        result.flip(false, true);
+//
+//                                        wo.setTexture(result);
+//                                        boxes.add(wo);
+//
+//                                    }
+//
+//                                    else if (flippedBothbool) {
+//
+//                                        TextureRegion result = textureObjects.get(originalTile-arrayOffset);
+//                                        result.flip(true, true);
+//
+//                                        wo.setTexture(result);
+//                                        boxes.add(wo);
+//
+//                                    }
+//
+//
+//
+//                                }
+
+                                if (!flip) {
+
+                                    wo.setTexture(textureObjects.get(k-arrayOffset));
+                                    boxes.add(wo);
+
+                                }
+
+                                else {
+                                    wo.setTexture(textureObjects.get(textureObjects.size()-1));
+                                    boxes.add(wo);
+                                }
 
                             }
                         }
