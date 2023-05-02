@@ -174,11 +174,13 @@ public class Spike extends SimpleObstacle {
 
     @Override
     public void draw(GameCanvas canvas) {
+        float sx = drawScale.x / 64f;
+        float sy = drawScale.y / 64f;
         if (texture != null) {
             if(grav == 1) {
-                canvas.draw(texture, Color.WHITE, origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.x, getAngle(), 0.75f, 0.75f);
+                canvas.draw(texture, Color.WHITE, origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.x, getAngle(), sx, sy);
             }else{
-                canvas.draw(texture2, Color.WHITE, origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.x, getAngle(), 0.5f, 0.5f);
+                canvas.draw(texture2, Color.WHITE, origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.x, getAngle(), sx, sy);
             }
         }
     }

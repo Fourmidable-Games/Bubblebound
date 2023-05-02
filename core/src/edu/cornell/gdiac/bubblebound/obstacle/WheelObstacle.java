@@ -175,13 +175,14 @@ public class WheelObstacle extends SimpleObstacle {
 
 	@Override
 	public void draw(GameCanvas canvas) {
+		float sx = drawScale.x / 64f;
+		float sy = drawScale.y / 64f;
 		if (texture != null && d) {
 
-
 			if(grav == 1) {
-				canvas.draw(texture,Color.GOLD,origin.x,origin.y,getX()*drawScale.x,getY()*drawScale.y,getAngle(), 1.4F*getRadius(), 1.4F*getRadius());
+				canvas.draw(texture,Color.GOLD,origin.x,origin.y,getX()*drawScale.x,getY()*drawScale.y,getAngle(), sx, sy);
 			}else{
-				canvas.draw(texture,Color.WHITE,origin.x,origin.y,getX()*drawScale.x,getY()*drawScale.y,getAngle(), 1.4F*getRadius(), 1.4f*getRadius());
+				canvas.draw(texture,Color.WHITE,origin.x,origin.y,getX()*drawScale.x,getY()*drawScale.y,getAngle(), sx, sy);
 			}
 
 		}

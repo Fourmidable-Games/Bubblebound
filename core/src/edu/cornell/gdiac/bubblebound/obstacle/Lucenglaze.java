@@ -62,8 +62,10 @@ public class Lucenglaze extends BoxObstacle{
                     ////system.out.println("uh oh");
                     break;
             }
+            float sx = drawScale.x / 64f;
+            float sy = drawScale.y / 64f;
             TextureRegion temp = (triggered) ? texture : dormant;
-            canvas.draw(temp, Color.WHITE, ox, oy, getX() * drawScale.x, getY() * drawScale.x, (float)Math.toRadians(angle), 0.5F, 0.5F);
+            canvas.draw(temp, Color.WHITE, ox, oy, getX() * drawScale.x, getY() * drawScale.x, (float)Math.toRadians(angle), sx, sy);
         }
 
     }

@@ -103,13 +103,15 @@ public class Enemy extends CapsuleObstacle { //capsule not working for some reas
      */
     public void draw(GameCanvas canvas) {
 
+        float sx = drawScale.x / 64f;
+        float sy = drawScale.y / 64f;
         float x = getWidth()*drawScale.x / 2;
         float y = getHeight()*drawScale.y / 2;
 
         float effect = faceRight ? 1.0f : -1.0f;;
         float upside = (grav == -1) ? -1.5f : 1.5f;
         //////system.out.println(texture);
-        canvas.draw(texture, Color.WHITE,origin.x,origin.y,getX()*drawScale.x,getY()*drawScale.y,getAngle(),effect,upside);
+        canvas.draw(texture, Color.WHITE,origin.x,origin.y,getX()*drawScale.x,getY()*drawScale.y,getAngle(),sx * effect,sy * upside);
 
 
 

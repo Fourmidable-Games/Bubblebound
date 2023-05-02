@@ -200,6 +200,9 @@ public class PlatformController implements ContactListener, Screen {
 	protected TextureRegion dormantlucen;
 	protected TextureRegion sundropTexture;
 
+
+	protected TextureRegion[] borderTextures = new TextureRegion[5];
+
 	/** Exit code for quitting the game */
 	public static final int EXIT_QUIT = 0;
 	/** Exit code for advancing to next level */
@@ -217,9 +220,9 @@ public class PlatformController implements ContactListener, Screen {
 	public static final int WORLD_POSIT = 2;
 
 	/** Width of the game world in Box2d units */
-	protected static final float DEFAULT_WIDTH  = 32.0f;
+	protected static final float DEFAULT_WIDTH  = 64.0f;
 	/** Height of the game world in Box2d units */
-	protected static final float DEFAULT_HEIGHT = 18.0f;
+	protected static final float DEFAULT_HEIGHT = 32.0f;
 	/** The default value of gravity (going down) */
 	protected static final float DEFAULT_GRAVITY = -4.9f;
 
@@ -284,9 +287,13 @@ public class PlatformController implements ContactListener, Screen {
 
 	private List<PoisonGas> poisons = new ArrayList();
 
+	private List<Border> borders = new ArrayList<>();
+
 	private Token level4Token;
 
 	private boolean level4TokenCollected = false;
+
+
 
 
 	/**
@@ -295,7 +302,7 @@ public class PlatformController implements ContactListener, Screen {
 	 * The game has default gravity and other settings
 	 */
 	public PlatformController() {
-		Rectangle worldBounds = new Rectangle(0,0,DEFAULT_WIDTH*2,DEFAULT_HEIGHT*2);
+		Rectangle worldBounds = new Rectangle(0,0,DEFAULT_WIDTH,DEFAULT_HEIGHT);
 		Vector2 worldGravityVector = new Vector2(0, DEFAULT_GRAVITY);
 		world = new World(worldGravityVector,false);
 		scale = new Vector2(1920/CAMERA_WIDTH,1080/CAMERA_HEIGHT);
@@ -407,6 +414,10 @@ public class PlatformController implements ContactListener, Screen {
 		spikeTextureList.add(spikeTexture);
 
 
+		for(int i = 0; i < 5; i++){
+			//borderTextures[i] = new TextureRegion(directory.getEntry("platform:border" + i, Texture.class));
+		}
+
 
 		heart = new TextureRegion(directory.getEntry("platform:heart", Texture.class));
 		brokenheart = new TextureRegion(directory.getEntry("platform:brokenheart",Texture.class));
@@ -457,6 +468,7 @@ public class PlatformController implements ContactListener, Screen {
 		lucens.clear();
 		poisons.clear();
 		addQueue.clear();
+		borders.clear();
 		if(doors!=null) doors.clear();
 
 
@@ -495,7 +507,6 @@ public class PlatformController implements ContactListener, Screen {
 		List<List<Float>> projEnemyData = Level2.getProjEnemyData();
 		doors = Level2.getDoors();
 		enemies = Level2.getEnemies();
-
 
 
 
@@ -1194,6 +1205,8 @@ public class PlatformController implements ContactListener, Screen {
 		bubble.setGrappled(true);
 		float dwidth  = bridgeTexture.getRegionWidth()/scale.x;
 		float dheight = bridgeTexture.getRegionHeight()/scale.y;
+		dwidth = 0.3125f;
+		dheight = 0.125f; //TODO: find better numbers or do bridgeTexture.getRegionWidth() /64;
 		RopeBridge bridge = new RopeBridge(constants.get("bridge"), dwidth / 2,dheight,bubble.getBody(), avatar);
 		bridge.setTexture(bridgeTexture);
 		bridge.setDrawScale(scale);
@@ -1863,22 +1876,38 @@ public class PlatformController implements ContactListener, Screen {
 
 	public void updateCamera(float x, float y){
 		Vector2 temp = new Vector2(x, y);
-		temp.sub(cameraCoords).scl(0.1f, 0.5f); //0.01 is how much it lags in terms of x (smaller means it mvoes slower)
-		boolean movex = true;                           //0.5 is how much it lags in terms of y
-		boolean movey = true;
+		if(x + (scale.x * CAMERA_WIDTH / 2) >= bounds.getWidth() * scale.x){
+			x = (bounds.getWidth() - (CAMERA_WIDTH / 2f)) * scale.x; //right side
+		}else if(x - (scale.x * CAMERA_WIDTH / 2) <= 0){
+			x = (CAMERA_WIDTH / 2f) * scale.x; //left side
+		}
+		if(y + (scale.y * CAMERA_HEIGHT / 2) >= bounds.getHeight() * scale.y){
+			y = (bounds.getHeight() - (CAMERA_HEIGHT / 2f)) * scale.y;
+		} else if(y - (scale.y * CAMERA_HEIGHT / 2) <= 0){
+			y = (CAMERA_HEIGHT / 2f) * scale.y;
+		}
 
-		if((temp.x > 0 && cameraCoords.x + (scale.x * CAMERA_WIDTH / 2) >= bounds.getWidth() * scale.x) || (temp.x < 0 && cameraCoords.x - (scale.x * CAMERA_WIDTH / 2) <= 0) ){
-			movex = false; //check if camera reached left or right edge
-		}
-		if((temp.y > 0 && cameraCoords.y + (scale.y * CAMERA_HEIGHT / 2) >= bounds.getHeight() * scale.y) || (temp.y < 0 && cameraCoords.y - (scale.y * CAMERA_HEIGHT / 2) <= 5) ){
-			movey = false; //check if camera reached top or bottom
-		}
-		if(movex){
-			cameraCoords.x += temp.x;
-		}
-		if(movey){
-			cameraCoords.y += temp.y;
-		}
+		cameraCoords.x = x;
+		cameraCoords.y = y;
+//
+//
+//
+//		temp.sub(cameraCoords).scl(0.1f, 0.5f); //0.01 is how much it lags in terms of x (smaller means it mvoes slower)
+//		boolean movex = true;                           //0.5 is how much it lags in terms of y
+//		boolean movey = true;
+//
+//		if((temp.x > 0 && cameraCoords.x + (scale.x * CAMERA_WIDTH / 2) >= bounds.getWidth() * scale.x) || (temp.x < 0 && cameraCoords.x - (scale.x * CAMERA_WIDTH / 2) <= 0) ){
+//			movex = false; //check if camera reached left or right edge
+//		}
+//		if((temp.y > 0 && cameraCoords.y + (scale.y * CAMERA_HEIGHT / 2) >= bounds.getHeight() * scale.y) || (temp.y < 0 && cameraCoords.y - (scale.y * CAMERA_HEIGHT / 2) <= 5) ){
+//			movey = false; //check if camera reached top or bottom
+//		}
+//		if(movex){
+//			cameraCoords.x += temp.x;
+//		}
+//		if(movey){
+//			cameraCoords.y += temp.y;
+//		}
 
 		canvas.camera.position.set(cameraCoords, 0);
 		canvas.camera.update();
@@ -1890,6 +1919,46 @@ public class PlatformController implements ContactListener, Screen {
 
 	public void addZone(Zone z){
 		zones.add(z);
+
+		for(int i = 0; i < z.height; i++){
+			if(checkAndRemoveBorder(z.xpos, z.ypos + i, true)){ //left side
+				Border b = new Border(z.xpos, z.ypos + i, true);
+				b.setDrawScale(scale);
+				b.setTexture(borderTextures[i % 5]);
+				borders.add(b);
+			}
+			if(checkAndRemoveBorder(z.xpos + z.width, z.ypos + i, true)){
+				Border b = new Border(z.xpos + z.width, z.ypos + i, true);
+				b.setDrawScale(scale);
+				b.setTexture(borderTextures[i % 5]);
+				borders.add(b);
+			}
+		}
+		for(int i = 0; i < z.width; i++){
+			if(checkAndRemoveBorder(z.xpos + i, z.ypos, false)){ //bottom side
+				Border b = new Border(z.xpos + i, z.ypos, false);
+				b.setDrawScale(scale);
+				b.setTexture(borderTextures[i % 5]);
+				borders.add(b);
+			}
+			if(checkAndRemoveBorder(z.xpos + i, z.ypos + z.height, false)){ //top side
+				Border b = new Border(z.xpos + i, z.ypos + z.height, false);
+				b.setDrawScale(scale);
+				b.setTexture(borderTextures[i % 5]);
+				borders.add(b);
+			}
+		}
+	}
+
+	public boolean checkAndRemoveBorder(float x, float y, boolean vertical){
+		for(int i = 0; i < borders.size(); i++){
+			Border b = borders.get(i);
+			if(b.compare(x, y, vertical)){
+				borders.remove(b);
+				return false;
+			}
+		}
+		return true;
 	}
 
 	int bubblesleft = 4;
@@ -1931,6 +2000,9 @@ public class PlatformController implements ContactListener, Screen {
 //			int x = canvas.wrapX(cameraCoords.x, background2.getWidth()) + (int)(z.xpos*scale.x); //find parallaxed x coord
 //			TextureRegion temp = new TextureRegion(text, x, y,(int)(z.width*scale.x), (int)(z.height * scale.y)); //select only needed part of image
 //			canvas.draw(temp, z.xpos * scale.x, z.ypos * scale.y);
+		}
+		for(Border b: borders){
+			//b.draw(canvas);
 		}
 		canvas.resetColor();
 		canvas.end();

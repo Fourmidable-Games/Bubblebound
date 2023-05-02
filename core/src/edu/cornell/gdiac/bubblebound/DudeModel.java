@@ -629,7 +629,8 @@ public class DudeModel extends CapsuleObstacle {
 	 * @param canvas Drawing context
 	 */
 	public void draw(GameCanvas canvas) {
-
+		float sx = drawScale.x / 64f;
+		float sy = drawScale.y / 64f;
 		float x = getWidth()*drawScale.x / 2;
 		float y = getHeight()*drawScale.y / 2;
 
@@ -639,7 +640,7 @@ public class DudeModel extends CapsuleObstacle {
 
 		}
 		else {
-			canvas.draw(texture, Color.WHITE,origin.x,origin.y,getX()*drawScale.x,getY()*drawScale.y,getAngle(),0.5f*effect,0.5f*upside);
+			canvas.draw(texture, Color.WHITE,origin.x,origin.y,getX()*drawScale.x,getY()*drawScale.y,getAngle(),sx*effect,sy*upside);
 		}
 
 
