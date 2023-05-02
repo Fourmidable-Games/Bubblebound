@@ -1312,7 +1312,7 @@ public class PlatformController implements ContactListener, Screen {
 				Vector2 temp;
 				if(bd1 == avatar){
 					temp = avatar.getPosition().sub(bd2.getPosition());
-					if(temp.y * bd2.grav >  0.8f){
+					if(temp.y * avatar.grav >  0.8f){
 						avatar.getBody().applyLinearImpulse(new Vector2(0, 15), avatar.getPosition(), true);
 						Bubble b = (Bubble) bd2;
 						if(!b.statc){
