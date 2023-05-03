@@ -542,6 +542,8 @@ public class DudeModel extends CapsuleObstacle {
 	 */
 	int counter_idle = 0;
 	int delay_idle = 40;
+	int counter_jump = 0;
+	int delay_jump = 60;
 	public void update() {
 		playerController.update();
 		if (animate) {
@@ -549,7 +551,7 @@ public class DudeModel extends CapsuleObstacle {
 				if (counter1 == 0) { // execute setFrame only when counter reaches 0
 					int next = ii++;
 					filmstrip.setFrame(next % 11);
-					filmstrip_jump.setFrame(next % 1);
+
 					filmstrip_fall.setFrame(next % 1);
 					filmstrip_top.setFrame(next % 1);
 					filmstrip_up.setFrame(0);
@@ -558,6 +560,7 @@ public class DudeModel extends CapsuleObstacle {
 				if (counter_idle == 0) {
 					filmstrip_idle.setFrame(ii % 3);
 					filmstrip_swing.setFrame(ii % 3);
+					filmstrip_jump.setFrame(ii % 3);
 				}
 				counter_idle = (counter_idle + 1) % delay_idle;
 				counter1 = (counter1 + 1) % delay1; // increment counter and reset to 0 when it reaches delay
@@ -567,7 +570,6 @@ public class DudeModel extends CapsuleObstacle {
 				filmstrip.setFrame(0);
 			}
 		}
-//		super.update(dt);
 	}
 	public boolean isInvincible(){
 		return playerController.isInvincible();

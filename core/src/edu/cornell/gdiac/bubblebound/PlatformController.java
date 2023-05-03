@@ -334,7 +334,7 @@ public class PlatformController implements ContactListener, Screen {
 		idleText = directory.getEntry("platform:dude5", Texture.class);
 		idleStrip = new FilmStrip(idleText, 1, 3, 3);
 		jumpText = directory.getEntry("platform:dude6", Texture.class);
-		jumpStrip = new FilmStrip(jumpText, 1, 1, 1);
+		jumpStrip = new FilmStrip(jumpText, 1, 3, 3);
 		fallText = directory.getEntry("platform:dude7", Texture.class);
 		fallStrip = new FilmStrip(fallText, 1, 1, 1);
 		topText = directory.getEntry("platform:dude8", Texture.class);
@@ -1134,7 +1134,7 @@ public class PlatformController implements ContactListener, Screen {
 			else avatar.setTexture(jumpStrip);
 		}
 		else if (!avatar.isGrounded() && avatar.getVY() > -0.01f && avatar.getVY() < 0.01f) avatar.setTexture(topStrip);
-		//Falling down
+
 		else if ((avatar.getGravZone() == 1 && !avatar.isGrounded() && avatar.getVY() < 0f) ||
 				(avatar.getGravZone() == -1 && !avatar.isGrounded() && avatar.getVY() > 0f)) {
 			if(Math.abs(avatar.getVX()) < 0.1) avatar.setTexture(downStrip);
