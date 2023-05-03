@@ -453,6 +453,9 @@
         "platform:brokenheart": "platform/brokenheart.png",
         "platform:sundrop": "platform/sundrop.png",
         "platform:bullet": "platform/sundropshot.png",
+        "platform:border0": "platform/border0.png",
+      "platform:border1": "platform/border1.png",
+      "platform:border2": "platform/border2.png",
     },
     "jsons"  : {
         "platform:constants": "platform/constants.json",
