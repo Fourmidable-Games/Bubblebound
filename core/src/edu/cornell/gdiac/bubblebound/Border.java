@@ -3,6 +3,7 @@ package edu.cornell.gdiac.bubblebound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import edu.cornell.gdiac.util.FilmStrip;
 
 public class Border {
     public float x;
@@ -10,6 +11,7 @@ public class Border {
     public boolean vertical;
     public TextureRegion texture;
     public Vector2 scale;
+    private FilmStrip filmstrip;
 
     public Border(float x, float y, boolean v){
         this.x = x;
