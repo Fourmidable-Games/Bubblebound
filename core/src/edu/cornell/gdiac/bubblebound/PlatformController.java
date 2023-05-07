@@ -2041,22 +2041,24 @@ public class PlatformController implements ContactListener, Screen {
 	}
 
 
-	private float horizontal_parallax;
-	private float vertical_parallax;
+	private float horizontal_parallax = 0.8f;
+	private float vertical_parallax = 2;
 
 	public void setParallax(TextureRegion bg){
 		float wpixels = bounds.getWidth()*scale.x;
 		float hpixels = bounds.getHeight()*scale.y;
-		System.out.println("wpixels: " + wpixels);
-		System.out.println("hpixels: " + hpixels);
-		System.out.println(bg.getRegionWidth());
-		System.out.println(bg.getRegionHeight());
-		horizontal_parallax = (float)(bg.getRegionWidth()) / wpixels;
-		vertical_parallax = (float)(bg.getRegionHeight()) / hpixels;
+//		System.out.println("wpixels: " + wpixels);
+//		System.out.println("hpixels: " + hpixels);
+//		System.out.println(bg.getRegionWidth());
+//		System.out.println(bg.getRegionHeight());
+		if(canvas.isFullscreen()) {
+			horizontal_parallax = (float) (bg.getRegionWidth()) / wpixels;
+			vertical_parallax = (float) (bg.getRegionHeight()) / hpixels;
+		}
 //		horizontal_parallax = (horizontal_parallax > 1) ? 1 : horizontal_parallax;
 //		vertical_parallax = (vertical_parallax > 1) ? 1 : vertical_parallax;
-		System.out.println("hparallax: " + horizontal_parallax);
-		System.out.println("vparallax: " + vertical_parallax);
+//		System.out.println("hparallax: " + horizontal_parallax);
+//		System.out.println("vparallax: " + vertical_parallax);
 	}
 
 	public void drawPrimaryBackground(TextureRegion bg){
@@ -2071,8 +2073,10 @@ public class PlatformController implements ContactListener, Screen {
 		temp.x -= 250; //offset so player doesn'
 		temp.y -= 250;
 		//System.out.println("camera: " + cameraCoords);
-		System.out.println("diff: " +  temp.sub(cameraCoords));
-
+		System.out.println("background");
+		System.out.println(temp);
+		System.out.println("camera");
+		System.out.println(cameraCoords);
 		canvas.draw(bg, temp.x, temp.y);
 	}
 
@@ -2083,6 +2087,8 @@ public class PlatformController implements ContactListener, Screen {
 		temp.y -= canvas.getHeight() / 2f;
 		temp.x *= horizontal_parallax;
 //		temp.y *= vertical_parallax;
+		temp.x -= 250; //offset so player doesn'
+		temp.y -= 250;
 		temp.x = (z.xpos * scale.x) - temp.x;
 		temp.y = (z.ypos * scale.y) - temp.y;
 		float y = bg.getHeight() - temp.y - (z.height * scale.y); //finds y coord
@@ -2107,11 +2113,11 @@ public class PlatformController implements ContactListener, Screen {
 
 
 		canvas.begin();
-//		drawPrimaryBackground(background);
-		canvas.drawWrapped(skybackground, cameraCoords.x, cameraCoords.y);
+		drawPrimaryBackground(skybackground);
+//		canvas.drawWrapped(skybackground, cameraCoords.x, cameraCoords.y);
 		for(Zone z: zones){ //draws the backgrounds of the zones
-//			drawSecondaryBackground(background2, z);
-			z.drawBackground(icebackground, canvas, cameraCoords.x);
+			drawSecondaryBackground(icebackground, z);
+//			z.drawBackground(icebackground, canvas, cameraCoords.x);
 //			int y = background2.getHeight() - (int)(z.ypos * scale.y) - (int)(z.height * scale.y); //finds y coord
 //			int x = canvas.wrapX(cameraCoords.x, background2.getWidth()) + (int)(z.xpos*scale.x); //find parallaxed x coord
 //			TextureRegion temp = new TextureRegion(text, x, y,(int)(z.width*scale.x), (int)(z.height * scale.y)); //select only needed part of image
