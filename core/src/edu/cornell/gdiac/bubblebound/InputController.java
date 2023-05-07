@@ -356,7 +356,7 @@ public class InputController {
 		doorPressed = (secondary && doorPressed) || (Gdx.input.isKeyPressed(Input.Keys.E));
 		healthRestorePressed = (secondary && healthRestorePressed) || (Gdx.input.isKeyPressed(Input.Keys.Q));
 		debugPressed = (secondary && debugPressed) || (Gdx.input.isKeyPressed(Input.Keys.L));
-		primePressed = (secondary && primePressed) || (Gdx.input.isKeyPressed(Input.Keys.UP) || (Gdx.input.isKeyPressed(Input.Keys.W)));
+		primePressed = (secondary && primePressed) || (Gdx.input.isKeyPressed(Input.Keys.UP) || (Gdx.input.isKeyPressed(Input.Keys.W)) || (Gdx.input.isKeyPressed(Input.Keys.SPACE)));
 		secondPressed = (secondary && secondPressed) || (Gdx.input.isKeyPressed(Input.Keys.SPACE));
 		prevPressed = (secondary && prevPressed) || (Gdx.input.isKeyPressed(Input.Keys.P));
 		nextPressed = (secondary && nextPressed) || (Gdx.input.isKeyPressed(Input.Keys.N));
