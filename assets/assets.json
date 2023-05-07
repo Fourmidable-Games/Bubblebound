@@ -6,6 +6,7 @@
             "wrapV": "repeated"
         },
       "shared:bubble2": "shared/new_bubble.png",
+      "shared:bubblerange": "shared/range.png",
       "shared:ice" : {
         "file":  "shared/icetile.png",
         "wrapU": "repeated",
@@ -924,6 +925,7 @@
         "platform:dude8":  "platform/dude8.png",
         "platform:dudeUp":  "platform/Straight-Up.png",
         "platform:dudeDown":  "platform/Straight-Down.png",
+        "platform:sundrop" : "platform/Sundrop_SpriteSheet.png",
         "platform:spike":  "platform/spike.png",
         "platform:spike2": "platform/spike2.png",
         "platform:token": "platform/token.png",

@@ -61,6 +61,8 @@ public class PlatformController implements ContactListener, Screen {
 	protected FilmStrip downStrip;
 	protected Texture topText;
 	protected FilmStrip topStrip;
+	protected Texture sunText;
+	protected FilmStrip sunStrip;
 	protected Texture bubblecooldownText;
 	protected TextureRegion emptyBubbleCooldown;
 	protected TextureRegion fullBubbleCooldown;
@@ -138,11 +140,13 @@ public class PlatformController implements ContactListener, Screen {
 	/** The texture for the exit condition */
 	protected Texture goalText;
 	protected FilmStrip bubble;
+	protected FilmStrip bubble2;
 	protected FilmStrip enemyStrip;
 	protected Texture enemyText;
 
 	protected TextureRegion tokenText;
 	protected Texture bubbleText;
+	protected Texture bubbleText2;
 	/** The font for giving messages to the player */
 	protected TextureRegion background;
 	protected Texture background2;
@@ -355,6 +359,8 @@ public class PlatformController implements ContactListener, Screen {
 		upStrip = new FilmStrip(upText, 1 ,1 ,1);
 		downText = directory.getEntry("platform:dudeDown", Texture.class);
 		downStrip = new FilmStrip(downText, 1 ,1 ,1);
+		sunText = directory.getEntry("platform:sundrop", Texture.class);
+		sunStrip = new FilmStrip(sunText, 1, 8, 8);
 		bubblecooldownText = directory.getEntry("platform:bubblecooldown", Texture.class);
 		bubblecooldownStrip = new FilmStrip(bubblecooldownText, 1, 8, 8);
 		emptyBubbleCooldown = new TextureRegion(directory.getEntry("platform:emptyCooldownBubble", Texture.class));
@@ -388,10 +394,12 @@ public class PlatformController implements ContactListener, Screen {
 		goalStrip = new FilmStrip(goalText, 1, 8, 8);
 		background = new TextureRegion(directory.getEntry("background:underground", Texture.class));
 		bubbleText = directory.getEntry( "shared:bubble2", Texture.class );
+		bubbleText2 = directory.getEntry( "shared:bubblerange", Texture.class );
 		displayFont = directory.getEntry( "shared:retro" ,BitmapFont.class);
 		background2 = directory.getEntry("background:temp", Texture.class);
 		losing = new TextureRegion(directory.getEntry("losing", Texture.class));
 		bubble = new FilmStrip(bubbleText, 1, 8, 8);
+		bubble2 = new FilmStrip(bubbleText2, 1, 8, 8);
 		enemyText = directory.getEntry( "platform:dude2", Texture.class );
 		enemyStrip = new FilmStrip(enemyText, 1, 9, 9);
 
@@ -860,7 +868,14 @@ public class PlatformController implements ContactListener, Screen {
 		////system.out.println("]");*/
 		for(int i = 0; i < bubbles.size(); i++){
 			Bubble b = bubbles.get(i);
-			b.initialize(bubble);
+			if(b.canRopeTo) {
+				b.setTexture(bubble2);
+				b.initialize(bubble2);
+			}
+			else {
+				b.setTexture(bubble);
+				b.initialize(bubble);
+			}
 			b.update();
 			b.canRopeTo = false;
 			if(b.timedOut()){
@@ -968,6 +983,8 @@ public class PlatformController implements ContactListener, Screen {
 
 		for(int i = 0; i < projenemies.size(); i++){
 			ProjEnemy pe = projenemies.get(i);
+			pe.initialize(sunStrip);
+
 			if(pe.update()){
 				if(canShoot(pe)) {
 					createBullet(pe);

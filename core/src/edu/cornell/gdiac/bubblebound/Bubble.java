@@ -129,10 +129,11 @@ public class Bubble extends WheelObstacle {
 
     public void outline(GameCanvas canvas){
         canvas.end();
-        canvas.shape.begin(ShapeRenderer.ShapeType.Filled);
+        /*canvas.shape.begin(ShapeRenderer.ShapeType.Filled);
         canvas.shape.setColor(Color.BLACK);
         canvas.shape.circle(getX()*drawScale.x,getY()*drawScale.y,getRadius()*drawScale.x*1.15f);
-        canvas.shape.end();
+        canvas.shape.end();*/
+
         canvas.begin();
     }
     @Override
@@ -152,7 +153,8 @@ public class Bubble extends WheelObstacle {
                 //white.a = alpha;
 
                 if (canRopeTo) {
-                    outline(canvas);
+                    //outline(canvas);
+                    //filmstrip = filmstrip2;
                 }
                 if (grav == 1) {
                     canvas.draw(texture, gold, origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.y, getAngle(), sx, sy);

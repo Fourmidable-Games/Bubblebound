@@ -12,7 +12,7 @@ public class Border {
     public boolean vertical;
     public TextureRegion texture;
     public Vector2 scale;
-    protected FilmStrip filmstrip;
+    private FilmStrip filmstrip;
 
     public Border(float x, float y, boolean v, int borderStripNum){
         this.x = x;
