@@ -61,6 +61,8 @@ public class PlatformController implements ContactListener, Screen {
 	protected FilmStrip downStrip;
 	protected Texture topText;
 	protected FilmStrip topStrip;
+	protected Texture sunText;
+	protected FilmStrip sunStrip;
 	protected Texture bubblecooldownText;
 	protected TextureRegion emptyBubbleCooldown;
 	protected TextureRegion fullBubbleCooldown;
@@ -138,11 +140,13 @@ public class PlatformController implements ContactListener, Screen {
 	/** The texture for the exit condition */
 	protected Texture goalText;
 	protected FilmStrip bubble;
+	protected FilmStrip bubble2;
 	protected FilmStrip enemyStrip;
 	protected Texture enemyText;
 
 	protected TextureRegion tokenText;
 	protected Texture bubbleText;
+	protected Texture bubbleText2;
 	/** The font for giving messages to the player */
 	protected TextureRegion skybackground;
 	protected Texture icebackground;
@@ -201,7 +205,8 @@ public class PlatformController implements ContactListener, Screen {
 	protected TextureRegion sundropTexture;
 
 
-	protected TextureRegion[] borderTextures = new TextureRegion[5];
+	protected Texture[] borderTextures = new Texture[3];
+	protected FilmStrip[] borderStrips = new FilmStrip[3];
 
 	/** Exit code for quitting the game */
 	public static final int EXIT_QUIT = 0;
@@ -356,6 +361,8 @@ public class PlatformController implements ContactListener, Screen {
 		upStrip = new FilmStrip(upText, 1 ,1 ,1);
 		downText = directory.getEntry("platform:dudeDown", Texture.class);
 		downStrip = new FilmStrip(downText, 1 ,1 ,1);
+		sunText = directory.getEntry("platform:sundrop", Texture.class);
+		sunStrip = new FilmStrip(sunText, 1, 8, 8);
 		bubblecooldownText = directory.getEntry("platform:bubblecooldown", Texture.class);
 		bubblecooldownStrip = new FilmStrip(bubblecooldownText, 1, 8, 8);
 		emptyBubbleCooldown = new TextureRegion(directory.getEntry("platform:emptyCooldownBubble", Texture.class));
@@ -389,11 +396,13 @@ public class PlatformController implements ContactListener, Screen {
 		goalStrip = new FilmStrip(goalText, 1, 8, 8);
 
 		bubbleText = directory.getEntry( "shared:bubble2", Texture.class );
+		bubbleText2 = directory.getEntry( "shared:bubblerange", Texture.class );
 		displayFont = directory.getEntry( "shared:retro" ,BitmapFont.class);
 		skybackground = new TextureRegion(directory.getEntry("background:sky", Texture.class));
 		icebackground = directory.getEntry("background:ice", Texture.class);
 		losing = new TextureRegion(directory.getEntry("losing", Texture.class));
 		bubble = new FilmStrip(bubbleText, 1, 8, 8);
+		bubble2 = new FilmStrip(bubbleText2, 1, 8, 8);
 		enemyText = directory.getEntry( "platform:dude2", Texture.class );
 		enemyStrip = new FilmStrip(enemyText, 1, 9, 9);
 
@@ -417,9 +426,11 @@ public class PlatformController implements ContactListener, Screen {
 		spikeTextureList.add(spikeTexture);
 
 
-		for(int i = 0; i < 5; i++){
-			//borderTextures[i] = new TextureRegion(directory.getEntry("platform:border" + i, Texture.class));
+		for(int i = 0; i < 3; i++){
+			borderTextures[i] = directory.getEntry("platform:border" + i, Texture.class);
+			borderStrips[i] = new FilmStrip(borderTextures[i], 1, 12,12);
 		}
+
 
 
 		heart = new TextureRegion(directory.getEntry("platform:heart", Texture.class));
@@ -830,6 +841,7 @@ public class PlatformController implements ContactListener, Screen {
 //		for(Enemy e : enemies){e.update();}
 		updateLucens();
 		updatePoisons();
+		updateBorders();
 		updateDoors();
 		updateAvatar();
 	}
@@ -868,7 +880,14 @@ public class PlatformController implements ContactListener, Screen {
 		////system.out.println("]");*/
 		for(int i = 0; i < bubbles.size(); i++){
 			Bubble b = bubbles.get(i);
-			b.initialize(bubble);
+			if(b.canRopeTo) {
+				b.setTexture(bubble2);
+				b.initialize(bubble2);
+			}
+			else {
+				b.setTexture(bubble);
+				b.initialize(bubble);
+			}
 			b.update();
 			b.canRopeTo = false;
 			if(b.timedOut()){
@@ -959,6 +978,14 @@ public class PlatformController implements ContactListener, Screen {
 		}
 	}
 
+	private void updateBorders(){
+		for(int i = 0; i<borders.size(); i++){
+			Border border = borders.get(i);
+			border.initialize(borderStrips[border.getBorderStripNum()]);
+			border.update();
+		}
+	}
+
 	private void updateEnemies(){
 		for(int i = 0; i < enemies.size(); i++){
 			Enemy enemy = enemies.get(i);
@@ -968,6 +995,8 @@ public class PlatformController implements ContactListener, Screen {
 
 		for(int i = 0; i < projenemies.size(); i++){
 			ProjEnemy pe = projenemies.get(i);
+			pe.initialize(sunStrip);
+
 			if(pe.update()){
 				if(canShoot(pe)) {
 					createBullet(pe);
@@ -1955,29 +1984,29 @@ public class PlatformController implements ContactListener, Screen {
 
 		for(int i = 0; i < z.height; i++){
 			if(checkAndRemoveBorder(z.xpos, z.ypos + i, true)){ //left side
-				Border b = new Border(z.xpos, z.ypos + i, true);
+				Border b = new Border(z.xpos, z.ypos + i, true, (i%3));
 				b.setDrawScale(scale);
-				b.setTexture(borderTextures[i % 5]);
+				b.setTexture(borderStrips[i % 3]);
 				borders.add(b);
 			}
 			if(checkAndRemoveBorder(z.xpos + z.width, z.ypos + i, true)){
-				Border b = new Border(z.xpos + z.width, z.ypos + i, true);
+				Border b = new Border(z.xpos + z.width, z.ypos + i, true, (i%3));
 				b.setDrawScale(scale);
-				b.setTexture(borderTextures[i % 5]);
+				b.setTexture(borderStrips[i % 3]);
 				borders.add(b);
 			}
 		}
 		for(int i = 0; i < z.width; i++){
 			if(checkAndRemoveBorder(z.xpos + i, z.ypos, false)){ //bottom side
-				Border b = new Border(z.xpos + i, z.ypos, false);
+				Border b = new Border(z.xpos + i, z.ypos, false, (i%3));
 				b.setDrawScale(scale);
-				b.setTexture(borderTextures[i % 5]);
+				b.setTexture(borderStrips[i % 3]);
 				borders.add(b);
 			}
 			if(checkAndRemoveBorder(z.xpos + i, z.ypos + z.height, false)){ //top side
-				Border b = new Border(z.xpos + i, z.ypos + z.height, false);
+				Border b = new Border(z.xpos + i, z.ypos + z.height, false, (i%3));
 				b.setDrawScale(scale);
-				b.setTexture(borderTextures[i % 5]);
+				b.setTexture(borderStrips[i % 3]);
 				borders.add(b);
 			}
 		}
@@ -2095,7 +2124,7 @@ public class PlatformController implements ContactListener, Screen {
 			d.draw(canvas);
 		}
 		for(Border b: borders){
-			//b.draw(canvas);
+			b.draw(canvas);
 		}
 		for(Enemy e : enemies){
 			e.draw(canvas);

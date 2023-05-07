@@ -3,18 +3,51 @@ package edu.cornell.gdiac.bubblebound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import edu.cornell.gdiac.util.FilmStrip;
 
 public class Border {
     public float x;
     public float y;
+    private int borderStripNum;
     public boolean vertical;
     public TextureRegion texture;
     public Vector2 scale;
+    private FilmStrip filmstrip;
 
-    public Border(float x, float y, boolean v){
+    public Border(float x, float y, boolean v, int borderStripNum){
         this.x = x;
         this.y = y;
+        this.borderStripNum = borderStripNum;
         vertical = v;
+    }
+
+    public int getBorderStripNum(){
+        return borderStripNum;
+    }
+
+
+    protected int ii = 0;
+    protected int counter1 = 0;
+    protected final int delay1 = 6;
+    public void initialize(FilmStrip f){
+        filmstrip = f;
+        if (counter1 == 0) { // execute setFrame only when counter reaches 0
+            f.setFrame(ii++ % 8);
+        }
+        counter1 = (counter1 + 1) % delay1; // increment counter and reset to 0 when it reaches delay
+    }
+
+    protected int i;
+    protected int counter = 0;
+    protected final int delay = 50; // adjust this value to change the delay
+    public void update() {
+        if (filmstrip != null) {
+            if (counter == 0) { // execute setFrame only when counter reaches 0
+                int next = (i++) % 8;
+                filmstrip.setFrame(next);
+            }
+            counter = (counter + 1) % delay; // increment counter and reset to 0 when it reaches delay
+        }
     }
 
     public void setTexture(TextureRegion texture) {

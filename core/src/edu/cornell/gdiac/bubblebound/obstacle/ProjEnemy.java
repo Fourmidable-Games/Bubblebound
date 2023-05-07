@@ -7,6 +7,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import edu.cornell.gdiac.bubblebound.GameCanvas;
+import edu.cornell.gdiac.util.FilmStrip;
 
 public class ProjEnemy extends BoxObstacle{
 
@@ -14,6 +15,7 @@ public class ProjEnemy extends BoxObstacle{
 
     int shoottimer = 0; //shoot every 100 frames;
     int shootcooldown = 200;
+    private FilmStrip filmstrip;
     boolean shooting = false;
     private int rotation;
 
@@ -23,7 +25,17 @@ public class ProjEnemy extends BoxObstacle{
     public ProjEnemy(float x, float y, int r) {
         this(x, y, 1, 1, r);
     }
+    protected int i = 0;
+    protected int counter = 0;
+    protected final int delay = 6; // adjust this value to change the delay
 
+    public void initialize(FilmStrip f) {
+        filmstrip = f;
+        f.setFrame(0);
+    }
+    public boolean isShooting() {
+        return shooting;
+    }
     public ProjEnemy(float x, float y, float width, float height, int rotation) {
         super(x, y, 1, 1);
         this.setName("projenemy");
@@ -44,6 +56,16 @@ public class ProjEnemy extends BoxObstacle{
     }
 
     public boolean update(){
+        if(shooting) {
+            if (filmstrip != null) {
+                if (counter == 0) { // execute setFrame only when counter reaches 0
+                    int next = (i++) % 8;
+                    filmstrip.setFrame(next);
+                }
+                counter = (counter + 1) % delay; // increment counter and reset to 0 when it reaches delay
+            }
+        }
+
 //        //system.out.println(shooting);
 //        //system.out.println(shoottimer);
         if(shooting && shoottimer == 0){

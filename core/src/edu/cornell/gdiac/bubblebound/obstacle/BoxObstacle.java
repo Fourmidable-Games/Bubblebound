@@ -257,9 +257,8 @@ public class BoxObstacle extends SimpleObstacle {
 		float sy = drawScale.y / 64f;
 		if (isRope == true) {
 			if(drawtimer >= draworder){
-				//TODO scaling stuff for rope
 				sx *= 2;
-				sy *= 2;
+				sy*=2;
 				canvas.draw(texture, Color.WHITE, origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.x, getAngle(), sx, sy);
 			}
 			drawtimer++;

@@ -6,6 +6,7 @@
             "wrapV": "repeated"
         },
       "shared:bubble2": "shared/new_bubble.png",
+      "shared:bubblerange": "shared/range.png",
       "shared:ice" : {
         "file":  "shared/icetile.png",
         "wrapU": "repeated",
@@ -441,6 +442,7 @@
         "platform:dude8":  "platform/dude8.png",
         "platform:dudeUp":  "platform/Straight-Up.png",
         "platform:dudeDown":  "platform/Straight-Down.png",
+        "platform:sundrop" : "platform/Sundrop_SpriteSheet.png",
         "platform:spike":  "platform/spike.png",
         "platform:spike2": "platform/spike2.png",
         "platform:token": "platform/token.png",
@@ -453,6 +455,9 @@
         "platform:brokenheart": "platform/brokenheart.png",
         "platform:sundrop": "platform/sundrop.png",
         "platform:bullet": "platform/sundropshot.png",
+        "platform:border0": "platform/border0.png",
+      "platform:border1": "platform/border1.png",
+      "platform:border2": "platform/border2.png",
     },
     "jsons"  : {
         "platform:constants": "platform/constants.json",
