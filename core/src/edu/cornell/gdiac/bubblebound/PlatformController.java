@@ -2054,6 +2054,8 @@ public class PlatformController implements ContactListener, Screen {
 		if(canvas.isFullscreen()) {
 			horizontal_parallax = (float) (bg.getRegionWidth()) / wpixels;
 			vertical_parallax = (float) (bg.getRegionHeight()) / hpixels;
+		}else{
+			horizontal_parallax = 0.1f;
 		}
 //		horizontal_parallax = (horizontal_parallax > 1) ? 1 : horizontal_parallax;
 //		vertical_parallax = (vertical_parallax > 1) ? 1 : vertical_parallax;
@@ -2073,10 +2075,6 @@ public class PlatformController implements ContactListener, Screen {
 		temp.x -= 250; //offset so player doesn'
 		temp.y -= 250;
 		//System.out.println("camera: " + cameraCoords);
-		System.out.println("background");
-		System.out.println(temp);
-		System.out.println("camera");
-		System.out.println(cameraCoords);
 		canvas.draw(bg, temp.x, temp.y);
 	}
 
