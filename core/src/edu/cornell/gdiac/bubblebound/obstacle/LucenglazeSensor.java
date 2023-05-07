@@ -46,7 +46,7 @@ public class LucenglazeSensor extends BoxObstacle{
     }
     @Override
     public void draw(GameCanvas canvas){
-        return; //don't draw anything
+        this.lucen.draw(canvas);
     }
     public void setLucen(Lucenglaze lucen){
         this.lucen = lucen;

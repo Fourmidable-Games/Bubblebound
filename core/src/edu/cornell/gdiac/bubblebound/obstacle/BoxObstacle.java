@@ -169,7 +169,7 @@ public class BoxObstacle extends SimpleObstacle {
 
 
 	public void idk(){
-		fixture.filter.groupIndex = -2;
+		fixture.filter.groupIndex = -5;
 	}
 	/**
 	 * Create new fixtures for this body, defining the shape
@@ -258,7 +258,9 @@ public class BoxObstacle extends SimpleObstacle {
 		if (isRope == true) {
 			if(drawtimer >= draworder){
 				//TODO scaling stuff for rope
-				canvas.draw(texture, Color.WHITE, origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.x, getAngle(), 1, 1);
+				sx *= 2;
+				sy *= 2;
+				canvas.draw(texture, Color.WHITE, origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.x, getAngle(), sx, sy);
 			}
 			drawtimer++;
 		}

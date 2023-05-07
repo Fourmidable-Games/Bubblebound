@@ -116,6 +116,7 @@ public class Bubble extends WheelObstacle {
         }
         if(!statc && hang_timer < 0){
             setVY(bubble_speed * grav);
+            setVX(0);
         }
 //        super.update(dt);
     }

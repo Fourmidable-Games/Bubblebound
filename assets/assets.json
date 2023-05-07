@@ -413,11 +413,11 @@
         "wrapV": "repeated"
       },
 
-        "background:underground" : {
-            "file":  "platform/background2.png"
+        "background:ice" : {
+            "file":  "platform/icebackground.png"
         },
-      "background:temp" : {
-        "file": "platform/background1temp.png"
+      "background:sky" : {
+        "file": "platform/skybackground.png"
       },
       "losing" : {
         "file" : "shared/losing.png"

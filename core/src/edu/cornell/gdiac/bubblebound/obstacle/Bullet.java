@@ -17,7 +17,8 @@ public class Bullet extends WheelObstacle{
     public Bullet(float x, float y, float radius) {
 
         super(x, y, radius);
-
+        this.setSensor(true);
+        //fixture.filter.groupIndex = -5;
         setName("bullet");
         setBodyType(BodyDef.BodyType.DynamicBody);
         fixture.filter.groupIndex = -1;
