@@ -194,294 +194,289 @@
         "wrapV": "repeated"
       },
 
-      "ice35" : {
-        "file": "shared/35.png",
-        "wrapU": "repeated",
-        "wrapV": "repeated"
-      },
-      "ice36" : {
+      "shared:ice36" : {
         "file": "shared/36.png",
         "wrapU": "repeated",
         "wrapV": "repeated"
       },
-      "ice37" : {
+      "shared:ice37" : {
         "file": "shared/37.png",
         "wrapU": "repeated",
         "wrapV": "repeated"
       },
-      "ice38" : {
+      "shared:ice38" : {
         "file": "shared/38.png",
         "wrapU": "repeated",
         "wrapV": "repeated"
       },
-      "ice39" : {
+      "shared:ice39" : {
         "file": "shared/39.png",
         "wrapU": "repeated",
         "wrapV": "repeated"
       },
-      "ice40" : {
+      "shared:ice40" : {
         "file": "shared/40.png",
         "wrapU": "repeated",
         "wrapV": "repeated"
       },
-      "ice41" : {
+      "shared:ice41" : {
         "file": "shared/41.png",
         "wrapU": "repeated",
         "wrapV": "repeated"
       },
-      "ice42" : {
+      "shared:ice42" : {
         "file": "shared/42.png",
         "wrapU": "repeated",
         "wrapV": "repeated"
       },
-      "ice43" : {
+      "shared:ice43" : {
         "file": "shared/43.png",
         "wrapU": "repeated",
         "wrapV": "repeated"
       },
-      "ice44" : {
+      "shared:ice44" : {
         "file": "shared/44.png",
         "wrapU": "repeated",
         "wrapV": "repeated"
       },
-      "ice45" : {
+      "shared:ice45" : {
         "file": "shared/45.png",
         "wrapU": "repeated",
         "wrapV": "repeated"
       },
-      "ice46" : {
+      "shared:ice46" : {
         "file": "shared/46.png",
         "wrapU": "repeated",
         "wrapV": "repeated"
       },
-      "ice47" : {
+      "shared:ice47" : {
         "file": "shared/47.png",
         "wrapU": "repeated",
         "wrapV": "repeated"
       },
-      "ice48" : {
+      "shared:ice48" : {
         "file": "shared/48.png",
         "wrapU": "repeated",
         "wrapV": "repeated"
       },
-      "ice49" : {
+      "shared:ice49" : {
         "file": "shared/49.png",
         "wrapU": "repeated",
         "wrapV": "repeated"
       },
-      "ice50" : {
+      "shared:ice50" : {
         "file": "shared/50.png",
         "wrapU": "repeated",
         "wrapV": "repeated"
       },
-      "ice51" : {
+      "shared:ice51" : {
         "file": "shared/51.png",
         "wrapU": "repeated",
         "wrapV": "repeated"
       },
-      "ice52" : {
+      "shared:ice52" : {
         "file": "shared/52.png",
         "wrapU": "repeated",
         "wrapV": "repeated"
       },
-      "ice53" : {
+      "shared:ice53" : {
         "file": "shared/53.png",
         "wrapU": "repeated",
         "wrapV": "repeated"
       },
-      "ice54" : {
+      "shared:ice54" : {
         "file": "shared/54.png",
         "wrapU": "repeated",
         "wrapV": "repeated"
       },
-      "ice55" : {
+      "shared:ice55" : {
         "file": "shared/55.png",
         "wrapU": "repeated",
         "wrapV": "repeated"
       },
 
-      "ice56" : {
+      "shared:ice56" : {
         "file": "shared/56.png",
         "wrapU": "repeated",
         "wrapV": "repeated"
       },
-      "ice57" : {
+      "shared:ice57" : {
         "file": "shared/57.png",
         "wrapU": "repeated",
         "wrapV": "repeated"
       },
-      "ice58" : {
+      "shared:ice58" : {
         "file": "shared/58.png",
         "wrapU": "repeated",
         "wrapV": "repeated"
       },
-      "ice59" : {
+      "shared:ice59" : {
         "file": "shared/59.png",
         "wrapU": "repeated",
         "wrapV": "repeated"
       },
-      "ice60" : {
+      "shared:ice60" : {
         "file": "shared/60.png",
         "wrapU": "repeated",
         "wrapV": "repeated"
       },
-      "ice61" : {
+      "shared:ice61" : {
         "file": "shared/61.png",
         "wrapU": "repeated",
         "wrapV": "repeated"
       },
-      "ice62" : {
+      "shared:ice62" : {
         "file": "shared/62.png",
         "wrapU": "repeated",
         "wrapV": "repeated"
       },
-      "ice63" : {
+      "shared:ice63" : {
         "file": "shared/63.png",
         "wrapU": "repeated",
         "wrapV": "repeated"
       },
-      "ice64" : {
+      "shared:ice64" : {
         "file": "shared/64.png",
         "wrapU": "repeated",
         "wrapV": "repeated"
       },
-      "ice65" : {
+      "shared:ice65" : {
         "file": "shared/65.png",
         "wrapU": "repeated",
         "wrapV": "repeated"
       },
-      "ice66" : {
+      "shared:ice66" : {
         "file": "shared/66.png",
         "wrapU": "repeated",
         "wrapV": "repeated"
       },
-      "ice67" : {
+      "shared:ice67" : {
         "file": "shared/67.png",
         "wrapU": "repeated",
         "wrapV": "repeated"
       },
-      "ice68" : {
+      "shared:ice68" : {
         "file": "shared/68.png",
         "wrapU": "repeated",
         "wrapV": "repeated"
       },
-      "ice69" : {
+      "shared:ice69" : {
         "file": "shared/69.png",
         "wrapU": "repeated",
         "wrapV": "repeated"
       },
-      "ice70" : {
+      "shared:ice70" : {
         "file": "shared/70.png",
         "wrapU": "repeated",
         "wrapV": "repeated"
       },
-      "ice71" : {
+      "shared:ice71" : {
         "file": "shared/71.png",
         "wrapU": "repeated",
         "wrapV": "repeated"
       },
-      "ice72" : {
+      "shared:ice72" : {
         "file": "shared/72.png",
         "wrapU": "repeated",
         "wrapV": "repeated"
       },
-      "ice73" : {
+      "shared:ice73" : {
         "file": "shared/73.png",
         "wrapU": "repeated",
         "wrapV": "repeated"
       },
-      "ice74" : {
+      "shared:ice74" : {
         "file": "shared/74.png",
         "wrapU": "repeated",
         "wrapV": "repeated"
       },
-      "ice75" : {
+      "shared:ice75" : {
         "file": "shared/75.png",
         "wrapU": "repeated",
         "wrapV": "repeated"
       },
 
-      "ice76" : {
+      "shared:ice76" : {
         "file": "shared/76.png",
         "wrapU": "repeated",
         "wrapV": "repeated"
       },
-      "ice77" : {
+      "shared:ice77" : {
         "file": "shared/77.png",
         "wrapU": "repeated",
         "wrapV": "repeated"
       },
-      "ice78" : {
+      "shared:ice78" : {
         "file": "shared/78.png",
         "wrapU": "repeated",
         "wrapV": "repeated"
       },
-      "ice79" : {
+      "shared:ice79" : {
         "file": "shared/79.png",
         "wrapU": "repeated",
         "wrapV": "repeated"
       },
-      "ice80" : {
+      "shared:ice80" : {
         "file": "shared/80.png",
         "wrapU": "repeated",
         "wrapV": "repeated"
       },
-      "ice81" : {
+      "shared:ice81" : {
         "file": "shared/81.png",
         "wrapU": "repeated",
         "wrapV": "repeated"
       },
-      "ice82" : {
+      "shared:ice82" : {
         "file": "shared/82.png",
         "wrapU": "repeated",
         "wrapV": "repeated"
       },
-      "ice83" : {
+      "shared:ice83" : {
         "file": "shared/83.png",
         "wrapU": "repeated",
         "wrapV": "repeated"
       },
-      "ice84" : {
+      "shared:ice84" : {
         "file": "shared/84.png",
         "wrapU": "repeated",
         "wrapV": "repeated"
       },
-      "ice85" : {
+      "shared:ice85" : {
         "file": "shared/85.png",
         "wrapU": "repeated",
         "wrapV": "repeated"
       },
-      "ice86" : {
+      "shared:ice86" : {
         "file": "shared/86.png",
         "wrapU": "repeated",
         "wrapV": "repeated"
       },
-      "ice87" : {
+      "shared:ice87" : {
         "file": "shared/87.png",
         "wrapU": "repeated",
         "wrapV": "repeated"
       },
-      "ice88" : {
+      "shared:ice88" : {
         "file": "shared/88.png",
         "wrapU": "repeated",
         "wrapV": "repeated"
       },
-      "ice89" : {
+      "shared:ice89" : {
         "file": "shared/89.png",
         "wrapU": "repeated",
         "wrapV": "repeated"
       },
-      "ice90" : {
+      "shared:ice90" : {
         "file": "shared/90.png",
         "wrapU": "repeated",
         "wrapV": "repeated"
       },
-      "ice91" : {
+      "shared:ice91" : {
         "file": "shared/91.png",
         "wrapU": "repeated",
         "wrapV": "repeated"
       },
-      "ice92" : {
+      "shared:ice92" : {
         "file": "shared/92.png",
         "wrapU": "repeated",
         "wrapV": "repeated"
@@ -846,6 +841,108 @@
       },
       "shared:sky67" : {
         "file":  "shared/b67.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+
+      "shared:sky68" : {
+        "file":  "shared/b68.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+
+      "shared:sky69" : {
+        "file":  "shared/b69.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+
+      "shared:sky70" : {
+        "file":  "shared/b70.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+
+      "shared:sky71" : {
+        "file":  "shared/b72.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+
+      "shared:sky72" : {
+        "file":  "shared/b72.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+
+      "shared:sky73" : {
+        "file":  "shared/b73.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+
+      "shared:sky74" : {
+        "file":  "shared/b74.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+
+      "shared:sky75" : {
+        "file":  "shared/b75.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+
+      "shared:sky76" : {
+        "file":  "shared/b76.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+
+      "shared:sky77" : {
+        "file":  "shared/b77.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+
+      "shared:sky78" : {
+        "file":  "shared/b78.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+
+      "shared:sky79" : {
+        "file":  "shared/b79.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+
+      "shared:sky80" : {
+        "file":  "shared/b80.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+
+      "shared:sky81" : {
+        "file":  "shared/b81.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+
+      "shared:sky82" : {
+        "file":  "shared/b82.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+
+      "shared:sky83" : {
+        "file":  "shared/b83.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+
+      "shared:sky84" : {
+        "file":  "shared/b84.png",
         "wrapU": "repeated",
         "wrapV": "repeated"
       },
