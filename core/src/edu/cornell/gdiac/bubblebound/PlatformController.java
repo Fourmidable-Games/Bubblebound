@@ -838,6 +838,7 @@ public class PlatformController implements ContactListener, Screen {
 		moveZones();
 		updateSounds();
 		updateCamera(avatar.getX()*scale.x, avatar.getY()*scale.y);
+
 		updateObjectGravs();
 //		for(Enemy e : enemies){e.update();}
 		updateLucens();
@@ -920,35 +921,45 @@ public class PlatformController implements ContactListener, Screen {
 		////system.out.println("BUBBLES LEFT: " +bubbles_left);
 		bubblecooldownStrip.setFrame(f);
 		Texture t = bubblecooldownStrip.getTexture();
-//		canvas.draw(bubblecooldownStrip,Color.WHITE,drawPos.x + canvas.getWidth()/2 - 400, drawPos.y + canvas.getHeight()/2,t.getWidth()/8*0.25f,t.getHeight()*0.25f);
+		float ox = fullBubbleCooldown.getRegionWidth() / 2f;
+		float oy = fullBubbleCooldown.getRegionHeight() / 2f;
+		//		canvas.draw(bubblecooldownStrip,Color.WHITE,drawPos.x + canvas.getWidth()/2 - 400, drawPos.y + canvas.getHeight()/2,t.getWidth()/8*0.25f,t.getHeight()*0.25f);
 		int curr_bubble = 1;
-		Vector2 current_bubble_pos = new Vector2(drawPos.x + canvas.getWidth()/2 - 400, drawPos.y + canvas.getHeight()/2 - 50);
+		float sx = scale.x / 128;
+		float sy = scale.y / 128;
+		System.out.println(sx);
+		System.out.println(sy);
+		Vector2 current_bubble_pos = new Vector2(drawPos.x + canvas.getWidth()/2 - (3 * scale.x), drawPos.y + canvas.getHeight()/2 - scale.y);
 		while(curr_bubble <= bubbles_left){
 
-			canvas.draw(fullBubbleCooldown,Color.WHITE,current_bubble_pos.x,current_bubble_pos.y,t.getWidth()/8*0.25f,t.getHeight()*0.25f);
+			canvas.draw(fullBubbleCooldown,Color.WHITE,ox, oy, current_bubble_pos.x,current_bubble_pos.y,0, sx, sy);
 			curr_bubble ++;
-			current_bubble_pos.add(40,0);
+			current_bubble_pos.add(1.25f * scale.x,0);
 		}
 		if(bubbles_left <BUBBLE_LIMIT){
-			canvas.draw(bubblecooldownStrip,Color.WHITE,current_bubble_pos.x,current_bubble_pos.y,t.getWidth()/8*0.25f,t.getHeight()*0.25f);
+			canvas.draw(bubblecooldownStrip,Color.WHITE,ox, oy, current_bubble_pos.x,current_bubble_pos.y,0, sx, sy);
 			curr_bubble ++;
-			current_bubble_pos.add(40,0);
+			current_bubble_pos.add(1.25f * scale.x,0);
 		}
 		while(curr_bubble <= BUBBLE_LIMIT){
-			canvas.draw(emptyBubbleCooldown,Color.WHITE,current_bubble_pos.x,current_bubble_pos.y,t.getWidth()/8*0.25f,t.getHeight()*0.25f);
+			canvas.draw(emptyBubbleCooldown,Color.WHITE,ox, oy, current_bubble_pos.x,current_bubble_pos.y,0, sx, sy);
 			curr_bubble ++;
-			current_bubble_pos.add(40,0);
+			current_bubble_pos.add(1.25f * scale.x,0);
 		}
 
 
-		Vector2 curr_heart_pos = new Vector2(drawPos.x - (canvas.getWidth() / 2) + 30, drawPos.y + (canvas.getHeight() / 2) - 50);
+		Vector2 curr_heart_pos = new Vector2(drawPos.x - (canvas.getWidth() / 2) + scale.x, drawPos.y + (canvas.getHeight() / 2) - scale.y);
+		sx = scale.x / 64;
+		sy = scale.x / 64;
+		ox = heart.getRegionWidth() / 2f;
+		oy = heart.getRegionHeight() / 2f;
 		for(int i = 0; i < avatar.getMaxHealth(); i++){
 			if(i < avatar.getHealth()){
-				canvas.draw(heart,Color.WHITE, curr_heart_pos.x, curr_heart_pos.y, heart.getRegionWidth()/2f, heart.getRegionHeight()/2f);
+				canvas.draw(heart,Color.WHITE, ox, oy, curr_heart_pos.x, curr_heart_pos.y, 0, sx, sy);
 			}else{
-				canvas.draw(brokenheart,Color.WHITE, curr_heart_pos.x, curr_heart_pos.y, heart.getRegionWidth()/2f, heart.getRegionHeight()/2f);
+				canvas.draw(brokenheart,Color.WHITE, ox, oy, curr_heart_pos.x, curr_heart_pos.y, 0, sx, sy);
 			}
-			curr_heart_pos.add(40,0);
+			curr_heart_pos.add(scale.x,0);
 //			//system.out.println(curr_heart_pos);
 //			//system.out.println("aaa" + i);
 		}
@@ -1031,8 +1042,15 @@ public class PlatformController implements ContactListener, Screen {
 		return earthTile;
 	}
 
+	public boolean camera = false;
+
 	private void updateAvatar(){
 		Vector2 placeLocation;
+		if(InputController.getInstance().cameraMovement){
+			camera = true;
+		}else{
+			camera = false;
+		}
 		if(InputController.getInstance().isMouseControlls()){
 //			////system.out.println("MOUSE");
 			placeLocation = InputController.getInstance().getCrossHair();
@@ -1093,9 +1111,13 @@ public class PlatformController implements ContactListener, Screen {
 				min = d;
 			}
 		}
-
-		avatar.setMovement(InputController.getInstance().getHorizontal() *avatar.getForce());
-		avatar.setJumping(InputController.getInstance().didPrimary());
+		if(!camera) {
+			avatar.setMovement(InputController.getInstance().getHorizontal() * avatar.getForce());
+			avatar.setJumping(InputController.getInstance().didPrimary());
+		}else{
+			avatar.setMovement(0);
+			avatar.setJumping(false);
+		}
 		avatar.setShooting(InputController.getInstance().didSecondary());
 		//////system.out.println("got to before bubble check");
 
@@ -1534,9 +1556,9 @@ public class PlatformController implements ContactListener, Screen {
 				}
 			}
 
-			if ((bd1 == avatar && bd2.getName().equals("lucenglazesensor")) ){
+			if (((bd1 == avatar || bd1.getName().equals("enemy")) && bd2.getName().equals("lucenglazesensor")) ){
 				((LucenglazeSensor) bd2).activate();
-			}else if((bd1.getName().equals("lucenglazesensor") && bd2 == avatar)){
+			}else if((bd1.getName().equals("lucenglazesensor") && (bd2 == avatar || bd2.getName().equals("enemy")))){
 				((LucenglazeSensor) bd1).activate();
 			}
 
@@ -1940,6 +1962,12 @@ public class PlatformController implements ContactListener, Screen {
 	}
 
 	public void updateCamera(float x, float y){
+
+		if(InputController.getInstance().cameraMovement){
+			x = cameraCoords.x + InputController.getInstance().getHorizontal() * 0.3f * scale.x;
+			y = cameraCoords.y + InputController.getInstance().getVertical() * 0.3f * scale.y;
+		}
+
 		Vector2 temp = new Vector2(x, y);
 		if(x + (scale.x * (CAMERA_WIDTH + 1) / 2) >= bounds.getWidth() * scale.x){
 			x = (bounds.getWidth() - ((CAMERA_WIDTH + 1) / 2f)) * scale.x; //right side

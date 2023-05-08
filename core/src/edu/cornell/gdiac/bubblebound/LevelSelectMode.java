@@ -261,8 +261,9 @@ public class LevelSelectMode implements Screen, InputProcessor, ControllerListen
      */
     private void draw() {
         canvas.begin();
-
-        canvas.draw(background, Color.WHITE, 0, 0, 0, 0, 0, scale.x, scale.y);
+        float sx = ((float) canvas.getWidth()) / ((float) background.getWidth());
+        float sy = ((float) canvas.getHeight()) / ((float) background.getHeight());
+        canvas.draw(background, Color.WHITE, 0, 0, 0, 0, 0, sx, sy);
         canvas.draw(backButton, Color.WHITE, backButton.getWidth()/2f, backButton.getHeight()/2f,
                 backButtonPos.x, backButtonPos.y, 0, scale.x, scale.y);
 
@@ -318,6 +319,7 @@ public class LevelSelectMode implements Screen, InputProcessor, ControllerListen
         // Compute the drawing scale
         float sx = ((float)width)/background.getWidth();
         float sy = ((float)height)/background.getHeight();
+        sx = sy;
         scale = new Vector2(sx, sy);
     }
 

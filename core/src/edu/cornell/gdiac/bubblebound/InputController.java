@@ -236,7 +236,10 @@ public class InputController {
 
 	public boolean isButtonControlls(){return controlMapping == ControlMapping.KEYBOARD; }
 
-	public boolean isFiniteBubbles(){return finiteBubblesPressed; }
+	public boolean isFiniteBubbles(){ return finiteBubblesPressed; }
+
+	public boolean cameraMovement = false;
+	public boolean isCameraMovement(){return cameraMovement;}
 
 
 //	public boolean isReloadBubblesOnGround(){return reloadBubblesOnGroundPressed; }
@@ -361,6 +364,7 @@ public class InputController {
 		prevPressed = (secondary && prevPressed) || (Gdx.input.isKeyPressed(Input.Keys.P));
 		nextPressed = (secondary && nextPressed) || (Gdx.input.isKeyPressed(Input.Keys.N));
 		exitPressed  = (secondary && exitPressed) || (Gdx.input.isKeyPressed(Input.Keys.ESCAPE));
+		cameraMovement = Gdx.input.isKeyPressed(Input.Keys.TAB);
 		if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_1)){
 			if(controlMapping == ControlMapping.KEYBOARD){
 				controlMapping = ControlMapping.MOUSE;
@@ -409,10 +413,10 @@ public class InputController {
 
 		
 		vertical = (secondary ? vertical : 0.0f);
-		if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+		if (Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.W)) {
 			vertical += 1.0f;
 		}
-		if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+		if (Gdx.input.isKeyPressed(Input.Keys.DOWN) || Gdx.input.isKeyPressed(Input.Keys.S)) {
 			vertical -= 1.0f;
 		}
 		

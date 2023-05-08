@@ -162,10 +162,17 @@ import edu.cornell.gdiac.util.XBoxController;
         private Texture fullscreenButton;
         private Texture windowedButton;
 
-        public float musicVolume = 0.5f;
+        public float musicVolume = 1.0f;
         public float soundVolume = 1.0f;
         public int controls = 0; //0 is mouse, 1 is keyboard
 
+
+        public float getMusicVolume(){
+            return musicVolume;
+        }
+        public float getSoundVolume(){
+            return musicVolume;
+        }
 
         Vector2 backButtonPos;
         Vector2 soundPos;
@@ -227,7 +234,8 @@ import edu.cornell.gdiac.util.XBoxController;
             musicBarPos = new Vector2(canvas.getWidth() * 0.7f, canvas.getHeight() * 0.7f);
             controlPos = new Vector2(canvas.getWidth() / 2, canvas.getHeight() * 0.6f);
             kControlPos = new Vector2(canvas.getWidth() / 3, canvas.getHeight() * 0.45f);
-            fullscreenPos = new Vector2(canvas.getWidth() / 2, canvas.getHeight() * 0.2f);
+            fullscreenPos = new Vector2(canvas.getWidth() / 2f, canvas.getHeight() * 0.2f);
+            System.out.println(fullscreenPos);
 
             pressState = 0;
 
@@ -289,7 +297,7 @@ import edu.cornell.gdiac.util.XBoxController;
                     musicBarPos.x, musicBarPos.y, 0, scale.x, scale.y);
             canvas.draw(volumeBubble, Color.WHITE, volumeBubble.getWidth() / 2f, volumeBubble.getHeight() /2f,
                     temp, musicBarPos.y, 0, scale.x, scale.y);
-            temp = soundBarPos.x + ((musicVolume - 0.5f) * volumeBar.getWidth() * scale.x);
+            temp = soundBarPos.x + ((soundVolume - 0.5f) * volumeBar.getWidth() * scale.x);
             canvas.draw(volumeBar, Color.WHITE, volumeBar.getWidth() / 2f, volumeBar.getHeight()/2f,
                     soundBarPos.x, soundBarPos.y, 0, scale.x, scale.y);
             canvas.draw(volumeBubble, Color.WHITE, volumeBubble.getWidth() / 2f, volumeBubble.getHeight() /2f,
@@ -313,11 +321,13 @@ import edu.cornell.gdiac.util.XBoxController;
 //                    kControlPos.x, kControlPos.y, 0, scale.x, scale.y);
 
             if(!canvas.isFullscreen()){
-                canvas.draw(windowedButton, Color.WHITE,windowedButton.getWidth()/2f, windowedButton.getHeight()/2f,
-                        fullscreenPos.x, fullscreenPos.y, scale.x, scale.y);
-            }else{
                 canvas.draw(fullscreenButton, Color.WHITE,windowedButton.getWidth()/2f, windowedButton.getHeight()/2f,
-                        fullscreenPos.x, fullscreenPos.y, scale.x, scale.y);
+                        fullscreenPos.x, fullscreenPos.y, 0, scale.x, scale.y);
+                System.out.println("please draw");
+            }else{
+                canvas.draw(windowedButton, Color.WHITE,windowedButton.getWidth()/2f, windowedButton.getHeight()/2f,
+                        fullscreenPos.x, fullscreenPos.y, 0, scale.x, scale.y);
+//                System.out.println("please darw");
             }
 
             canvas.end();
@@ -367,6 +377,7 @@ import edu.cornell.gdiac.util.XBoxController;
             // Compute the drawing scale
             float sx = ((float)width)/background.getWidth();
             float sy = ((float)height)/background.getHeight();
+            sx = sy;
             scale = new Vector2(sx, sy);
         }
 
@@ -455,6 +466,14 @@ import edu.cornell.gdiac.util.XBoxController;
             if(pressedButton(screenX, screenY, backButton, backButtonPos)){
                 System.out.println("BACKK");
                 pressState = 1;
+            }
+            if(pressedButton(screenX, screenY, volumeBar, musicBarPos)){
+                float temp = screenX - (musicBarPos.x - (volumeBar.getWidth() * scale.x / 2f));
+                musicVolume = temp / (volumeBar.getWidth() * scale.x);
+            }
+            if(pressedButton(screenX, screenY, volumeBar, soundBarPos)){
+                float temp = screenX - (soundBarPos.x - (volumeBar.getWidth() * scale.x / 2f));
+                soundVolume = temp / (volumeBar.getWidth() * scale.x);
             }
             // TODO: Fix scaling
             // Play button is a circle.

@@ -301,16 +301,19 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 		float sx = ((float) canvas.getWidth()) / ((float) background.getWidth());
 		float sy = ((float) canvas.getHeight()) / ((float) background.getHeight());
 //		canvas.draw(background, 0, 0);
-
+		float x = canvas.getWidth() / 2f;
+		float y = canvas.getHeight() * 0.6f;
 		canvas.draw(background, Color.WHITE, 0, 0, 0, 0, 0, sx, sy);
 		if (playButton == null) {
 			drawProgress(canvas);
 		} else {
 			Color tint = (pressState == 1 ? Color.GRAY: Color.WHITE);
 			canvas.draw(playButton, tint, playButton.getWidth()/2, playButton.getHeight()/2, 
-						centerX, centerY, 0, BUTTON_SCALE*scale*0.83f, BUTTON_SCALE*scale*0.83f);
-			canvas.draw(lvlselectButton, tint, playButton.getWidth()/2, playButton.getHeight()/2, centerX, centerY - 100, 0, BUTTON_SCALE*scale*0.83f, BUTTON_SCALE*scale*0.83f);
-			canvas.draw(settingsButton, tint, playButton.getWidth()/2, playButton.getHeight()/2, centerX, centerY - 200, 0, BUTTON_SCALE*scale*0.83f, BUTTON_SCALE*scale*0.83f);
+						x, y, 0, BUTTON_SCALE*scale*0.83f, BUTTON_SCALE*scale*0.83f);
+			y -= canvas.getHeight() * 0.2f;
+			canvas.draw(lvlselectButton, tint, playButton.getWidth()/2, playButton.getHeight()/2, x, y, 0, BUTTON_SCALE*scale*0.83f, BUTTON_SCALE*scale*0.83f);
+			y -= canvas.getHeight() * 0.2f;
+			canvas.draw(settingsButton, tint, playButton.getWidth()/2, playButton.getHeight()/2, x, y, 0, BUTTON_SCALE*scale*0.83f, BUTTON_SCALE*scale*0.83f);
 		}
 		canvas.end();
 	}
@@ -468,22 +471,24 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 		
 		// TODO: Fix scaling
 		// Play button is a circle.
+		float x = canvas.getWidth() / 2f;
+		float y = canvas.getHeight() * 0.6f;
 		float button_w = playButton.getWidth()*BUTTON_SCALE*scale*0.83f;
 		float button_h = playButton.getHeight()*BUTTON_SCALE*scale*0.83f;
-		Vector2 button_center = new Vector2(centerX, centerY);
+		Vector2 button_center = new Vector2(x, y);
 		if(screenX >= button_center.x - button_w/2 && screenX <= button_center.x + button_w/2){
 			if(screenY >= button_center.y - button_h/2 && screenY <= button_center.y + button_h/2){
 				pressState = 1;
 			}
 		}
-		button_center.y -= 100; //lvl select
+		button_center.y -= canvas.getHeight() * 0.2f; //lvl select
 		if(screenX >= button_center.x - button_w/2 && screenX <= button_center.x + button_w/2){
 			if(screenY >= button_center.y - button_h/2 && screenY <= button_center.y + button_h/2){
 				System.out.println("lvl select");
 				pressState = 3;
 			}
 		}
-		button_center.y -= 100; //settings
+		button_center.y -= canvas.getHeight() * 0.2f; //settings
 		if(screenX >= button_center.x - button_w/2 && screenX <= button_center.x + button_w/2){
 			if(screenY >= button_center.y - button_h/2 && screenY <= button_center.y + button_h/2){
 				pressState = 4;

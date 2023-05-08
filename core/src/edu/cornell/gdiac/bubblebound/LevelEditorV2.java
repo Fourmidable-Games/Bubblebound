@@ -525,6 +525,10 @@ public class LevelEditorV2 {
                                 if (!flip) {
                                     System.out.println(k);
                                     System.out.println(arrayOffset);
+                                    if(k-arrayOffset > textureObjects.size()){
+                                        System.out.println(k);
+                                        k = textureObjects.size() - 1 + arrayOffset;
+                                    }
                                     wo.setTexture(textureObjects.get(k-arrayOffset));
                                     boxes.add(wo);
 
