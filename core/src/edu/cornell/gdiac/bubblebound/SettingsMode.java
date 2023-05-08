@@ -429,7 +429,7 @@ import edu.cornell.gdiac.util.XBoxController;
 
         public boolean pressedButton(int screenX, int screenY, Texture texture, Vector2 button_center){
             float button_w = texture.getWidth() * scale.x;
-            float button_h = texture.getWidth() * scale.y;
+            float button_h = texture.getHeight() * scale.y;
             screenY = canvas.getHeight() - screenY;
             //System.out.println(button_center);
             if(screenX >= button_center.x - button_w/2 && screenX <= button_center.x + button_w/2){
@@ -468,10 +468,12 @@ import edu.cornell.gdiac.util.XBoxController;
                 pressState = 1;
             }
             if(pressedButton(screenX, screenY, volumeBar, musicBarPos)){
+                System.out.println("gay");
                 float temp = screenX - (musicBarPos.x - (volumeBar.getWidth() * scale.x / 2f));
                 musicVolume = temp / (volumeBar.getWidth() * scale.x);
             }
             if(pressedButton(screenX, screenY, volumeBar, soundBarPos)){
+                System.out.println("hi");
                 float temp = screenX - (soundBarPos.x - (volumeBar.getWidth() * scale.x / 2f));
                 soundVolume = temp / (volumeBar.getWidth() * scale.x);
             }

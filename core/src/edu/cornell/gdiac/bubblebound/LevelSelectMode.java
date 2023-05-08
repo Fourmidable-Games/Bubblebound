@@ -373,7 +373,7 @@ public class LevelSelectMode implements Screen, InputProcessor, ControllerListen
 
     public boolean pressedButton(int screenX, int screenY, Texture texture, Vector2 button_center){
         float button_w = texture.getWidth() * scale.x;
-        float button_h = texture.getWidth() * scale.y;
+        float button_h = texture.getHeight() * scale.y;
         screenY = canvas.getHeight() - screenY;
         //System.out.println(button_center);
         if(screenX >= button_center.x - button_w/2 && screenX <= button_center.x + button_w/2){
