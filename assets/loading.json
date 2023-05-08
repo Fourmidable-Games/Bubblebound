@@ -2,6 +2,8 @@
 	"textures": {
         "background": "shared/loading.png",
 		"play": "shared/play.png",
+        "settings": "shared/settings.png",
+        "lvlselect": "shared/lvl_select.png",
         "progress": {
             "file": "shared/progressbar.png",
             "atlas":     {
@@ -12,7 +14,8 @@
                 "foreleft"   : [0,   40,  16, 70],
                 "foreright"  : [384, 40, 400, 70]
             }
-        }
+        },
+
     },
     "sounds":{
         "menuscreen": "extra/menuscreen.wav"

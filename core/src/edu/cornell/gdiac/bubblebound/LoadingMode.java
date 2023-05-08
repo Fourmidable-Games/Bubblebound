@@ -61,6 +61,9 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 	private Texture background;
 	/** Play button to display when done */
 	private Texture playButton;
+
+	private Texture lvlselectButton;
+	private Texture settingsButton;
 	/** Texture atlas to support a progress bar */
 	private final Texture statusBar;
 	/** Texture atlas to support a progress bar */
@@ -209,6 +212,8 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 
 		// Load the next two images immediately.
 		playButton = null;
+		lvlselectButton = null;
+		settingsButton = null;
 		background = internal.getEntry( "background", Texture.class );
 		background.setFilter( TextureFilter.Linear, TextureFilter.Linear );
 		statusBar = internal.getEntry( "progress", Texture.class );
@@ -246,11 +251,17 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 		assets.loadAssets();
 		active = true;
 	}
-	
+
+
+	public void poopypants(){
+		pressState = 0;
+		Gdx.input.setInputProcessor(this);
+	}
 	/**
 	 * Called when this screen should release all resources.
 	 */
 	public void dispose() {
+
 		internal.unloadAssets();
 		internal.dispose();
 	}
@@ -271,6 +282,9 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 			if (progress >= 1.0f) {
 				this.progress = 1.0f;
 				playButton = internal.getEntry("play",Texture.class);
+				settingsButton = internal.getEntry("settings", Texture.class);
+				lvlselectButton = internal.getEntry("lvlselect", Texture.class);
+
 			}
 		}
 	}
@@ -295,6 +309,8 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 			Color tint = (pressState == 1 ? Color.GRAY: Color.WHITE);
 			canvas.draw(playButton, tint, playButton.getWidth()/2, playButton.getHeight()/2, 
 						centerX, centerY, 0, BUTTON_SCALE*scale*0.83f, BUTTON_SCALE*scale*0.83f);
+			canvas.draw(lvlselectButton, tint, playButton.getWidth()/2, playButton.getHeight()/2, centerX, centerY - 100, 0, BUTTON_SCALE*scale*0.83f, BUTTON_SCALE*scale*0.83f);
+			canvas.draw(settingsButton, tint, playButton.getWidth()/2, playButton.getHeight()/2, centerX, centerY - 200, 0, BUTTON_SCALE*scale*0.83f, BUTTON_SCALE*scale*0.83f);
 		}
 		canvas.end();
 	}
@@ -309,7 +325,7 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 	 * @param canvas The drawing context
 	 */	
 	private void drawProgress(GameCanvas canvas) {
-		float adj = 130f;
+		float adj = 330f;
 		canvas.draw(statusBkgLeft,   Color.WHITE, centerX-width/2, centerY-adj,
 				scale*statusBkgLeft.getRegionWidth(), scale*statusBkgLeft.getRegionHeight());
 		canvas.draw(statusBkgRight,  Color.WHITE,centerX+width/2-scale*statusBkgRight.getRegionWidth(), centerY-adj,
@@ -349,6 +365,13 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 			// We are are ready, notify our listener
 			if (isReady() && listener != null) {
 				listener.exitScreen(this, 0);
+
+			}
+			if(pressState == 3){
+				listener.exitScreen(this, 1);
+			}
+			if(pressState == 4){
+				listener.exitScreen(this, 2);
 			}
 		}
 	}
@@ -370,6 +393,7 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 		
 		this.width = (int)(BAR_WIDTH_RATIO*width);
 		centerY = (int)(BAR_HEIGHT_RATIO*height);
+		centerY += 200;
 		centerX = width/2;
 		heightY = height;
 	}
@@ -435,9 +459,10 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 	 */
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		if (playButton == null || pressState == 2) {
+			System.out.println("howdy");
 			return true;
 		}
-		
+		System.out.println("DO this pls");
 		// Flip to match graphics coordinates
 		screenY = heightY-screenY;
 		
@@ -451,6 +476,21 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 				pressState = 1;
 			}
 		}
+		button_center.y -= 100; //lvl select
+		if(screenX >= button_center.x - button_w/2 && screenX <= button_center.x + button_w/2){
+			if(screenY >= button_center.y - button_h/2 && screenY <= button_center.y + button_h/2){
+				System.out.println("lvl select");
+				pressState = 3;
+			}
+		}
+		button_center.y -= 100; //settings
+		if(screenX >= button_center.x - button_w/2 && screenX <= button_center.x + button_w/2){
+			if(screenY >= button_center.y - button_h/2 && screenY <= button_center.y + button_h/2){
+				pressState = 4;
+				System.out.println("settings");
+			}
+		}
+
 		return false;
 	}
 	
@@ -532,7 +572,7 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 	/** 
 	 * Called when a key is typed (UNSUPPORTED)
 	 *
-	 * @param keycode the key typed
+
 	 * @return whether to hand the event to other listeners. 
 	 */
 	public boolean keyTyped(char character) { 

@@ -1,0 +1,18 @@
+{
+  "textures": {
+    "settingsbackground": "shared/settingsbackground.png",
+    "backbutton": "shared/backbutton.png",
+    "mvolume": "shared/mvolume.png",
+    "svolume": "shared/svolume.png",
+    "control": "shared/control.png",
+    "volumebar":"shared/volumebar.png",
+    "volumebubble": "shared/volumebubble.png",
+    "fullscreenbutton": "shared/fullscreenbutton.png",
+    "windowedbutton": "shared/windowedbutton.png"
+
+
+  },
+  "sounds":{
+    "menuscreen": "extra/menuscreen.wav"
+  }
+}

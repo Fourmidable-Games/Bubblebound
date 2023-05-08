@@ -33,6 +33,10 @@ public class GDXRoot extends Game implements ScreenListener {
 	private GameCanvas canvas; 
 	/** Player mode for the asset loading screen (CONTROLLER CLASS) */
 	private LoadingMode loading;
+
+	private LevelSelectMode levelselect;
+
+	private SettingsMode settings;
 	/** Player mode for the the game proper (CONTROLLER CLASS) */
 	private int current;
 	/** List of all WorldControllers */
@@ -55,6 +59,7 @@ public class GDXRoot extends Game implements ScreenListener {
 	public void create() {
 		canvas  = new GameCanvas();
 		loading = new LoadingMode("assets.json",canvas,1);
+
 
 		// Initialize the three game worlds
 		controllers = new PlatformController[1];
@@ -104,7 +109,9 @@ public class GDXRoot extends Game implements ScreenListener {
 		canvas.resize();
 		super.resize(width,height);
 	}
-	
+
+
+
 	/**
 	 * The given screen has made a request to exit its player mode.
 	 *
@@ -114,6 +121,7 @@ public class GDXRoot extends Game implements ScreenListener {
 	 * @param exitCode The state of the screen upon exit
 	 */
 	public void exitScreen(Screen screen, int exitCode) {
+
 		if (screen == loading) {
 			for(int ii = 0; ii < controllers.length; ii++) {
 				directory = loading.getAssets();
@@ -121,12 +129,49 @@ public class GDXRoot extends Game implements ScreenListener {
 				controllers[ii].setScreenListener(this);
 				controllers[ii].setCanvas(canvas);
 			}
-			controllers[current].reset(1);
-			setScreen(controllers[current]);
-			
-			loading.dispose();
-			loading = null;
-		} else if (exitCode == PlatformController.EXIT_NEXT) {
+
+			if(exitCode == 0){ //normal start
+				controllers[current].reset(1);
+				setScreen(controllers[current]);
+			}
+			else if(exitCode == 1){ //lvl select
+				levelselect = new LevelSelectMode("assets.json", canvas, 1);
+				levelselect.setScreenListener(this);
+				setScreen(levelselect);
+			}else if(exitCode == 2){// settings mode
+				settings = new SettingsMode("assets.json",canvas,1);
+				settings.setScreenListener(this);
+				setScreen(settings);
+
+			}
+
+		} else if(screen == settings){
+			settings.disabled = true;
+			settings.dispose();
+			settings = null;
+			loading.poopypants();
+			loading.setScreenListener(this);
+			setScreen(loading);
+
+		}else if(screen == levelselect){
+			levelselect.dispose();
+			levelselect = null;
+			if(exitCode == -1){
+				loading.poopypants();
+				setScreen(loading);
+			}else{
+				exitCode += 1;
+				System.out.println(exitCode);
+				directory = loading.getAssets();
+				controllers[0].gatherAssets(directory);
+				controllers[0].setScreenListener(this);
+				controllers[0].setCanvas(canvas);
+				controllers[0].setCurrLevel(exitCode - 1);
+				controllers[0].reset(exitCode);
+				setScreen(controllers[0]);
+			}
+		}
+		else if (exitCode == PlatformController.EXIT_NEXT) {
 			current = (current+1) % controllers.length;
 			controllers[current].reset(1);
 			setScreen(controllers[current]);
@@ -136,6 +181,10 @@ public class GDXRoot extends Game implements ScreenListener {
 			setScreen(controllers[current]);
 		} else if (exitCode == PlatformController.EXIT_QUIT) {
 			// We quit the main application
+			settings.dispose();
+			settings = null;
+			loading.dispose();
+			loading = null;
 			Gdx.app.exit();
 		}
 	}
