@@ -424,7 +424,7 @@ public class PlatformController implements ContactListener, Screen {
 				spikeTextureList.add(new TextureRegion(directory.getEntry("shared:ice" + i, Texture.class)));
 			}
 		}
-		for(int i = 1; i < 84; i++){
+		for(int i = 1; i < 85; i++){
 			textures.add(new TextureRegion(directory.getEntry("shared:sky" + i, Texture.class)));
 		}
 		for(int i = 1; i < 5; i++){
