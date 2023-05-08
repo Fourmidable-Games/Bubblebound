@@ -293,7 +293,7 @@ public class CapsuleObstacle extends SimpleObstacle {
 	/**
 	 * Reset the polygon vertices in the shape to match the dimension.
 	 */
-	private void resize(float width, float height) {    
+	private void resize(float width, float height) {
 		dimension.set(width,height);
 		if (width < height && isHorizontal(orient)) {
 			orient = Orientation.VERTICAL; // OVERRIDE
@@ -360,8 +360,8 @@ public class CapsuleObstacle extends SimpleObstacle {
 		vertices[7] = center.y;
 
 		shape.set(vertices);
-		end1.setRadius(r);
-		end2.setRadius(r);
+		end1.setRadius(r+0.01f);
+		end2.setRadius(r +0.01f);
 
 	}
 	

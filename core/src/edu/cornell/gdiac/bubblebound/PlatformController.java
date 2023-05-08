@@ -406,16 +406,16 @@ public class PlatformController implements ContactListener, Screen {
 		enemyText = directory.getEntry( "platform:dude2", Texture.class );
 		enemyStrip = new FilmStrip(enemyText, 1, 9, 9);
 
-		for(int i = 1; i < 90; i++){ //load in ice tiles
+		for(int i = 1; i < 93; i++){ //load in ice tiles
 			textures.add(new TextureRegion(directory.getEntry("shared:ice" + i, Texture.class)));
 			if (i == 22 || i == 27 || i == 28) {
 				spikeTextureList.add(new TextureRegion(directory.getEntry("shared:ice" + i, Texture.class)));
 			}
 		}
-		for(int i = 1; i < 83; i++){
+		for(int i = 1; i < 84; i++){
 			textures.add(new TextureRegion(directory.getEntry("shared:sky" + i, Texture.class)));
 		}
-		for(int i = 1; i < 3; i++){
+		for(int i = 1; i < 5; i++){
 			textures.add(new TextureRegion(directory.getEntry("shared:con" + i, Texture.class)));
 		}
 

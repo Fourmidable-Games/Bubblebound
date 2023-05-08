@@ -1,0 +1,881 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.10.0" orientation="orthogonal" renderorder="right-down" width="64" height="32" tilewidth="64" tileheight="64" infinite="0" nextlayerid="22" nextobjectid="564">
+ <editorsettings>
+  <export target="gl/lvl1.json" format="json"/>
+ </editorsettings>
+ <properties>
+  <property name="ran" type="int" value="0"/>
+ </properties>
+ <tileset firstgid="1" name="tiles" tilewidth="256" tileheight="256" tilecount="242" columns="0">
+  <grid orientation="orthogonal" width="1" height="1"/>
+  <tile id="60">
+   <image width="64" height="64" source="../tiled assets v2/1.png"/>
+  </tile>
+  <tile id="61">
+   <image width="64" height="64" source="../tiled assets v2/2.png"/>
+  </tile>
+  <tile id="62">
+   <image width="64" height="64" source="../tiled assets v2/3.png"/>
+  </tile>
+  <tile id="63">
+   <image width="66" height="64" source="../tiled assets v2/4.png"/>
+  </tile>
+  <tile id="64">
+   <image width="64" height="64" source="../tiled assets v2/5.png"/>
+  </tile>
+  <tile id="65">
+   <image width="64" height="64" source="../tiled assets v2/6.png"/>
+  </tile>
+  <tile id="66">
+   <image width="64" height="64" source="../tiled assets v2/7.png"/>
+  </tile>
+  <tile id="67">
+   <image width="64" height="22" source="../tiled assets v2/8.png"/>
+  </tile>
+  <tile id="68">
+   <image width="64" height="64" source="../tiled assets v2/9.png"/>
+  </tile>
+  <tile id="69">
+   <image width="64" height="64" source="../tiled assets v2/10.png"/>
+  </tile>
+  <tile id="70">
+   <image width="64" height="64" source="../tiled assets v2/11.png"/>
+  </tile>
+  <tile id="71">
+   <image width="64" height="64" source="../tiled assets v2/12.png"/>
+  </tile>
+  <tile id="72">
+   <image width="64" height="64" source="../tiled assets v2/13.png"/>
+  </tile>
+  <tile id="73">
+   <image width="64" height="43" source="../tiled assets v2/14.png"/>
+  </tile>
+  <tile id="74">
+   <image width="64" height="64" source="../tiled assets v2/15.png"/>
+  </tile>
+  <tile id="75">
+   <image width="64" height="64" source="../tiled assets v2/16.png"/>
+  </tile>
+  <tile id="76">
+   <image width="64" height="64" source="../tiled assets v2/17.png"/>
+  </tile>
+  <tile id="77">
+   <image width="64" height="64" source="../tiled assets v2/18.png"/>
+  </tile>
+  <tile id="78">
+   <image width="64" height="64" source="../tiled assets v2/19.png"/>
+  </tile>
+  <tile id="79">
+   <image width="64" height="64" source="../tiled assets v2/20.png"/>
+  </tile>
+  <tile id="80">
+   <image width="64" height="64" source="../tiled assets v2/21.png"/>
+  </tile>
+  <tile id="81">
+   <image width="64" height="64" source="../tiled assets v2/22.png"/>
+  </tile>
+  <tile id="82">
+   <image width="64" height="64" source="../tiled assets v2/23.png"/>
+  </tile>
+  <tile id="83">
+   <image width="64" height="64" source="../tiled assets v2/24.png"/>
+  </tile>
+  <tile id="84">
+   <image width="64" height="64" source="../tiled assets v2/25.png"/>
+  </tile>
+  <tile id="85">
+   <image width="64" height="64" source="../tiled assets v2/26.png"/>
+  </tile>
+  <tile id="86">
+   <image width="64" height="64" source="../tiled assets v2/27.png"/>
+  </tile>
+  <tile id="87">
+   <image width="64" height="64" source="../tiled assets v2/28.png"/>
+  </tile>
+  <tile id="88">
+   <image width="64" height="64" source="../tiled assets v2/29.png"/>
+  </tile>
+  <tile id="127">
+   <image width="64" height="64" source="../tiled assets v2/30.png"/>
+  </tile>
+  <tile id="128">
+   <image width="64" height="64" source="../tiled assets v2/31.png"/>
+  </tile>
+  <tile id="129">
+   <image width="64" height="64" source="../tiled assets v2/32.png"/>
+  </tile>
+  <tile id="130">
+   <image width="64" height="64" source="../tiled assets v2/33.png"/>
+  </tile>
+  <tile id="131">
+   <image width="64" height="64" source="../tiled assets v2/34.png"/>
+  </tile>
+  <tile id="132">
+   <image width="64" height="64" source="../tiled assets v2/35.png"/>
+  </tile>
+  <tile id="330">
+   <image width="64" height="64" source="../tiled assets v2/36.png"/>
+  </tile>
+  <tile id="331">
+   <image width="64" height="64" source="../tiled assets v2/37.png"/>
+  </tile>
+  <tile id="332">
+   <image width="64" height="64" source="../tiled assets v2/38.png"/>
+  </tile>
+  <tile id="333">
+   <image width="64" height="64" source="../tiled assets v2/39.png"/>
+  </tile>
+  <tile id="334">
+   <image width="64" height="64" source="../tiled assets v2/40.png"/>
+  </tile>
+  <tile id="335">
+   <image width="64" height="64" source="../tiled assets v2/41.png"/>
+  </tile>
+  <tile id="336">
+   <image width="64" height="64" source="../tiled assets v2/42.png"/>
+  </tile>
+  <tile id="337">
+   <image width="64" height="64" source="../tiled assets v2/43.png"/>
+  </tile>
+  <tile id="338">
+   <image width="64" height="64" source="../tiled assets v2/44.png"/>
+  </tile>
+  <tile id="339">
+   <image width="64" height="64" source="../tiled assets v2/45.png"/>
+  </tile>
+  <tile id="340">
+   <image width="64" height="64" source="../tiled assets v2/46.png"/>
+  </tile>
+  <tile id="341">
+   <image width="64" height="64" source="../tiled assets v2/47.png"/>
+  </tile>
+  <tile id="342">
+   <image width="64" height="64" source="../tiled assets v2/48.png"/>
+  </tile>
+  <tile id="343">
+   <image width="64" height="64" source="../tiled assets v2/49.png"/>
+  </tile>
+  <tile id="344">
+   <image width="64" height="64" source="../tiled assets v2/50.png"/>
+  </tile>
+  <tile id="345">
+   <image width="64" height="64" source="../tiled assets v2/51.png"/>
+  </tile>
+  <tile id="346">
+   <image width="64" height="64" source="../tiled assets v2/52.png"/>
+  </tile>
+  <tile id="347">
+   <image width="64" height="64" source="../tiled assets v2/53.png"/>
+  </tile>
+  <tile id="348">
+   <image width="64" height="22" source="../tiled assets v2/54.png"/>
+  </tile>
+  <tile id="349">
+   <image width="64" height="22" source="../tiled assets v2/55.png"/>
+  </tile>
+  <tile id="350">
+   <image width="64" height="22" source="../tiled assets v2/56.png"/>
+  </tile>
+  <tile id="351">
+   <image width="64" height="22" source="../tiled assets v2/57.png"/>
+  </tile>
+  <tile id="352">
+   <image width="64" height="64" source="../tiled assets v2/58.png"/>
+  </tile>
+  <tile id="353">
+   <image width="64" height="64" source="../tiled assets v2/59.png"/>
+  </tile>
+  <tile id="354">
+   <image width="64" height="64" source="../tiled assets v2/60.png"/>
+  </tile>
+  <tile id="355">
+   <image width="64" height="64" source="../tiled assets v2/61.png"/>
+  </tile>
+  <tile id="356">
+   <image width="64" height="64" source="../tiled assets v2/62.png"/>
+  </tile>
+  <tile id="357">
+   <image width="64" height="64" source="../tiled assets v2/63.png"/>
+  </tile>
+  <tile id="358">
+   <image width="64" height="64" source="../tiled assets v2/64.png"/>
+  </tile>
+  <tile id="359">
+   <image width="64" height="64" source="../tiled assets v2/65.png"/>
+  </tile>
+  <tile id="360">
+   <image width="64" height="64" source="../tiled assets v2/66.png"/>
+  </tile>
+  <tile id="361">
+   <image width="64" height="64" source="../tiled assets v2/67.png"/>
+  </tile>
+  <tile id="362">
+   <image width="64" height="43" source="../tiled assets v2/68.png"/>
+  </tile>
+  <tile id="363">
+   <image width="64" height="43" source="../tiled assets v2/69.png"/>
+  </tile>
+  <tile id="364">
+   <image width="64" height="43" source="../tiled assets v2/70.png"/>
+  </tile>
+  <tile id="365">
+   <image width="64" height="64" source="../tiled assets v2/71.png"/>
+  </tile>
+  <tile id="366">
+   <image width="64" height="64" source="../tiled assets v2/72.png"/>
+  </tile>
+  <tile id="367">
+   <image width="64" height="64" source="../tiled assets v2/73.png"/>
+  </tile>
+  <tile id="368">
+   <image width="64" height="64" source="../tiled assets v2/74.png"/>
+  </tile>
+  <tile id="369">
+   <image width="64" height="64" source="../tiled assets v2/75.png"/>
+  </tile>
+  <tile id="370">
+   <image width="64" height="64" source="../tiled assets v2/76.png"/>
+  </tile>
+  <tile id="371">
+   <image width="64" height="64" source="../tiled assets v2/77.png"/>
+  </tile>
+  <tile id="372">
+   <image width="64" height="64" source="../tiled assets v2/78.png"/>
+  </tile>
+  <tile id="373">
+   <image width="64" height="64" source="../tiled assets v2/79.png"/>
+  </tile>
+  <tile id="374">
+   <image width="64" height="64" source="../tiled assets v2/80.png"/>
+  </tile>
+  <tile id="375">
+   <image width="64" height="64" source="../tiled assets v2/81.png"/>
+  </tile>
+  <tile id="376">
+   <image width="64" height="64" source="../tiled assets v2/82.png"/>
+  </tile>
+  <tile id="377">
+   <image width="64" height="64" source="../tiled assets v2/83.png"/>
+  </tile>
+  <tile id="378">
+   <image width="64" height="64" source="../tiled assets v2/84.png"/>
+  </tile>
+  <tile id="379">
+   <image width="64" height="64" source="../tiled assets v2/85.png"/>
+  </tile>
+  <tile id="380">
+   <image width="64" height="64" source="../tiled assets v2/86.png"/>
+  </tile>
+  <tile id="381">
+   <image width="64" height="64" source="../tiled assets v2/87.png"/>
+  </tile>
+  <tile id="382">
+   <image width="64" height="64" source="../tiled assets v2/88.png"/>
+  </tile>
+  <tile id="383">
+   <image width="64" height="64" source="../tiled assets v2/89.png"/>
+  </tile>
+  <tile id="384">
+   <image width="64" height="64" source="../tiled assets v2/90.png"/>
+  </tile>
+  <tile id="385">
+   <image width="64" height="64" source="../tiled assets v2/91.png"/>
+  </tile>
+  <tile id="386">
+   <image width="64" height="64" source="../tiled assets v2/92.png"/>
+  </tile>
+  <tile id="241">
+   <image width="64" height="64" source="../tiled assets v2/b1.png"/>
+  </tile>
+  <tile id="242">
+   <image width="64" height="64" source="../tiled assets v2/b2.png"/>
+  </tile>
+  <tile id="243">
+   <image width="64" height="64" source="../tiled assets v2/b3.png"/>
+  </tile>
+  <tile id="244">
+   <image width="64" height="64" source="../tiled assets v2/b4.png"/>
+  </tile>
+  <tile id="245">
+   <image width="64" height="64" source="../tiled assets v2/b5.png"/>
+  </tile>
+  <tile id="246">
+   <image width="64" height="64" source="../tiled assets v2/b6.png"/>
+  </tile>
+  <tile id="247">
+   <image width="64" height="64" source="../tiled assets v2/b7.png"/>
+  </tile>
+  <tile id="248">
+   <image width="64" height="64" source="../tiled assets v2/b8.png"/>
+  </tile>
+  <tile id="249">
+   <image width="64" height="64" source="../tiled assets v2/b9.png"/>
+  </tile>
+  <tile id="250">
+   <image width="64" height="64" source="../tiled assets v2/b10.png"/>
+  </tile>
+  <tile id="251">
+   <image width="64" height="64" source="../tiled assets v2/b11.png"/>
+  </tile>
+  <tile id="253" probability="0">
+   <image width="64" height="64" source="../tiled assets v2/b12.png"/>
+  </tile>
+  <tile id="252">
+   <image width="64" height="64" source="../tiled assets v2/b13.png"/>
+  </tile>
+  <tile id="254">
+   <image width="64" height="64" source="../tiled assets v2/b14.png"/>
+  </tile>
+  <tile id="255">
+   <image width="64" height="64" source="../tiled assets v2/b15.png"/>
+  </tile>
+  <tile id="256">
+   <image width="64" height="64" source="../tiled assets v2/b16.png"/>
+  </tile>
+  <tile id="257">
+   <image width="64" height="64" source="../tiled assets v2/b17.png"/>
+  </tile>
+  <tile id="258">
+   <image width="64" height="64" source="../tiled assets v2/b18.png"/>
+  </tile>
+  <tile id="259">
+   <image width="64" height="64" source="../tiled assets v2/b19.png"/>
+  </tile>
+  <tile id="260">
+   <image width="64" height="64" source="../tiled assets v2/b20.png"/>
+  </tile>
+  <tile id="261">
+   <image width="64" height="64" source="../tiled assets v2/b21.png"/>
+  </tile>
+  <tile id="262">
+   <image width="64" height="64" source="../tiled assets v2/b22.png"/>
+  </tile>
+  <tile id="263">
+   <image width="64" height="64" source="../tiled assets v2/b23.png"/>
+  </tile>
+  <tile id="264">
+   <image width="64" height="64" source="../tiled assets v2/b24.png"/>
+  </tile>
+  <tile id="265">
+   <image width="64" height="64" source="../tiled assets v2/b25.png"/>
+  </tile>
+  <tile id="266">
+   <image width="64" height="64" source="../tiled assets v2/b26.png"/>
+  </tile>
+  <tile id="267">
+   <image width="64" height="64" source="../tiled assets v2/b27.png"/>
+  </tile>
+  <tile id="268">
+   <image width="64" height="64" source="../tiled assets v2/b28.png"/>
+  </tile>
+  <tile id="269">
+   <image width="64" height="64" source="../tiled assets v2/b29.png"/>
+  </tile>
+  <tile id="270">
+   <image width="64" height="64" source="../tiled assets v2/b30.png"/>
+  </tile>
+  <tile id="271">
+   <image width="64" height="64" source="../tiled assets v2/b31.png"/>
+  </tile>
+  <tile id="272">
+   <image width="64" height="64" source="../tiled assets v2/b32.png"/>
+  </tile>
+  <tile id="273">
+   <image width="64" height="64" source="../tiled assets v2/b33.png"/>
+  </tile>
+  <tile id="274">
+   <image width="64" height="64" source="../tiled assets v2/b34.png"/>
+  </tile>
+  <tile id="275">
+   <image width="64" height="64" source="../tiled assets v2/b35.png"/>
+  </tile>
+  <tile id="276">
+   <image width="64" height="64" source="../tiled assets v2/b36.png"/>
+  </tile>
+  <tile id="277">
+   <image width="64" height="64" source="../tiled assets v2/b37.png"/>
+  </tile>
+  <tile id="278">
+   <image width="64" height="64" source="../tiled assets v2/b38.png"/>
+  </tile>
+  <tile id="279">
+   <image width="64" height="64" source="../tiled assets v2/b39.png"/>
+  </tile>
+  <tile id="280">
+   <image width="64" height="64" source="../tiled assets v2/b40.png"/>
+  </tile>
+  <tile id="281">
+   <image width="64" height="64" source="../tiled assets v2/b41.png"/>
+  </tile>
+  <tile id="282">
+   <image width="64" height="64" source="../tiled assets v2/b42.png"/>
+  </tile>
+  <tile id="283">
+   <image width="64" height="64" source="../tiled assets v2/b43.png"/>
+  </tile>
+  <tile id="284">
+   <image width="64" height="64" source="../tiled assets v2/b44.png"/>
+  </tile>
+  <tile id="285">
+   <image width="64" height="64" source="../tiled assets v2/b45.png"/>
+  </tile>
+  <tile id="286">
+   <image width="64" height="64" source="../tiled assets v2/b46.png"/>
+  </tile>
+  <tile id="287">
+   <image width="64" height="64" source="../tiled assets v2/b47.png"/>
+  </tile>
+  <tile id="288">
+   <image width="64" height="64" source="../tiled assets v2/b48.png"/>
+  </tile>
+  <tile id="289">
+   <image width="64" height="64" source="../tiled assets v2/b49.png"/>
+  </tile>
+  <tile id="290">
+   <image width="64" height="64" source="../tiled assets v2/b50.png"/>
+  </tile>
+  <tile id="291">
+   <image width="64" height="64" source="../tiled assets v2/b51.png"/>
+  </tile>
+  <tile id="292">
+   <image width="64" height="64" source="../tiled assets v2/b52.png"/>
+  </tile>
+  <tile id="293">
+   <image width="64" height="64" source="../tiled assets v2/b53.png"/>
+  </tile>
+  <tile id="294">
+   <image width="64" height="64" source="../tiled assets v2/b54.png"/>
+  </tile>
+  <tile id="295">
+   <image width="64" height="64" source="../tiled assets v2/b55.png"/>
+  </tile>
+  <tile id="296">
+   <image width="64" height="64" source="../tiled assets v2/b56.png"/>
+  </tile>
+  <tile id="297">
+   <image width="64" height="64" source="../tiled assets v2/b57.png"/>
+  </tile>
+  <tile id="298">
+   <image width="64" height="64" source="../tiled assets v2/b58.png"/>
+  </tile>
+  <tile id="299">
+   <image width="64" height="64" source="../tiled assets v2/b59.png"/>
+  </tile>
+  <tile id="300">
+   <image width="64" height="64" source="../tiled assets v2/b60.png"/>
+  </tile>
+  <tile id="301">
+   <image width="64" height="64" source="../tiled assets v2/b61.png"/>
+  </tile>
+  <tile id="302">
+   <image width="64" height="64" source="../tiled assets v2/b62.png"/>
+  </tile>
+  <tile id="303">
+   <image width="64" height="64" source="../tiled assets v2/b63.png"/>
+  </tile>
+  <tile id="304">
+   <image width="64" height="64" source="../tiled assets v2/b64.png"/>
+  </tile>
+  <tile id="305">
+   <image width="64" height="64" source="../tiled assets v2/b65.png"/>
+  </tile>
+  <tile id="306">
+   <image width="64" height="64" source="../tiled assets v2/b66.png"/>
+  </tile>
+  <tile id="307">
+   <image width="64" height="64" source="../tiled assets v2/b67.png"/>
+  </tile>
+  <tile id="308">
+   <image width="64" height="64" source="../tiled assets v2/b68.png"/>
+  </tile>
+  <tile id="309">
+   <image width="64" height="64" source="../tiled assets v2/b69.png"/>
+  </tile>
+  <tile id="310">
+   <image width="64" height="64" source="../tiled assets v2/b70.png"/>
+  </tile>
+  <tile id="311">
+   <image width="64" height="64" source="../tiled assets v2/b71.png"/>
+  </tile>
+  <tile id="312">
+   <image width="64" height="64" source="../tiled assets v2/b72.png"/>
+  </tile>
+  <tile id="313">
+   <image width="64" height="64" source="../tiled assets v2/b73.png"/>
+  </tile>
+  <tile id="314">
+   <image width="64" height="64" source="../tiled assets v2/b74.png"/>
+  </tile>
+  <tile id="315">
+   <image width="64" height="64" source="../tiled assets v2/b75.png"/>
+  </tile>
+  <tile id="320">
+   <image width="64" height="64" source="../tiled assets v2/b76.png"/>
+  </tile>
+  <tile id="321">
+   <image width="64" height="64" source="../tiled assets v2/b77.png"/>
+  </tile>
+  <tile id="322">
+   <image width="64" height="64" source="../tiled assets v2/b78.png"/>
+  </tile>
+  <tile id="323">
+   <image width="64" height="64" source="../tiled assets v2/b79.png"/>
+  </tile>
+  <tile id="324">
+   <image width="64" height="64" source="../tiled assets v2/b80.png"/>
+  </tile>
+  <tile id="325">
+   <image width="64" height="64" source="../tiled assets v2/b81.png"/>
+  </tile>
+  <tile id="326">
+   <image width="64" height="64" source="../tiled assets v2/b82.png"/>
+  </tile>
+  <tile id="327">
+   <image width="64" height="64" source="../tiled assets v2/b83.png"/>
+  </tile>
+  <tile id="328">
+   <image width="64" height="64" source="../tiled assets v2/b84.png"/>
+  </tile>
+  <tile id="117">
+   <image width="64" height="64" source="../tiled assets v2/CON1.png"/>
+  </tile>
+  <tile id="118">
+   <image width="64" height="64" source="../tiled assets v2/CON2.png"/>
+  </tile>
+  <tile id="119">
+   <image width="64" height="64" source="../tiled assets v2/CON3.png"/>
+  </tile>
+  <tile id="120">
+   <image width="64" height="64" source="../tiled assets v2/CON4.png"/>
+  </tile>
+  <tile id="162" type="spike">
+   <image width="64" height="64" source="../tiled assets v2/Fire Plant 1.png.png"/>
+   <animation>
+    <frame tileid="162" duration="190"/>
+    <frame tileid="163" duration="190"/>
+    <frame tileid="164" duration="190"/>
+    <frame tileid="165" duration="190"/>
+   </animation>
+  </tile>
+  <tile id="163">
+   <image width="64" height="64" source="../tiled assets v2/Fire Plant 2.png.png"/>
+  </tile>
+  <tile id="164">
+   <image width="64" height="64" source="../tiled assets v2/Fire Plant 3.png.png"/>
+  </tile>
+  <tile id="165">
+   <image width="64" height="64" source="../tiled assets v2/Fire Plant 4.png.png"/>
+  </tile>
+  <tile id="181" type="breadcrumbs">
+   <image width="64" height="64" source="../tiled assets v2/cr1.png"/>
+   <animation>
+    <frame tileid="181" duration="190"/>
+    <frame tileid="182" duration="190"/>
+    <frame tileid="183" duration="190"/>
+    <frame tileid="184" duration="190"/>
+    <frame tileid="185" duration="190"/>
+    <frame tileid="186" duration="190"/>
+    <frame tileid="187" duration="190"/>
+    <frame tileid="188" duration="190"/>
+    <frame tileid="189" duration="190"/>
+    <frame tileid="190" duration="190"/>
+    <frame tileid="191" duration="190"/>
+    <frame tileid="192" duration="190"/>
+   </animation>
+  </tile>
+  <tile id="182">
+   <image width="62" height="64" source="../tiled assets v2/cr2.png"/>
+  </tile>
+  <tile id="183">
+   <image width="64" height="64" source="../tiled assets v2/cr3.png"/>
+  </tile>
+  <tile id="184">
+   <image width="61" height="64" source="../tiled assets v2/cr4.png"/>
+  </tile>
+  <tile id="185">
+   <image width="64" height="64" source="../tiled assets v2/cr5.png"/>
+  </tile>
+  <tile id="186">
+   <image width="64" height="64" source="../tiled assets v2/cr6.png"/>
+  </tile>
+  <tile id="187">
+   <image width="64" height="64" source="../tiled assets v2/cr7.png"/>
+  </tile>
+  <tile id="188">
+   <image width="63" height="64" source="../tiled assets v2/cr8.png"/>
+  </tile>
+  <tile id="189">
+   <image width="64" height="63" source="../tiled assets v2/cr9.png"/>
+  </tile>
+  <tile id="190">
+   <image width="62" height="63" source="../tiled assets v2/cr10.png"/>
+  </tile>
+  <tile id="191">
+   <image width="64" height="63" source="../tiled assets v2/cr11.png"/>
+  </tile>
+  <tile id="192">
+   <image width="60" height="63" source="../tiled assets v2/cr12.png"/>
+  </tile>
+  <tile id="193" type="enemy">
+   <image width="64" height="128" source="../tiled assets v2/m1.png"/>
+   <animation>
+    <frame tileid="193" duration="100"/>
+    <frame tileid="194" duration="100"/>
+    <frame tileid="195" duration="100"/>
+    <frame tileid="196" duration="100"/>
+    <frame tileid="197" duration="100"/>
+    <frame tileid="198" duration="100"/>
+    <frame tileid="200" duration="100"/>
+    <frame tileid="199" duration="100"/>
+    <frame tileid="201" duration="100"/>
+   </animation>
+  </tile>
+  <tile id="194" type="enemy">
+   <image width="64" height="128" source="../tiled assets v2/m2.png"/>
+  </tile>
+  <tile id="195" type="enemy">
+   <image width="64" height="128" source="../tiled assets v2/m3.png"/>
+  </tile>
+  <tile id="196" type="enemy">
+   <image width="64" height="128" source="../tiled assets v2/m4.png"/>
+  </tile>
+  <tile id="197" type="enemy">
+   <image width="64" height="128" source="../tiled assets v2/m5.png"/>
+  </tile>
+  <tile id="198" type="enemy">
+   <image width="64" height="128" source="../tiled assets v2/m6.png"/>
+  </tile>
+  <tile id="199" type="enemy">
+   <image width="64" height="128" source="../tiled assets v2/m7.png"/>
+  </tile>
+  <tile id="200" type="enemy">
+   <image width="64" height="128" source="../tiled assets v2/m8.png"/>
+  </tile>
+  <tile id="201" type="enemy">
+   <image width="64" height="128" source="../tiled assets v2/m9.png"/>
+  </tile>
+  <tile id="202" type="player">
+   <image width="64" height="128" source="../tiled assets v2/p1.png"/>
+   <animation>
+    <frame tileid="202" duration="300"/>
+    <frame tileid="203" duration="300"/>
+    <frame tileid="204" duration="300"/>
+   </animation>
+  </tile>
+  <tile id="203" type="player">
+   <image width="64" height="128" source="../tiled assets v2/p2.png"/>
+  </tile>
+  <tile id="204" type="player">
+   <image width="64" height="128" source="../tiled assets v2/p3.png"/>
+  </tile>
+  <tile id="144" type="goal">
+   <image width="256" height="256" source="../tiled assets v2/portal1.png"/>
+   <animation>
+    <frame tileid="144" duration="200"/>
+    <frame tileid="145" duration="200"/>
+    <frame tileid="146" duration="200"/>
+    <frame tileid="147" duration="200"/>
+    <frame tileid="148" duration="200"/>
+    <frame tileid="149" duration="200"/>
+    <frame tileid="150" duration="200"/>
+    <frame tileid="151" duration="200"/>
+   </animation>
+  </tile>
+  <tile id="145">
+   <image width="256" height="256" source="../tiled assets v2/portal2.png"/>
+  </tile>
+  <tile id="146">
+   <image width="256" height="256" source="../tiled assets v2/portal3.png"/>
+  </tile>
+  <tile id="147">
+   <image width="256" height="256" source="../tiled assets v2/portal4.png"/>
+  </tile>
+  <tile id="148">
+   <image width="256" height="256" source="../tiled assets v2/portal5.png"/>
+  </tile>
+  <tile id="149">
+   <image width="256" height="256" source="../tiled assets v2/portal6.png"/>
+  </tile>
+  <tile id="150">
+   <image width="256" height="256" source="../tiled assets v2/portal7.png"/>
+  </tile>
+  <tile id="151">
+   <image width="256" height="256" source="../tiled assets v2/portal8.png"/>
+  </tile>
+  <tile id="154" type="projectile enemy">
+   <image width="63" height="64" source="../tiled assets v2/sun1.png"/>
+   <animation>
+    <frame tileid="154" duration="190"/>
+    <frame tileid="155" duration="190"/>
+    <frame tileid="156" duration="190"/>
+    <frame tileid="157" duration="190"/>
+    <frame tileid="158" duration="190"/>
+    <frame tileid="159" duration="190"/>
+    <frame tileid="160" duration="190"/>
+    <frame tileid="161" duration="190"/>
+   </animation>
+  </tile>
+  <tile id="155" type="projectile enemy">
+   <image width="62" height="64" source="../tiled assets v2/sun2.png"/>
+  </tile>
+  <tile id="156" type="projectile enemy">
+   <image width="64" height="64" source="../tiled assets v2/sun3.png"/>
+  </tile>
+  <tile id="157" type="projectile enemy">
+   <image width="64" height="64" source="../tiled assets v2/sun4.png"/>
+  </tile>
+  <tile id="158" type="projectile enemy">
+   <image width="64" height="64" source="../tiled assets v2/sun5.png"/>
+  </tile>
+  <tile id="159" type="projectile enemy">
+   <image width="64" height="64" source="../tiled assets v2/sun6.png"/>
+  </tile>
+  <tile id="160" type="projectile enemy">
+   <image width="62" height="64" source="../tiled assets v2/sun7.png"/>
+  </tile>
+  <tile id="161" type="projectile enemy">
+   <image width="63" height="64" source="../tiled assets v2/sun8.png"/>
+  </tile>
+  <tile id="166" type="lucen glaze">
+   <image width="64" height="64" source="../tiled assets v2/lu1.png"/>
+   <animation>
+    <frame tileid="166" duration="250"/>
+    <frame tileid="167" duration="250"/>
+    <frame tileid="168" duration="250"/>
+    <frame tileid="169" duration="250"/>
+    <frame tileid="170" duration="250"/>
+    <frame tileid="171" duration="250"/>
+    <frame tileid="172" duration="250"/>
+    <frame tileid="173" duration="250"/>
+    <frame tileid="174" duration="250"/>
+    <frame tileid="175" duration="250"/>
+    <frame tileid="176" duration="250"/>
+    <frame tileid="177" duration="250"/>
+    <frame tileid="178" duration="250"/>
+    <frame tileid="179" duration="250"/>
+    <frame tileid="180" duration="250"/>
+   </animation>
+  </tile>
+  <tile id="167" type="lucen glaze">
+   <image width="64" height="64" source="../tiled assets v2/lu2.png"/>
+  </tile>
+  <tile id="168" type="lucen glaze">
+   <image width="64" height="64" source="../tiled assets v2/lu3.png"/>
+  </tile>
+  <tile id="169" type="lucen glaze">
+   <image width="64" height="64" source="../tiled assets v2/lu4.png"/>
+  </tile>
+  <tile id="170" type="lucen glaze">
+   <image width="64" height="64" source="../tiled assets v2/lu5.png"/>
+  </tile>
+  <tile id="171" type="lucen glaze">
+   <image width="64" height="64" source="../tiled assets v2/lu6.png"/>
+  </tile>
+  <tile id="172" type="lucen glaze">
+   <image width="64" height="64" source="../tiled assets v2/lu7.png"/>
+  </tile>
+  <tile id="173" type="lucen glaze">
+   <image width="64" height="64" source="../tiled assets v2/lu8.png"/>
+  </tile>
+  <tile id="174" type="lucen glaze">
+   <image width="64" height="64" source="../tiled assets v2/lu9.png"/>
+  </tile>
+  <tile id="175" type="lucen glaze">
+   <image width="64" height="64" source="../tiled assets v2/lu13.png"/>
+  </tile>
+  <tile id="176" type="lucen glaze">
+   <image width="64" height="64" source="../tiled assets v2/lu14.png"/>
+  </tile>
+  <tile id="177" type="lucen glaze">
+   <image width="64" height="64" source="../tiled assets v2/lu15.png"/>
+  </tile>
+  <tile id="178" type="lucen glaze">
+   <image width="64" height="64" source="../tiled assets v2/lu16.png"/>
+  </tile>
+  <tile id="179" type="lucen glaze">
+   <image width="64" height="64" source="../tiled assets v2/lu17.png"/>
+  </tile>
+  <tile id="180" type="lucen glaze">
+   <image width="64" height="64" source="../tiled assets v2/lu18.png"/>
+  </tile>
+  <tile id="205" type="spike">
+   <image width="64" height="64" source="../tiled assets v2/Sky Spike.png"/>
+  </tile>
+  <tile id="388" type="spike">
+   <image width="64" height="64" source="../tiled assets v2/Ice Spike.png"/>
+  </tile>
+  <tile id="0" type="bubble">
+   <properties>
+    <property name="radius" type="float" value="1"/>
+   </properties>
+   <image width="128" height="128" source="../tiled assets v2/bubble_480.png"/>
+  </tile>
+ </tileset>
+ <tileset firstgid="390" source="../tiled assets v2/finalTiles.tsx"/>
+ <imagelayer id="18" name="background"/>
+ <group id="6" name="Group 1">
+  <objectgroup id="20" name="minor upgrades (not implemented)"/>
+  <objectgroup id="21" name="major upgrades (not implemented)"/>
+  <objectgroup id="15" name="Projectile Enemy"/>
+  <objectgroup id="14" name="goal tile"/>
+  <objectgroup id="13" name="lucen glaze"/>
+  <objectgroup id="11" name="gravity zones" locked="1"/>
+  <objectgroup id="9" name="spikes">
+   <object id="557" gid="206" x="3520" y="1728" width="64" height="64"/>
+   <object id="558" gid="206" x="3584" y="1728" width="64" height="64"/>
+   <object id="559" gid="206" x="3456" y="1728" width="64" height="64"/>
+   <object id="560" gid="206" x="3392" y="1728" width="64" height="64"/>
+   <object id="561" gid="206" x="3328" y="1728" width="64" height="64"/>
+   <object id="562" gid="206" x="2944" y="1600" width="64" height="64"/>
+  </objectgroup>
+  <objectgroup id="5" name="enemies" opacity="0.94"/>
+  <objectgroup id="7" name="goal">
+   <object id="563" gid="145" x="3840" y="1600" width="256" height="256">
+    <properties>
+     <property name="direction" value="left"/>
+     <property name="targetLevel" type="int" value="2"/>
+    </properties>
+   </object>
+  </objectgroup>
+  <objectgroup id="8" name="bubbles"/>
+  <objectgroup id="10" name="player">
+   <object id="555" gid="203" x="448" y="1728" width="64" height="128"/>
+  </objectgroup>
+  <layer id="1" name="Tile Layer 1" width="64" height="32">
+   <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,450,450,450,450,450,450,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,450,450,450,450,450,450,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,450,450,450,450,450,450,450,450,450,450,450,450,450,450,450,450,0,0,0,0,450,450,450,450,450,450,450,450,450,450,450,450,0,0,0,0,0,450,450,450,450,450,450,450,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,450,450,450,450,450,0,0,0,0,450,450,450,450,450,450,450,0,0,0,0,450,450,450,450,450,450,450,450,450,450,450,450,0,0,0,0,0,450,450,450,450,450,450,450,
+450,450,450,450,450,450,450,450,450,450,450,450,450,450,450,450,450,450,450,450,450,450,450,450,450,0,0,0,0,450,450,450,450,450,450,450,450,0,0,0,450,450,450,450,450,0,450,450,450,450,450,450,450,450,450,450,450,450,450,450,450,450,450,450,
+450,450,450,450,450,450,450,450,450,450,450,450,450,450,450,450,450,450,450,0,450,450,450,0,0,0,0,0,0,450,450,450,450,450,450,450,450,450,450,450,450,450,450,450,450,0,0,450,450,450,450,450,450,450,450,450,450,450,450,0,450,450,450,450,
+450,450,0,0,0,0,0,450,450,450,450,450,450,450,450,450,450,450,0,0,0,0,0,0,0,0,0,0,450,450,450,450,450,450,450,450,450,450,450,450,450,450,450,0,0,0,0,0,0,450,450,450,450,450,450,450,450,450,0,0,450,450,450,450,
+450,450,450,450,450,450,0,0,450,450,450,450,450,450,450,450,450,450,0,0,0,0,0,0,0,0,0,0,450,450,450,450,450,450,450,450,450,450,450,450,450,450,450,0,450,450,0,0,0,0,450,450,450,450,450,450,450,450,450,0,450,450,450,450,
+0,0,0,450,450,450,0,0,0,0,450,450,450,450,450,0,0,0,0,0,0,0,0,0,0,0,0,0,450,450,450,450,450,450,450,450,450,450,450,450,450,0,0,0,450,450,450,450,450,0,0,0,0,0,0,0,0,0,0,0,0,0,450,450
+</data>
+  </layer>
+ </group>
+</map>
