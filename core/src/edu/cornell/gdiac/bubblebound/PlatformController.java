@@ -120,7 +120,7 @@ public class PlatformController implements ContactListener, Screen {
 	/** Physics constants for initialization */
 	private JsonValue constants;
 
-	private int BUBBLE_LIMIT = 2;
+	private int BUBBLE_LIMIT = 0;
 
 	private int bubbles_left = 0;
 
@@ -235,7 +235,7 @@ public class PlatformController implements ContactListener, Screen {
 	/** The default value of gravity (going down) */
 	protected static final float DEFAULT_GRAVITY = -4.9f;
 
-	private final int MAX_LEVELS = 10;
+	private final int MAX_LEVELS = 15;
 
 	private int currLevel;
 
@@ -300,9 +300,13 @@ public class PlatformController implements ContactListener, Screen {
 
 	private List<Border> borders = new ArrayList<>();
 
-	private Token level4Token;
+	private Token level6Token;
 
-	private boolean level4TokenCollected = false;
+	private Token level12Token;
+
+
+	private boolean level6TokenCollected = false;
+	private boolean level12TokenCollected = false;
 
 
 
@@ -494,6 +498,7 @@ public class PlatformController implements ContactListener, Screen {
 		poisons.clear();
 		addQueue.clear();
 		borders.clear();
+		projenemies.clear();
 		platforms.clear();
 		spikelist.clear();
 		bullets.clear();
@@ -673,17 +678,34 @@ public class PlatformController implements ContactListener, Screen {
 //		dwidth  = avatarTexture.getRegionWidth()/scale.x;
 //		dheight = avatarTexture.getRegionHeight()/scale.y;
 
-		if(currLevel == 4 && !level4TokenCollected){
+		if(currLevel == 6 && !level6TokenCollected){
 
-//			level4Token = new Token(new Vector2(5,10), 2);
-			level4Token = new Token(new Vector2(120,3), 1);
+//			level6Token = new Token(new Vector2(5,10), 2);
+			level6Token = new Token(new Vector2(55,12), 1);
 
-			level4Token.setName("token4");
-			level4Token.setBodyType(BodyDef.BodyType.StaticBody);
-			level4Token.setSensor(true);
-			level4Token.setDrawScale(scale);
-			level4Token.setTexture(tokenText);
-			addObject(level4Token);
+			level6Token.setName("token6");
+			level6Token.setBodyType(BodyDef.BodyType.StaticBody);
+			level6Token.setSensor(true);
+			level6Token.setDrawScale(scale);
+			level6Token.setTexture(tokenText);
+			System.out.println("ADDING TOKEN" + level6Token.getPosition());
+
+			addObject(level6Token);
+		}
+
+		if(currLevel == 12 && !level12TokenCollected){
+
+//			level12Token = new Token(new Vector2(5,10), 2);
+			level12Token = new Token(new Vector2(36,22), 1);
+
+			level12Token.setName("token12");
+			level12Token.setBodyType(BodyDef.BodyType.StaticBody);
+			level12Token.setSensor(true);
+			level12Token.setDrawScale(scale);
+			level12Token.setTexture(tokenText);
+			System.out.println("ADDING TOKEN" + level12Token.getPosition());
+
+			addObject(level12Token);
 		}
 
 
@@ -1559,8 +1581,8 @@ public class PlatformController implements ContactListener, Screen {
 
 			}
 
-			if ((bd1 == avatar   && bd2.getName().contains("token")) ||
-					(bd1.getName().contains("token") && bd2 == avatar)){
+			if ((bd1 == avatar   && bd2.getName().contains("token6")) ||
+					(bd1.getName().contains("token6") && bd2 == avatar)){
 				Token token = (bd1 == avatar) ? (Token)bd2: (Token)bd1;
 				int old_bubble_limit = BUBBLE_LIMIT;
 
@@ -1571,7 +1593,24 @@ public class PlatformController implements ContactListener, Screen {
 				}else{
 					bd1.markRemoved(true);
 				}
-				level4TokenCollected = true;
+				level6TokenCollected = true;
+				level6Token = null;
+			}
+
+			if ((bd1 == avatar   && bd2.getName().contains("token12")) ||
+					(bd1.getName().contains("token12") && bd2 == avatar)){
+				Token token = (bd1 == avatar) ? (Token)bd2: (Token)bd1;
+				int old_bubble_limit = BUBBLE_LIMIT;
+
+				BUBBLE_LIMIT = 2;
+				bubbles_left = 2;
+				if (bd1 == avatar){
+					bd2.markRemoved(true);
+				}else{
+					bd1.markRemoved(true);
+				}
+				level12TokenCollected = true;
+				level12Token = null;
 			}
 
 			if ((bd1 == avatar && bd2.getName().equals("gas")) || (bd1.getName().equals("gas") && bd2 == avatar)){
@@ -2217,6 +2256,9 @@ public class PlatformController implements ContactListener, Screen {
 		for(PoisonGas pg : poisons){
 			pg.draw(canvas);
 		}
+		if(level6Token != null){level6Token.draw(canvas);}
+		if(level12Token != null){level12Token.draw(canvas);}
+
 		canvas.resetColor();
 		canvas.end();
 //		canvas.begin();
