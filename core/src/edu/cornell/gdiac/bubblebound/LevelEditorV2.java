@@ -382,31 +382,34 @@ public class LevelEditorV2 {
 
                     if (obj1.getInt("id") == 8 || obj1.getString("name").equals("bubbles")) {
 
+
+
                         JsonValue bubbleList = obj1.get("objects");
 
                         ////system.out.println("Testing bub");
 
                         for (JsonValue bub : bubbleList) {
 
-                            for (JsonValue type : base1) {
-
-                                if (type.getInt("id") == 4) {
+                            System.out.println("bubblecreat");
 
 
-                                    ////system.out.println(type.get("members"));
-
-                                    Vector2 v = new Vector2((bub.getFloat("x")) / 64, ((mapHeight - (bub.getFloat("y"))) / 64)+1);
-
-                                    Bubble wo = new Bubble(
-                                            v,
-                                            type.get("members").get(0).getInt("value"),
-                                            Bubble.BubbleType.STATIC
-                                    );
 
 
-                                    bubbles.add(wo);
-                                }
-                            }
+
+                                ////system.out.println(type.get("members"));
+
+                            Vector2 v = new Vector2((bub.getFloat("x")) / 64, ((mapHeight - (bub.getFloat("y"))) / 64)+1);
+
+                            Bubble wo = new Bubble(
+                                    v,
+                                    1,
+                                    Bubble.BubbleType.STATIC
+                            );
+
+
+                            bubbles.add(wo);
+
+
                         }
 
                     }
@@ -490,34 +493,32 @@ public class LevelEditorV2 {
                                         1
                                 );
 
-                                int arrayOffset = 60;
+                                int arrayOffset = 450;
 
                                 boolean flip = false;
 
 
-                                if (k >= 128 && k <= 133) {
-                                    //from 89 ID 128
-                                    k = arrayOffset + 39;
+                                if (k >= 517 && k <= 522) {
+                                    arrayOffset = 486;
                                 }
 
-                                if (k >= 331 && k <= 387) {
-                                    //from 133 ID 331
-                                    k = arrayOffset + 199 + 39;
+                                if (k >= 720 && k <= 776) {
+                                    arrayOffset = 685;
                                 }
 
-                                if (k >= 242 && k <= 329) {
-                                    //from 387 ID 242
-                                    k = arrayOffset + 199 + 38 - 145;
+                                if (k >= 631 && k <= 710) {
+                                    arrayOffset = 539;
                                 }
 
-                                if (k >= 118 && k <= 120) {
-                                    //from 329 ID 118
-                                    k = arrayOffset + 240 - 211;
+                                if (k >= 507 && k <= 510) {
+                                    arrayOffset = 332;
                                 }
 
-                                else if ((k - arrayOffset) > textureObjects.size() -1 || k < 0) {
-                                    flip = true;
-                                }
+
+
+
+
+
 
 
 
