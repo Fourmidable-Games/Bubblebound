@@ -66,8 +66,8 @@ public class ProjEnemy extends BoxObstacle{
             }
         }
 
-//        //system.out.println(shooting);
-//        //system.out.println(shoottimer);
+//        ////System.out.println(shooting);
+//        ////System.out.println(shoottimer);
         if(shooting && shoottimer == 0){
             shoottimer++;
             return true;
@@ -109,7 +109,7 @@ public class ProjEnemy extends BoxObstacle{
                     angle = 90;
                     break;
                 default:
-                    ////system.out.println("uh oh");
+                    //////System.out.println("uh oh");
                     break;
             }
             float sx = drawScale.x / 64f;

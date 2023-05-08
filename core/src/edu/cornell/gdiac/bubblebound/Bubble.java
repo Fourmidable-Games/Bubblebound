@@ -60,7 +60,7 @@ public class Bubble extends WheelObstacle {
             f.setFrame(ii++ % 8);
         }
         counter1 = (counter1 + 1) % delay1; // increment counter and reset to 0 when it reaches delay
-        //////system.out.println("strips:" + filmstrip);
+        ////////System.out.println("strips:" + filmstrip);
     }
 
 
@@ -165,7 +165,7 @@ public class Bubble extends WheelObstacle {
 
             }
         }else{
-            ////system.out.println("blink");
+            //////System.out.println("blink");
         }
 
     }

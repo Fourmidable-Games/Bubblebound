@@ -459,10 +459,10 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 	 */
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		if (playButton == null || pressState == 2) {
-			System.out.println("howdy");
+			//System.out.println("howdy");
 			return true;
 		}
-		System.out.println("DO this pls");
+		//System.out.println("DO this pls");
 		// Flip to match graphics coordinates
 		screenY = heightY-screenY;
 		
@@ -479,7 +479,7 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 		button_center.y -= 100; //lvl select
 		if(screenX >= button_center.x - button_w/2 && screenX <= button_center.x + button_w/2){
 			if(screenY >= button_center.y - button_h/2 && screenY <= button_center.y + button_h/2){
-				System.out.println("lvl select");
+				//System.out.println("lvl select");
 				pressState = 3;
 			}
 		}
@@ -487,7 +487,7 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 		if(screenX >= button_center.x - button_w/2 && screenX <= button_center.x + button_w/2){
 			if(screenY >= button_center.y - button_h/2 && screenY <= button_center.y + button_h/2){
 				pressState = 4;
-				System.out.println("settings");
+				//System.out.println("settings");
 			}
 		}
 

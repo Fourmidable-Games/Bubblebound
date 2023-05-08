@@ -160,7 +160,7 @@ public class DudeModel extends CapsuleObstacle {
 
 	@Override
 	public void setGrav(float g){
-		//system.out.println("Setting player gravity to: " + g);
+		////System.out.println("Setting player gravity to: " + g);
 		setGravityScale(g);
 		grav = g;
 	}
@@ -479,9 +479,9 @@ public class DudeModel extends CapsuleObstacle {
 			float dif = getPosition().dst(grappledBubble.getPosition()) - grappledBubbleDist;
 			forceCache.add(0,grav*10f*dif);
 			*/
-			////system.out.println("VX: " + getVX());
+			//////System.out.println("VX: " + getVX());
 		}else if(getMovement() != 0){
-			////system.out.println("VX: " + getVX());
+			//////System.out.println("VX: " + getVX());
 			if(Math.abs(getVX()) < 3.0f){
 				//System.out.print(" Speedy!");
 				forceCache.set(getMovement() * 10f, 0);

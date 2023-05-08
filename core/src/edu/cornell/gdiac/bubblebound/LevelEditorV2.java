@@ -95,7 +95,7 @@ public class LevelEditorV2 {
             }
         }
 
-        ////system.out.println("Testing Tile -1");
+        //////System.out.println("Testing Tile -1");
 
         JsonValue firstLayers = base.get("layers");
 
@@ -103,7 +103,7 @@ public class LevelEditorV2 {
         for (JsonValue obj : firstLayers) {
             if (obj.getInt("id") == 6) {
                 JsonValue secondLayers = obj.get("layers");
-                ////system.out.println("Testing");
+                //////System.out.println("Testing");
 
                 for (JsonValue obj1 : secondLayers) {
 
@@ -113,7 +113,7 @@ public class LevelEditorV2 {
 
 
                         for (JsonValue goals : go) {
-//                            //system.out.println(go.toString());
+//                            ////System.out.println(go.toString());
                             JsonValue prop = goals.get("properties");
                             int targetLevel = 1;
                             Door.SpawnDirection player_spawn_direction = Door.SpawnDirection.RIGHT;
@@ -137,7 +137,7 @@ public class LevelEditorV2 {
                             Door d = new Door(door_loc,player_spawn_direction,targetLevel);
 
 //                            wo.isGoal = true;
-                            ////system.out.println("GOOOALLL");
+                            //////System.out.println("GOOOALLL");
 //                            goal = wo;
                             doors.add(d);
                         }
@@ -367,7 +367,7 @@ public class LevelEditorV2 {
                                         (((mapHeight - w.getFloat("y"))) / 64)+1);
                                 glazeRotations.add(0);
                             }else{
-                                //system.out.println("OH DANG WE MISSED ONE HERE! at " + glazeRotations.size() + " the rot was " + w.getFloat("rotation"));
+                                ////System.out.println("OH DANG WE MISSED ONE HERE! at " + glazeRotations.size() + " the rot was " + w.getFloat("rotation"));
                             }
 
 
@@ -386,17 +386,17 @@ public class LevelEditorV2 {
 
                         JsonValue bubbleList = obj1.get("objects");
 
-                        ////system.out.println("Testing bub");
+                        //////System.out.println("Testing bub");
 
                         for (JsonValue bub : bubbleList) {
 
-                            System.out.println("bubblecreat");
+                            //System.out.println("bubblecreat");
 
 
 
 
 
-                                ////system.out.println(type.get("members"));
+                                //////System.out.println(type.get("members"));
 
                             Vector2 v = new Vector2((bub.getFloat("x")) / 64, ((mapHeight - (bub.getFloat("y"))) / 64)+1);
 
@@ -417,7 +417,7 @@ public class LevelEditorV2 {
 
                     if (obj1.getInt("id") == 1) {
 
-                        ////system.out.println("Testing 2");
+                        //////System.out.println("Testing 2");
 
                         JsonValue tileData1 = obj1.get("data");
 
@@ -523,8 +523,8 @@ public class LevelEditorV2 {
 
 
                                 if (!flip) {
-                                    System.out.println(k);
-                                    System.out.println(arrayOffset);
+                                    //System.out.println(k);
+                                    //System.out.println(arrayOffset);
                                     wo.setTexture(textureObjects.get(k-arrayOffset));
                                     boxes.add(wo);
 
@@ -549,7 +549,7 @@ public class LevelEditorV2 {
         }
 
 
-        ////system.out.println("Finished Parsing");
+        //////System.out.println("Finished Parsing");
     }
 
 

@@ -110,7 +110,7 @@ public class Enemy extends CapsuleObstacle { //capsule not working for some reas
 
         float effect = faceRight ? 1.0f : -1.0f;;
         float upside = (grav == -1) ? -1.5f : 1.5f;
-        //////system.out.println(texture);
+        ////////System.out.println(texture);
         canvas.draw(texture, Color.WHITE,origin.x,origin.y,getX()*drawScale.x,getY()*drawScale.y,getAngle(),sx * effect,sy * upside);
 
 
