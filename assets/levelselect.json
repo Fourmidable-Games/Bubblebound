@@ -1,0 +1,25 @@
+{
+  "textures": {
+    "backbutton": "shared/backbutton.png",
+    "levelbackground": "shared/levelbackground.png",
+    "lvl1": "shared/booble lvl select1.png",
+    "lvl2": "shared/booble lvl select2.png",
+    "lvl3": "shared/booble lvl select3.png",
+    "lvl4": "shared/booble lvl select4.png",
+    "lvl5": "shared/booble lvl select5.png",
+    "lvl6": "shared/booble lvl select6.png",
+    "lvl7": "shared/booble lvl select7.png",
+    "lvl8": "shared/booble lvl select8.png",
+    "lvl9": "shared/booble lvl select9.png",
+    "lvl10": "shared/booble lvl select10.png",
+    "lvl11": "shared/booble lvl select11.png",
+    "lvl12": "shared/booble lvl select12.png",
+    "lvl13": "shared/booble lvl select13.png",
+    "lvl14": "shared/booble lvl select14.png",
+    "lvl15": "shared/booble lvl select15.png"
+
+    },
+    "sounds":{
+      "menuscreen": "extra/menuscreen.wav"
+    }
+}

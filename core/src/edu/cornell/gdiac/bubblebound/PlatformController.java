@@ -617,8 +617,8 @@ public class PlatformController implements ContactListener, Screen {
 			//wo.activatePhysics(world);
 			wo.setDensity(1000f);
 			wo.setTexture(bubble);
-			//bubbles.add(wo);
-			//addObject(wo);
+			bubbles.add(wo);
+			addObject(wo);
 		}
 
 		for (int i = 0; i < enemies.size(); i++) {
@@ -1766,7 +1766,9 @@ public class PlatformController implements ContactListener, Screen {
 		world  = null;
 		canvas = null;
 	}
-
+	public void setCurrLevel(int i){
+		currLevel = i;
+	}
 
 	/**
 	 *
