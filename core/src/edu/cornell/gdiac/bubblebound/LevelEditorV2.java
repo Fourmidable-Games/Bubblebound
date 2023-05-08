@@ -233,7 +233,7 @@ public class LevelEditorV2 {
                                 wo.setX(wo.getX() - 1);
                             }
 
-                            if (goals.getInt("gid") == 206) {
+                            if (goals.getInt("gid") == 206 || goals.getInt("gid") == 778) {
 
                                 wo.setTexture(spikeTextures.get(4));
 
@@ -258,12 +258,12 @@ public class LevelEditorV2 {
                             }
 
                             else if (goals.getInt("gid") == 82) {
-
                                 wo.setTexture(spikeTextures.get(2));
 
                             }
 
                             else {
+
                                 wo.setTexture(spikeTextures.get(5));
                             }
 

@@ -36,8 +36,7 @@ public class DesktopLauncher {
 		GDXAppSettings config = new GDXAppSettings();
 		config.width  = 1024;
 		config.height = 576;
-//		config.width = 1920;
-//		config.height = 1080;
+
 		config.fullscreen = true;
 		config.resizable = false;
 		new GDXApp(new GDXRoot(), config);

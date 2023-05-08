@@ -77,6 +77,7 @@ public class PlatformController implements ContactListener, Screen {
 	private TextureRegion poisonTexture;
 	private TextureRegion lucenTexture;
 
+	private int death_count = 0;
 
 	private final Vector2 ROPE_LAUNCH_SPEED = new Vector2(1.7f, 7);
 	private TextureRegion[] bodyTextures;
@@ -180,6 +181,9 @@ public class PlatformController implements ContactListener, Screen {
 	protected TextureRegion tileIce23;
 	protected TextureRegion tileIce24;
 
+	protected TextureRegion deathLeft;
+	protected TextureRegion deathRight;
+
 	protected TextureRegion b1;
 	protected TextureRegion b2;
 	protected TextureRegion b3;
@@ -231,7 +235,7 @@ public class PlatformController implements ContactListener, Screen {
 	/** The default value of gravity (going down) */
 	protected static final float DEFAULT_GRAVITY = -4.9f;
 
-	private final int MAX_LEVELS = 4;
+	private final int MAX_LEVELS = 10;
 
 	private int currLevel;
 
@@ -375,6 +379,10 @@ public class PlatformController implements ContactListener, Screen {
 		lucenTexture = new TextureRegion(directory.getEntry("platform:activatedlucen", Texture.class));
 		dormantlucen = new TextureRegion(directory.getEntry("platform:dormantlucen",Texture.class));
 
+		deathLeft = new TextureRegion(directory.getEntry("platform:leftdeath", Texture.class));
+		deathRight = new TextureRegion(directory.getEntry("platform:rightdeath", Texture.class));
+
+
 		jumpSound = directory.getEntry( "bubbleboundsfx:jump", Sound.class );
 		fireSound = directory.getEntry( "bubbleboundsfx:ropeshoot", Sound.class );
 		plopSound = directory.getEntry( "bubbleboundsfx:plop", Sound.class );
@@ -450,6 +458,7 @@ public class PlatformController implements ContactListener, Screen {
 	 * This method disposes of the world and creates a new one.
 	 */
 	public void reset(int targetLevelID) {
+		death_count = 0;
 		doored = false;
 		if(currLevel == targetLevelID){
 			//reset bubbles
@@ -571,6 +580,8 @@ public class PlatformController implements ContactListener, Screen {
 		avatar.setGrappling(false);
 		avatar.setDrawScale(scale);
 		avatar.setTexture(avatarTexture);
+		avatar.setLeftDeathTexture(deathLeft);
+		avatar.setRightDeathTexture(deathRight);
 		avatar.restoreHealth();
 		avatar.setName("avatar");
 		addObject(avatar);
@@ -806,7 +817,11 @@ public class PlatformController implements ContactListener, Screen {
 			return false;
 		}
 		if(!avatar.isAlive()){
-			setFailure(true);
+			death_count++;
+			avatar.setShowDeath(true);
+			if(death_count == 50){
+				setFailure(true);
+			}
 			return false;
 		}
 
@@ -1489,11 +1504,18 @@ public class PlatformController implements ContactListener, Screen {
 						life = avatar.getLife();
 						if (bd1 == avatar) { //move it to player controller
 							//TODO look prev comment
-
+							if(bd2.getName().equals("spike")){
+								avatar.kill();
+								life = avatar.getLife();
+							}
 							Vector2 v2 = body1.getPosition().sub(body2.getPosition()).nor().scl(10);
 							body1.applyLinearImpulse(new Vector2(v2.x, v2.y), body1.getPosition(), true);
 
 						} else {
+							if(bd1.getName().equals("spike")){
+								avatar.kill();
+								life = avatar.getLife();
+							}
 							Vector2 v2 = body2.getPosition().sub(body1.getPosition()).nor().scl(10);
 							body2.applyLinearImpulse(new Vector2(v2.x, v2.y), body2.getPosition(), true);
 

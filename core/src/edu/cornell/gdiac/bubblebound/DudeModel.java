@@ -68,11 +68,14 @@ public class DudeModel extends CapsuleObstacle {
 	private boolean grappleboost;
 
 	private Bubble grappledBubble;
+	private TextureRegion leftDeathText;
+	private TextureRegion rightDeathText;
 
 	private float grappledBubbleDist;
 	public int breath = 50;
 
 	public boolean inGas = false;
+	public boolean showDeath = false;
 	public int gas = 0;
 
 	
@@ -593,6 +596,12 @@ public class DudeModel extends CapsuleObstacle {
 		inGas = b;
 	}
 
+	public void setShowDeath(boolean b) {showDeath = b;}
+
+
+	public void setLeftDeathTexture(TextureRegion leftDeath){leftDeathText = leftDeath;}
+	public void setRightDeathTexture(TextureRegion rightDeath){rightDeathText = rightDeath;}
+
 	public boolean displayBreath = false;
 
 	public void updateRotation(float r){
@@ -629,6 +638,7 @@ public class DudeModel extends CapsuleObstacle {
 	 * @param canvas Drawing context
 	 */
 	public void draw(GameCanvas canvas) {
+
 		float sx = drawScale.x / 64f;
 		float sy = drawScale.y / 64f;
 		float x = getWidth()*drawScale.x / 2;
@@ -641,6 +651,15 @@ public class DudeModel extends CapsuleObstacle {
 		}
 		else {
 			canvas.draw(texture, Color.WHITE,origin.x,origin.y,getX()*drawScale.x,getY()*drawScale.y,getAngle(),sx*effect,sy*upside);
+		}
+		if(showDeath){
+			if(playerController.isFacingRight()){
+				canvas.draw(rightDeathText, Color.WHITE,rightDeathText.getRegionWidth(),rightDeathText.getRegionHeight(),getX()*drawScale.x,getY()*drawScale.y,getAngle(),sx*effect*0.1f,sy*upside*0.1f);
+
+			}else{
+				canvas.draw(leftDeathText, Color.WHITE,leftDeathText.getRegionHeight(),leftDeathText.getRegionHeight(),getX()*drawScale.x,getY()*drawScale.y,getAngle(),sx*effect*0.1f,sy*upside*0.1f);
+			}
+
 		}
 
 

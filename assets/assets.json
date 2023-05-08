@@ -1023,7 +1023,7 @@
         "platform:dudeUp":  "platform/Straight-Up.png",
         "platform:dudeDown":  "platform/Straight-Down.png",
         "platform:sundrop" : "platform/Sundrop_SpriteSheet.png",
-        "platform:spike":  "platform/spike.png",
+        "platform:spike":  "shared/Sky Spike.png",
         "platform:spike2": "platform/spike2.png",
         "platform:token": "platform/token.png",
         "platform:rope":  "platform/ropebridge.png",
@@ -1038,6 +1038,8 @@
         "platform:border0": "platform/border0.png",
       "platform:border1": "platform/border1.png",
       "platform:border2": "platform/border2.png",
+      "platform:leftdeath": "platform/Left die down.PNG",
+      "platform:rightdeath": "platform/Right die down.PNG",
     },
     "jsons"  : {
         "platform:constants": "platform/constants.json",
