@@ -380,7 +380,7 @@ public class LevelEditorV2 {
 
                     }
 
-                    if (obj1.getInt("id") == 8) {
+                    if (obj1.getInt("id") == 8 || obj1.getString("name").equals("bubbles")) {
 
                         JsonValue bubbleList = obj1.get("objects");
 
@@ -439,18 +439,6 @@ public class LevelEditorV2 {
                                 if(tileMap.get(j).get(i) < 60){
                                     continue;
                                 }
-//                                if(k <= 66 && k >= 61){
-//                                    k = 61 + (int)(Math.random() * 6);
-//                                    if(k == 68){
-//                                        k = 67;
-//                                    }
-//                                }
-//                                if(k >= 84 && k <= 88){
-//                                    k = 84 + (int)(Math.random() * 5);
-//                                    if(k == 89){
-//                                        k--;
-//                                    }
-//                                }
 
                                 if (randomizeTiles == 1) {
 
@@ -507,75 +495,31 @@ public class LevelEditorV2 {
                                 boolean flip = false;
 
 
-//                                if (k == 153 || k == 154) {
-//                                    arrayOffset = arrayOffset + 63;
-//                                }
-//
-//                                else if (k > 94 && k < 140) {
-//                                    arrayOffset = arrayOffset;
-//                                }
-//
-                                if (k == 153) {
-                                    k = arrayOffset + 35;
+                                if (k >= 128 && k <= 133) {
+                                    //from 89 ID 128
+                                    k = arrayOffset + 39;
+                                }
+
+                                if (k >= 331 && k <= 387) {
+                                    //from 133 ID 331
+                                    k = arrayOffset + 199 + 39;
+                                }
+
+                                if (k >= 242 && k <= 329) {
+                                    //from 387 ID 242
+                                    k = arrayOffset + 199 + 38 - 145;
+                                }
+
+                                if (k >= 118 && k <= 120) {
+                                    //from 329 ID 118
+                                    k = arrayOffset + 240 - 211;
                                 }
 
                                 else if ((k - arrayOffset) > textureObjects.size() -1 || k < 0) {
                                     flip = true;
                                 }
 
-//                                else if (k > 200) {
-//
-//                                    flip = true;
-//                                    int flippedH = k | 0x80000000;;
-//                                    int flippedV = k ^ 0x40000000;
-//                                    int flippedBoth = k | 0xC0000000;
-//
-//
-//                                    boolean flippedHbool = (k & flippedH) == flippedH;
-//                                    boolean flippedVbool = (k & flippedV) == flippedV;
-//                                    boolean flippedBothbool = (k & flippedBoth) == flippedBoth;
-//
-//                                    if (originalTile == 152 || originalTile == 153) {
-//                                        arrayOffset = arrayOffset + 63;
-//                                    }
-//
-//                                    else if (originalTile > 94 && originalTile < 140) {
-//                                        arrayOffset = arrayOffset + 4;
-//                                    }
-//
-//                                    if (flippedHbool) {
-//
-//                                        TextureRegion result = textureObjects.get(originalTile-arrayOffset);
-//                                        result.flip(true, false);
-//
-//                                        wo.setTexture(result);
-//                                        boxes.add(wo);
-//
-//                                    }
-//
-//                                    else if (flippedVbool) {
-//
-//                                        TextureRegion result = textureObjects.get(originalTile-arrayOffset);
-//                                        result.flip(false, true);
-//
-//                                        wo.setTexture(result);
-//                                        boxes.add(wo);
-//
-//                                    }
-//
-//                                    else if (flippedBothbool) {
-//
-//                                        TextureRegion result = textureObjects.get(originalTile-arrayOffset);
-//                                        result.flip(true, true);
-//
-//                                        wo.setTexture(result);
-//                                        boxes.add(wo);
-//
-//                                    }
-//
-//
-//
-//                                }
+
 
                                 if (!flip) {
 
