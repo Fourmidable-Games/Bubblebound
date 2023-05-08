@@ -478,18 +478,31 @@ import edu.cornell.gdiac.util.XBoxController;
                 float temp = screenX - (soundBarPos.x - (volumeBar.getWidth() * scale.x / 2f));
                 soundVolume = temp / (volumeBar.getWidth() * scale.x);
             }
-            if(pressedButton(screenX, screenY, mControls, mControlPos)){
+            if(pressedButton2(screenX, screenY, mControls, mControlPos, 0.5f)){
                 controls = 0;
             }
-            if(pressedButton(screenX, screenY, kControls, kControlPos)){
+            if(pressedButton2(screenX, screenY, kControls, kControlPos, 0.33f)){
                 controls = 1;
             }
+
             // TODO: Fix scaling
             // Play button is a circle.
 
 
             return false;
         }
+       public boolean pressedButton2(int screenX, int screenY, Texture texture, Vector2 button_center, float f){
+           float button_w = texture.getWidth() * scale.x * f;
+           float button_h = texture.getHeight() * scale.y * f;
+           screenY = canvas.getHeight() - screenY;
+           //System.out.println(button_center);
+           if(screenX >= button_center.x - button_w/2 && screenX <= button_center.x + button_w/2){
+               if(screenY >= button_center.y - button_h/2 && screenY <= button_center.y + button_h/2){
+                   return true;
+               }
+           }
+           return false;
+       }
 
         /**
          * Called when a finger was lifted or a mouse button was released.
