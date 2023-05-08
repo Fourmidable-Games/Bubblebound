@@ -527,8 +527,14 @@ public class LevelEditorV2 {
 
 
                                 if (!flip) {
-                                    wo.setTexture(textureObjects.get(k-arrayOffset));
-                                    boxes.add(wo);
+                                    if(k == 642){
+                                        wo.setTexture(textureObjects.get(k+1-arrayOffset));
+                                        boxes.add(wo);
+                                    }else{
+                                        wo.setTexture(textureObjects.get(k-arrayOffset));
+                                        boxes.add(wo);
+                                    }
+
 
                                 }
 
