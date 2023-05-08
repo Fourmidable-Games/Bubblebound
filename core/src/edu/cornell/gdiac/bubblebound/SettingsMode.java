@@ -220,6 +220,8 @@ import edu.cornell.gdiac.util.XBoxController;
             mVolume = internal.getEntry("mvolume", Texture.class);
             sVolume = internal.getEntry("svolume", Texture.class);
             control = internal.getEntry("control",Texture.class);
+            kControls = internal.getEntry("kcontrols",Texture.class);
+            mControls = internal.getEntry("mcontrols",Texture.class);
             volumeBar = internal.getEntry("volumebar", Texture.class);
             volumeBubble = internal.getEntry("volumebubble", Texture.class);
             fullscreenButton = internal.getEntry("fullscreenbutton", Texture.class);
@@ -233,7 +235,8 @@ import edu.cornell.gdiac.util.XBoxController;
             soundBarPos = new Vector2(canvas.getWidth() * 0.7f, canvas.getHeight() * 0.8f);
             musicBarPos = new Vector2(canvas.getWidth() * 0.7f, canvas.getHeight() * 0.7f);
             controlPos = new Vector2(canvas.getWidth() / 2, canvas.getHeight() * 0.6f);
-            kControlPos = new Vector2(canvas.getWidth() / 3, canvas.getHeight() * 0.45f);
+            mControlPos = new Vector2(canvas.getWidth() / 3, canvas.getHeight() * 0.4f);
+            kControlPos = new Vector2(canvas.getWidth() * 2f / 3f, canvas.getHeight() * 0.4f);
             fullscreenPos = new Vector2(canvas.getWidth() / 2f, canvas.getHeight() * 0.2f);
             System.out.println(fullscreenPos);
 
@@ -315,10 +318,10 @@ import edu.cornell.gdiac.util.XBoxController;
 
             canvas.draw(control, Color.WHITE, control.getWidth() /2f, control.getHeight()/2f,
                     controlPos.x, controlPos.y, 0, scale.x, scale.y);
-//            canvas.draw(mControls, mouseTint, mControls.getWidth()/2f, mControls.getHeight()/2f,
-//                    mControlPos.x, mControlPos.y, 0, scale.x, scale.y);
-//            canvas.draw(kControls, keyTint,kControls.getWidth()/2f, kControls.getHeight()/2f,
-//                    kControlPos.x, kControlPos.y, 0, scale.x, scale.y);
+            canvas.draw(mControls, mouseTint, mControls.getWidth()/2f, mControls.getHeight()/2f,
+                    mControlPos.x, mControlPos.y, 0, scale.x * 0.5f, scale.y * 0.5f);
+            canvas.draw(kControls, keyTint,kControls.getWidth()/2f, kControls.getHeight()/2f,
+                    kControlPos.x, kControlPos.y, 0, scale.x * 0.33f, scale.y * 0.33f);
 
             if(!canvas.isFullscreen()){
                 canvas.draw(fullscreenButton, Color.WHITE,windowedButton.getWidth()/2f, windowedButton.getHeight()/2f,
@@ -468,14 +471,18 @@ import edu.cornell.gdiac.util.XBoxController;
                 pressState = 1;
             }
             if(pressedButton(screenX, screenY, volumeBar, musicBarPos)){
-                System.out.println("gay");
                 float temp = screenX - (musicBarPos.x - (volumeBar.getWidth() * scale.x / 2f));
                 musicVolume = temp / (volumeBar.getWidth() * scale.x);
             }
             if(pressedButton(screenX, screenY, volumeBar, soundBarPos)){
-                System.out.println("hi");
                 float temp = screenX - (soundBarPos.x - (volumeBar.getWidth() * scale.x / 2f));
                 soundVolume = temp / (volumeBar.getWidth() * scale.x);
+            }
+            if(pressedButton(screenX, screenY, mControls, mControlPos)){
+                controls = 0;
+            }
+            if(pressedButton(screenX, screenY, kControls, kControlPos)){
+                controls = 1;
             }
             // TODO: Fix scaling
             // Play button is a circle.

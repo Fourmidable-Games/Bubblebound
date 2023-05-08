@@ -8,7 +8,9 @@
     "volumebar":"shared/volumebar.png",
     "volumebubble": "shared/volumebubble.png",
     "fullscreenbutton": "shared/fullscreenbutton.png",
-    "windowedbutton": "shared/windowedbutton.png"
+    "windowedbutton": "shared/windowedbutton.png",
+    "kcontrols": "shared/kcontrols.png",
+    "mcontrols": "shared/mcontrols.png"
 
 
   },
