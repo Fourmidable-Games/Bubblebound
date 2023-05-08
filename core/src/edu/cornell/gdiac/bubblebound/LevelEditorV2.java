@@ -380,7 +380,7 @@ public class LevelEditorV2 {
 
                     }
 
-                    if (obj1.getInt("id") == 8) {
+                    if (obj1.getInt("id") == 8 || obj1.getString("name").equals("bubbles")) {
 
                         JsonValue bubbleList = obj1.get("objects");
 
