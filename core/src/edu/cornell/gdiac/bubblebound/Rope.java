@@ -26,26 +26,26 @@ public class Rope extends ComplexObstacle {
         body1 = character;
         body2 = bubble;
         height = Math.sqrt(Math.pow(body1.getPosition().x-body2.getPosition().x,2)+ Math.pow(body1.getPosition().y-body2.getPosition().y,2));
-        // ////system.out.println(character.getPosition());
+        // //////System.out.println(character.getPosition());
         Vector2 c = new Vector2(body1.getPosition());
         Vector2 c2 = new Vector2(body2.getPosition());
         c.add(c2);
         c.scl(0.5f);
         rope = new BoxObstacle(c.x,c.y,(float)height + 1,0.25f);
-        // ////system.out.println(c);
+        // //////System.out.println(c);
         rope.setName("rope");
         rope.setDensity(0);
         double x_dist = body1.getPosition().x - body2.getPosition().x;
         double y_dist = body1.getPosition().y - body2.getPosition().y;
         double angle = Math.atan(y_dist/x_dist);
-        // ////system.out.println(angle);
-        // ////system.out.println((float)angle);
+        // //////System.out.println(angle);
+        // //////System.out.println((float)angle);
         starting_angle = angle;
         rope.setAngle((float)angle);
         rope.setBodyType(BodyDef.BodyType.DynamicBody);
 
         bodies.add(rope);
-        // ////system.out.println("rope made");
+        // //////System.out.println("rope made");
 
     }
 

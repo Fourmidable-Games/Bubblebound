@@ -431,7 +431,7 @@ import edu.cornell.gdiac.util.XBoxController;
             float button_w = texture.getWidth() * scale.x;
             float button_h = texture.getWidth() * scale.y;
             screenY = canvas.getHeight() - screenY;
-            System.out.println(button_center);
+            //System.out.println(button_center);
             if(screenX >= button_center.x - button_w/2 && screenX <= button_center.x + button_w/2){
                 if(screenY >= button_center.y - button_h/2 && screenY <= button_center.y + button_h/2){
                    return true;
@@ -456,7 +456,7 @@ import edu.cornell.gdiac.util.XBoxController;
         public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 
             if(disabled){
-                System.out.println("bad howdy");
+                //System.out.println("bad howdy");
                 return true;
             }
 
@@ -464,7 +464,7 @@ import edu.cornell.gdiac.util.XBoxController;
             //screenY = heightY-screenY;
 
             if(pressedButton(screenX, screenY, backButton, backButtonPos)){
-                System.out.println("BACKK");
+                //System.out.println("BACKK");
                 pressState = 1;
             }
             if(pressedButton(screenX, screenY, volumeBar, musicBarPos)){

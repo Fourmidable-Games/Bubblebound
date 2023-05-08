@@ -235,7 +235,7 @@
                          "type":"",
                          "visible":true,
                          "width":256,
-                         "x":192,
+                         "x":384,
                          "y":1664
                         }],
                  "opacity":1,
@@ -281,7 +281,7 @@
                          "type":"",
                          "visible":true,
                          "width":64,
-                         "x":512,
+                         "x":704,
                          "y":1664
                         }],
                  "opacity":1,

@@ -72,7 +72,7 @@ public class RopeBridge extends ComplexObstacle {
 		super(b.getPosition().x, b.getPosition().y);
 		fixture.filter.groupIndex = -2;
 
-		// ////system.out.println(getPosition());
+		// //////System.out.println(getPosition());
 		setName("bridge");
 		this.data = data;
 		bubble = b;
@@ -85,17 +85,17 @@ public class RopeBridge extends ComplexObstacle {
 
 		anchor3 = new Vector2(0,avatarCapsule.getHeight()/2 * avatarCapsule.grav);
 		dimension = new Vector2(data.getFloat("width",0),0.1f);
-		// ////system.out.println("Dimension: " + dimension);
+		// //////System.out.println("Dimension: " + dimension);
 		float length = bubble.getPosition().dst(avatar.getPosition().add(anchor3));
 		//	(float)Math.sqrt(Math.pow(bubble.getPosition().x-avatar.getPosition().x,2)+ Math.pow(bubble.getPosition().y-avatar.getPosition().y,2));
 		Vector2 norm = new Vector2(bubble.getPosition().sub(avatar.getPosition().add(anchor3)));
-		// ////system.out.println("Norm:" + norm);
+		// //////System.out.println("Norm:" + norm);
 		norm.nor();
-		// ////system.out.println("Norm normed:" + norm);
+		// //////System.out.println("Norm normed:" + norm);
 
 		// If too small, only make one plank.;
 		int nLinks = (int)(length / lwidth);
-		////system.out.println();
+		//////System.out.println();
 		if (nLinks <= 1) {
 			nLinks = 1;
 			linksize = length;
@@ -285,7 +285,7 @@ public class RopeBridge extends ComplexObstacle {
 			anchor2.y = 0;
 			jointDef.bodyA = last.getBody();
 			jointDef.bodyB = bubble;
-			// ////system.out.println(bubble);
+			// //////System.out.println(bubble);
 			jointDef.localAnchorA.set(anchor1);
 			jointDef.localAnchorB.set(anchor2);
 			jointDef.collideConnected = false;
