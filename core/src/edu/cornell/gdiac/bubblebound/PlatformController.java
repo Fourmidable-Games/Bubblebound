@@ -938,7 +938,8 @@ public class PlatformController implements ContactListener, Screen {
 			pe.initialize(sunStrip);
 
 			if(pe.update()){
-				if(canShoot(pe)) {
+				if(pe.canShoot(pe, collidePos, collidebody, avatar, collidedbodies, world)) {
+					collidedbodies = 0;
 					pe.createBullet(pe, avatar, scale, bulletTexture, addQueue, bounds, bullets);
 //					createBullet(pe);
 				}
@@ -1025,7 +1026,9 @@ public class PlatformController implements ContactListener, Screen {
 			}
 		}
 		if(closest != null){
-			if (avatar.getPosition().dst(closest.getPosition()) < 4.5 && canShoot(closest)) {
+			if (avatar.getPosition().dst(closest.getPosition()) < 4.5 && avatar.canShoot(closest, collidePos,
+					collidebody, collidedbodies, world)) {
+				setCollidebodies(0);
 				closest.canRopeTo = true;
 			}
 		}
@@ -1086,7 +1089,8 @@ public class PlatformController implements ContactListener, Screen {
 
 		if(constructRope && closest != null){
 
-			if(canShoot(closest)) { //TODO:: make this good
+			if(avatar.canShoot(closest, collidePos, collidebody, collidedbodies, world)) { //TODO:: make this good
+				setCollidebodies(0);
 				avatar.setGrappling(true);
 				avatar.setGrappledBubble(closest);
 				avatar.setGrappledBubbleDist(avatar.getPosition().dst(closest.getPosition()));
@@ -1222,6 +1226,10 @@ public class PlatformController implements ContactListener, Screen {
 	public Body collidebody = null;
 	public int collidedbodies = 0;
 
+	public void setCollidebodies(int update) {
+		collidedbodies = update;
+	};
+
 
 	public boolean canBubble(Vector2 p){
 
@@ -1257,28 +1265,28 @@ public class PlatformController implements ContactListener, Screen {
 	}
 
 
-	public boolean canShoot(Obstacle b) {
-		RayCastCallback rcc = new RayCastCallback() {
-			@Override
-			public float reportRayFixture(Fixture fixture, Vector2 point, Vector2 normal, float fraction) {
-				collidePos = fixture.getBody().getPosition();
-				collidebody = fixture.getBody();
-				if (avatar != collidebody.getUserData() && !fixture.isSensor()) {
-
-					if(!((Obstacle)fixture.getBody().getUserData()).getName().contains("plank")){
-						collidedbodies++;
-					}
-
-				}
-
-				return 1;
-			}
-		};
-		collidedbodies = 0;
-
-		world.rayCast(rcc, b.getPosition(), avatar.getPosition());
-		return collidedbodies < 1;
-	}
+//	public boolean canShoot(Obstacle b) {
+//		RayCastCallback rcc = new RayCastCallback() {
+//			@Override
+//			public float reportRayFixture(Fixture fixture, Vector2 point, Vector2 normal, float fraction) {
+//				collidePos = fixture.getBody().getPosition();
+//				collidebody = fixture.getBody();
+//				if (avatar != collidebody.getUserData() && !fixture.isSensor()) {
+//
+//					if(!((Obstacle)fixture.getBody().getUserData()).getName().contains("plank")){
+//						collidedbodies++;
+//					}
+//
+//				}
+//
+//				return 1;
+//			}
+//		};
+//		collidedbodies = 0;
+//
+//		world.rayCast(rcc, b.getPosition(), avatar.getPosition());
+//		return collidedbodies < 1;
+//	}
 
 
 

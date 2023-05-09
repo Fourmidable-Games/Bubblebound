@@ -4,15 +4,11 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.Fixture;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.*;
 import edu.cornell.gdiac.bubblebound.DudeModel;
 import edu.cornell.gdiac.bubblebound.GameCanvas;
 import edu.cornell.gdiac.util.FilmStrip;
 import edu.cornell.gdiac.util.PooledList;
-import org.w3c.dom.css.Rect;
 
 import java.util.List;
 
@@ -22,9 +18,13 @@ public class ProjEnemy extends BoxObstacle{
 
     int shoottimer = 0; //shoot every 100 frames;
     int shootcooldown = 200;
+    private DudeModel avatar;
+    private Body collidebody;
+    private Vector2 collidebodyPos;
     private FilmStrip filmstrip;
     boolean shooting = false;
     private int rotation;
+    private int collidedbodies;
 
     public int getRotation(){
         return rotation;
@@ -160,6 +160,61 @@ public class ProjEnemy extends BoxObstacle{
         addQueuedObject(bullet, addQueue, bounds);
         bullets.add(bullet);
 
+    }
+
+    public void addOneToCollidebodies() {
+        collidedbodies = collidedbodies + 1;
+    };
+
+    public void setAvatar(DudeModel Avatar) {
+        avatar = Avatar;
+    }
+
+    public DudeModel DudeModel () {
+        return avatar;
+    }
+
+    public void setCollidedbody(Body body) {
+        collidebody = body;
+    }
+
+    public Body getCollidedBody() {
+        return collidebody;
+    }
+
+    public void setCollidedBodyPos(Vector2 pos) {
+        collidebodyPos = pos;
+    }
+
+    public Vector2 getCollidedBodyPos() {
+        return collidebodyPos;
+    }
+
+    public boolean canShoot(Obstacle b, Vector2 collidePos, Body collidebody, DudeModel avatar, int collidedbodies, World world) {
+
+        setAvatar(avatar);
+
+        RayCastCallback rcc = new RayCastCallback() {
+            @Override
+            public float reportRayFixture(Fixture fixture, Vector2 point, Vector2 normal, float fraction) {
+                setCollidedBodyPos(fixture.getBody().getPosition());
+                setCollidedbody(fixture.getBody());
+                if (DudeModel() != getCollidedBody().getUserData() && !fixture.isSensor()) {
+
+                    if(!((Obstacle)fixture.getBody().getUserData()).getName().contains("plank")){
+                        addOneToCollidebodies();
+                    }
+
+                }
+
+                return 1;
+            }
+        };
+
+        collidedbodies = 0;
+
+        world.rayCast(rcc, b.getPosition(), avatar.getPosition());
+        return collidedbodies < 1;
     }
 
     public void drawDebug(GameCanvas canvas) {

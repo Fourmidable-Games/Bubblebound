@@ -33,6 +33,12 @@ public class DudeModel extends CapsuleObstacle {
 	/** The initializing data (to avoid magic numbers) */
 	private JsonValue data;
 
+	private int collidedbodies;
+	private Body collidebody;
+	private Vector2 collidebodyPos;
+
+
+
 	/** The factor to multiply by the input */
 	private final float force;
 	/** The amount to slow the character down */
@@ -571,6 +577,52 @@ public class DudeModel extends CapsuleObstacle {
 				displayBreath = false;
 			}
 		}
+	}
+
+	public void addOneToCollidebodies() {
+		collidedbodies = collidedbodies + 1;
+	};
+
+	public void setCollidedbody(Body body) {
+		collidebody = body;
+	}
+
+	public Body getCollidedBody() {
+		return collidebody;
+	}
+
+	public void setCollidedBodyPos(Vector2 pos) {
+		collidebodyPos = pos;
+	}
+
+	public Vector2 getCollidedBodyPos() {
+		return collidebodyPos;
+	}
+
+	public boolean canShoot(Obstacle b, Vector2 collidePos, Body collidebody, int collidedbodies, World world) {
+
+
+		RayCastCallback rcc = new RayCastCallback() {
+			@Override
+			public float reportRayFixture(Fixture fixture, Vector2 point, Vector2 normal, float fraction) {
+				setCollidedBodyPos(fixture.getBody().getPosition());
+				setCollidedbody(fixture.getBody());
+				if (this != getCollidedBody().getUserData() && !fixture.isSensor()) {
+
+					if(!((Obstacle)fixture.getBody().getUserData()).getName().contains("plank")){
+						addOneToCollidebodies();
+					}
+
+				}
+
+				return 1;
+			}
+		};
+
+		collidedbodies = 0;
+
+		world.rayCast(rcc, b.getPosition(), this.getPosition());
+		return collidedbodies < 1;
 	}
 
 
