@@ -647,6 +647,7 @@ public class PlatformController implements ContactListener, Screen {
 		float yy = 0;
 		int w = 10;
 		int h = 10;
+
 		float offset = (h / 2f) - 0.5f;
 		switch (rotation){
 			case 0:
@@ -938,7 +939,8 @@ public class PlatformController implements ContactListener, Screen {
 
 			if(pe.update()){
 				if(canShoot(pe)) {
-					createBullet(pe);
+					pe.createBullet(pe, avatar, scale, bulletTexture, addQueue, bounds, bullets);
+//					createBullet(pe);
 				}
 			}
 		}
@@ -1044,6 +1046,8 @@ public class PlatformController implements ContactListener, Screen {
 		}else{
 			bubbles_left = BUBBLE_LIMIT;
 		}
+
+		wait++;
 
 
 		if (closest != null) closest.setSelected(true);
@@ -1161,27 +1165,29 @@ public class PlatformController implements ContactListener, Screen {
 	}
 
 	private List<Bullet> bullets = new ArrayList<>();
-	public void createBullet(ProjEnemy pe){
-		Vector2 dir = avatar.getPosition().sub(pe.getPosition());
 
-		float radius = 0.3f;
 
-		int[][] offsets = {{0,1}, {1,0}, {0,-1}, {-1,0}};
-		int[] offset = offsets[pe.getRotation()];
-		Bullet bullet = new Bullet(pe.getX() + offset[0], pe.getY() + offset[1], radius);
-		bullet.setGravityScale(0f);
-		bullet.setDrawScale(scale);
-
-		bullet.setTexture(bulletTexture);
-		bullet.setBullet(true);
-
-		float speed = 5f;
-
-		bullet.setLinearVelocity(dir.nor().scl(speed));
-		addQueuedObject(bullet);
-		bullets.add(bullet);
-
-	}
+//	public void createBullet(ProjEnemy pe){
+//		Vector2 dir = avatar.getPosition().sub(pe.getPosition());
+//
+//		float radius = 0.3f;
+//
+//		int[][] offsets = {{0,1}, {1,0}, {0,-1}, {-1,0}};
+//		int[] offset = offsets[pe.getRotation()];
+//		Bullet bullet = new Bullet(pe.getX() + offset[0], pe.getY() + offset[1], radius);
+//		bullet.setGravityScale(0f);
+//		bullet.setDrawScale(scale);
+//
+//		bullet.setTexture(bulletTexture);
+//		bullet.setBullet(true);
+//
+//		float speed = 5f;
+//
+//		bullet.setLinearVelocity(dir.nor().scl(speed));
+//		addQueuedObject(bullet);
+//		bullets.add(bullet);
+//
+//	}
 
 
 	/**

@@ -1,13 +1,20 @@
 package edu.cornell.gdiac.bubblebound.obstacle;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
+import edu.cornell.gdiac.bubblebound.DudeModel;
 import edu.cornell.gdiac.bubblebound.GameCanvas;
 import edu.cornell.gdiac.util.FilmStrip;
+import edu.cornell.gdiac.util.PooledList;
+import org.w3c.dom.css.Rect;
+
+import java.util.List;
 
 public class ProjEnemy extends BoxObstacle{
 
@@ -36,6 +43,7 @@ public class ProjEnemy extends BoxObstacle{
     public boolean isShooting() {
         return shooting;
     }
+
     public ProjEnemy(float x, float y, float width, float height, int rotation) {
         super(x, y, 1, 1);
         this.setName("projenemy");
@@ -53,6 +61,17 @@ public class ProjEnemy extends BoxObstacle{
 
     public void deactivate(){
         shooting = false;
+    }
+
+    public boolean inBounds(Obstacle obj, Rectangle bounds) {
+        boolean horiz = (bounds.x <= obj.getX() && obj.getX() <= bounds.x+bounds.width);
+        boolean vert  = (bounds.y <= obj.getY() && obj.getY() <= bounds.y+bounds.height);
+        return horiz && vert;
+    }
+
+    public void addQueuedObject(Obstacle obj, PooledList<Obstacle> addQueue, Rectangle bounds) {
+        assert inBounds(obj, bounds) : "Object is not in bounds";
+        addQueue.add(obj);
     }
 
     public boolean update(){
@@ -116,6 +135,30 @@ public class ProjEnemy extends BoxObstacle{
             float sy = drawScale.y / 64f;
             canvas.draw(texture, Color.WHITE, ox, oy, getX() * drawScale.x, getY() * drawScale.x, (float)Math.toRadians(angle), sx, sy);
         }
+
+    }
+
+    public void createBullet(ProjEnemy pe, DudeModel avatar, Vector2 scale, TextureRegion bulletTexture,
+                             PooledList<Obstacle> addQueue, Rectangle bounds, List<Bullet> bullets){
+
+        Vector2 dir = avatar.getPosition().sub(pe.getPosition());
+
+        float radius = 0.3f;
+
+        int[][] offsets = {{0,1}, {1,0}, {0,-1}, {-1,0}};
+        int[] offset = offsets[pe.getRotation()];
+        Bullet bullet = new Bullet(pe.getX() + offset[0], pe.getY() + offset[1], radius);
+        bullet.setGravityScale(0f);
+        bullet.setDrawScale(scale);
+
+        bullet.setTexture(bulletTexture);
+        bullet.setBullet(true);
+
+        float speed = 5f;
+
+        bullet.setLinearVelocity(dir.nor().scl(speed));
+        addQueuedObject(bullet, addQueue, bounds);
+        bullets.add(bullet);
 
     }
 
