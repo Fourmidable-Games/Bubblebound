@@ -499,19 +499,23 @@ public class LevelEditorV2 {
 
 
                                 if (k >= 517 && k <= 522) {
-                                    arrayOffset = 486;
+                                    arrayOffset = 488;
                                 }
 
-                                if (k >= 720 && k <= 776) {
+                                else if (k >= 710 && k <= 718) {
+                                    arrayOffset = 539+4;
+                                }
+
+                                else if (k >= 720 && k <= 776) {
                                     arrayOffset = 685;
                                 }
 
-                                if (k >= 631 && k <= 710) {
+                                else if (k >= 631 && k <= 705) {
                                     arrayOffset = 539;
                                 }
 
-                                if (k >= 507 && k <= 510) {
-                                    arrayOffset = 332;
+                                else if (k >= 507 && k <= 510) {
+                                    arrayOffset = 332-1;
                                 }
 
 
@@ -523,8 +527,14 @@ public class LevelEditorV2 {
 
 
                                 if (!flip) {
-                                    wo.setTexture(textureObjects.get(k-arrayOffset));
-                                    boxes.add(wo);
+                                    if(k == 642){
+                                        wo.setTexture(textureObjects.get(k+1-arrayOffset));
+                                        boxes.add(wo);
+                                    }else{
+                                        wo.setTexture(textureObjects.get(k-arrayOffset));
+                                        boxes.add(wo);
+                                    }
+
 
                                 }
 
