@@ -938,10 +938,8 @@ public class PlatformController implements ContactListener, Screen {
 			pe.initialize(sunStrip);
 
 			if(pe.update()){
-				if(pe.canShoot(pe, collidePos, collidebody, avatar, collidedbodies, world)) {
-					collidedbodies = 0;
-					pe.createBullet(pe, avatar, scale, bulletTexture, addQueue, bounds, bullets);
-//					createBullet(pe);
+				if(canShoot(pe)) {
+					createBullet(pe);
 				}
 			}
 		}
@@ -1089,8 +1087,7 @@ public class PlatformController implements ContactListener, Screen {
 
 		if(constructRope && closest != null){
 
-			if(avatar.canShoot(closest, collidePos, collidebody, collidedbodies, world)) { //TODO:: make this good
-				setCollidebodies(0);
+			if(canShoot(closest)) { //TODO:: make this good
 				avatar.setGrappling(true);
 				avatar.setGrappledBubble(closest);
 				avatar.setGrappledBubbleDist(avatar.getPosition().dst(closest.getPosition()));
@@ -1171,27 +1168,27 @@ public class PlatformController implements ContactListener, Screen {
 	private List<Bullet> bullets = new ArrayList<>();
 
 
-//	public void createBullet(ProjEnemy pe){
-//		Vector2 dir = avatar.getPosition().sub(pe.getPosition());
-//
-//		float radius = 0.3f;
-//
-//		int[][] offsets = {{0,1}, {1,0}, {0,-1}, {-1,0}};
-//		int[] offset = offsets[pe.getRotation()];
-//		Bullet bullet = new Bullet(pe.getX() + offset[0], pe.getY() + offset[1], radius);
-//		bullet.setGravityScale(0f);
-//		bullet.setDrawScale(scale);
-//
-//		bullet.setTexture(bulletTexture);
-//		bullet.setBullet(true);
-//
-//		float speed = 5f;
-//
-//		bullet.setLinearVelocity(dir.nor().scl(speed));
-//		addQueuedObject(bullet);
-//		bullets.add(bullet);
-//
-//	}
+	public void createBullet(ProjEnemy pe){
+		Vector2 dir = avatar.getPosition().sub(pe.getPosition());
+
+		float radius = 0.3f;
+
+		int[][] offsets = {{0,1}, {1,0}, {0,-1}, {-1,0}};
+		int[] offset = offsets[pe.getRotation()];
+		Bullet bullet = new Bullet(pe.getX() + offset[0], pe.getY() + offset[1], radius);
+		bullet.setGravityScale(0f);
+		bullet.setDrawScale(scale);
+
+		bullet.setTexture(bulletTexture);
+		bullet.setBullet(true);
+
+		float speed = 5f;
+
+		bullet.setLinearVelocity(dir.nor().scl(speed));
+		addQueuedObject(bullet);
+		bullets.add(bullet);
+
+	}
 
 
 	/**
@@ -1265,28 +1262,28 @@ public class PlatformController implements ContactListener, Screen {
 	}
 
 
-//	public boolean canShoot(Obstacle b) {
-//		RayCastCallback rcc = new RayCastCallback() {
-//			@Override
-//			public float reportRayFixture(Fixture fixture, Vector2 point, Vector2 normal, float fraction) {
-//				collidePos = fixture.getBody().getPosition();
-//				collidebody = fixture.getBody();
-//				if (avatar != collidebody.getUserData() && !fixture.isSensor()) {
-//
-//					if(!((Obstacle)fixture.getBody().getUserData()).getName().contains("plank")){
-//						collidedbodies++;
-//					}
-//
-//				}
-//
-//				return 1;
-//			}
-//		};
-//		collidedbodies = 0;
-//
-//		world.rayCast(rcc, b.getPosition(), avatar.getPosition());
-//		return collidedbodies < 1;
-//	}
+	public boolean canShoot(Obstacle b) {
+		RayCastCallback rcc = new RayCastCallback() {
+			@Override
+			public float reportRayFixture(Fixture fixture, Vector2 point, Vector2 normal, float fraction) {
+				collidePos = fixture.getBody().getPosition();
+				collidebody = fixture.getBody();
+				if (avatar != collidebody.getUserData() && !fixture.isSensor()) {
+
+					if(!((Obstacle)fixture.getBody().getUserData()).getName().contains("plank")){
+						collidedbodies++;
+					}
+
+				}
+
+				return 1;
+			}
+		};
+		collidedbodies = 0;
+
+		world.rayCast(rcc, b.getPosition(), avatar.getPosition());
+		return collidedbodies < 1;
+	}
 
 
 
