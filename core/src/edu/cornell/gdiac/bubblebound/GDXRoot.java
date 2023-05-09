@@ -133,6 +133,8 @@ public class GDXRoot extends Game implements ScreenListener {
 			if(exitCode == 0){ //normal start
 				controllers[current].reset(1);
 				setScreen(controllers[current]);
+				loading.dispose();
+				loading = null;
 			}
 			else if(exitCode == 1){ //lvl select
 				levelselect = new LevelSelectMode("assets.json", canvas, 1);
@@ -141,6 +143,7 @@ public class GDXRoot extends Game implements ScreenListener {
 			}else if(exitCode == 2){// settings mode
 				settings = new SettingsMode("assets.json",canvas,1);
 				settings.setScreenListener(this);
+				settings.setMusic(loading.getMusic(), loading.getMusicId());
 				setScreen(settings);
 
 			}

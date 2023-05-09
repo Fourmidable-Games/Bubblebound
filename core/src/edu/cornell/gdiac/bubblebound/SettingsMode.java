@@ -30,9 +30,9 @@ import edu.cornell.gdiac.util.XBoxController;
         /** Texture atlas to support a progress bar */
         //private final Texture statusBar;
         /** Texture atlas to support a progress bar */
-	/*private Music loadingMusic;
-	private long loadingMusicId = -1;
-	*/
+	//private Music loadingMusic;
+//       private long loadingMusicId = -1;
+
         // statusBar is a "texture atlas." Break it up into parts.
         /** Left cap to the status background (grey region) */
         private TextureRegion statusBkgLeft;
@@ -213,9 +213,10 @@ import edu.cornell.gdiac.util.XBoxController;
             background.setFilter( Texture.TextureFilter.Linear, Texture.TextureFilter.Linear );
             resize(canvas.getWidth(),canvas.getHeight());
             //load the loading theme immediately
-            loadingMusic = internal.getEntry("menuscreen", Sound.class);
-            loadingMusic.loop(0.5f);
-            loadingMusic.play();
+//            loadingMusic = internal.getEntry("menuscreen", Sound.class);
+//            loadingMusicId = loadingMusic.play(musicVolume);
+//            loadingMusic.setLooping(loadingMusicId, true);
+            //loadingMusic.play();
             backButton = internal.getEntry("backbutton", Texture.class);
             mVolume = internal.getEntry("mvolume", Texture.class);
             sVolume = internal.getEntry("svolume", Texture.class);
@@ -227,13 +228,11 @@ import edu.cornell.gdiac.util.XBoxController;
             fullscreenButton = internal.getEntry("fullscreenbutton", Texture.class);
             windowedButton = internal.getEntry("windowedbutton", Texture.class);
 
-            loadingMusic = internal.getEntry( "bubbleboundsfx:level1cavetheme", Sound.class );
-
             backButtonPos = new Vector2(canvas.getWidth()/10, canvas.getHeight() * 0.9f);
-            soundPos = new Vector2(canvas.getWidth()/5, canvas.getHeight() * 0.8f);
-            musicPos = new Vector2(canvas.getWidth()/5, canvas.getHeight() * 0.7f);
-            soundBarPos = new Vector2(canvas.getWidth() * 0.7f, canvas.getHeight() * 0.8f);
-            musicBarPos = new Vector2(canvas.getWidth() * 0.7f, canvas.getHeight() * 0.7f);
+            soundPos = new Vector2(canvas.getWidth()/5, canvas.getHeight() * 0.7f);
+            musicPos = new Vector2(canvas.getWidth()/5, canvas.getHeight() * 0.8f);
+            soundBarPos = new Vector2(canvas.getWidth() * 0.7f, canvas.getHeight() * 0.7f);
+            musicBarPos = new Vector2(canvas.getWidth() * 0.7f, canvas.getHeight() * 0.8f);
             controlPos = new Vector2(canvas.getWidth() / 2, canvas.getHeight() * 0.6f);
             mControlPos = new Vector2(canvas.getWidth() / 3, canvas.getHeight() * 0.4f);
             kControlPos = new Vector2(canvas.getWidth() * 2f / 3f, canvas.getHeight() * 0.4f);
@@ -271,7 +270,6 @@ import edu.cornell.gdiac.util.XBoxController;
          * @param delta Number of seconds since last animation frame
          */
         private void update(float delta) {
-
         }
 
         /**
@@ -291,9 +289,9 @@ import edu.cornell.gdiac.util.XBoxController;
             canvas.draw(backButton, Color.WHITE, backButton.getWidth()/2f, backButton.getHeight()/2f,
                     backButtonPos.x, backButtonPos.y, 0, scale.x, scale.y);
             canvas.draw(mVolume, Color.WHITE, mVolume.getWidth()/2f, mVolume.getHeight()/2f,
-                    soundPos.x, soundPos.y, 0f, scale.x, scale.y);
+                    musicPos.x, musicPos.y, 0f, scale.x, scale.y);
             canvas.draw(sVolume, Color.WHITE, sVolume.getWidth() / 2f, sVolume.getHeight()/2f,
-                    soundPos.x, soundPos.y - (canvas.getHeight() * 0.1f), 0f, scale.x, scale.y);
+                    soundPos.x, soundPos.y, 0f, scale.x, scale.y);
 
             float temp = musicBarPos.x + ((musicVolume - 0.5f) * volumeBar.getWidth() * scale.x);
             canvas.draw(volumeBar, Color.WHITE, volumeBar.getWidth() / 2f, volumeBar.getHeight()/2f,
@@ -326,7 +324,6 @@ import edu.cornell.gdiac.util.XBoxController;
             if(!canvas.isFullscreen()){
                 canvas.draw(fullscreenButton, Color.WHITE,windowedButton.getWidth()/2f, windowedButton.getHeight()/2f,
                         fullscreenPos.x, fullscreenPos.y, 0, scale.x, scale.y);
-                System.out.println("please draw");
             }else{
                 canvas.draw(windowedButton, Color.WHITE,windowedButton.getWidth()/2f, windowedButton.getHeight()/2f,
                         fullscreenPos.x, fullscreenPos.y, 0, scale.x, scale.y);
@@ -421,6 +418,11 @@ import edu.cornell.gdiac.util.XBoxController;
             active = false;
         }
 
+
+        public void setMusic(Sound music, long id){
+            loadingMusic = music;
+            loadingMusicId = id;
+        }
         /**
          * Sets the ScreenListener for this mode
          *
@@ -473,6 +475,7 @@ import edu.cornell.gdiac.util.XBoxController;
             if(pressedButton(screenX, screenY, volumeBar, musicBarPos)){
                 float temp = screenX - (musicBarPos.x - (volumeBar.getWidth() * scale.x / 2f));
                 musicVolume = temp / (volumeBar.getWidth() * scale.x);
+                loadingMusic.setVolume(loadingMusicId, musicVolume);
             }
             if(pressedButton(screenX, screenY, volumeBar, soundBarPos)){
                 float temp = screenX - (soundBarPos.x - (volumeBar.getWidth() * scale.x / 2f));
@@ -480,6 +483,8 @@ import edu.cornell.gdiac.util.XBoxController;
             }
             if(pressedButton2(screenX, screenY, mControls, mControlPos, 0.5f)){
                 controls = 0;
+
+//                .setVolume(loadingMusicId, musicVolume);
             }
             if(pressedButton2(screenX, screenY, kControls, kControlPos, 0.33f)){
                 controls = 1;

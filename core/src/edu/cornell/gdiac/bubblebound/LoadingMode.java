@@ -220,8 +220,8 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 
 		//load the loading theme immediately
 		loadingMusic = internal.getEntry("menuscreen", Sound.class);
-		loadingMusic.loop(0.5f);
-		loadingMusic.play();
+		loadingMusicId = loadingMusic.loop(1f);
+		//.play();
 
 		// Break up the status bar texture into regions
 		statusBkgLeft = internal.getEntry( "progress.backleft", TextureRegion.class );
@@ -232,7 +232,7 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 		statusFrgRight = internal.getEntry( "progress.foreright", TextureRegion.class );
 		statusFrgMiddle = internal.getEntry( "progress.foreground", TextureRegion.class );
 
-		loadingMusic = internal.getEntry( "bubbleboundsfx:level1cavetheme", Sound.class );
+		//loadingMusic = internal.getEntry( "bubbleboundsfx:level1cavetheme", Sound.class );
 
 
 		// No progress so far.
@@ -351,6 +351,16 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 		}
 	}
 
+
+	public Sound getMusic(){
+		return loadingMusic;
+	}
+	public long getMusicId(){
+		return loadingMusicId;
+	}
+
+
+	LevelSelectMode levelselect;
 	// ADDITIONAL SCREEN METHODS
 	/**
 	 * Called when the Screen should render itself.
@@ -367,13 +377,14 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 
 			// We are are ready, notify our listener
 			if (isReady() && listener != null) {
+				loadingMusic.stop();
 				listener.exitScreen(this, 0);
 
 			}
-			if(pressState == 3){
+			if(pressState == 3){ //lvl select
 				listener.exitScreen(this, 1);
 			}
-			if(pressState == 4){
+			if(pressState == 4){ //settings
 				listener.exitScreen(this, 2);
 			}
 		}

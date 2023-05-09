@@ -48,8 +48,6 @@ public class LevelSelectMode implements Screen, InputProcessor, ControllerListen
     /** Right cap to the status forground (colored region) */
     private TextureRegion statusFrgRight;
 
-    private Sound loadingMusic;
-    private long loadingMusicId;
 
     /** Default budget for asset loader (do nothing but load 60 fps) */
     private static int DEFAULT_BUDGET = 15;
@@ -195,9 +193,6 @@ public class LevelSelectMode implements Screen, InputProcessor, ControllerListen
         background.setFilter( Texture.TextureFilter.Linear, Texture.TextureFilter.Linear );
         resize(canvas.getWidth(),canvas.getHeight());
         //load the loading theme immediately
-        loadingMusic = internal.getEntry("menuscreen", Sound.class);
-        loadingMusic.loop(volume);
-        music = loadingMusic.play(volume);
         backButton = internal.getEntry("backbutton", Texture.class);
         for(int i = 1; i <= 15; i++){
             levels[i - 1] = internal.getEntry("lvl" + i, Texture.class);
@@ -249,7 +244,6 @@ public class LevelSelectMode implements Screen, InputProcessor, ControllerListen
      * @param delta Number of seconds since last animation frame
      */
     private void update(float delta) {
-        loadingMusic.setVolume(loadingMusicId, volume);
     }
 
     /**
