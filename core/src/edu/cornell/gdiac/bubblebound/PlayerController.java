@@ -8,27 +8,14 @@ import com.badlogic.gdx.utils.JsonValue;
  */
 public class PlayerController {
 
-
-
-    /** The initializing data (to avoid magic numbers) */
-    private JsonValue data; //changed from final maybe change it back later once we got the json  stuff working
-
-
     /** Cooldown (in animation frames) for shooting */
     private final int jumpLimit;
-
-    /** Cooldown (in animation frames) for shooting */
-    private final int shotLimit;
-
-
 
     /** Whether we are actively jumping */
     private boolean isJumping;
 
     /** How long until we can jump again */
     private int jumpCooldown;
-
-    private int shootCooldown;
 
     /** Whether our feet are on the ground */
     private boolean isGrounded;
@@ -60,14 +47,6 @@ public class PlayerController {
     /** Whether we are actively grappling */
     private boolean isFacingRight;
 
-    public boolean isShooting() {
-        return isShooting && shootCooldown <= 0;
-    }
-
-    public void setShooting(boolean value){
-        isShooting = value;
-    }
-
     public boolean isGrappling() {
         return isGrappling;
     }
@@ -78,7 +57,7 @@ public class PlayerController {
 
 
     public boolean isJumping(){
-        return isJumping && isGrounded && jumpCooldown <= 0;
+        return isJumping && isGrounded;
     }
 
     public boolean justJumped(){
@@ -139,33 +118,9 @@ public class PlayerController {
         return MAX_HEALTH;
     }
 
-    public PlayerController(JsonValue data){
-        MAX_HEALTH = data.getInt("health",0);
-        health = MAX_HEALTH;
-
-
-        jumpLimit = data.getInt( "jump_cool", 0 );
-        shotLimit = data.getInt( "shot_cool", 0 );
-        this.data = data;
-
-        shootCooldown = 0;
-        jumpCooldown = 0;
-
-        // Gameplay attributes
-        isGrounded = false;
-        isShooting = false;
-        isJumping = false;
-
-        invincibletimer = 50;
-        isFacingRight = true;
-
-    }
-
     public PlayerController(){ //magic numbers are cool
         health = MAX_HEALTH;
         jumpLimit = 30;
-        shotLimit = 30;
-        shootCooldown = 0;
         jumpCooldown = 0;
 
         // Gameplay attributes
@@ -184,12 +139,6 @@ public class PlayerController {
             jumpCooldown = jumpLimit;
         } else {
             jumpCooldown = Math.max(0, jumpCooldown - 1);
-        }
-
-        if (isShooting()) {
-            shootCooldown = shotLimit;
-        } else {
-            shootCooldown = Math.max(0, shootCooldown - 1);
         }
 
         if(isInvincible){

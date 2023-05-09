@@ -116,7 +116,7 @@ public class DudeModel extends CapsuleObstacle {
 		filmstrip_top = f5;
 		filmstrip_up = f6;
 		filmstrip_down = f7;
-		if (counter1 == 0) { // execute setFrame only when counter reaches 0
+		if (counter1 == 0) {
 			f.setFrame(0);
 			f1.setFrame(0);
 			f2.setFrame(0);
@@ -126,7 +126,7 @@ public class DudeModel extends CapsuleObstacle {
 			f6.setFrame(0);
 			f7.setFrame(0);
 		}
-		//counter1 = (counter1 + 1) % delay1; // increment counter and reset to 0 when it reaches delay
+
 	}
 
 	/**
@@ -160,7 +160,6 @@ public class DudeModel extends CapsuleObstacle {
 
 	@Override
 	public void setGrav(float g){
-		////System.out.println("Setting player gravity to: " + g);
 		setGravityScale(g);
 		grav = g;
 	}
@@ -170,9 +169,7 @@ public class DudeModel extends CapsuleObstacle {
 	 *
 	 * @return true if the dude is actively firing.
 	 */
-	public boolean isShooting() {
-		return playerController.isShooting();
-	}
+
 
 	public int getHealth(){
 		return playerController.getHealth();
@@ -191,11 +188,9 @@ public class DudeModel extends CapsuleObstacle {
 	/**
 	 * Sets whether the dude is actively firing.
 	 *
-	 * @param value whether the dude is actively firing.
+	 * value whether the dude is actively firing.
 	 */
-	public void setShooting(boolean value) {
-		playerController.setShooting(value);
-	}
+
 
 	public void setGrappledBubble(Bubble bubble){
 		grappledBubble = bubble;
@@ -326,26 +321,6 @@ public class DudeModel extends CapsuleObstacle {
 	 * @param width		The object width in physics units
 	 * @param height	The object width in physics units
 	 */
-	public DudeModel(PlayerController pc, JsonValue data, float width, float height) {
-		// The shrink factors fit the image to a tigher hitbox
-		super(	data.get("pos").getFloat(0),
-				data.get("pos").getFloat(1),
-				1,
-				2);
-        setDensity(data.getFloat("density", 0));
-		setFriction(data.getFloat("friction", 0));  /// HE WILL STICK TO WALLS IF YOU FORGET
-		setFixedRotation(true);
-		maxspeed = data.getFloat("maxspeed", 0);
-		damping = data.getFloat("damping", 0);
-		force = data.getFloat("force", 0)*0.5f;
-		gravZone = 1;
-		jump_force = data.getFloat( "jump_force", 0 )*1f;
-		sensorName = "DudeGroundSensor";
-
-		this.playerController = pc;
-		this.data = data;
-		setName("dude");
-	}
 
 	public DudeModel(PlayerController pc, JsonValue data, float width, float height, float x, float y) {
 		// The shrink factors fit the image to a tigher hitbox
@@ -368,25 +343,6 @@ public class DudeModel extends CapsuleObstacle {
 		this.data = data;
 		setName("dude");
 	}
-
-
-
-	public DudeModel(PlayerController pc, float x, float y){
-		super(x, y, 0.9f, 1.9f);
-		setFriction(0);
-		setFixedRotation(true);
-		force = 20;
-		damping = 10;
-		gravZone = 1;
-		jump_force = 9.5f;
-		maxspeed = 5f;
-		sensorName = "DudeGroundSensor";
-		this.playerController = pc;
-		setName("dude");
-
-
-	}
-
 
 	/**
 	 * Creates the physics Body(s) for this object, adding them to the world.
@@ -439,14 +395,6 @@ public class DudeModel extends CapsuleObstacle {
 		return true;
 	}
 
-
-	public boolean damp = true;
-	/**
-	 * Applies the force to the body of this dude
-	 *
-	 * This method should be called after the force attribute is set.
-	 */
-
 	public void idk(){
 		fixture.filter.groupIndex = -2;
 	}
@@ -469,27 +417,24 @@ public class DudeModel extends CapsuleObstacle {
 			faceRight = false;
 		}
 
-		float grappleDistanceBuffer = 0.01f;
 		if(playerController.isGrappling()) {
 			forceCache.set(ropeDir.nor().rotate90((int) -grav).scl(getMovement())).scl(1f);
 			float scaler = (ropeDir.len() > 3f) ? 1.1f : 1f;
 			forceCache.set(getMovement() * 2f * scaler, 0);
 
-			/*forceCache.add(0,grav*10f);
-			float dif = getPosition().dst(grappledBubble.getPosition()) - grappledBubbleDist;
-			forceCache.add(0,grav*10f*dif);
-			*/
-			//////System.out.println("VX: " + getVX());
 		}else if(getMovement() != 0){
-			//////System.out.println("VX: " + getVX());
+
 			if(Math.abs(getVX()) < 3.0f){
-				//System.out.print(" Speedy!");
+
 				forceCache.set(getMovement() * 10f, 0);
 			}else{
-				//System.out.print(" Not Speedy.");
+
 				forceCache.set(getMovement() * 5f, 0);
 			}
-		}else{
+		}
+
+		else {
+
 			forceCache.set(-getDamping() * getVX() * 2f, 0);
 		}
 
@@ -497,10 +442,11 @@ public class DudeModel extends CapsuleObstacle {
 
 		if (isJumping()) {
 			forceCache.set(0, grav * jump_force * 1.5f);
-			//forceCache.x *= 5;
 			body.applyLinearImpulse(forceCache, getPosition(), true);
 		}
+
 		if (grappleboost){
+
 			if(grav > 0){
 				if(getVY() > 0){
 					setVY(getVY()/2);
@@ -570,7 +516,6 @@ public class DudeModel extends CapsuleObstacle {
 				filmstrip.setFrame(0);
 			}
 		}
-//		super.update(dt);
 	}
 	public boolean isInvincible(){
 		return playerController.isInvincible();
@@ -604,9 +549,6 @@ public class DudeModel extends CapsuleObstacle {
 
 	public boolean displayBreath = false;
 
-	public void updateRotation(float r){
-		//body.setTransform(getPosition(), -45f);
-	}
 
 	public void breathe(){
 		if(inGas){
@@ -661,11 +603,6 @@ public class DudeModel extends CapsuleObstacle {
 			}
 
 		}
-
-
-
-//		float effect = faceRight ? 1.0f : -1.0f;
-//		canvas.draw(texture,Color.WHITE,origin.x,origin.y,getX()*drawScale.x,getY()*drawScale.y,getAngle(),effect,1.0f);
 	}
 
 	@Override
