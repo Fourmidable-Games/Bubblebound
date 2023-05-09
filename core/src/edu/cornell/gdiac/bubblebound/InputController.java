@@ -373,15 +373,23 @@ public class InputController {
 			}
 		}
 
-//		if(Gdx.input.isKeyJustPressed(Input.Keys.E)){
-//			doorPressed = true;
-//		}
-
-		if(controlMapping == ControlMapping.KEYBOARD){
-			bubblePressed = (secondary && bubblePressed) || (Gdx.input.isKeyJustPressed(Input.Keys.J));
-		}else{
-			bubblePressed = (secondary && bubblePressed) || (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT));
+		if (Gdx.input.isKeyPressed(Input.Keys.J) && !bubblePressed) {
+			bubblePressed = (true);
 		}
+
+		else if (Gdx.input.isKeyPressed(Input.Keys.J) && !bubblePressed && !Gdx.input.isKeyJustPressed(Input.Keys.J)) {
+			bubblePressed = (true);
+		}
+
+		else if (Gdx.input.isKeyPressed(Input.Keys.J) && !bubblePressed && !Gdx.input.isKeyJustPressed(Input.Keys.J)) {
+			bubblePressed = (false);
+		}
+
+		else if (Gdx.input.isKeyPressed(Input.Keys.J) && bubblePressed && Gdx.input.isKeyJustPressed(Input.Keys.J)) {
+			bubblePressed = (false);
+		}
+
+
 
 		if((secondary && finiteBubblesPressed) || (Gdx.input.isKeyJustPressed(Input.Keys.NUM_3))){
 			finiteBubblesPressed = !finiteBubblesPressed;
