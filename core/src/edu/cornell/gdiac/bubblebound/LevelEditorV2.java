@@ -502,27 +502,34 @@ public class LevelEditorV2 {
                                     arrayOffset = 488;
                                 }
 
-                                else if (k >= 710 && k <= 718) {
-                                    arrayOffset = 539+4;
+                                if (k == 710) {
+                                    arrayOffset = 543;
+                                }
+
+                                else if (k >= 711 && k <= 718) {
+                                    arrayOffset = 543;
                                 }
 
                                 else if (k >= 720 && k <= 776) {
-                                    arrayOffset = 685;
+                                    arrayOffset = 681+4;
                                 }
 
                                 else if (k >= 631 && k <= 705) {
-                                    arrayOffset = 539;
+
+                                    if (k == 643) {
+                                        arrayOffset = 541-1;
+                                    }
+
+                                    else {
+                                        arrayOffset = 541-2;
+                                    }
+
+
                                 }
 
                                 else if (k >= 507 && k <= 510) {
                                     arrayOffset = 332-1;
                                 }
-
-
-
-
-
-
 
 
 
