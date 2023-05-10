@@ -23,6 +23,8 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
 import edu.cornell.gdiac.bubblebound.GameCanvas;
 
+import java.util.ArrayList;
+
 /**
  * Composite model class to support collisions.
  *
@@ -44,7 +46,7 @@ public abstract class ComplexObstacle extends Obstacle {
 	/** A complex physics object has multiple bodies */
 	protected Array<Obstacle> bodies;
 	/** Potential joints for connecting the multiple bodies */
-	protected Array<Joint> joints;
+	protected ArrayList<Joint> joints;
 	
 	/// BodyDef Methods
 	/**
@@ -926,9 +928,13 @@ public abstract class ComplexObstacle extends Obstacle {
 	 *
 	 * @return the collection of joints for this object.
 	 */
-	 public Iterable<Joint> getJoints() {
+	 public ArrayList<Joint> getJoints() {
 	 	return joints;
 	 }
+
+	 public void removeRecentJoint() {
+		 joints.remove(0);
+	 };
 
 	/**
 	 * Creates a new complex physics object at the origin.
@@ -948,7 +954,7 @@ public abstract class ComplexObstacle extends Obstacle {
 	protected ComplexObstacle(float x, float y) {
 		super(x,y);
 		bodies = new Array<Obstacle>();
-		joints = new Array<Joint>();
+		joints = new ArrayList<Joint>();
 	}
 
 	/**

@@ -116,14 +116,12 @@ public class RopeBridge extends ComplexObstacle {
 			pos.scl(t);
 			pos.add(avatar.getPosition().add(anchor3));
 			BoxObstacle plank = new BoxObstacle(pos.x, pos.y, planksize.x, planksize.y);
-//			plank.setSensor(true);
 			plank.isRope = true;
 			plank.idk();
 
 			plank.setName("plank"+ii);
 			plank.setDensity(6f);
 			plank.setMass(2f);
-//			plank.setGravityScale(0);
 			plank.setGravityScale(2*avatarCapsule.grav);
 			plank.draworder = ii / (nLinks / 3);
 			plank.draworder *= 3;
