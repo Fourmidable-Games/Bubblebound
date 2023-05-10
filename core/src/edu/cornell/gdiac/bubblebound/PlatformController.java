@@ -64,6 +64,9 @@ public class PlatformController implements ContactListener, Screen {
 	protected TextureRegion emptyBubbleCooldown;
 	protected TextureRegion fullBubbleCooldown;
 	protected FilmStrip bubblecooldownStrip;
+
+	private Vector2 originalRopePlayerPos;
+
 	/** Texture asset for the bullet */
 	private TextureRegion bulletTexture;
 	/** Texture asset for the bridge plank */
@@ -646,6 +649,14 @@ public class PlatformController implements ContactListener, Screen {
 		volume = constants.getFloat("volume", 1.0f);
 	}
 
+	public Vector2 getOrgRopePlayerPos() {
+		return originalRopePlayerPos;
+	}
+
+	public void setOrgRopePlayerPos(Vector2 newVector) {
+		originalRopePlayerPos = newVector;
+	}
+
 	public void createProjEnemy(float x, float y, int rotation){
 		float xx = 0;
 		float yy = 0;
@@ -1007,19 +1018,12 @@ public class PlatformController implements ContactListener, Screen {
 
 				rope.removeFirstDisJoint();
 
-				wait++;
-
 				rope.removeFirstRevJoint();
-
-				wait++;
 
 				rope.removeFirstJointBody();
 
-				wait++;
-
 				rope.removeFirstBody();
-
-				wait++;
+				
 
 				rope.createJoints(world);
 
@@ -1028,21 +1032,25 @@ public class PlatformController implements ContactListener, Screen {
 
 		}
 
-//		if (InputController.getInstance().getVertical() <= -1 && avatar.isGrappling()) {
-//
-//			float newX = rope.getJoints().get(0).getBodyB().getPosition().x;
-//
-//			float newY = rope.getJoints().get(0).getBodyB().getPosition().y - 1;
-//
-//			avatar.setX(newX);
-//
-//			avatar.setY(newY);
-//
-//			rope.createJoints(world);
-//
-//
-//
-//		}
+		else if (InputController.getInstance().getVertical() <= -1 && avatar.isGrappling()) {
+
+			float newX = rope.getJoints().get(0).getBodyB().getPosition().x;
+
+			float newY = rope.getJoints().get(0).getBodyB().getPosition().y - 1;
+
+			avatar.setX(newX);
+
+			avatar.setY(newY);
+
+			System.out.println(rope != null);
+
+			System.out.println(world != null);
+
+			rope.addNewJoints(world);
+
+			rope.createJoints(world);
+
+		}
 
 		Bubble closest = null;
 		float min = Float.MAX_VALUE;
