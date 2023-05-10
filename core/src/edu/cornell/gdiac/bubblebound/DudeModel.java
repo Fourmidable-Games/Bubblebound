@@ -499,7 +499,7 @@ public class DudeModel extends CapsuleObstacle {
 	 *
 	 */
 	int counter_idle = 0;
-	int delay_idle = 40;
+	int delay_idle = 1;
 	public void update() {
 		playerController.update();
 		if (animate) {
@@ -513,7 +513,8 @@ public class DudeModel extends CapsuleObstacle {
 					filmstrip_down.setFrame(0);
 				}
 				if (counter_idle == 0) {
-					filmstrip_idle.setFrame(ii % 3);
+					int temp = ii / 3;
+					filmstrip_idle.setFrame(temp % 4);
 					filmstrip_swing.setFrame(ii % 3);
 					filmstrip_falling.setFrame(ii % 3);
 					filmstrip_jump.setFrame(3);

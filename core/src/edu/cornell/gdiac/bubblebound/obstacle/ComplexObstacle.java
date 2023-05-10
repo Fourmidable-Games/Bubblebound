@@ -933,7 +933,7 @@ public abstract class ComplexObstacle extends Obstacle {
 	 }
 
 	 public void removeRecentJoint() {
-		 joints.remove(0);
+		 joints.remove(joints.size()-1);
 	 };
 
 	/**
