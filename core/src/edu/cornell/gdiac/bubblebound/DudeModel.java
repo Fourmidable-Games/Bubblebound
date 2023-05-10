@@ -499,7 +499,10 @@ public class DudeModel extends CapsuleObstacle {
 	 *
 	 */
 	int counter_idle = 0;
+	int counter_jump = 0;
+	int delay_jump = 1;
 	int delay_idle = 1;
+	private boolean jumpAnimate = true;
 	public void update() {
 		playerController.update();
 		if (animate) {
@@ -517,8 +520,29 @@ public class DudeModel extends CapsuleObstacle {
 					filmstrip_idle.setFrame(temp % 4);
 					filmstrip_swing.setFrame(ii % 3);
 					filmstrip_falling.setFrame(ii % 3);
-					filmstrip_jump.setFrame(3);
 				}
+				if(jumpAnimate){
+					if (counter_jump == 0 ) {
+						int tmp = ii / 4;
+						int jumpFrame = tmp % 4;
+						System.out.println(jumpAnimate);
+						if (jumpAnimate){
+							filmstrip_jump.setFrame(jumpFrame);
+							System.out.println(jumpFrame);
+						}
+						else filmstrip_jump.setFrame(3);
+
+						if (jumpFrame == 3) { // check if one cycle is complete
+							jumpAnimate = false; // stop animation
+						}
+					}
+					counter_jump = (counter_jump + 1) % delay_jump;
+				}
+				else filmstrip_jump.setFrame(0);
+
+
+
+
 				counter_idle = (counter_idle + 1) % delay_idle;
 				counter1 = (counter1 + 1) % delay1; // increment counter and reset to 0 when it reaches delay
 			}
