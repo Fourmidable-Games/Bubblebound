@@ -120,7 +120,7 @@ public class PlatformController implements ContactListener, Screen {
 	/** Physics constants for initialization */
 	private JsonValue constants;
 
-	private int BUBBLE_LIMIT = 2;
+	private int BUBBLE_LIMIT = 0;
 
 	private int bubbles_left = 0;
 
@@ -1822,16 +1822,17 @@ public class PlatformController implements ContactListener, Screen {
 			return true;
 		}
 
-		if (doored && input.didDoor()){
-			if (nextLevelID > MAX_LEVELS){
+//		if (doored && input.didDoor()){
+		if (doored){
+				if (nextLevelID > MAX_LEVELS){
 
-				setComplete(true);
-			}else{
+					setComplete(true);
+				}else{
 
-				switchLevel = true;
-				targetLevel = nextLevelID;
+					switchLevel = true;
+					targetLevel = nextLevelID;
 
-			}
+				}
 		}
 		// Toggle debug
 		if (input.didDebug()) {
