@@ -991,6 +991,20 @@ public class PlatformController implements ContactListener, Screen {
 
 		}
 
+		if (InputController.getInstance().getVertical() > 1 && avatar.isGrappling()) {
+
+			float newX = rope.getJoints().get(0).getBodyB().getPosition().x;
+
+			float newY = rope.getJoints().get(0).getBodyB().getPosition().y;
+
+			avatar.setX(newX);
+
+			avatar.setX(newY);
+
+			rope.removeRecentJoint();
+
+		}
+
 		Bubble closest = null;
 		float min = Float.MAX_VALUE;
 		for(int i = 0; i < bubbles.size(); i++){
@@ -1173,6 +1187,7 @@ public class PlatformController implements ContactListener, Screen {
 		avatar.setGrounded(false);
 		return bridge;
 	}
+
 
 	private List<Bullet> bullets = new ArrayList<>();
 
