@@ -97,6 +97,7 @@ public class DudeModel extends CapsuleObstacle {
 	private FilmStrip filmstrip_top;
 	private FilmStrip filmstrip_up;
 	private FilmStrip filmstrip_down;
+	private FilmStrip filmstrip_falling;
 
 	/**
 	 * Returns left/right movement of this character.
@@ -113,7 +114,7 @@ public class DudeModel extends CapsuleObstacle {
 	protected int counter1 = 0;
 	protected final int delay1 = 3; // adjust this value to change the delay
 	public void initialize(FilmStrip f, FilmStrip f1, FilmStrip f2, FilmStrip f3, FilmStrip f4,
-						   FilmStrip f5, FilmStrip f6, FilmStrip f7) {
+						   FilmStrip f5, FilmStrip f6, FilmStrip f7, FilmStrip f8) {
 		filmstrip = f;
 		filmstrip_swing = f1;
 		filmstrip_idle = f2;
@@ -122,6 +123,7 @@ public class DudeModel extends CapsuleObstacle {
 		filmstrip_top = f5;
 		filmstrip_up = f6;
 		filmstrip_down = f7;
+		filmstrip_falling = f8;
 		if (counter1 == 0) {
 			f.setFrame(0);
 			f1.setFrame(0);
@@ -131,6 +133,7 @@ public class DudeModel extends CapsuleObstacle {
 			f5.setFrame(0);
 			f6.setFrame(0);
 			f7.setFrame(0);
+			f8.setFrame(0);
 		}
 
 	}
@@ -504,7 +507,6 @@ public class DudeModel extends CapsuleObstacle {
 				if (counter1 == 0) { // execute setFrame only when counter reaches 0
 					int next = ii++;
 					filmstrip.setFrame(next % 11);
-					filmstrip_jump.setFrame(next % 1);
 					filmstrip_fall.setFrame(next % 1);
 					filmstrip_top.setFrame(next % 1);
 					filmstrip_up.setFrame(0);
@@ -513,6 +515,8 @@ public class DudeModel extends CapsuleObstacle {
 				if (counter_idle == 0) {
 					filmstrip_idle.setFrame(ii % 3);
 					filmstrip_swing.setFrame(ii % 3);
+					filmstrip_falling.setFrame(ii % 3);
+					filmstrip_jump.setFrame(3);
 				}
 				counter_idle = (counter_idle + 1) % delay_idle;
 				counter1 = (counter1 + 1) % delay1; // increment counter and reset to 0 when it reaches delay

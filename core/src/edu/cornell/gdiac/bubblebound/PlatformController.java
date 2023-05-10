@@ -58,6 +58,8 @@ public class PlatformController implements ContactListener, Screen {
 	protected FilmStrip topStrip;
 	protected Texture sunText;
 	protected FilmStrip sunStrip;
+	protected Texture fallingText;
+	protected FilmStrip fallingStrip;
 	protected Texture bubblecooldownText;
 	protected TextureRegion emptyBubbleCooldown;
 	protected TextureRegion fullBubbleCooldown;
@@ -310,7 +312,7 @@ public class PlatformController implements ContactListener, Screen {
 		idleText = directory.getEntry("platform:dude5", Texture.class);
 		idleStrip = new FilmStrip(idleText, 1, 3, 3);
 		jumpText = directory.getEntry("platform:dude6", Texture.class);
-		jumpStrip = new FilmStrip(jumpText, 1, 1, 1);
+		jumpStrip = new FilmStrip(jumpText, 1, 4, 4);
 		fallText = directory.getEntry("platform:dude7", Texture.class);
 		fallStrip = new FilmStrip(fallText, 1, 1, 1);
 		topText = directory.getEntry("platform:dude8", Texture.class);
@@ -319,8 +321,10 @@ public class PlatformController implements ContactListener, Screen {
 		upStrip = new FilmStrip(upText, 1 ,1 ,1);
 		downText = directory.getEntry("platform:dudeDown", Texture.class);
 		downStrip = new FilmStrip(downText, 1 ,1 ,1);
-		sunText = directory.getEntry("platform:sundrop", Texture.class);
+		sunText = directory.getEntry("platform:sundrop2", Texture.class);
 		sunStrip = new FilmStrip(sunText, 1, 8, 8);
+		fallingText = directory.getEntry("platform:dudeFalling", Texture.class);
+		fallingStrip = new FilmStrip(fallingText, 1, 3, 3);
 		bubblecooldownText = directory.getEntry("platform:bubblecooldown", Texture.class);
 		bubblecooldownStrip = new FilmStrip(bubblecooldownText, 1, 8, 8);
 		emptyBubbleCooldown = new TextureRegion(directory.getEntry("platform:emptyCooldownBubble", Texture.class));
@@ -676,8 +680,8 @@ public class PlatformController implements ContactListener, Screen {
 		ProjEnemy pe = new ProjEnemy(x, y, rotation);
 		pe.setDrawScale(scale);
 
-		pe.setTexture(sundropTexture);
-
+		pe.setTexture(sunStrip);
+        //pe.initialize(sunStrip);
 		addObject(pe);
 		projenemies.add(pe);
 		////System.out.println("pe pos" + pe.getPosition());
@@ -960,7 +964,7 @@ public class PlatformController implements ContactListener, Screen {
 
 
 	public boolean camera = false;
-
+    private float oldY = 0;
 	private void updateAvatar(){
 		Vector2 placeLocation;
 		if(InputController.getInstance().cameraMovement){
@@ -1101,9 +1105,15 @@ public class PlatformController implements ContactListener, Screen {
 		avatar.applyForce(ropeDir);
 		life = avatar.getLife();//update health bar
 
-		avatar.initialize(dude, swingStrip, idleStrip, jumpStrip, fallStrip, topStrip, upStrip, downStrip);
+		avatar.initialize(dude, swingStrip, idleStrip, jumpStrip, fallStrip,
+				topStrip, upStrip, downStrip, fallingStrip);
+
+		if(avatar.isGrounded()) oldY = avatar.getY();
+
 		if(avatar.isGrappling()) avatar.setTexture(swingStrip);
 		else if(avatar.isGrounded() && avatar.getMovement() == 0.0) avatar.setTexture(idleStrip);
+		else if ((avatar.getY() < oldY && avatar.getGravZone() == 1) ||
+				(avatar.getY() > oldY && avatar.getGravZone() == -1)) avatar.setTexture(fallingStrip);
 		//Jumping up
 		else if ((avatar.getGravZone() == 1 && !avatar.isGrounded() && avatar.getVY() > 0f) ||
 				(avatar.getGravZone() == -1 && !avatar.isGrounded() && avatar.getVY() < 0f)) {
@@ -1117,7 +1127,6 @@ public class PlatformController implements ContactListener, Screen {
 			if(Math.abs(avatar.getVX()) < 0.1) avatar.setTexture(downStrip);
 			else avatar.setTexture(fallStrip);
 		}
-
 		else avatar.setTexture(dude);
 		avatar.update();
 
