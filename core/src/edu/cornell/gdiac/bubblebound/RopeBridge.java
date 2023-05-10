@@ -18,10 +18,11 @@ import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.joints.*;
-import com.badlogic.gdx.graphics.*;
 
 import com.badlogic.gdx.utils.JsonValue;
 import edu.cornell.gdiac.bubblebound.obstacle.*;
+
+import java.util.ArrayList;
 
 /**
  * A bridge with planks connected by revolute joints.
@@ -32,6 +33,10 @@ import edu.cornell.gdiac.bubblebound.obstacle.*;
 public class RopeBridge extends ComplexObstacle {
 	/** The initializing data (to avoid magic numbers) */
 	private final JsonValue data;
+
+	private ArrayList<RevoluteJointDef> revJoints = new ArrayList<>();
+
+	private ArrayList<DistanceJointDef> distJoints = new ArrayList<DistanceJointDef>();
 
 	// Invisible anchor objects
 	/** The left side of the bridge */
@@ -56,6 +61,38 @@ public class RopeBridge extends ComplexObstacle {
 	Body bubble;
 	Body avatar;
 	CapsuleObstacle avatarCapsule;
+
+	public ArrayList<RevoluteJointDef> getRevJoints() {
+		return revJoints;
+	};
+
+	public ArrayList<DistanceJointDef> getDisJoints() {
+		return distJoints;
+	};
+
+	public ArrayList<Obstacle> getBodies() {
+		return bodies;
+	};
+
+	public void removeFirstRevJoint() {
+		revJoints.remove(0);
+	};
+
+	public void removeFirstDisJoint() {
+		distJoints.remove(0);
+	};
+
+	public void removeFirstJointBody() {
+		distJoints.get(0).bodyB = null;
+	};
+
+		public void removeFirstBody() {
+		if (bodies.get(0) != null) {
+			bodies.remove(0);
+		}
+	};
+
+
 
 	/**
 	 * Creates a new rope bridge with the given physics data
@@ -130,6 +167,7 @@ public class RopeBridge extends ComplexObstacle {
 		}
 	}
 
+
 	/**
 	 * Creates the joints for this object.
 	 *
@@ -141,7 +179,7 @@ public class RopeBridge extends ComplexObstacle {
 	 * @return true if object allocation succeeded
 	 */
 	protected boolean createJoints(World world) {
-		assert bodies.size > 0;
+		assert bodies.size() > 0;
 
 		Vector2 anchor1 = new Vector2();
 		Vector2 anchor2 = new Vector2(-linksize / 2, 0);
@@ -165,14 +203,16 @@ public class RopeBridge extends ComplexObstacle {
 		anchor1.x = linksize / 2;
 		DistanceJointDef distJointDef = new DistanceJointDef();
 		RopeJointDef ropeJointDef = new RopeJointDef();
-		for (int ii = 0; ii < bodies.size-1; ii++) {
+		for (int ii = 0; ii < bodies.size()-1; ii++) {
 			jointDef.bodyA = bodies.get(ii).getBody();
 			jointDef.bodyB = bodies.get(ii + 1).getBody();
 			jointDef.localAnchorA.set(anchor1);
 			jointDef.localAnchorB.set(anchor2);
 			jointDef.collideConnected = false;
 			joint = world.createJoint(jointDef);
+			revJoints.add(jointDef);
 			joints.add(joint);
+
 			//double that shit?
 			/*jointDef.bodyA = bodies.get(ii).getBody();
 			jointDef.bodyB = bodies.get(ii + 1).getBody();
@@ -200,6 +240,7 @@ public class RopeBridge extends ComplexObstacle {
 			distJointDef.collideConnected = false;
 			distJointDef.length = 0.2f;
 			distJointDef.dampingRatio = 1;
+			distJoints.add(distJointDef);
 			joint = world.createJoint(distJointDef);
 			joints.add(joint);
 
@@ -276,7 +317,7 @@ public class RopeBridge extends ComplexObstacle {
 		}
 
 		// Create the rightmost anchor
-		Obstacle last = bodies.get(bodies.size-1);
+		Obstacle last = bodies.get(bodies.size()-1);
 
 		if(bubble != null) {
 			// Final joint
@@ -327,7 +368,7 @@ public class RopeBridge extends ComplexObstacle {
 	 * @return the texture for the individual planks
 	 */
 	public TextureRegion getTexture() {
-		if (bodies.size == 0) {
+		if (bodies.size() == 0) {
 			return null;
 		}
 		return ((SimpleObstacle)bodies.get(0)).getTexture();
@@ -356,7 +397,7 @@ public class RopeBridge extends ComplexObstacle {
 
 	public Vector2 getFirstLinkRotation(){
 		Vector2 pos1 = avatar.getPosition();
-		Vector2 pos2 = ((bodies.size > 4) ? bodies.get(4).getBody() : bubble).getPosition();
+		Vector2 pos2 = ((bodies.size() > 4) ? bodies.get(4).getBody() : bubble).getPosition();
 		float angle = (float) Math.atan((pos1.y-pos2.y)/(pos1.x-pos2.x));
 		angle = (float) Math.toDegrees(angle);
 		//angle -= 180;
