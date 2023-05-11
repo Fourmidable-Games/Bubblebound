@@ -2046,13 +2046,8 @@ public class PlatformController implements ContactListener, Screen {
 		canvas.draw(quitButton, Color.WHITE, quitButton.getWidth()/2f, quitButton.getHeight()/2f, x + canvas.getWidth() * 0.6f, y + canvas.getHeight() * 0.45f, 0, sx, sy);
 		canvas.end();
 		if(input.didClick()){
-			Vector2 ch = input.getCrossHair();
-			float xoffset = (cameraCoords.x / scale.x) - (CAMERA_WIDTH / 2f); //find bottom left corner of camera
-			float yoffset = (cameraCoords.y / scale.y) - (CAMERA_HEIGHT / 2f);
-			ch.x += xoffset;
-			ch.y += yoffset;
-			ch.scl(scale);
-			System.out.println(ch);
+			Vector2 ch = input.getCursor();
+			ch.y = canvas.getHeight() - ch.y;
 			Vector2 pos = new Vector2(canvas.getWidth() / 2f, canvas.getHeight() * 0.45f);
 			if(ch.y >= pos.y - playButton.getHeight() * sy / 2f && ch.y <= pos.y + playButton.getHeight() * sy / 2f){
 				if(ch.x >= pos.x - (0.1f*canvas.getWidth()) - (playButton.getWidth() * sx / 2f) && ch.x <= pos.x - (0.1f*canvas.getWidth()/2) + (playButton.getWidth() * sx / 2f)){

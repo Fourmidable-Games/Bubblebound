@@ -352,6 +352,10 @@ public class InputController {
 	public void clearDoor(){
 		doorPressed = false;
 	}
+	public Vector2 cursor = new Vector2(0, 0);
+	public Vector2 getCursor(){
+		return cursor;
+	}
 
 	/**
 	 * Reads input from the keyboard.
@@ -454,7 +458,7 @@ public class InputController {
 		}else{
 			tertiaryPressed = Gdx.input.isKeyPressed(Input.Keys.K);
 		}
-
+		cursor.set(Gdx.input.getX(), Gdx.input.getY());
 				
 		crosshair.set(Gdx.input.getX(), Gdx.input.getY());
 		crosshair.scl(1/scale.x,-1/scale.y);
