@@ -97,6 +97,7 @@ public class DudeModel extends CapsuleObstacle {
 	private FilmStrip filmstrip_top;
 	private FilmStrip filmstrip_up;
 	private FilmStrip filmstrip_down;
+	private FilmStrip filmstrip_falling;
 
 	/**
 	 * Returns left/right movement of this character.
@@ -113,7 +114,7 @@ public class DudeModel extends CapsuleObstacle {
 	protected int counter1 = 0;
 	protected final int delay1 = 3; // adjust this value to change the delay
 	public void initialize(FilmStrip f, FilmStrip f1, FilmStrip f2, FilmStrip f3, FilmStrip f4,
-						   FilmStrip f5, FilmStrip f6, FilmStrip f7) {
+						   FilmStrip f5, FilmStrip f6, FilmStrip f7, FilmStrip f8) {
 		filmstrip = f;
 		filmstrip_swing = f1;
 		filmstrip_idle = f2;
@@ -122,6 +123,7 @@ public class DudeModel extends CapsuleObstacle {
 		filmstrip_top = f5;
 		filmstrip_up = f6;
 		filmstrip_down = f7;
+		filmstrip_falling = f8;
 		if (counter1 == 0) {
 			f.setFrame(0);
 			f1.setFrame(0);
@@ -131,6 +133,7 @@ public class DudeModel extends CapsuleObstacle {
 			f5.setFrame(0);
 			f6.setFrame(0);
 			f7.setFrame(0);
+			f8.setFrame(0);
 		}
 
 	}
@@ -496,7 +499,10 @@ public class DudeModel extends CapsuleObstacle {
 	 *
 	 */
 	int counter_idle = 0;
-	int delay_idle = 40;
+	int counter_jump = 0;
+	int delay_jump = 1;
+	int delay_idle = 1;
+	private boolean jumpAnimate = true;
 	public void update() {
 		playerController.update();
 		if (animate) {
@@ -504,16 +510,38 @@ public class DudeModel extends CapsuleObstacle {
 				if (counter1 == 0) { // execute setFrame only when counter reaches 0
 					int next = ii++;
 					filmstrip.setFrame(next % 11);
-					filmstrip_jump.setFrame(next % 1);
 					filmstrip_fall.setFrame(next % 1);
 					filmstrip_top.setFrame(next % 1);
 					filmstrip_up.setFrame(0);
 					filmstrip_down.setFrame(0);
 				}
 				if (counter_idle == 0) {
-					filmstrip_idle.setFrame(ii % 3);
-					filmstrip_swing.setFrame(ii % 3);
+					int temp = ii / 3;
+					filmstrip_idle.setFrame(temp % 3);
+					filmstrip_swing.setFrame(temp % 3);
+					filmstrip_falling.setFrame(temp % 3);
 				}
+				if(jumpAnimate){
+					if (counter_jump == 0 ) {
+						int tmp = ii / 4;
+						int jumpFrame = tmp % 4;
+						if (jumpAnimate){
+							filmstrip_jump.setFrame(jumpFrame);
+							System.out.println(jumpFrame);
+						}
+						else filmstrip_jump.setFrame(3);
+
+						if (jumpFrame == 3) { // check if one cycle is complete
+							jumpAnimate = false; // stop animation
+						}
+					}
+					counter_jump = (counter_jump + 1) % delay_jump;
+				}
+				else filmstrip_jump.setFrame(0);
+
+
+
+
 				counter_idle = (counter_idle + 1) % delay_idle;
 				counter1 = (counter1 + 1) % delay1; // increment counter and reset to 0 when it reaches delay
 			}

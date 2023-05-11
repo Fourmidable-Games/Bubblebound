@@ -186,7 +186,7 @@ public class NewRopeBridge extends ComplexObstacle {
 	 * @return true if object allocation succeeded
 	 */
 	protected boolean createJoints(World world) {
-		assert bodies.size > 0;
+		assert bodies.size() > 0;
 		
 		Vector2 anchor1 = new Vector2(); 
 		Vector2 anchor2 = new Vector2(0,1f);
@@ -240,7 +240,7 @@ public class NewRopeBridge extends ComplexObstacle {
 		Body prevTwo = nextTwo;
 
 		// Link the pins together
-		for (int ii = 0; ii < bodies.size-4; ii+=2) {
+		for (int ii = 0; ii < bodies.size()-4; ii+=2) {
 			prevOne = nextOne;
 			prevTwo = nextTwo;
 			nextOne = bodies.get(3 + ii).getBody();
@@ -283,7 +283,7 @@ public class NewRopeBridge extends ComplexObstacle {
 		}
 
 		//JOINT PREV ONE TO LAST
-		Body last = bodies.get(bodies.size-1).getBody();
+		Body last = bodies.get(bodies.size()-1).getBody();
 		jointDefDist.length = linksize * (float)Math.sqrt(3);
 		jointDefDist.bodyA = prevOne;
 		jointDefDist.bodyB = last;
@@ -346,7 +346,7 @@ public class NewRopeBridge extends ComplexObstacle {
 	 * @return the texture for the individual planks
 	 */
 	public TextureRegion getTexture() {
-		if (bodies.size == 0) {
+		if (bodies.size() == 0) {
 			return null;
 		}
 		return ((SimpleObstacle)bodies.get(0)).getTexture();

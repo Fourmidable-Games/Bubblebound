@@ -379,26 +379,35 @@ public class InputController {
 				controlMapping = ControlMapping.MOUSE;
 			}else if(controlMapping == ControlMapping.MOUSE){
 				controlMapping = ControlMapping.KEYBOARD;
+
 			}
 		}
 		clicked = Gdx.input.isButtonPressed(Input.Buttons.LEFT);
 
 
-		if (Gdx.input.isKeyPressed(Input.Keys.J) && !bubblePressed) {
-			bubblePressed = (true);
+		if(controlMapping == ControlMapping.KEYBOARD){
+			bubblePressed = (secondary && bubblePressed) || (Gdx.input.isKeyJustPressed(Input.Keys.J));
+		}else {
+			bubblePressed = (secondary && bubblePressed) || (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT));
 		}
 
-		else if (Gdx.input.isKeyPressed(Input.Keys.J) && !bubblePressed && !Gdx.input.isKeyJustPressed(Input.Keys.J)) {
-			bubblePressed = (true);
-		}
 
-		else if (Gdx.input.isKeyPressed(Input.Keys.J) && !bubblePressed && !Gdx.input.isKeyJustPressed(Input.Keys.J)) {
-			bubblePressed = (false);
-		}
+//		if (Gdx.input.isKeyPressed(Input.Keys.J) && !bubblePressed) {
+//			bubblePressed = (true);
+//		}
+//
+//		else if (Gdx.input.isKeyPressed(Input.Keys.J) && !bubblePressed && !Gdx.input.isKeyJustPressed(Input.Keys.J)) {
+//			bubblePressed = (true);
+//		}
+//
+//		else if (Gdx.input.isKeyPressed(Input.Keys.J) && !bubblePressed && !Gdx.input.isKeyJustPressed(Input.Keys.J)) {
+//			bubblePressed = (false);
+//		}
+//
+//		else if (Gdx.input.isKeyPressed(Input.Keys.J) && bubblePressed && Gdx.input.isKeyJustPressed(Input.Keys.J)) {
+//			bubblePressed = (false);
+//		}
 
-		else if (Gdx.input.isKeyPressed(Input.Keys.J) && bubblePressed && Gdx.input.isKeyJustPressed(Input.Keys.J)) {
-			bubblePressed = (false);
-		}
 
 
 

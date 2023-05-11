@@ -55,7 +55,9 @@ public abstract class SimpleObstacle extends Obstacle {
 	public BodyType getBodyType() {
 		return (body != null ? body.getType() : super.getBodyType());
 	}
-	
+
+
+
 	/**
 	 * Returns the body type for Box2D physics
 	 *
@@ -887,7 +889,7 @@ public abstract class SimpleObstacle extends Obstacle {
 	 * primary purpose is to adjust changes to the fixture, which have to take place 
 	 * after collision.
 	 *
-	 * @param dt Timing values from parent loop
+	 *  Timing values from parent loop
 	 */
 	public void supdate(float delta) {
 		// Recreate the fixture object if dimensions changed.

@@ -38,6 +38,8 @@ public class BoxObstacle extends SimpleObstacle {
 	public boolean isRope = false;
 
 	public boolean isGoal = false;
+
+	private boolean isInstantKill = false;
 	
 	/** 
 	 * Returns the dimensions of this box
@@ -50,6 +52,11 @@ public class BoxObstacle extends SimpleObstacle {
 	 */
 	public Vector2 getDimension() {
 		return sizeCache.set(dimension);
+	}
+
+
+	public boolean getIsinstantKill() {
+		return isInstantKill;
 	}
 
 	/** 
