@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import edu.cornell.gdiac.bubblebound.obstacle.SimpleObstacle;
+import edu.cornell.gdiac.util.FilmStrip;
 
 public class Spike extends SimpleObstacle {
 
@@ -21,16 +22,36 @@ public class Spike extends SimpleObstacle {
     private float[] vertices;
     private float rotation;
     private TextureRegion texture2;
+    private FilmStrip filmstrip;
+    protected int ii = 0;
+    protected int counter1 = 0;
+    protected final int delay1 = 3; // adjust this value to change the delay
+    public void initialize(FilmStrip f) {
+        filmstrip = f;
+        if (counter1 == 0) {
+            filmstrip.setFrame(0);
+        }
+    }
+    public void update() {
+        if(filmstrip != null) {
+            if(counter1 == 0) {
+                int temp = ii / 4;
+                filmstrip.setFrame(temp % 4);
+            }
+            counter1 = (counter1 + 1) % delay1;
+        }
+    }
 
-    /**
-     * Returns the dimensions of this box
-     *
-     * This method does NOT return a reference to the dimension vector. Changes to this
-     * vector will not affect the shape.  However, it returns the same vector each time
-     * its is called, and so cannot be used as an allocator.
-     *
-     * @return the dimensions of this box
-     */
+
+                /**
+                 * Returns the dimensions of this box
+                 *
+                 * This method does NOT return a reference to the dimension vector. Changes to this
+                 * vector will not affect the shape.  However, it returns the same vector each time
+                 * its is called, and so cannot be used as an allocator.
+                 *
+                 * @return the dimensions of this box
+                 */
     public Vector2 getDimension() {
         return sizeCache.set(dimension);
     }

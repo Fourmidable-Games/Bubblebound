@@ -60,6 +60,8 @@ public class PlatformController implements ContactListener, Screen {
 	protected FilmStrip sunStrip;
 	protected Texture fallingText;
 	protected FilmStrip fallingStrip;
+	protected Texture spikeText;
+	protected FilmStrip spikeStrip;
 	protected Texture bubblecooldownText;
 	protected TextureRegion emptyBubbleCooldown;
 	protected TextureRegion fullBubbleCooldown;
@@ -328,6 +330,8 @@ public class PlatformController implements ContactListener, Screen {
 		sunStrip = new FilmStrip(sunText, 1, 8, 8);
 		fallingText = directory.getEntry("platform:dudeFalling", Texture.class);
 		fallingStrip = new FilmStrip(fallingText, 1, 3, 3);
+		spikeText = directory.getEntry("shared:plantspike", Texture.class);
+		spikeStrip = new FilmStrip(spikeText, 1, 4, 4);
 		bubblecooldownText = directory.getEntry("platform:bubblecooldown", Texture.class);
 		bubblecooldownStrip = new FilmStrip(bubblecooldownText, 1, 8, 8);
 		emptyBubbleCooldown = new TextureRegion(directory.getEntry("platform:emptyCooldownBubble", Texture.class));
@@ -386,7 +390,7 @@ public class PlatformController implements ContactListener, Screen {
 		}
 
 
-		spikeTextureList.add(new TextureRegion(directory.getEntry("shared:plantspike", Texture.class)));
+		spikeTextureList.add(spikeStrip);
 		spikeTextureList.add(new TextureRegion(directory.getEntry("shared:skyspike", Texture.class)));
 		spikeTextureList.add(new TextureRegion(directory.getEntry("shared:icespike", Texture.class)));
 
@@ -817,6 +821,7 @@ public class PlatformController implements ContactListener, Screen {
 		updateBorders();
 		updateDoors();
 		updateAvatar();
+		updateSpike();
 	}
 
 	private void updateLucens(){
@@ -929,7 +934,12 @@ public class PlatformController implements ContactListener, Screen {
 			door.update();
 		}
 	}
-
+	private void updateSpike() {
+		for(Spike s : spikelist) {
+			s.initialize(spikeStrip);
+			s.update();
+		}
+	}
 	private void updateBorders(){
 		for(int i = 0; i<borders.size(); i++){
 			Border border = borders.get(i);
@@ -998,56 +1008,6 @@ public class PlatformController implements ContactListener, Screen {
 			}
 
 		}
-
-//		if (InputController.getInstance().getVertical() >= 1 && avatar.isGrappling()) {
-//
-//
-//
-//			if (rope.getBodies().size()-1 > 4) {
-//
-//				float newX = rope.getJoints().get(0).getBodyB().getPosition().x;
-//
-//				float newY = rope.getJoints().get(0).getBodyB().getPosition().y;
-//
-//				avatar.setX(newX);
-//
-//				avatar.setY(newY);
-//
-//				rope.removeFirstDisJoint();
-//
-//				rope.removeFirstRevJoint();
-//
-//				rope.removeFirstJointBody();
-//
-//				rope.removeFirstBody();
-//
-//
-//				rope.createJoints(world);
-//
-//			}
-//
-//
-//		}
-//
-//		else if (InputController.getInstance().getVertical() <= -1 && avatar.isGrappling()) {
-//
-//			float newX = rope.getJoints().get(0).getBodyB().getPosition().x;
-//
-//			float newY = rope.getJoints().get(0).getBodyB().getPosition().y - 1;
-//
-//			avatar.setX(newX);
-//
-//			avatar.setY(newY);
-//
-//			System.out.println(rope != null);
-//
-//			System.out.println(world != null);
-//
-//			rope.addNewJoints(world);
-//
-//			rope.createJoints(world);
-//
-//		}
 
 		Bubble closest = null;
 		float min = Float.MAX_VALUE;
