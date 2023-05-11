@@ -46,6 +46,7 @@ public abstract class Obstacle {
 	protected MassData massdata;
 	/** Whether or not to use the custom mass data */
 	protected boolean masseffect;
+    protected boolean isInstantKill = false;
     /** A tag for debugging purposes */
     private String nametag;
 	/** Drawing scale to convert physics units to pixels */
@@ -72,6 +73,14 @@ public abstract class Obstacle {
 
 	public void setGrav(float g){
 		grav = g;
+	}
+
+	public void setInstantKill() {
+		isInstantKill = true;
+	}
+
+	public boolean getIsinstantKill() {
+		return isInstantKill;
 	}
 
 	/// BodyDef Methods
@@ -984,7 +993,7 @@ public abstract class Obstacle {
 	 * primary purpose is to adjust changes to the fixture, which have to take place 
 	 * after collision.
 	 *
-	 * @param dt Timing values from parent loop
+	 * dt Timing values from parent loop
 	 */
 	public void update(float delta) { 
 	}

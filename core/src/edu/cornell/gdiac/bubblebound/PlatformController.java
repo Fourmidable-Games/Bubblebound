@@ -120,7 +120,7 @@ public class PlatformController implements ContactListener, Screen {
 	/** Physics constants for initialization */
 	private JsonValue constants;
 
-	private int BUBBLE_LIMIT = 2;
+	private int BUBBLE_LIMIT = 0;
 
 	private int bubbles_left = 0;
 
@@ -377,9 +377,6 @@ public class PlatformController implements ContactListener, Screen {
 
 		for(int i = 1; i < 93; i++){ //load in ice tiles
 			textures.add(new TextureRegion(directory.getEntry("shared:ice" + i, Texture.class)));
-			if (i == 22 || i == 27 || i == 28) {
-				spikeTextureList.add(new TextureRegion(directory.getEntry("shared:ice" + i, Texture.class)));
-			}
 		}
 		for(int i = 1; i < 85; i++){
 			textures.add(new TextureRegion(directory.getEntry("shared:sky" + i, Texture.class)));
@@ -389,9 +386,9 @@ public class PlatformController implements ContactListener, Screen {
 		}
 
 
-		spikeTextureList.add(spikeTexture2);
+		spikeTextureList.add(new TextureRegion(directory.getEntry("shared:plantspike", Texture.class)));
 		spikeTextureList.add(new TextureRegion(directory.getEntry("shared:skyspike", Texture.class)));
-		spikeTextureList.add(spikeTexture);
+		spikeTextureList.add(new TextureRegion(directory.getEntry("shared:icespike", Texture.class)));
 
 
 		for(int i = 0; i < 3; i++){
@@ -1435,7 +1432,14 @@ public class PlatformController implements ContactListener, Screen {
 						if (bd1 == avatar) { //move it to player controller
 							//TODO look prev comment
 							if(bd2.getName().equals("spike")){
-								avatar.kill();
+								if (bd2.getIsinstantKill()) {
+									avatar.kill();
+								}
+
+								else {
+									avatar.hurt();
+								}
+
 								life = avatar.getLife();
 							}
 							Vector2 v2 = body1.getPosition().sub(body2.getPosition()).nor().scl(10);
@@ -1822,16 +1826,17 @@ public class PlatformController implements ContactListener, Screen {
 			return true;
 		}
 
-		if (doored && input.didDoor()){
-			if (nextLevelID > MAX_LEVELS){
+//		if (doored && input.didDoor()){
+		if (doored){
+				if (nextLevelID > MAX_LEVELS){
 
-				setComplete(true);
-			}else{
+					setComplete(true);
+				}else{
 
-				switchLevel = true;
-				targetLevel = nextLevelID;
+					switchLevel = true;
+					targetLevel = nextLevelID;
 
-			}
+				}
 		}
 		// Toggle debug
 		if (input.didDebug()) {

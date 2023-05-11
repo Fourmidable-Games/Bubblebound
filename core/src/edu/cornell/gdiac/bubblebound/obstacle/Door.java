@@ -29,10 +29,10 @@ public class Door extends Goal{
         spawnDirection = dudeSpawnDirection;
         switch (spawnDirection){
             case LEFT:
-                spawnLoc = loc.add(0,0);
+                spawnLoc = loc.add(-2,0);
                 break;
             case RIGHT:
-                spawnLoc = loc.add(0,0);
+                spawnLoc = loc.add(2,0);
                 break;
             default:
                 //SHOULD NOT GET HERE

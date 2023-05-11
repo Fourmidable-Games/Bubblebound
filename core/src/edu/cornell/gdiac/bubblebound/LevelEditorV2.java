@@ -233,38 +233,27 @@ public class LevelEditorV2 {
                                 wo.setX(wo.getX() - 1);
                             }
 
-                            if (goals.getInt("gid") == 206 || goals.getInt("gid") == 778) {
-
-                                wo.setTexture(spikeTextures.get(4));
-
-                            }
-
-                            else if (goals.getInt("gid") == 60) {
-
-                                wo.setTexture(spikeTextures.get(3));
-
-                            }
-
-                            else if (goals.getInt("gid") == 87) {
+                            if (goals.getInt("gid") == 552) {
 
                                 wo.setTexture(spikeTextures.get(0));
+                                wo.setName("spike");
+
 
                             }
 
-                            else if (goals.getInt("gid") == 88) {
+                            else if (goals.getInt("gid") == 595) {
 
                                 wo.setTexture(spikeTextures.get(1));
-
-                            }
-
-                            else if (goals.getInt("gid") == 82) {
-                                wo.setTexture(spikeTextures.get(2));
+                                wo.setInstantKill();
+                                wo.setName("spike");
 
                             }
 
                             else {
 
-                                wo.setTexture(spikeTextures.get(5));
+                                wo.setTexture(spikeTextures.get(2));
+                                wo.setInstantKill();
+                                wo.setName("spike");
                             }
 
                             spikes.add(wo);
@@ -502,27 +491,34 @@ public class LevelEditorV2 {
                                     arrayOffset = 488;
                                 }
 
-                                else if (k >= 710 && k <= 718) {
-                                    arrayOffset = 539+4;
+                                if (k == 710) {
+                                    arrayOffset = 543;
+                                }
+
+                                else if (k >= 711 && k <= 718) {
+                                    arrayOffset = 543;
                                 }
 
                                 else if (k >= 720 && k <= 776) {
-                                    arrayOffset = 685;
+                                    arrayOffset = 681+4;
                                 }
 
                                 else if (k >= 631 && k <= 705) {
-                                    arrayOffset = 539;
+
+                                    if (k == 643) {
+                                        arrayOffset = 541-1;
+                                    }
+
+                                    else {
+                                        arrayOffset = 541-2;
+                                    }
+
+
                                 }
 
                                 else if (k >= 507 && k <= 510) {
                                     arrayOffset = 332-1;
                                 }
-
-
-
-
-
-
 
 
 

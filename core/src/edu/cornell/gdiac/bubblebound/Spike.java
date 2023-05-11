@@ -35,6 +35,8 @@ public class Spike extends SimpleObstacle {
         return sizeCache.set(dimension);
     }
 
+
+
     /**
      * Sets the dimensions of this box
      *
@@ -45,6 +47,7 @@ public class Spike extends SimpleObstacle {
     public void setDimension(Vector2 value) {
         setDimension(value.x, value.y);
     }
+
 
     /**
      * Sets the dimensions of this box
