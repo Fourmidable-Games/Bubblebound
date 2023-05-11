@@ -999,55 +999,55 @@ public class PlatformController implements ContactListener, Screen {
 
 		}
 
-		if (InputController.getInstance().getVertical() >= 1 && avatar.isGrappling()) {
-
-
-
-			if (rope.getBodies().size()-1 > 4) {
-
-				float newX = rope.getJoints().get(0).getBodyB().getPosition().x;
-
-				float newY = rope.getJoints().get(0).getBodyB().getPosition().y;
-
-				avatar.setX(newX);
-
-				avatar.setY(newY);
-
-				rope.removeFirstDisJoint();
-
-				rope.removeFirstRevJoint();
-
-				rope.removeFirstJointBody();
-
-				rope.removeFirstBody();
-				
-
-				rope.createJoints(world);
-
-			}
-
-
-		}
-
-		else if (InputController.getInstance().getVertical() <= -1 && avatar.isGrappling()) {
-
-			float newX = rope.getJoints().get(0).getBodyB().getPosition().x;
-
-			float newY = rope.getJoints().get(0).getBodyB().getPosition().y - 1;
-
-			avatar.setX(newX);
-
-			avatar.setY(newY);
-
-			System.out.println(rope != null);
-
-			System.out.println(world != null);
-
-			rope.addNewJoints(world);
-
-			rope.createJoints(world);
-
-		}
+//		if (InputController.getInstance().getVertical() >= 1 && avatar.isGrappling()) {
+//
+//
+//
+//			if (rope.getBodies().size()-1 > 4) {
+//
+//				float newX = rope.getJoints().get(0).getBodyB().getPosition().x;
+//
+//				float newY = rope.getJoints().get(0).getBodyB().getPosition().y;
+//
+//				avatar.setX(newX);
+//
+//				avatar.setY(newY);
+//
+//				rope.removeFirstDisJoint();
+//
+//				rope.removeFirstRevJoint();
+//
+//				rope.removeFirstJointBody();
+//
+//				rope.removeFirstBody();
+//
+//
+//				rope.createJoints(world);
+//
+//			}
+//
+//
+//		}
+//
+//		else if (InputController.getInstance().getVertical() <= -1 && avatar.isGrappling()) {
+//
+//			float newX = rope.getJoints().get(0).getBodyB().getPosition().x;
+//
+//			float newY = rope.getJoints().get(0).getBodyB().getPosition().y - 1;
+//
+//			avatar.setX(newX);
+//
+//			avatar.setY(newY);
+//
+//			System.out.println(rope != null);
+//
+//			System.out.println(world != null);
+//
+//			rope.addNewJoints(world);
+//
+//			rope.createJoints(world);
+//
+//		}
 
 		Bubble closest = null;
 		float min = Float.MAX_VALUE;
