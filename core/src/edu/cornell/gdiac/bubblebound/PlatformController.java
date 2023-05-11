@@ -1439,7 +1439,7 @@ public class PlatformController implements ContactListener, Screen {
 								else {
 									avatar.hurt();
 								}
-								
+
 								life = avatar.getLife();
 							}
 							Vector2 v2 = body1.getPosition().sub(body2.getPosition()).nor().scl(10);
