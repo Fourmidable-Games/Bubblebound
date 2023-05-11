@@ -81,6 +81,8 @@ public class InputController {
 
 	private boolean bubblePressed;
 	private boolean bubblePrevious;
+	private boolean prevClicked;
+
 
 	public enum ControlMapping{
 		MOUSE,
@@ -202,6 +204,7 @@ public class InputController {
 	public boolean didAdvance() {
 		return nextPressed && !nextPrevious;
 	}
+
 	
 	/**
 	 * Returns true if the player wants to go to the previous level.
@@ -288,7 +291,7 @@ public class InputController {
 		prevPrevious = prevPressed;
 		finiteBubblesPrevious = finiteBubblesPressed;
 		reloadBubblesOnGroundPrevious = reloadBubblesOnGroundPressed;
-
+		prevClicked = clicked;
 		
 		// Check to see if a GamePad is connected
 		if (xbox != null && xbox.isConnected()) {
@@ -340,6 +343,12 @@ public class InputController {
 		clampPosition(bounds);
 	}
 
+	public boolean clicked;
+
+	public boolean didClick(){
+		return clicked && !prevClicked;
+	}
+
 	public void clearDoor(){
 		doorPressed = false;
 	}
@@ -372,6 +381,8 @@ public class InputController {
 				controlMapping = ControlMapping.KEYBOARD;
 			}
 		}
+		clicked = Gdx.input.isButtonPressed(Input.Buttons.LEFT);
+
 
 		if (Gdx.input.isKeyPressed(Input.Keys.J) && !bubblePressed) {
 			bubblePressed = (true);

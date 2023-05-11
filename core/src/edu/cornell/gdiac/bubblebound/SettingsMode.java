@@ -237,7 +237,6 @@ import edu.cornell.gdiac.util.XBoxController;
             mControlPos = new Vector2(canvas.getWidth() / 3, canvas.getHeight() * 0.4f);
             kControlPos = new Vector2(canvas.getWidth() * 2f / 3f, canvas.getHeight() * 0.4f);
             fullscreenPos = new Vector2(canvas.getWidth() / 2f, canvas.getHeight() * 0.2f);
-            System.out.println(fullscreenPos);
 
             pressState = 0;
 

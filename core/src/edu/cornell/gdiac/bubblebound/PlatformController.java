@@ -10,6 +10,7 @@
  */
 package edu.cornell.gdiac.bubblebound;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.utils.*;
@@ -160,6 +161,10 @@ public class PlatformController implements ContactListener, Screen {
 	protected TextureRegion dormantlucen;
 	protected TextureRegion sundropTexture;
 
+
+	protected Texture pauseScreen;
+	protected Texture playButton;
+	protected Texture quitButton;
 
 	protected Texture[] borderTextures = new Texture[3];
 	protected FilmStrip[] borderStrips = new FilmStrip[3];
@@ -367,6 +372,10 @@ public class PlatformController implements ContactListener, Screen {
 		bubble2 = new FilmStrip(bubbleText2, 1, 8, 8);
 		enemyText = directory.getEntry( "platform:dude2", Texture.class );
 		enemyStrip = new FilmStrip(enemyText, 1, 9, 9);
+
+		pauseScreen = directory.getEntry("platform:pause", Texture.class);
+		quitButton = directory.getEntry("platform:quitbutton", Texture.class);
+		playButton = directory.getEntry("platform:playbutton", Texture.class);
 
 		for(int i = 1; i < 93; i++){ //load in ice tiles
 			textures.add(new TextureRegion(directory.getEntry("shared:ice" + i, Texture.class)));
@@ -871,8 +880,7 @@ public class PlatformController implements ContactListener, Screen {
 		int curr_bubble = 1;
 		float sx = scale.x / 128;
 		float sy = scale.y / 128;
-		System.out.println(sx);
-		System.out.println(sy);
+
 		Vector2 current_bubble_pos = new Vector2(drawPos.x + canvas.getWidth()/2 - (3 * scale.x), drawPos.y + canvas.getHeight()/2 - scale.y);
 		while(curr_bubble <= bubbles_left){
 
@@ -1732,7 +1740,7 @@ public class PlatformController implements ContactListener, Screen {
 		boolean vert  = (bounds.y <= obj.getY() && obj.getY() <= bounds.y+bounds.height);
 		return horiz && vert;
 	}
-
+	public boolean pause_state = false;
 	/**
 	 * Returns whether to process the update loop
 	 *
@@ -1784,22 +1792,18 @@ public class PlatformController implements ContactListener, Screen {
 		if(failed){
 			reset(currLevel);
 		}
-
-		// Now it is time to maybe switch screens.
-		if (input.didExit()) {
-			pause();
+		if(quit){
 			listener.exitScreen(this, EXIT_QUIT);
 			return false;
+		}
+		// esc to pause screen
+		if (input.didExit()) {
+			pause_state = !pause_state;
+			return true;
+			//listener.exitScreen(this, EXIT_QUIT);
+			//return false;
 
 
-		} else if (input.didAdvance()) {
-			pause();
-			listener.exitScreen(this, EXIT_NEXT);
-			return false;
-		} else if (input.didRetreat()) {
-			pause();
-			listener.exitScreen(this, EXIT_PREV);
-			return false;
 		} else if (countdown > 0) {
 			countdown--;
 		} else if (countdown == 0) {
@@ -1980,6 +1984,48 @@ public class PlatformController implements ContactListener, Screen {
 
 
 
+
+
+	public void drawPause(){
+
+		InputController input = InputController.getInstance();
+		input.readInput(new Rectangle(0,0,CAMERA_WIDTH,CAMERA_HEIGHT), scale);
+		if(input.didExit()){
+			pause_state = false;
+		}
+		canvas.begin();
+		float sx = (float)canvas.getWidth()/pauseScreen.getWidth();
+		float sy = (float)canvas.getHeight()/pauseScreen.getHeight();
+		float x = cameraCoords.x - canvas.getWidth()/2f;
+		float y = cameraCoords.y - canvas.getHeight()/2f;
+		canvas.draw(pauseScreen, Color.WHITE, 0, 0, x, y, 0, sx, sy);
+		canvas.draw(playButton, Color.WHITE, playButton.getWidth()/2f, playButton.getHeight()/2f, x + canvas.getWidth() * 0.4f, y + canvas.getHeight() * 0.45f, 0, sx, sy);
+		canvas.draw(quitButton, Color.WHITE, quitButton.getWidth()/2f, quitButton.getHeight()/2f, x + canvas.getWidth() * 0.6f, y + canvas.getHeight() * 0.45f, 0, sx, sy);
+		canvas.end();
+		if(input.didClick()){
+			Vector2 ch = input.getCrossHair();
+			float xoffset = (cameraCoords.x / scale.x) - (CAMERA_WIDTH / 2f); //find bottom left corner of camera
+			float yoffset = (cameraCoords.y / scale.y) - (CAMERA_HEIGHT / 2f);
+			ch.x += xoffset;
+			ch.y += yoffset;
+			ch.scl(scale);
+			System.out.println(ch);
+			Vector2 pos = new Vector2(canvas.getWidth() / 2f, canvas.getHeight() * 0.45f);
+			if(ch.y >= pos.y - playButton.getHeight() * sy / 2f && ch.y <= pos.y + playButton.getHeight() * sy / 2f){
+				if(ch.x >= pos.x - (0.1f*canvas.getWidth()) - (playButton.getWidth() * sx / 2f) && ch.x <= pos.x - (0.1f*canvas.getWidth()/2) + (playButton.getWidth() * sx / 2f)){
+					pause_state = false;
+				}
+				if(ch.x >= pos.x + (0.1f*canvas.getWidth()) - (quitButton.getWidth() * sx / 2f) && ch.x <= pos.x + (0.1f*canvas.getWidth()) + (quitButton.getWidth() * sx / 2f)){
+					quit = true;
+					pause_state = false;
+				}
+
+			}
+		}
+	}
+
+	public boolean quit = false;
+
 	public void draw(float dt) {
 		canvas.clear();
 
@@ -2135,7 +2181,10 @@ public class PlatformController implements ContactListener, Screen {
 	 * @param delta Number of seconds since last animation frame
 	 */
 	public void render(float delta) {
-		if (active) {
+
+		if(pause_state){
+			drawPause();
+		}else if (active) {
 			if (preUpdate(delta)) {
 				update(delta); // This is the one that must be defined.
 				postUpdate(delta);

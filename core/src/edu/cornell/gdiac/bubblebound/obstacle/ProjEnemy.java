@@ -133,7 +133,7 @@ public class ProjEnemy extends BoxObstacle{
             }
             float sx = drawScale.x / 64f;
             float sy = drawScale.y / 64f;
-            canvas.draw(texture, Color.WHITE, ox, oy, getX() * drawScale.x, getY() * drawScale.x, (float)Math.toRadians(angle), sx, sy);
+            canvas.draw(texture, Color.WHITE, ox, oy, getX() * drawScale.x, getY() * drawScale.y, (float)Math.toRadians(angle), sx, sy);
         }
 
     }

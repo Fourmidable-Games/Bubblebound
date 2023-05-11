@@ -46,9 +46,9 @@ public class PoisonGas extends BoxObstacle{
         float sy = drawScale.y / 64f;
         if (texture != null) {
             if(grav == 1) {
-                canvas.draw(texture, c, origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.x, getAngle(), sx, sy);
+                canvas.draw(texture, c, origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.y, getAngle(), sx, sy);
             }else{
-                canvas.draw(texture, c, origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.x, getAngle(), sx, sy  );
+                canvas.draw(texture, c, origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.y, getAngle(), sx, sy  );
             }
         }
     }

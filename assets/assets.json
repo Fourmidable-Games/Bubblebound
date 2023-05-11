@@ -1040,6 +1040,9 @@
       "platform:border2": "platform/border2.png",
       "platform:leftdeath": "platform/Left die down.PNG",
       "platform:rightdeath": "platform/Right die down.PNG",
+      "platform:pause": "platform/pause.png",
+      "platform:playbutton": "platform/playbutton.png",
+      "platform:quitbutton": "platform/quitbutton.png"
     },
     "jsons"  : {
         "platform:constants": "platform/constants.json",
