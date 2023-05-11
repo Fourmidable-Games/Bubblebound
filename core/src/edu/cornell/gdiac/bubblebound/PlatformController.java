@@ -810,6 +810,7 @@ public class PlatformController implements ContactListener, Screen {
 
 	public void update(float dt) {
 		updateBubbles();
+		updateSpike();
 		updateEnemies();
 		moveZones();
 		updateSounds();
@@ -821,7 +822,7 @@ public class PlatformController implements ContactListener, Screen {
 		updateBorders();
 		updateDoors();
 		updateAvatar();
-		updateSpike();
+
 	}
 
 	private void updateLucens(){

@@ -35,7 +35,7 @@ public class Spike extends SimpleObstacle {
     public void update() {
         if(filmstrip != null) {
             if(counter1 == 0) {
-                int temp = ii / 4;
+                int temp = ii++ / 4;
                 filmstrip.setFrame(temp % 4);
             }
             counter1 = (counter1 + 1) % delay1;
