@@ -517,15 +517,14 @@ public class DudeModel extends CapsuleObstacle {
 				}
 				if (counter_idle == 0) {
 					int temp = ii / 3;
-					filmstrip_idle.setFrame(temp % 4);
-					filmstrip_swing.setFrame(ii % 3);
+					filmstrip_idle.setFrame(temp % 3);
+					filmstrip_swing.setFrame(temp % 3);
 					filmstrip_falling.setFrame(ii % 3);
 				}
 				if(jumpAnimate){
 					if (counter_jump == 0 ) {
 						int tmp = ii / 4;
 						int jumpFrame = tmp % 4;
-						System.out.println(jumpAnimate);
 						if (jumpAnimate){
 							filmstrip_jump.setFrame(jumpFrame);
 							System.out.println(jumpFrame);
