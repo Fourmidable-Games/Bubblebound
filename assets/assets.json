@@ -994,6 +994,18 @@
         "wrapV": "repeated"
       },
 
+      "shared:icespike" : {
+        "file":  "shared/Ice Spike.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+
+      "shared:plantspike" : {
+        "file":  "shared/spike.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+
         "background:ice" : {
             "file":  "platform/icebackground.png"
         },

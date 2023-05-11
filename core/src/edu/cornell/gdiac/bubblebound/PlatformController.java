@@ -377,9 +377,6 @@ public class PlatformController implements ContactListener, Screen {
 
 		for(int i = 1; i < 93; i++){ //load in ice tiles
 			textures.add(new TextureRegion(directory.getEntry("shared:ice" + i, Texture.class)));
-			if (i == 22 || i == 27 || i == 28) {
-				spikeTextureList.add(new TextureRegion(directory.getEntry("shared:ice" + i, Texture.class)));
-			}
 		}
 		for(int i = 1; i < 85; i++){
 			textures.add(new TextureRegion(directory.getEntry("shared:sky" + i, Texture.class)));
@@ -389,9 +386,9 @@ public class PlatformController implements ContactListener, Screen {
 		}
 
 
-		spikeTextureList.add(spikeTexture2);
+		spikeTextureList.add(new TextureRegion(directory.getEntry("shared:plantspike", Texture.class)));
 		spikeTextureList.add(new TextureRegion(directory.getEntry("shared:skyspike", Texture.class)));
-		spikeTextureList.add(spikeTexture);
+		spikeTextureList.add(new TextureRegion(directory.getEntry("shared:icespike", Texture.class)));
 
 
 		for(int i = 0; i < 3; i++){

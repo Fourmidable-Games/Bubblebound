@@ -233,38 +233,21 @@ public class LevelEditorV2 {
                                 wo.setX(wo.getX() - 1);
                             }
 
-                            if (goals.getInt("gid") == 206 || goals.getInt("gid") == 778) {
-
-                                wo.setTexture(spikeTextures.get(4));
-
-                            }
-
-                            else if (goals.getInt("gid") == 60) {
-
-                                wo.setTexture(spikeTextures.get(3));
-
-                            }
-
-                            else if (goals.getInt("gid") == 87) {
+                            if (goals.getInt("gid") == 552) {
 
                                 wo.setTexture(spikeTextures.get(0));
 
                             }
 
-                            else if (goals.getInt("gid") == 88) {
+                            else if (goals.getInt("gid") == 595) {
 
                                 wo.setTexture(spikeTextures.get(1));
 
                             }
 
-                            else if (goals.getInt("gid") == 82) {
-                                wo.setTexture(spikeTextures.get(2));
-
-                            }
-
                             else {
 
-                                wo.setTexture(spikeTextures.get(5));
+                                wo.setTexture(spikeTextures.get(2));
                             }
 
                             spikes.add(wo);
