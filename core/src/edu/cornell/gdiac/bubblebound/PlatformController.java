@@ -1432,7 +1432,14 @@ public class PlatformController implements ContactListener, Screen {
 						if (bd1 == avatar) { //move it to player controller
 							//TODO look prev comment
 							if(bd2.getName().equals("spike")){
-								avatar.kill();
+								if (bd2.getIsinstantKill()) {
+									avatar.kill();
+								}
+
+								else {
+									avatar.hurt();
+								}
+								
 								life = avatar.getLife();
 							}
 							Vector2 v2 = body1.getPosition().sub(body2.getPosition()).nor().scl(10);

@@ -236,18 +236,24 @@ public class LevelEditorV2 {
                             if (goals.getInt("gid") == 552) {
 
                                 wo.setTexture(spikeTextures.get(0));
+                                wo.setName("spike");
+
 
                             }
 
                             else if (goals.getInt("gid") == 595) {
 
                                 wo.setTexture(spikeTextures.get(1));
+                                wo.setInstantKill();
+                                wo.setName("spike");
 
                             }
 
                             else {
 
                                 wo.setTexture(spikeTextures.get(2));
+                                wo.setInstantKill();
+                                wo.setName("spike");
                             }
 
                             spikes.add(wo);
