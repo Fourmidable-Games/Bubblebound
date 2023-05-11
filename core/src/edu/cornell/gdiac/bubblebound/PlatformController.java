@@ -1407,7 +1407,13 @@ public class PlatformController implements ContactListener, Screen {
 
 						} else {
 							if(bd1.getName().equals("spike")){
-								avatar.kill();
+								if (bd1.getIsinstantKill()) {
+									avatar.kill();
+								}
+
+								else {
+									avatar.hurt();
+								}
 								life = avatar.getLife();
 							}
 							Vector2 v2 = body2.getPosition().sub(body1.getPosition()).nor().scl(10);
