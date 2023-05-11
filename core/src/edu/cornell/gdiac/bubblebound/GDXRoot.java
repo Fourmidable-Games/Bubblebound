@@ -95,7 +95,9 @@ public class GDXRoot extends Game implements ScreenListener {
 		}
 		super.dispose();
 	}
-	
+
+	private float volume = 1.0f;
+	private float soundvolume = 1.0f;
 	/**
 	 * Called when the Application is resized. 
 	 *
@@ -127,6 +129,8 @@ public class GDXRoot extends Game implements ScreenListener {
 				directory = loading.getAssets();
 				controllers[ii].gatherAssets(directory);
 				controllers[ii].setScreenListener(this);
+				controllers[ii].setSoundvolume(soundvolume);
+				controllers[ii].setVolume(volume);
 				controllers[ii].setCanvas(canvas);
 			}
 
@@ -149,6 +153,8 @@ public class GDXRoot extends Game implements ScreenListener {
 			}
 
 		} else if(screen == settings){
+			volume = settings.getMusicVolume();
+			soundvolume = settings.getSoundVolume();
 			settings.disabled = true;
 			settings.dispose();
 			settings = null;

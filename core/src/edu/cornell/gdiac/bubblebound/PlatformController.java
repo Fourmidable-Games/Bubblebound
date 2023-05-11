@@ -116,9 +116,18 @@ public class PlatformController implements ContactListener, Screen {
 	private Sound level1MusicCave;
 	private long level1MusicCaveID;
 	/** The default sound volume */
-	private float volume;
+	private float volume = 1.0f;
+	private float soundvolume = 1.0f;
 	private RopeBridge rope;
 
+
+	public void setVolume(float f){
+		System.out.println("Aa");
+		volume = f;
+	}
+	public void setSoundvolume(float f){
+		soundvolume = f;
+	}
 	// Physics objects for the game
 	/** Physics constants for initialization */
 	private JsonValue constants;
@@ -364,7 +373,6 @@ public class PlatformController implements ContactListener, Screen {
 		level1MusicSunset = directory.getEntry( "bubbleboundsfx:level1sunsettheme", Sound.class );
 		level1MusicCave = directory.getEntry( "bubbleboundsfx:level1cavetheme", Sound.class );
 		constants = directory.getEntry( "platform:constants", JsonValue.class );
-		volume = 1.0f;
 
 		earthTile = new TextureRegion(directory.getEntry( "shared:earth", Texture.class ));
 		iceTile = new TextureRegion(directory.getEntry("shared:ice", Texture.class));
@@ -656,7 +664,7 @@ public class PlatformController implements ContactListener, Screen {
 		setCamera(avatar.getX(), avatar.getY() + 0.5f);
 
 
-		volume = constants.getFloat("volume", 1.0f);
+//		volume = constants.getFloat("volume", 1.0f);
 	}
 
 	public Vector2 getOrgRopePlayerPos() {
@@ -1113,7 +1121,7 @@ public class PlatformController implements ContactListener, Screen {
 			b.setGrappled(false);
 			destructRope();
 			rope = null;
-			releaseRopeSoundId = playSound(releaseRopeSound, releaseRopeSoundId, volume );
+			releaseRopeSoundId = playSound(releaseRopeSound, releaseRopeSoundId, soundvolume );
 		}
 
 		if(constructRope && closest != null){
@@ -1123,7 +1131,7 @@ public class PlatformController implements ContactListener, Screen {
 				avatar.setGrappledBubble(closest);
 				avatar.setGrappledBubbleDist(avatar.getPosition().dst(closest.getPosition()));
 				rope = createGrapple(closest);
-				shootRopeSoundId = playSound(shootRopeSound, shootRopeSoundId, volume);
+				shootRopeSoundId = playSound(shootRopeSound, shootRopeSoundId, soundvolume);
 			}
 
 		}
@@ -1172,17 +1180,17 @@ public class PlatformController implements ContactListener, Screen {
 		}
 		if(avatar.getGravZone() == -1){
 			level1MusicSunset.setVolume(level1MusicSunsetID,0.0f);
-			level1MusicCave.setVolume(level1MusicCaveID,1f);
+			level1MusicCave.setVolume(level1MusicCaveID,volume * 1f);
 		}
 		if (avatar.justJumped()) {
-			jumpSound.setVolume(jumpId,volume * 2f);
+			jumpSound.setVolume(jumpId,soundvolume * 2f);
 			jumpId = playSound( jumpSound, jumpId);
 		}
 		if (avatar.justGrounded()) {
-			plopSound.setVolume(plopId,volume * 2f);
+			plopSound.setVolume(plopId,soundvolume * 2f);
 			plopId = playSound( plopSound, jumpId);
 		}
-		windSound.setVolume(windSoundID, Math.min((float) Math.abs((avatar.getVX() + (avatar.getVY() * 0.5)) * 0.06f),0.4f));
+		windSound.setVolume(windSoundID, soundvolume * Math.min((float) Math.abs((avatar.getVX() + (avatar.getVY() * 0.5)) * 0.06f),0.4f));
 
 	}
 
@@ -1251,7 +1259,7 @@ public class PlatformController implements ContactListener, Screen {
 		bubble.setActive(false);
 		bubble.stopDraw();
 		bubbles.remove(bubble);
-		popSound.setVolume(popID, volume * 10f);
+		popSound.setVolume(popID, soundvolume * 10f);
 		popID = playSound(popSound,popID,0.5f);
 
 	}
