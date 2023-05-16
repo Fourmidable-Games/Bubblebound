@@ -247,9 +247,6 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 		Gdx.input.setInputProcessor( this );
 
 		// Let ANY connected controller start the game.
-		for (XBoxController controller : Controllers.get().getXBoxControllers()) {
-			controller.addListener( this );
-		}
 
 		// Start loading the real assets
 		assets = new AssetDirectory( file );
@@ -281,6 +278,7 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 	 * @param delta Number of seconds since last animation frame
 	 */
 	private void update(float delta) {
+		Gdx.input.setInputProcessor( this );
 		if (playButton == null) {
 			assets.update(budget);
 			this.progress = assets.getProgress();
@@ -386,15 +384,23 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 				loadingMusic.stop();
 				pressState = 0;
 				listener.exitScreen(this, 0);
+				Gdx.input.setInputProcessor(null);
+
 
 			}
 			if(pressState == 3){ //lvl select
 				pressState = 0;
 				listener.exitScreen(this, 1);
+				Gdx.input.setInputProcessor(null);
+
+
 			}
 			if(pressState == 4){ //settings
 				pressState = 0;
 				listener.exitScreen(this, 2);
+				Gdx.input.setInputProcessor(null);
+
+
 			}
 		}
 	}
@@ -447,6 +453,8 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 	 */
 	public void show() {
 		// Useless if called in outside animation loop
+		Gdx.input.setInputProcessor(this);
+
 		active = true;
 	}
 
@@ -486,7 +494,6 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 			return true;
 		}
 
-		System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 		//System.out.println("DO this pls");
 		// Flip to match graphics coordinates
 		screenY = heightY-screenY;

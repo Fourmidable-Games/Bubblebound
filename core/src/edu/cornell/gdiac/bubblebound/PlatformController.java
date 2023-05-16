@@ -123,7 +123,6 @@ public class PlatformController implements ContactListener, Screen {
 
 
 	public void setVolume(float f){
-		System.out.println("Aa");
 		volume = f;
 	}
 	public void setSoundvolume(float f){
@@ -182,6 +181,7 @@ public class PlatformController implements ContactListener, Screen {
 	protected Texture pauseScreen;
 	protected Texture playButton;
 	protected Texture quitButton;
+	protected Texture settingsButton;
 
 	protected Texture[] borderTextures = new Texture[3];
 	protected FilmStrip[] borderStrips = new FilmStrip[3];
@@ -397,6 +397,7 @@ public class PlatformController implements ContactListener, Screen {
 		pauseScreen = directory.getEntry("platform:pause", Texture.class);
 		quitButton = directory.getEntry("platform:quitbutton", Texture.class);
 		playButton = directory.getEntry("platform:playbutton", Texture.class);
+		settingsButton = directory.getEntry("platform:settingsbutton", Texture.class);
 
 		for(int i = 1; i < 93; i++){ //load in ice tiles
 			textures.add(new TextureRegion(directory.getEntry("shared:ice" + i, Texture.class)));
@@ -522,8 +523,8 @@ public class PlatformController implements ContactListener, Screen {
 
 		float dwidth  = goalStrip.getRegionWidth()/scale.x;
 		float dheight = goalStrip.getRegionHeight()/scale.y;
-		System.out.println("currLevel: " + currLevel);
-		System.out.println("targetLevel: " + targetLevel);
+//		System.out.println("currLevel: " + currLevel);
+//		System.out.println("targetLevel: " + targetLevel);
 		// Add level goal
 		for(int i = 0; i < doors.size(); i++){
 			Door door = doors.get(i);
@@ -2051,31 +2052,55 @@ public class PlatformController implements ContactListener, Screen {
 		canvas.begin();
 		float sx = (float)canvas.getWidth()/pauseScreen.getWidth();
 		float sy = (float)canvas.getHeight()/pauseScreen.getHeight();
+		cameraCoords.x = canvas.getWidth() / 2f;
+		cameraCoords.y = canvas.getHeight() / 2f;
+		canvas.camera.position.set(canvas.getWidth() / 2f, canvas.getHeight() / 2f, 0);
+		canvas.camera.update();
 		float x = cameraCoords.x - canvas.getWidth()/2f;
-		float y = cameraCoords.y - canvas.getHeight()/2f;
-		canvas.draw(pauseScreen, Color.WHITE, 0, 0, x, y, 0, sx, sy);
-		canvas.draw(playButton, Color.WHITE, playButton.getWidth()/2f, playButton.getHeight()/2f, x + canvas.getWidth() * 0.4f, y + canvas.getHeight() * 0.45f, 0, sx, sy);
-		canvas.draw(quitButton, Color.WHITE, quitButton.getWidth()/2f, quitButton.getHeight()/2f, x + canvas.getWidth() * 0.6f, y + canvas.getHeight() * 0.45f, 0, sx, sy);
+		float y = cameraCoords.y + canvas.getHeight()/2f;
+
+		Vector2 playPos = new Vector2(x + (590 * sx), y - (540 * sy));
+		Vector2 settingPos = new Vector2(x + (871 * sx), y - (540 * sy));
+		Vector2 quitPos = new Vector2(x + (1152 * sx), y - (540 * sy));
+
+		canvas.draw(pauseScreen, Color.WHITE, 0, 0, x, y - canvas.getHeight(), 0, sx, sy);
+		canvas.draw(playButton, Color.WHITE, 0, playButton.getHeight(), playPos.x, playPos.y, 0, sx, sy);
+		canvas.draw(settingsButton, Color.WHITE, 0, settingsButton.getHeight(), settingPos.x, settingPos.y, 0, sx, sy);
+		canvas.draw(quitButton, Color.WHITE, 0, quitButton.getHeight(), quitPos.x, quitPos.y, 0, sx, sy);
 		canvas.end();
 		if(input.didClick()){
 			Vector2 ch = input.getCursor();
-			ch.y = canvas.getHeight() - ch.y;
-			Vector2 pos = new Vector2(canvas.getWidth() / 2f, canvas.getHeight() * 0.45f);
-			if(ch.y >= pos.y - playButton.getHeight() * sy / 2f && ch.y <= pos.y + playButton.getHeight() * sy / 2f){
-				if(ch.x >= pos.x - (0.1f*canvas.getWidth()) - (playButton.getWidth() * sx / 2f) && ch.x <= pos.x - (0.1f*canvas.getWidth()/2) + (playButton.getWidth() * sx / 2f)){
-					pause_state = false;
-				}
-				if(ch.x >= pos.x + (0.1f*canvas.getWidth()) - (quitButton.getWidth() * sx / 2f) && ch.x <= pos.x + (0.1f*canvas.getWidth()) + (quitButton.getWidth() * sx / 2f)){
-					pause_state = false;
-					canvas.camera.position.set(canvas.getWidth() / 2f, canvas.getHeight() / 2f, 0);
-					canvas.camera.update();
-					listener.exitScreen(this, currLevel);
+			if(pressedButton((int)ch.x, (int)ch.y, playButton, playPos)){
+				pause_state = false;
+			}
+			if(pressedButton((int)ch.x, (int)ch.y, settingsButton, settingPos)){
 
-				}
-
+				listener.exitScreen(this, -1);
+			}
+			if(pressedButton((int) ch.x, (int)ch.y, quitButton, quitPos)){
+				pause_state = false;
+				listener.exitScreen(this, targetLevel);
+				Gdx.input.setInputProcessor(null);
 			}
 		}
 	}
+
+	public SettingsMode settings;
+
+	public boolean pressedButton(int screenX, int screenY, Texture texture, Vector2 button_pos){
+		float button_w = texture.getWidth() * scale.x;
+		float button_h = texture.getHeight() * scale.y;
+		//System.out.println(button_center);
+		screenY = canvas.getHeight() - screenY;
+		if(screenX >= button_pos.x && screenX <= button_pos.x + button_w){
+			if(screenY >= button_pos.y - button_h && screenY <= button_pos.y){
+				return true;
+			}
+		}
+		return false;
+	}
+
+
 
 	public boolean quit = false;
 

@@ -287,6 +287,7 @@ public class LevelSelectMode implements Screen, InputProcessor, ControllerListen
      * @param delta Number of seconds since last animation frame
      */
     private void update(float delta) {
+        Gdx.input.setInputProcessor( this );
         int x = Gdx.input.getX();
         int y = Gdx.input.getY();
         hovered = -1;

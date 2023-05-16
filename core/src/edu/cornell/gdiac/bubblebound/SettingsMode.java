@@ -47,6 +47,8 @@ import edu.cornell.gdiac.util.XBoxController;
         /** Right cap to the status forground (colored region) */
         private TextureRegion statusFrgRight;
 
+        public boolean pause = false;
+
         private Sound loadingMusic;
         private long loadingMusicId;
 
@@ -142,11 +144,11 @@ import edu.cornell.gdiac.util.XBoxController;
         /**
          * Creates a LoadingMode with the default budget, size and position.
          *
-         * @param file  	The asset directory to load in the background
+         * @	The asset directory to load in the background
          * @param canvas 	The game canvas to draw to
          */
-        public SettingsMode(String file, GameCanvas canvas) {
-            this(file, canvas, DEFAULT_BUDGET);
+        public SettingsMode(GameCanvas canvas) {
+            this(canvas, DEFAULT_BUDGET);
         }
 
 
@@ -205,11 +207,11 @@ import edu.cornell.gdiac.util.XBoxController;
          * frame is ~16 milliseconds. So if the budget is 10, you have 6 milliseconds to
          * do something else.  This is how game companies animate their loading screens.
          *
-         * @param file  	The asset directory to load in the background
+         *   	The asset directory to load in the background
          * @param canvas 	The game canvas to draw to
          * @param millis The loading budget in milliseconds
          */
-        public SettingsMode(String file, GameCanvas canvas, int millis) {
+        public SettingsMode(GameCanvas canvas, int millis) {
             this.canvas  = canvas;
             budget = millis;
 
@@ -326,6 +328,7 @@ import edu.cornell.gdiac.util.XBoxController;
          * @param delta Number of seconds since last animation frame
          */
         private void update(float delta) {
+            Gdx.input.setInputProcessor( this );
             if(InputController.getInstance().mouse){
                 mAttach = leftClick;
                 mPlace = rightClick;
@@ -425,7 +428,8 @@ import edu.cornell.gdiac.util.XBoxController;
 
                 // We are are ready, notify our listener
                 if (isReady() && listener != null) {
-                    listener.exitScreen(this, 0);
+                    int x = (pause) ? -1 : 0;
+                    listener.exitScreen(this, x);
                 }
             }
         }
