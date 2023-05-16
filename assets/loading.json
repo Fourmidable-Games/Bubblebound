@@ -4,6 +4,7 @@
 		"play": "shared/play.png",
         "settings": "shared/settings.png",
         "lvlselect": "shared/lvl_select.png",
+        "screen": "shared/screenstrip.png",
         "progress": {
             "file": "shared/progressbar.png",
             "atlas":     {

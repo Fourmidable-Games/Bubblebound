@@ -78,7 +78,8 @@ public class PlatformController implements ContactListener, Screen {
 	private TextureRegion barrierTexture;
 
 	private TextureRegion poisonTexture;
-	private TextureRegion lucenTexture;
+	private Texture lucenTexture;
+	private FilmStrip lucenStrip;
 
 	private int death_count = 0;
 
@@ -355,7 +356,8 @@ public class PlatformController implements ContactListener, Screen {
 		bridgeTexture = new TextureRegion(directory.getEntry("platform:rope",Texture.class));
 		barrierTexture = new TextureRegion(directory.getEntry("platform:barrier",Texture.class));
 		poisonTexture = new TextureRegion(directory.getEntry("platform:gas", Texture.class));
-		lucenTexture = new TextureRegion(directory.getEntry("platform:activatedlucen", Texture.class));
+		lucenTexture = directory.getEntry("platform:activatedlucen", Texture.class);
+		lucenStrip = new FilmStrip(lucenTexture, 1, 18, 18);
 		dormantlucen = new TextureRegion(directory.getEntry("platform:dormantlucen",Texture.class));
 
 		deathLeft = new TextureRegion(directory.getEntry("platform:leftdeath", Texture.class));
@@ -756,7 +758,8 @@ public class PlatformController implements ContactListener, Screen {
 		Lucenglaze lg = new Lucenglaze(x, y);
 		lg.setRotation(rotation);
 		lg.setDrawScale(scale);
-		lg.setTexture(lucenTexture);
+		lg.setTexture(lucenStrip);
+		lg.initialize(lucenStrip);
 		lg.setTexture2(dormantlucen);
 		addObject(lg);
 		return lg;
@@ -844,8 +847,10 @@ public class PlatformController implements ContactListener, Screen {
 
 	private void updateLucens(){
 		for(LucenglazeSensor l : lucens) {
+
 			List<Vector2> list = l.update();
 			if(list != null){
+
 				for(int i = 0; i < list.size(); i++){
 					createPoisonGas(list.get(i).x, list.get(i).y, true);
 				}
@@ -943,7 +948,6 @@ public class PlatformController implements ContactListener, Screen {
 		avatar.getMaxHealth();
 
 	}
-
 	private void updateDoors(){
 		for(int i = 0; i < doors.size(); i++){
 			Door door = doors.get(i);

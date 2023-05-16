@@ -5,6 +5,7 @@ import java.util.*;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import edu.cornell.gdiac.bubblebound.GameCanvas;
+import edu.cornell.gdiac.util.FilmStrip;
 
 public class LucenglazeSensor extends BoxObstacle{
 
@@ -15,14 +16,19 @@ public class LucenglazeSensor extends BoxObstacle{
     public int direction = 1; // -1 if facing down or left
     private int x;
     private int y;
+    private FilmStrip filmstrip;
     private int resettimer = 0;
 
     private int spawndelay = 40;
     public final int fadeawaytimer = 200; //for poison
 
     public int timer = -1;
-
-
+    protected int ii = 0;
+    protected int counter1 = 0;
+    protected final int delay1 = 3; // adjust this value to change the delay
+    public void initialize(FilmStrip f) {
+        lucen.initialize(filmstrip);
+    }
     public LucenglazeSensor(float x, float y, int lucenx, int luceny, int w, int h, int rotation){ //rotation 1 is upright, 2 is facing right, 3 is facing down, 4 is facing left
         super(x, y, w, h); //idk y 1.5
         if(rotation % 2 == 1 ){
@@ -70,6 +76,7 @@ public class LucenglazeSensor extends BoxObstacle{
             }
         }
         if(triggered && timer <= spawndelay + 40){
+            lucen.update();
             timer++;
             if(timer == spawndelay){
                 poison.clear();

@@ -64,6 +64,7 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 
 	private Texture lvlselectButton;
 	private Texture settingsButton;
+	private Texture quitButton;
 	/** Texture atlas to support a progress bar */
 	private final Texture statusBar;
 	/** Texture atlas to support a progress bar */
@@ -125,7 +126,8 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 
 	/** Whether or not this player mode is still active */
 	private boolean active;
-
+	private Texture screenText;
+    private FilmStrip screenStrip;
 	/**
 	 * Returns the budget for the asset loader.
 	 *
@@ -210,10 +212,13 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 		internal.loadAssets();
 		internal.finishLoading();
 
+		screenText = internal.getEntry("screen", Texture.class);
+		screenStrip = new FilmStrip(screenText, 1, 9, 9);
 		// Load the next two images immediately.
 		playButton = null;
 		lvlselectButton = null;
 		settingsButton = null;
+		quitButton = null;
 		background = internal.getEntry( "background", Texture.class );
 		background.setFilter( TextureFilter.Linear, TextureFilter.Linear );
 		statusBar = internal.getEntry( "progress", Texture.class );
@@ -284,6 +289,7 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 				playButton = internal.getEntry("play",Texture.class);
 				settingsButton = internal.getEntry("settings", Texture.class);
 				lvlselectButton = internal.getEntry("lvlselect", Texture.class);
+				quitButton = internal.getEntry("play", Texture.class);
 
 			}
 		}
