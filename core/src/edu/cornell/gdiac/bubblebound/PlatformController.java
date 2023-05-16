@@ -1854,6 +1854,7 @@ public class PlatformController implements ContactListener, Screen {
 		}
 		// esc to pause screen
 		if (input.didExit()) {
+			delay = 0;
 			pause_state = !pause_state;
 			return true;
 			//listener.exitScreen(this, EXIT_QUIT);
@@ -2040,10 +2041,17 @@ public class PlatformController implements ContactListener, Screen {
 
 
 
-
+	int delay = 0;
 
 	public void drawPause(){
-
+		cameraCoords.x = canvas.getWidth() / 2f;
+		cameraCoords.y = canvas.getHeight() / 2f;
+		canvas.camera.position.set(canvas.getWidth() / 2f, canvas.getHeight() / 2f, 0);
+		canvas.camera.update();
+		delay++;
+		if(delay < 2){
+			return;
+		}
 		InputController input = InputController.getInstance();
 		input.readInput(new Rectangle(0,0,CAMERA_WIDTH,CAMERA_HEIGHT), scale);
 		if(input.didExit()){
@@ -2052,10 +2060,8 @@ public class PlatformController implements ContactListener, Screen {
 		canvas.begin();
 		float sx = (float)canvas.getWidth()/pauseScreen.getWidth();
 		float sy = (float)canvas.getHeight()/pauseScreen.getHeight();
-		cameraCoords.x = canvas.getWidth() / 2f;
-		cameraCoords.y = canvas.getHeight() / 2f;
-		canvas.camera.position.set(canvas.getWidth() / 2f, canvas.getHeight() / 2f, 0);
-		canvas.camera.update();
+
+
 		float x = cameraCoords.x - canvas.getWidth()/2f;
 		float y = cameraCoords.y + canvas.getHeight()/2f;
 
