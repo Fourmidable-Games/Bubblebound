@@ -154,15 +154,24 @@ public class LevelSelectMode implements Screen, InputProcessor, ControllerListen
         this(file, canvas, DEFAULT_BUDGET);
     }
 
+    private int phase = 0; //represents which lvl select screen (0 for main)
+    private int hovered = 0;
+
+
     private Texture backButton;
-    private Texture[] levels = new Texture[15];
-    private Vector2[] levelPos = new Vector2[15];
-
-
-    public int controls = 0; //0 is mouse, 1 is keyboard
-
-
+    private Texture phasebackground;
     Vector2 backButtonPos;
+
+    private Vector2 createPos(int x, int y){
+        return new Vector2(x * scale.x, canvas.getHeight() - (y*scale.y));
+    }
+
+    private Texture[] phasebackgrounds = new Texture[5];
+    private Texture[][] phaseLevels = new Texture[4][5];
+    private Vector2[][] phaseLevelsPos = new Vector2[4][5];
+    private Texture[] phases = new Texture[4];
+    private Texture[] lightphases = new Texture[4];
+    private Vector2[] phasesPos = new Vector2[4];
 
     /**
      * Creates a LoadingMode with the default size and position.
@@ -187,31 +196,65 @@ public class LevelSelectMode implements Screen, InputProcessor, ControllerListen
         internal = new AssetDirectory( "levelselect.json" );
         internal.loadAssets();
         internal.finishLoading();
-
-        // Load the next two images immediately.
-        background = internal.getEntry( "levelbackground", Texture.class );
+        background = internal.getEntry( "phase0background", Texture.class );
         background.setFilter( Texture.TextureFilter.Linear, Texture.TextureFilter.Linear );
         resize(canvas.getWidth(),canvas.getHeight());
+        // Load the next two images immediately.
+        phasebackground = internal.getEntry("phasebackground", Texture.class);
+        for(int i = 0; i < 5; i++){
+            phasebackgrounds[i] = internal.getEntry("phase" + i + "background", Texture.class);
+        }
+
+
         //load the loading theme immediately
         backButton = internal.getEntry("backbutton", Texture.class);
-        for(int i = 1; i <= 15; i++){
-            levels[i - 1] = internal.getEntry("lvl" + i, Texture.class);
+        for(int i = 1; i <= 4; i++){
+            phases[i - 1] = internal.getEntry("phase" + i, Texture.class);
+        }
+        for(int i = 1; i <= 4; i++){
+            lightphases[i-1] = internal.getEntry("lightphase" + i, Texture.class);
         }
 
-        int p = 0;
-        float y = canvas.getHeight() * 7f / 10f;
-        for(int i = 0; i < 3; i++){
-            float x = canvas.getWidth() * 3f / 14f;
+        int xoffset = phases[0].getWidth() / 2;
+        int yoffset = phases[0].getHeight() /2;
+        phasesPos[0] = createPos(71 + xoffset, 83 + yoffset);//represents the center
+        phasesPos[1] = createPos(529 + xoffset, 490 + yoffset);
+        phasesPos[2] = createPos(986 + xoffset, 83 + yoffset);
+        phasesPos[3] = createPos(1443 + xoffset, 490 + yoffset);
+
+        for(int i = 0; i < 4; i++){
             for(int j = 0; j < 5; j++){
-                levelPos[p] = new Vector2(x, y);
-                x += canvas.getWidth() / 7f;
-                p++;
+                phaseLevels[i][j] = internal.getEntry("level" + (i+1) + "-" + (j+1), Texture.class);
             }
-            y -= canvas.getHeight() / 5f;
         }
+        xoffset = phaseLevels[0][0].getWidth() / 2;
+        yoffset = phaseLevels[0][0].getHeight() / 2;
+        phaseLevelsPos[0][0] = createPos(174 +xoffset, 131 +yoffset);
+        phaseLevelsPos[0][1] = createPos(332 +xoffset, 518 +yoffset);
+        phaseLevelsPos[0][2] = createPos(580 +xoffset, 780 +yoffset);
+        phaseLevelsPos[0][3] = createPos(1098 +xoffset, 535 +yoffset);
+        phaseLevelsPos[0][4] = createPos(1543 +xoffset, 194 +yoffset);
+
+        phaseLevelsPos[1][0] = createPos(124 +xoffset, 126 +yoffset);
+        phaseLevelsPos[1][1] = createPos(148 +xoffset, 692 +yoffset);
+        phaseLevelsPos[1][2] = createPos(733 +xoffset, 540 +yoffset);
+        phaseLevelsPos[1][3] = createPos(1094 +xoffset, 228 +yoffset);
+        phaseLevelsPos[1][4] = createPos(1615 +xoffset, 34 +yoffset);
+
+        phaseLevelsPos[2][0] = createPos(1484 +xoffset, 500 +yoffset);
+        phaseLevelsPos[2][1] = createPos(1308 +xoffset, 160 +yoffset);
+        phaseLevelsPos[2][2] = createPos(742 +xoffset, 443 +yoffset);
+        phaseLevelsPos[2][3] = createPos(281 +xoffset, 165 +yoffset);
+        phaseLevelsPos[2][4] = createPos(160 +xoffset, 702 +yoffset);
+
+        phaseLevelsPos[3][0] = createPos(1634 +xoffset, 89 +yoffset);
+        phaseLevelsPos[3][1] = createPos(1441 +xoffset, 575 +yoffset);
+        phaseLevelsPos[3][2] = createPos(908 +xoffset, 854 +yoffset);
+        phaseLevelsPos[3][3] = createPos(480 +xoffset, 157 +yoffset);
+        phaseLevelsPos[3][4] = createPos(160 +xoffset, 702 +yoffset);
 
 
-        backButtonPos = new Vector2(canvas.getWidth()/10, canvas.getHeight() * 0.9f);
+        backButtonPos = createPos(96, 84);
 
         pressState = 0;
 
@@ -244,6 +287,15 @@ public class LevelSelectMode implements Screen, InputProcessor, ControllerListen
      * @param delta Number of seconds since last animation frame
      */
     private void update(float delta) {
+        int x = Gdx.input.getX();
+        int y = Gdx.input.getY();
+        hovered = -1;
+        for(int i = 0; i < phasesPos.length; i++){
+            if(pressedCircle(x, y, phases[i], phasesPos[i])){
+                hovered = i;
+            }
+        }
+
     }
 
     /**
@@ -257,13 +309,22 @@ public class LevelSelectMode implements Screen, InputProcessor, ControllerListen
         canvas.begin();
         float sx = ((float) canvas.getWidth()) / ((float) background.getWidth());
         float sy = ((float) canvas.getHeight()) / ((float) background.getHeight());
-        canvas.draw(background, Color.WHITE, 0, 0, 0, 0, 0, sx, sy);
-        canvas.draw(backButton, Color.WHITE, backButton.getWidth()/2f, backButton.getHeight()/2f,
+        canvas.draw(phasebackgrounds[phase], Color.WHITE, 0, 0, 0, 0, 0, sx, sy);
+        canvas.draw(backButton, Color.WHITE, 0, backButton.getHeight(),
                 backButtonPos.x, backButtonPos.y, 0, scale.x, scale.y);
 
-        for(int i = 0; i < 15; i++){
-            canvas.draw(levels[i], Color.WHITE, levels[i].getWidth()/2f, levels[i].getHeight()/2f,
-            levelPos[i].x, levelPos[i].y, 0, scale.x, scale.y);
+        if(phase == 0) {
+            for (int i = 0; i < phasesPos.length; i++) {
+                Texture text = (i == hovered) ? lightphases[i] : phases[i];
+                canvas.draw(text, Color.WHITE, text.getWidth() / 2f, text.getHeight() / 2f, phasesPos[i].x, phasesPos[i].y, 0, scale.x, scale.y);
+            }
+        }else if(phase >= 1){
+            int p = phase - 1;
+            Texture[] texts = phaseLevels[p];
+            Vector2[] pos = phaseLevelsPos[p];
+            for(int i = 0; i < texts.length; i++){
+                canvas.draw(texts[i], Color.WHITE, texts[i].getWidth() / 2f, texts[i].getHeight() / 2f, pos[i].x, pos[i].y, 0, scale.x, scale.y);
+            }
         }
 
         canvas.end();
@@ -295,7 +356,7 @@ public class LevelSelectMode implements Screen, InputProcessor, ControllerListen
 
             // We are are ready, notify our listener
             if (isReady() && listener != null) {
-                listener.exitScreen(this, chosenlevel);
+                listener.exitScreen(this, -1);
             }
         }
     }
@@ -365,18 +426,25 @@ public class LevelSelectMode implements Screen, InputProcessor, ControllerListen
 
     public int chosenlevel = -1;
 
-    public boolean pressedButton(int screenX, int screenY, Texture texture, Vector2 button_center){
+    public boolean pressedButton(int screenX, int screenY, Texture texture, Vector2 button_pos){
         float button_w = texture.getWidth() * scale.x;
         float button_h = texture.getHeight() * scale.y;
         screenY = canvas.getHeight() - screenY;
         //System.out.println(button_center);
-        if(screenX >= button_center.x - button_w/2 && screenX <= button_center.x + button_w/2){
-            if(screenY >= button_center.y - button_h/2 && screenY <= button_center.y + button_h/2){
+        if(screenX >= button_pos.x && screenX <= button_pos.x + button_w){
+            if(screenY >= button_pos.y - button_h && screenY <= button_pos.y){
                 return true;
             }
         }
         return false;
     }
+
+    public boolean pressedCircle(int x, int y, Texture texture, Vector2 pos){
+        y = canvas.getHeight() - y;
+        return (pos.dst(x, y) <= texture.getWidth() * scale.x / 2f);
+    }
+
+
     public boolean disabled = false;
     // PROCESSING PLAYER INPUT
     /**
@@ -398,18 +466,29 @@ public class LevelSelectMode implements Screen, InputProcessor, ControllerListen
             return true;
         }
         if(pressedButton(screenX, screenY, backButton, backButtonPos)){
-            pressState = 1;
-        }
-        // Flip to match graphics coordinates
-        //screenY = heightY-screenY;
-        screenY = canvas.getHeight() - screenY;
-        for(int i = 0; i < 15; i++){
-            Vector2 temp = new Vector2(screenX, screenY);
-            if(temp.dst(levelPos[i]) < levels[i].getWidth() / 2f){
-                chosenlevel = i;
+            if(phase == 0) {
                 pressState = 1;
+            }else{
+                phase = 0;
             }
         }
+        if(phase == 0){
+            for(int i = 0; i < phasesPos.length; i++){
+                if(pressedCircle(screenX, screenY, phases[i], phasesPos[i])){
+                    phase = i + 1;
+                }
+            }
+        }else{
+            int p = phase - 1;
+            Texture[] texts = phaseLevels[p];
+            Vector2[] pos = phaseLevelsPos[p];
+            for(int i = 0; i < texts.length; i++){
+                if(pressedCircle(screenX, screenY, texts[i], pos[i])){
+                   listener.exitScreen(this, 5 * (phase - 1) + i + 1); //which lvl
+                }
+            }
+        }
+
 
 
         return false;

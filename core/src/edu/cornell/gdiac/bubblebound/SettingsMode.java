@@ -1,6 +1,7 @@
 package edu.cornell.gdiac.bubblebound;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Sound;
@@ -24,7 +25,6 @@ import edu.cornell.gdiac.util.XBoxController;
         private AssetDirectory assets;
 
         /** Background texture for start-up */
-        private Texture background;
         /** Play button to display when done */
         private Texture settingsButton;
         /** Texture atlas to support a progress bar */
@@ -149,18 +149,9 @@ import edu.cornell.gdiac.util.XBoxController;
             this(file, canvas, DEFAULT_BUDGET);
         }
 
-        private Texture bar;
-        private Texture mVolume;
-        private Texture sVolume;
-        private Texture soundEffects;
-        private Texture control;
-        private Texture backButton;
-        private Texture volumeBar;
-        private Texture volumeBubble;
-        private Texture mControls;
-        private Texture kControls;
-        private Texture fullscreenButton;
-        private Texture windowedButton;
+
+
+
 
         public float musicVolume = 1.0f;
         public float soundVolume = 1.0f;
@@ -174,15 +165,37 @@ import edu.cornell.gdiac.util.XBoxController;
             return musicVolume;
         }
 
+       private Texture background;
+       private Texture backButton;
+       private Texture clickedButton;
+       private Texture unclickedButton;
+       private Texture leftClick;
+       private Texture rightClick;
+       private Texture slider;
+       private Texture slidercircle;
+       private Texture unclickbutton;
+
+       //boolean mouse = true; //idk mouse == true means left click for place
+
+       private Texture[] buttons = new Texture[10]; //TODO:
+       private Vector2[] buttonPos = new Vector2[10]; //TODO:
+       private Texture mPlace;
+       private Texture mAttach;
+       private Texture[] inputTextures = new Texture[40];
+       public int[] inputs;
         Vector2 backButtonPos;
-        Vector2 soundPos;
-        Vector2 musicPos;
         Vector2 soundBarPos;
         Vector2 musicBarPos;
-        Vector2 controlPos;
-        Vector2 mControlPos;
-        Vector2 kControlPos;
-        Vector2 fullscreenPos;
+        Vector2 mAttachPos;
+        Vector2 mPlacePos;
+
+
+
+        private Vector2 createPos(int x, int y){
+            return new Vector2(x * scale.x, canvas.getHeight() - (y*scale.y));
+        }
+
+
 
         /**
          * Creates a LoadingMode with the default size and position.
@@ -202,14 +215,13 @@ import edu.cornell.gdiac.util.XBoxController;
 
             // Compute the dimensions from the canvas
 
-
             // We need these files loaded immediately
             internal = new AssetDirectory( "settings.json" );
             internal.loadAssets();
             internal.finishLoading();
 
             // Load the next two images immediately.
-            background = internal.getEntry( "settingsbackground", Texture.class );
+            background = internal.getEntry( "background", Texture.class );
             background.setFilter( Texture.TextureFilter.Linear, Texture.TextureFilter.Linear );
             resize(canvas.getWidth(),canvas.getHeight());
             //load the loading theme immediately
@@ -218,25 +230,39 @@ import edu.cornell.gdiac.util.XBoxController;
 //            loadingMusic.setLooping(loadingMusicId, true);
             //loadingMusic.play();
             backButton = internal.getEntry("backbutton", Texture.class);
-            mVolume = internal.getEntry("mvolume", Texture.class);
-            sVolume = internal.getEntry("svolume", Texture.class);
-            control = internal.getEntry("control",Texture.class);
-            kControls = internal.getEntry("kcontrols",Texture.class);
-            mControls = internal.getEntry("mcontrols",Texture.class);
-            volumeBar = internal.getEntry("volumebar", Texture.class);
-            volumeBubble = internal.getEntry("volumebubble", Texture.class);
-            fullscreenButton = internal.getEntry("fullscreenbutton", Texture.class);
-            windowedButton = internal.getEntry("windowedbutton", Texture.class);
+            unclickedButton = internal.getEntry("unclickedbutton", Texture.class);
+            clickedButton = internal.getEntry("clickedbutton", Texture.class);
+            leftClick = internal.getEntry("leftclick", Texture.class);
+            rightClick = internal.getEntry("rightclick", Texture.class);
+            slider = internal.getEntry("slider", Texture.class);
+            slidercircle = internal.getEntry("slidercircle", Texture.class);
 
-            backButtonPos = new Vector2(canvas.getWidth()/10, canvas.getHeight() * 0.9f);
-            soundPos = new Vector2(canvas.getWidth()/5, canvas.getHeight() * 0.7f);
-            musicPos = new Vector2(canvas.getWidth()/5, canvas.getHeight() * 0.8f);
-            soundBarPos = new Vector2(canvas.getWidth() * 0.7f, canvas.getHeight() * 0.7f);
-            musicBarPos = new Vector2(canvas.getWidth() * 0.7f, canvas.getHeight() * 0.8f);
-            controlPos = new Vector2(canvas.getWidth() / 2, canvas.getHeight() * 0.6f);
-            mControlPos = new Vector2(canvas.getWidth() / 3, canvas.getHeight() * 0.4f);
-            kControlPos = new Vector2(canvas.getWidth() * 2f / 3f, canvas.getHeight() * 0.4f);
-            fullscreenPos = new Vector2(canvas.getWidth() / 2f, canvas.getHeight() * 0.2f);
+            inputs = InputController.getInstance().buttons;
+            for(int i = 0; i < buttons.length; i++){
+                buttons[i] = unclickedButton;
+            }
+            for(int i = 0; i < inputTextures.length; i++){
+                inputTextures[i] = internal.getEntry("input" + i, Texture.class);
+            }
+            buttonPos[0] = createPos(383, 563);
+            buttonPos[1] = createPos(383, 645);
+            buttonPos[2] = createPos(568, 563);; //JumpDownP
+            buttonPos[3] = createPos(568, 645);
+            buttonPos[4] = createPos(383, 783);
+            buttonPos[5] = createPos(383, 865);
+            buttonPos[6] = createPos(568, 783);
+            buttonPos[7] = createPos(568, 865);
+            buttonPos[8] = createPos(971, 568);
+            buttonPos[9] = createPos(1368, 568);
+
+
+            backButtonPos = createPos(84, 61);
+            soundBarPos = createPos(485, 241);
+            musicBarPos = createPos(485, 325);
+            mAttachPos = createPos(848, 886);
+            mPlacePos = createPos(1301, 886);
+
+
 
             pressState = 0;
 
@@ -249,6 +275,37 @@ import edu.cornell.gdiac.util.XBoxController;
 
             // Start loading the real assets
         }
+
+        public int getInput(){
+            for(int i = 19; i <= 22; i++){ //0-3 are up, down, left, right
+                if(Gdx.input.isKeyPressed(i)){
+                    return i;
+                }
+            }
+            for(int i = 29; i <= 54; i++){ //4 - 29
+                if(Gdx.input.isKeyPressed(i)){
+                    return i;
+                }
+            }
+            for(int i = 7; i <= 16; i++){ // 30-39
+                if(Gdx.input.isKeyPressed(i)){
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+        public int getTexture(int x){
+            if(x <= 16){ // 0-9 are 30 - 39
+                return x + 23;
+            }
+            if(x < 23){
+                return x - 19; //up,down,left,right return 0-3
+            }
+            return x - 25; //alphabet return 4-29
+        }
+
+
 
         /**
          * Called when this screen should release all resources.
@@ -269,6 +326,28 @@ import edu.cornell.gdiac.util.XBoxController;
          * @param delta Number of seconds since last animation frame
          */
         private void update(float delta) {
+            if(InputController.getInstance().mouse){
+                mAttach = leftClick;
+                mPlace = rightClick;
+            }else{
+                mAttach = rightClick;
+                mPlace = leftClick;
+            }
+            if(pressState >= 20){
+                int in = getInput();
+                for(int i = 0; i < inputs.length; i++){
+                    if(in == inputs[i]){
+                        return;
+                    }
+                }
+                if(in != -1){
+                    inputs[pressState - 20] = in;
+                    buttons[pressState - 20] = unclickedButton;
+                    InputController.getInstance().buttons = inputs;
+                    pressState = 0;
+
+                }
+            }
         }
 
         /**
@@ -285,49 +364,37 @@ import edu.cornell.gdiac.util.XBoxController;
 //		canvas.draw(background, 0, 0);
 
             canvas.draw(background, Color.WHITE, 0, 0, 0, 0, 0, sx, sy);
-            canvas.draw(backButton, Color.WHITE, backButton.getWidth()/2f, backButton.getHeight()/2f,
+            canvas.draw(backButton, Color.WHITE, 0, backButton.getHeight(),
                     backButtonPos.x, backButtonPos.y, 0, scale.x, scale.y);
-            canvas.draw(mVolume, Color.WHITE, mVolume.getWidth()/2f, mVolume.getHeight()/2f,
-                    musicPos.x, musicPos.y, 0f, scale.x, scale.y);
-            canvas.draw(sVolume, Color.WHITE, sVolume.getWidth() / 2f, sVolume.getHeight()/2f,
-                    soundPos.x, soundPos.y, 0f, scale.x, scale.y);
-
-            float temp = musicBarPos.x + ((musicVolume - 0.5f) * volumeBar.getWidth() * scale.x);
-            canvas.draw(volumeBar, Color.WHITE, volumeBar.getWidth() / 2f, volumeBar.getHeight()/2f,
-                    musicBarPos.x, musicBarPos.y, 0, scale.x, scale.y);
-            canvas.draw(volumeBubble, Color.WHITE, volumeBubble.getWidth() / 2f, volumeBubble.getHeight() /2f,
-                    temp, musicBarPos.y, 0, scale.x, scale.y);
-            temp = soundBarPos.x + ((soundVolume - 0.5f) * volumeBar.getWidth() * scale.x);
-            canvas.draw(volumeBar, Color.WHITE, volumeBar.getWidth() / 2f, volumeBar.getHeight()/2f,
+            float temp = soundBarPos.x + (soundVolume * slider.getWidth() * scale.x) - (slidercircle.getWidth() * scale.x /  2f);
+            canvas.draw(slider, Color.WHITE, 0, slider.getHeight(),
                     soundBarPos.x, soundBarPos.y, 0, scale.x, scale.y);
-            canvas.draw(volumeBubble, Color.WHITE, volumeBubble.getWidth() / 2f, volumeBubble.getHeight() /2f,
-                    temp, soundBarPos.y, 0, scale.x, scale.y);
+            canvas.draw(slidercircle, Color.WHITE, 0, slidercircle.getHeight() /2f,
+                    temp, soundBarPos.y - (slider.getHeight() * scale.y / 2f), 0, scale.x, scale.y);
+            temp = musicBarPos.x + (musicVolume * slider.getWidth() * scale.x) - (slidercircle.getWidth() * scale.x /  2f);
+            canvas.draw(slider, Color.WHITE, 0, slider.getHeight(),
+                    musicBarPos.x, musicBarPos.y, 0, scale.x, scale.y);
+            canvas.draw(slidercircle, Color.WHITE, 0, slidercircle.getHeight() /2f,
+                    temp, musicBarPos.y - (slider.getHeight() * scale.y / 2f), 0, scale.x, scale.y);
 
-            Color keyTint;
-            Color mouseTint;
-            if(controls == 0){
-                mouseTint = Color.WHITE;
-                keyTint = Color.GRAY;
-            }else{
-                keyTint = Color.WHITE;
-                mouseTint = Color.GRAY;
+
+            canvas.draw(mAttach, Color.WHITE, 0, mAttach.getHeight(),
+                    mAttachPos.x, mAttachPos.y, 0, scale.x, scale.y);
+            canvas.draw(mPlace, Color.WHITE, 0, mPlace.getHeight(),
+                    mPlacePos.x, mPlacePos.y, 0, scale.x, scale.y);
+
+
+            for(int i = 0; i < buttons.length; i++){
+                canvas.draw(buttons[i], Color.WHITE, 0, buttons[i].getHeight(), buttonPos[i].x, buttonPos[i].y, 0, scale.x, scale.y);
+
+                if(buttons[i] == unclickedButton) {
+                    Texture inputT = inputTextures[getTexture(inputs[i])];
+                    canvas.draw(inputT, Color.WHITE, inputT.getWidth() / 2f, inputT.getHeight() / 2f,
+                            buttonPos[i].x + (unclickedButton.getWidth() * scale.x / 2f ), buttonPos[i].y - (unclickedButton.getHeight() * scale.y / 2f), 0, scale.x, scale.y);
+                }
             }
 
-            canvas.draw(control, Color.WHITE, control.getWidth() /2f, control.getHeight()/2f,
-                    controlPos.x, controlPos.y, 0, scale.x, scale.y);
-            canvas.draw(mControls, mouseTint, mControls.getWidth()/2f, mControls.getHeight()/2f,
-                    mControlPos.x, mControlPos.y, 0, scale.x * 0.5f, scale.y * 0.5f);
-            canvas.draw(kControls, keyTint,kControls.getWidth()/2f, kControls.getHeight()/2f,
-                    kControlPos.x, kControlPos.y, 0, scale.x * 0.33f, scale.y * 0.33f);
 
-            if(!canvas.isFullscreen()){
-                canvas.draw(fullscreenButton, Color.WHITE,windowedButton.getWidth()/2f, windowedButton.getHeight()/2f,
-                        fullscreenPos.x, fullscreenPos.y, 0, scale.x, scale.y);
-            }else{
-                canvas.draw(windowedButton, Color.WHITE,windowedButton.getWidth()/2f, windowedButton.getHeight()/2f,
-                        fullscreenPos.x, fullscreenPos.y, 0, scale.x, scale.y);
-//                System.out.println("please darw");
-            }
 
             canvas.end();
         }
@@ -431,13 +498,13 @@ import edu.cornell.gdiac.util.XBoxController;
             this.listener = listener;
         }
 
-        public boolean pressedButton(int screenX, int screenY, Texture texture, Vector2 button_center){
+        public boolean pressedButton(int screenX, int screenY, Texture texture, Vector2 button_pos){
             float button_w = texture.getWidth() * scale.x;
             float button_h = texture.getHeight() * scale.y;
             screenY = canvas.getHeight() - screenY;
             //System.out.println(button_center);
-            if(screenX >= button_center.x - button_w/2 && screenX <= button_center.x + button_w/2){
-                if(screenY >= button_center.y - button_h/2 && screenY <= button_center.y + button_h/2){
+            if(screenX >= button_pos.x && screenX <= button_pos.x + button_w){
+                if(screenY >= button_pos.y - button_h && screenY <= button_pos.y){
                    return true;
                 }
             }
@@ -471,22 +538,28 @@ import edu.cornell.gdiac.util.XBoxController;
                 //System.out.println("BACKK");
                 pressState = 1;
             }
-            if(pressedButton(screenX, screenY, volumeBar, musicBarPos)){
-                float temp = screenX - (musicBarPos.x - (volumeBar.getWidth() * scale.x / 2f));
-                musicVolume = temp / (volumeBar.getWidth() * scale.x);
+            if(pressedButton(screenX, screenY, slider, musicBarPos)){
+                float temp = screenX - musicBarPos.x;
+                musicVolume = temp / (slider.getWidth() * scale.x);
                 loadingMusic.setVolume(loadingMusicId, musicVolume);
             }
-            if(pressedButton(screenX, screenY, volumeBar, soundBarPos)){
-                float temp = screenX - (soundBarPos.x - (volumeBar.getWidth() * scale.x / 2f));
-                soundVolume = temp / (volumeBar.getWidth() * scale.x);
+            if(pressedButton(screenX, screenY, slider, soundBarPos)){
+                float temp = screenX - soundBarPos.x;
+                soundVolume = temp / (slider.getWidth() * scale.x);
             }
-            if(pressedButton2(screenX, screenY, mControls, mControlPos, 0.5f)){
-                controls = 0;
 
-//                .setVolume(loadingMusicId, musicVolume);
+            if(pressState < 20) {
+                for (int i = 0; i < buttons.length; i++) {
+                    if (pressedButton(screenX, screenY, buttons[i], buttonPos[i])) {
+                        buttons[i] = clickedButton;
+                        pressState = i + 20;
+                    }
+                }
             }
-            if(pressedButton2(screenX, screenY, kControls, kControlPos, 0.33f)){
-                controls = 1;
+
+            if(pressedButton(screenX, screenY, mAttach, mAttachPos) || pressedButton(screenX, screenY, mPlace, mPlacePos)){
+                InputController in = InputController.getInstance();
+                in.mouse = !in.mouse;
             }
 
             // TODO: Fix scaling
@@ -495,18 +568,6 @@ import edu.cornell.gdiac.util.XBoxController;
 
             return false;
         }
-       public boolean pressedButton2(int screenX, int screenY, Texture texture, Vector2 button_center, float f){
-           float button_w = texture.getWidth() * scale.x * f;
-           float button_h = texture.getHeight() * scale.y * f;
-           screenY = canvas.getHeight() - screenY;
-           //System.out.println(button_center);
-           if(screenX >= button_center.x - button_w/2 && screenX <= button_center.x + button_w/2){
-               if(screenY >= button_center.y - button_h/2 && screenY <= button_center.y + button_h/2){
-                   return true;
-               }
-           }
-           return false;
-       }
 
         /**
          * Called when a finger was lifted or a mouse button was released.

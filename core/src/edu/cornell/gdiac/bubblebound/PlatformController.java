@@ -132,7 +132,7 @@ public class PlatformController implements ContactListener, Screen {
 	/** Physics constants for initialization */
 	private JsonValue constants;
 
-	private int BUBBLE_LIMIT = 0;
+	private int BUBBLE_LIMIT = 2;
 
 	private int bubbles_left = 0;
 
@@ -2062,8 +2062,11 @@ public class PlatformController implements ContactListener, Screen {
 					pause_state = false;
 				}
 				if(ch.x >= pos.x + (0.1f*canvas.getWidth()) - (quitButton.getWidth() * sx / 2f) && ch.x <= pos.x + (0.1f*canvas.getWidth()) + (quitButton.getWidth() * sx / 2f)){
-					quit = true;
 					pause_state = false;
+					canvas.camera.position.set(canvas.getWidth() / 2f, canvas.getHeight() / 2f, 0);
+					canvas.camera.update();
+					listener.exitScreen(this, currLevel);
+
 				}
 
 			}
@@ -2071,6 +2074,7 @@ public class PlatformController implements ContactListener, Screen {
 	}
 
 	public boolean quit = false;
+
 
 	public void draw(float dt) {
 		canvas.clear();

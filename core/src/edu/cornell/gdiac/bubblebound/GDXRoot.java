@@ -39,8 +39,10 @@ public class GDXRoot extends Game implements ScreenListener {
 	private SettingsMode settings;
 	/** Player mode for the the game proper (CONTROLLER CLASS) */
 	private int current;
+
+	private int currlevel = 1;
 	/** List of all WorldControllers */
-	private PlatformController[] controllers;
+	private PlatformController controller;
 	
 	/**
 	 * Creates a new game from the configuration settings.
@@ -62,9 +64,9 @@ public class GDXRoot extends Game implements ScreenListener {
 
 
 		// Initialize the three game worlds
-		controllers = new PlatformController[1];
+		controller = new PlatformController();
 		//controllers[0] = new RocketController();
-		controllers[0] = new PlatformController();
+//		controllers[0] = new PlatformController();
 		//controllers[2] = new RagdollController();
 		current = 0;
 		loading.setScreenListener(this);
@@ -79,8 +81,8 @@ public class GDXRoot extends Game implements ScreenListener {
 	public void dispose() {
 		// Call dispose on our children
 		setScreen(null);
-		for(int ii = 0; ii < controllers.length; ii++) {
-			controllers[ii].dispose();
+		if(controller != null){
+			controller.dispose();
 		}
 
 		canvas.dispose();
@@ -113,6 +115,17 @@ public class GDXRoot extends Game implements ScreenListener {
 	}
 
 
+	public void launchGame(){
+		directory = loading.getAssets();
+		controller.gatherAssets(directory);
+		controller.setSoundvolume(soundvolume);
+		controller.setVolume(volume);
+		controller.setCanvas(canvas);
+		controller.setScreenListener(this);
+		controller.reset(currlevel);
+	}
+
+
 
 	/**
 	 * The given screen has made a request to exit its player mode.
@@ -125,20 +138,10 @@ public class GDXRoot extends Game implements ScreenListener {
 	public void exitScreen(Screen screen, int exitCode) {
 
 		if (screen == loading) {
-			for(int ii = 0; ii < controllers.length; ii++) {
-				directory = loading.getAssets();
-				controllers[ii].gatherAssets(directory);
-				controllers[ii].setScreenListener(this);
-				controllers[ii].setSoundvolume(soundvolume);
-				controllers[ii].setVolume(volume);
-				controllers[ii].setCanvas(canvas);
-			}
-
 			if(exitCode == 0){ //normal start
-				controllers[current].reset(1);
-				setScreen(controllers[current]);
-				loading.dispose();
-				loading = null;
+
+				launchGame();
+				setScreen(controller);
 			}
 			else if(exitCode == 1){ //lvl select
 				levelselect = new LevelSelectMode("assets.json", canvas, 1);
@@ -150,6 +153,9 @@ public class GDXRoot extends Game implements ScreenListener {
 				settings.setMusic(loading.getMusic(), loading.getMusicId());
 				setScreen(settings);
 
+			}else if(exitCode == 3){ //quit game
+				loading.dispose();
+				Gdx.app.exit();
 			}
 
 		} else if(screen == settings){
@@ -169,27 +175,20 @@ public class GDXRoot extends Game implements ScreenListener {
 				loading.poopypants();
 				setScreen(loading);
 			}else{
-				exitCode += 1;
+				currlevel  = exitCode;
 				//System.out.println(exitCode);
-				directory = loading.getAssets();
-				controllers[0].gatherAssets(directory);
-				controllers[0].setScreenListener(this);
-				controllers[0].setCanvas(canvas);
-				controllers[0].setCurrLevel(exitCode - 1);
-				controllers[0].setTargetLevel(exitCode);
-				controllers[0].reset(exitCode);
-				setScreen(controllers[0]);
+				launchGame();
+				setScreen(loading);
+				setScreen(controller);
+
+
 			}
+		}else if(screen == controller){
+			System.out.println("Hello aaa");
+			currlevel = exitCode;
+			setScreen(loading);
 		}
-		else if (exitCode == PlatformController.EXIT_NEXT) {
-			current = (current+1) % controllers.length;
-			controllers[current].reset(1);
-			setScreen(controllers[current]);
-		} else if (exitCode == PlatformController.EXIT_PREV) {
-			current = (current+controllers.length-1) % controllers.length;
-			controllers[current].reset(1);
-			setScreen(controllers[current]);
-		} else if (exitCode == PlatformController.EXIT_QUIT) {
+			 else if (exitCode == PlatformController.EXIT_QUIT) {
 			// We quit the main application
 			Gdx.app.exit();
 		}

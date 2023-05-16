@@ -378,13 +378,16 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 			// We are are ready, notify our listener
 			if (isReady() && listener != null) {
 				loadingMusic.stop();
+				pressState = 0;
 				listener.exitScreen(this, 0);
 
 			}
 			if(pressState == 3){ //lvl select
+				pressState = 0;
 				listener.exitScreen(this, 1);
 			}
 			if(pressState == 4){ //settings
+				pressState = 0;
 				listener.exitScreen(this, 2);
 			}
 		}
@@ -476,6 +479,8 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 			//System.out.println("howdy");
 			return true;
 		}
+
+		System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 		//System.out.println("DO this pls");
 		// Flip to match graphics coordinates
 		screenY = heightY-screenY;

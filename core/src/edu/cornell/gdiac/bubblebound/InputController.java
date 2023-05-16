@@ -84,6 +84,11 @@ public class InputController {
 	private boolean prevClicked;
 
 
+	public int[] buttons = {Input.Keys.UP, Input.Keys.W, Input.Keys.DOWN, Input.Keys.S, Input.Keys.LEFT, Input.Keys.A, Input.Keys.RIGHT, Input.Keys.D, Input.Keys.J, Input.Keys.K};
+
+	public boolean mouse = true;
+
+
 	public enum ControlMapping{
 		MOUSE,
 		KEYBOARD,
@@ -372,7 +377,7 @@ public class InputController {
 		doorPressed = (secondary && doorPressed) || (Gdx.input.isKeyPressed(Input.Keys.E));
 		healthRestorePressed = (secondary && healthRestorePressed) || (Gdx.input.isKeyPressed(Input.Keys.Q));
 		debugPressed = (secondary && debugPressed) || (Gdx.input.isKeyPressed(Input.Keys.L));
-		primePressed = (secondary && primePressed) || (Gdx.input.isKeyPressed(Input.Keys.UP) || (Gdx.input.isKeyPressed(Input.Keys.W)) || (Gdx.input.isKeyPressed(Input.Keys.SPACE)));
+		primePressed = (secondary && primePressed) || (Gdx.input.isKeyPressed(buttons[0]) || (Gdx.input.isKeyPressed(buttons[1])) || (Gdx.input.isKeyPressed(Input.Keys.SPACE)));
 		secondPressed = (secondary && secondPressed) || (Gdx.input.isKeyPressed(Input.Keys.SPACE));
 		prevPressed = (secondary && prevPressed) || (Gdx.input.isKeyPressed(Input.Keys.P));
 		nextPressed = (secondary && nextPressed) || (Gdx.input.isKeyPressed(Input.Keys.N));
@@ -388,11 +393,14 @@ public class InputController {
 		}
 		clicked = Gdx.input.isButtonPressed(Input.Buttons.LEFT);
 
-
+		int temp = Input.Buttons.LEFT;
+		if(!mouse){
+			temp = Input.Buttons.RIGHT;
+		}
 		if(controlMapping == ControlMapping.KEYBOARD){
-			bubblePressed = (secondary && bubblePressed) || (Gdx.input.isKeyJustPressed(Input.Keys.J));
+			bubblePressed = (secondary && bubblePressed) || (Gdx.input.isKeyJustPressed(buttons[8]));
 		}else {
-			bubblePressed = (secondary && bubblePressed) || (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT));
+			bubblePressed = (secondary && bubblePressed) || (Gdx.input.isButtonJustPressed(temp)); //TODO:::::::
 		}
 
 
@@ -436,10 +444,10 @@ public class InputController {
 
 		// Directional controls
 		horizontal = (secondary ? horizontal : 0.0f);
-		if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D)) {
+		if (Gdx.input.isKeyPressed(buttons[6]) || Gdx.input.isKeyPressed(buttons[7])) {
 			horizontal += 1.0f;
 		}
-		if (Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A)) {
+		if (Gdx.input.isKeyPressed(buttons[4]) || Gdx.input.isKeyPressed(buttons[5])) {
 			horizontal -= 1.0f;
 		}
 
@@ -451,12 +459,16 @@ public class InputController {
 		if (Gdx.input.isKeyPressed(Input.Keys.DOWN) || Gdx.input.isKeyPressed(Input.Keys.S)) {
 			vertical -= 1.0f;
 		}
-		
+
+		int temp2 = Input.Buttons.RIGHT;
+		if(!mouse){
+			temp2 = Input.Buttons.LEFT;
+		}
 		// Grapple Button results
 		if(controlMapping == ControlMapping.MOUSE){
-			tertiaryPressed = Gdx.input.isButtonPressed(Input.Buttons.RIGHT);
+			tertiaryPressed = Gdx.input.isButtonPressed(temp2);
 		}else{
-			tertiaryPressed = Gdx.input.isKeyPressed(Input.Keys.K);
+			tertiaryPressed = Gdx.input.isKeyPressed(buttons[9]);
 		}
 		cursor.set(Gdx.input.getX(), Gdx.input.getY());
 				
