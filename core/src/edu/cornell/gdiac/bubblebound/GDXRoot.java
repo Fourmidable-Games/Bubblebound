@@ -116,6 +116,9 @@ public class GDXRoot extends Game implements ScreenListener {
 
 
 	public void launchGame(){
+		if(controller == null){
+			controller = new PlatformController();
+		}
 		directory = loading.getAssets();
 		controller.gatherAssets(directory);
 		controller.setSoundvolume(soundvolume);
@@ -141,7 +144,6 @@ public class GDXRoot extends Game implements ScreenListener {
 
 		if (screen == loading) {
 			if(exitCode == 0){ //normal start
-
 				launchGame();
 				setScreen(controller);
 			}
@@ -150,7 +152,7 @@ public class GDXRoot extends Game implements ScreenListener {
 				levelselect.setScreenListener(this);
 				setScreen(levelselect);
 			}else if(exitCode == 2){// settings mode
-				settings = new SettingsMode("assets.json",canvas,1);
+				settings = new SettingsMode(canvas,1);
 				settings.setScreenListener(this);
 				settings.setMusic(loading.getMusic(), loading.getMusicId());
 				setScreen(settings);
@@ -166,9 +168,19 @@ public class GDXRoot extends Game implements ScreenListener {
 			settings.disabled = true;
 			settings.dispose();
 			settings = null;
-			loading.poopypants();
-			loading.setScreenListener(this);
-			setScreen(loading);
+			if(exitCode == -1) {
+				controller.setVolume(volume);
+				controller.setSoundvolume(soundvolume);
+				controller.setScreenListener(this);
+				controller.pause_state = true;
+				setScreen(controller);
+
+			}else {
+				loading.poopypants();
+				loading.setScreenListener(this);
+				setScreen(loading);
+			}
+
 
 		}else if(screen == levelselect){
 			levelselect.dispose();
@@ -180,17 +192,23 @@ public class GDXRoot extends Game implements ScreenListener {
 				currlevel  = exitCode;
 				//System.out.println(exitCode);
 				launchGame();
-				setScreen(loading);
 				setScreen(controller);
-
-
 			}
 		}else if(screen == controller){
-			System.out.println("Hello aaa");
-			currlevel = exitCode;
-			setScreen(loading);
-		}
-			 else if (exitCode == PlatformController.EXIT_QUIT) {
+			if(exitCode == -1){
+				settings = new SettingsMode(canvas, 1);
+				settings.pause = true;
+				settings.setScreenListener(this);
+				setScreen(settings);
+			}else {
+				controller.dispose();
+				controller = null;
+				currlevel = exitCode;
+				loading.poopypants();
+				loading.setScreenListener(this);
+				setScreen(loading);
+			}
+		} else if (exitCode == PlatformController.EXIT_QUIT) {
 			// We quit the main application
 			Gdx.app.exit();
 		}

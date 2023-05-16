@@ -1055,7 +1055,8 @@
       "platform:rightdeath": "platform/Right die down.PNG",
       "platform:pause": "platform/pause.png",
       "platform:playbutton": "platform/playbutton.png",
-      "platform:quitbutton": "platform/quitbutton.png"
+      "platform:quitbutton": "platform/quitbutton.png",
+      "platform:settingsbutton": "platform/settingsbutton.png"
     },
     "jsons"  : {
         "platform:constants": "platform/constants.json",
