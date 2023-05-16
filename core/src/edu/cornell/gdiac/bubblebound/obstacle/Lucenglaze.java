@@ -6,12 +6,14 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import edu.cornell.gdiac.bubblebound.GameCanvas;
+import edu.cornell.gdiac.util.FilmStrip;
 
 public class Lucenglaze extends BoxObstacle{
 
     public boolean triggered = false;
     public int rotation = 1;
     private TextureRegion dormant;
+    private FilmStrip filmstrip;
 
 
     public Lucenglaze(float x, float y){
@@ -22,7 +24,24 @@ public class Lucenglaze extends BoxObstacle{
         this.setName("lucenglaze");
         this.setBodyType(BodyDef.BodyType.StaticBody);
     }
-
+    protected int ii = 0;
+    protected int counter1 = 0;
+    protected final int delay1 = 3; // adjust this value to change the delay
+    public void initialize(FilmStrip f) {
+        filmstrip = f;
+        if (counter1 == 0) {
+            filmstrip.setFrame(0);
+        }
+    }
+    public void update() {
+        if(filmstrip != null) {
+            if(counter1 == 0) {
+                int temp = ii++ / 1;
+                filmstrip.setFrame(temp % 18);
+            }
+            counter1 = (counter1 + 1) % delay1;
+        }
+    }
     public void setTexture2(TextureRegion t){
         dormant = t;
     }

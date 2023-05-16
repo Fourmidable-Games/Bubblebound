@@ -125,7 +125,8 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 
 	/** Whether or not this player mode is still active */
 	private boolean active;
-
+	private Texture screenText;
+    private FilmStrip screenStrip;
 	/**
 	 * Returns the budget for the asset loader.
 	 *
@@ -210,6 +211,8 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 		internal.loadAssets();
 		internal.finishLoading();
 
+		screenText = internal.getEntry("screen", Texture.class);
+		screenStrip = new FilmStrip(screenText, 1, 9, 9);
 		// Load the next two images immediately.
 		playButton = null;
 		lvlselectButton = null;
