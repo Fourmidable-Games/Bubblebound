@@ -132,6 +132,7 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 	private Texture screenText;
     private FilmStrip screenStrip;
 	private Cursor defaultCursor;
+	private Cursor emptyCursor;
 	/**
 	 * Returns the budget for the asset loader.
 	 *
@@ -284,6 +285,12 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 		Pixmap defaultCursorPixmap = defaultCursorData.consumePixmap();
 		defaultCursor = Gdx.graphics.newCursor(defaultCursorPixmap, 0, 0);
 
+		Texture emptyCursorTexture = internal.getEntry("emptyCursor",Texture.class);
+		TextureData emptyCursorData = emptyCursorTexture.getTextureData();
+		emptyCursorData.prepare();
+		Pixmap emptyCursorPixmap = emptyCursorData.consumePixmap();
+		emptyCursor = Gdx.graphics.newCursor(emptyCursorPixmap, 0, 0);
+
 
 		statusBkgLeft = internal.getEntry( "progress.backleft", TextureRegion.class );
 		statusBkgRight = internal.getEntry( "progress.backright", TextureRegion.class );
@@ -301,7 +308,8 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 		pressState = 0;
 
 		Gdx.input.setInputProcessor( this );
-		Gdx.graphics.setCursor(defaultCursor);
+		Gdx.graphics.setCursor(emptyCursor);
+
 
 		// Let ANY connected controller start the game.
 
@@ -359,6 +367,7 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 				settingsButton = internal.getEntry("settings", Texture.class);
 				lvlselectButton = internal.getEntry("lvlselect", Texture.class);
 				quitButton = internal.getEntry("quit", Texture.class);
+				Gdx.graphics.setCursor(defaultCursor);
 
 			}
 		}else{

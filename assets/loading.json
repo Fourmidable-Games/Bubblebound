@@ -11,6 +11,7 @@
       "background7": "shared/Frame 8.png",
       "background8": "shared/Frame 9.png",
       "defaultCursor": "shared/defaultCursor.png",
+      "emptyCursor": "platform/platformcursor.png",
 		"play": "shared/play.png",
         "settings": "shared/settings.png",
         "lvlselect": "shared/lvlselect.png",
