@@ -516,7 +516,7 @@ public class DudeModel extends CapsuleObstacle {
 					filmstrip_down.setFrame(0);
 				}
 				if (counter_idle == 0) {
-					int temp = ii / 3;
+					int temp = ii / 5;
 					filmstrip_idle.setFrame(temp % 3);
 					filmstrip_swing.setFrame(temp % 3);
 					filmstrip_falling.setFrame(temp % 3);

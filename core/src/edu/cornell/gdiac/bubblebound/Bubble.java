@@ -29,6 +29,7 @@ public class Bubble extends WheelObstacle {
 
     private boolean popped;
     private FilmStrip filmstrip;
+    private FilmStrip filmstrip2;
     /** The current animation frame of the avatar */
     private int startFrame;
     /** The rotational center of the filmstrip */
@@ -54,10 +55,12 @@ public class Bubble extends WheelObstacle {
     protected int counter1 = 0;
     protected final int delay1 = 6; // adjust this value to change the delay
 
-    public void initialize(FilmStrip f) {
+    public void initialize(FilmStrip f, FilmStrip f2) {
         filmstrip = f;
+        filmstrip2 = f2;
         if (counter1 == 0) { // execute setFrame only when counter reaches 0
-            f.setFrame(ii++ % 8);
+            f.setFrame(0);
+            f2.setFrame(0);
         }
         counter1 = (counter1 + 1) % delay1; // increment counter and reset to 0 when it reaches delay
         ////////System.out.println("strips:" + filmstrip);
@@ -86,20 +89,23 @@ public class Bubble extends WheelObstacle {
 
     protected int i;
     protected int counter = 0;
-    protected final int delay = 50; // adjust this value to change the delay
+    protected final int delay = 10; // adjust this value to change the delay
     private int blink_time = 5;
     public void update() {
+
         if (animate) {
             if (filmstrip != null) {
                 if (counter == 0) { // execute setFrame only when counter reaches 0
                     int next = (i++) % 8;
                     filmstrip.setFrame(next);
+                    filmstrip2.setFrame(next);
                 }
                 counter = (counter + 1) % delay; // increment counter and reset to 0 when it reaches delay
             }
         } else {
             if (filmstrip != null) {
                 filmstrip.setFrame(0);
+                filmstrip2.setFrame(0);
             }
         }
         if (bubbleType == BubbleType.FLOATING) {
@@ -118,7 +124,7 @@ public class Bubble extends WheelObstacle {
             setVY(bubble_speed * grav);
             setVX(0);
         }
-//        super.update(dt);
+//        filmstrip = tmp;
     }
     public boolean canRopeTo = false;
 
@@ -155,7 +161,9 @@ public class Bubble extends WheelObstacle {
 
                 if (canRopeTo) {
                     //outline(canvas);
-                    //filmstrip = filmstrip2;
+                    this.setTexture(filmstrip2);
+                } else{
+                    this.setTexture(filmstrip);
                 }
                 if (grav == 1) {
                     canvas.draw(texture, gold, origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.y, getAngle(), sx, sy);

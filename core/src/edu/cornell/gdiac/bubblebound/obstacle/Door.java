@@ -47,14 +47,14 @@ public class Door extends Goal{
     public void initialize(FilmStrip f){
         filmstrip = f;
         if (counter1 == 0) { // execute setFrame only when counter reaches 0
-            f.setFrame(ii++ % 8);
+            f.setFrame(0);
         }
         counter1 = (counter1 + 1) % delay1; // increment counter and reset to 0 when it reaches delay
     }
 
     protected int i;
     protected int counter = 0;
-    protected final int delay = 100; // adjust this value to change the delay
+    protected final int delay = 7; // adjust this value to change the delay
     public void update() {
         if (filmstrip != null) {
             if (counter == 0) { // execute setFrame only when counter reaches 0

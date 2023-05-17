@@ -528,6 +528,7 @@ public class PlatformController implements ContactListener, Screen {
 		// Add level goal
 		for(int i = 0; i < doors.size(); i++){
 			Door door = doors.get(i);
+			door.initialize(goalStrip);
 			door.setBodyType(BodyDef.BodyType.StaticBody);
 			door.setSensor(true);
 			door.setDrawScale(scale);
@@ -604,6 +605,7 @@ public class PlatformController implements ContactListener, Screen {
 			wo.setDrawScale(scale);
 			wo.setDensity(1000f);
 			wo.setTexture(bubble);
+			wo.initialize(bubble,bubble2);
 			bubbles.add(wo);
 			addObject(wo);
 		}
@@ -779,6 +781,8 @@ public class PlatformController implements ContactListener, Screen {
 		wo2.setDrawScale(scale);
 		wo2.setDensity(10000f);
 		wo2.setTexture(bubble);
+		wo2.setTexture(bubble);
+		wo2.initialize(bubble, bubble2);
 		bubbles.add(wo2);
 		addQueuedObject(wo2);
 		return wo2;
@@ -876,14 +880,11 @@ public class PlatformController implements ContactListener, Screen {
 	private void updateBubbles(){
 		for(int i = 0; i < bubbles.size(); i++){
 			Bubble b = bubbles.get(i);
-			if(b.canRopeTo) {
+			/*if(b.canRopeTo) {
 				b.setTexture(bubble2);
 				b.initialize(bubble2);
-			}
-			else {
-				b.setTexture(bubble);
-				b.initialize(bubble);
-			}
+			}*/
+
 			b.update();
 			b.canRopeTo = false;
 			if(b.timedOut()){
@@ -952,7 +953,7 @@ public class PlatformController implements ContactListener, Screen {
 	private void updateDoors(){
 		for(int i = 0; i < doors.size(); i++){
 			Door door = doors.get(i);
-			door.initialize(goalStrip);
+			//door.initialize(goalStrip);
 			door.update();
 		}
 	}

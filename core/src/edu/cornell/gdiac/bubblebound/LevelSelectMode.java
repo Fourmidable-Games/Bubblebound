@@ -375,7 +375,6 @@ public class LevelSelectMode implements Screen, InputProcessor, ControllerListen
         // Compute the drawing scale
         float sx = ((float)width)/background.getWidth();
         float sy = ((float)height)/background.getHeight();
-        sx = sy;
         scale = new Vector2(sx, sy);
     }
 
