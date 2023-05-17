@@ -260,9 +260,9 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 		hoveredSettings = internal.getEntry("settingshovered",Texture.class);
 
 		playPos = createPos(960, 90 + hoveredPlayButton.getHeight() / 2);
-		lvlSelectPos = createPos(960, 221 + hoveredLvlSelect.getHeight() / 2);
-		settingsPos = createPos(960, 301 + hoveredSettings.getHeight() / 2);
-		quitPos = createPos(960, 381 + hoveredQuit.getHeight() / 2);
+		lvlSelectPos = createPos(960, 241 + hoveredLvlSelect.getHeight() / 2);
+		settingsPos = createPos(960, 321 + hoveredSettings.getHeight() / 2);
+		quitPos = createPos(960, 401 + hoveredQuit.getHeight() / 2);
 
 		//load the loading theme immediately
 		loadingMusic = internal.getEntry("menuscreen", Sound.class);
