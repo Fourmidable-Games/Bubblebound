@@ -67,6 +67,7 @@ public class PlatformController implements ContactListener, Screen {
 	protected TextureRegion emptyBubbleCooldown;
 	protected TextureRegion fullBubbleCooldown;
 	protected FilmStrip bubblecooldownStrip;
+	protected TextureRegion grapplePrompt;
 
 	private Vector2 originalRopePlayerPos;
 
@@ -254,6 +255,9 @@ public class PlatformController implements ContactListener, Screen {
 
 	private List<Bubble> bubbles = new ArrayList<Bubble>();
 
+	private List<ButtonPrompt> prompts = new ArrayList<ButtonPrompt>();
+
+
 	private List<Enemy> enemies = new ArrayList<Enemy>();
 
 	private ArrayList<TextureRegion> spikeTextureList = new ArrayList<TextureRegion>();
@@ -359,6 +363,8 @@ public class PlatformController implements ContactListener, Screen {
 		lucenTexture = directory.getEntry("platform:activatedlucen", Texture.class);
 		lucenStrip = new FilmStrip(lucenTexture, 1, 18, 18);
 		dormantlucen = new TextureRegion(directory.getEntry("platform:dormantlucen",Texture.class));
+
+		grapplePrompt = new TextureRegion(directory.getEntry("shared:grapplePrompt",Texture.class));
 
 		deathLeft = new TextureRegion(directory.getEntry("platform:leftdeath", Texture.class));
 		deathRight = new TextureRegion(directory.getEntry("platform:rightdeath", Texture.class));
@@ -506,6 +512,8 @@ public class PlatformController implements ContactListener, Screen {
 	private void populateLevel(String jsonPath) {
 		setSounds();
 
+
+
 		LevelEditorV2 Level2 = new LevelEditorV2(playerController,jsonPath);
 		Level2.readTileTextures(textures, spikeTextureList);
 		Level2.readJson();
@@ -548,6 +556,11 @@ public class PlatformController implements ContactListener, Screen {
 			createLucenGlaze(glazes.get(i).getX(), glazes.get(i).getY(), glazeRotations.get(i));
 		}
 
+
+
+
+
+
 		currLevel = targetLevel;
 
 		avatar = needToInitializeSpawn ? Level2.getPlayer(Door.SpawnDirection.RIGHT) : Level2.getPlayerAtLocation(avatarSpawnLocation, avatarSpawnDirection);
@@ -569,6 +582,7 @@ public class PlatformController implements ContactListener, Screen {
 		avatar.initialize(dude, swingStrip, idleStrip, jumpStrip, fallStrip,
 				topStrip, upStrip, downStrip, fallingStrip);
 		addObject(avatar);
+
 
 		for (int i = 0; i < gravityZoneList.size(); i++) {
 			Zone gravZone = gravityZoneList.get(i);
@@ -602,6 +616,19 @@ public class PlatformController implements ContactListener, Screen {
 
 		for (int i = 0; i < bubbleList.size(); i++) {
 			Bubble wo = bubbleList.get(i);
+
+			if (i == 0) {
+
+
+				ButtonPrompt grapple = new ButtonPrompt(950, 350, 2, grapplePrompt, displayFont, "j");
+				grapple.setName("grapplePrompt");
+				grapple.setTexture(grapplePrompt);
+				prompts.add(grapple);
+
+			}
+
+
+
 			wo.setName("Bubble");
 			wo.setBodyType(BodyDef.BodyType.DynamicBody);
 			wo.setStatic(true);
@@ -1000,15 +1027,44 @@ public class PlatformController implements ContactListener, Screen {
 
 	//TODO more efficient
 	private void updateObjectGravs(){
-		for(int i = 0; i < objects.size(); i++){
-			Body o = objects.get(i).getBody();
-			objects.get(i).setGrav(1.0f);
+		//iterate player
+		//iterate enemies
+		//iterate bubble
+		for(int i = 0; i < enemies.size() ; i++){
+			//get the body of the object
+			Body o = enemies.get(i).getBody();
+			//set the gravity to 1
+			enemies.get(i).setGrav(1.0f);
 			for(int j = 0; j < zones.size(); j++){
+				//if the body is in the gravity zone
 				if(zones.get(j).inBounds(o.getPosition().x, o.getPosition().y)){
-					objects.get(i).setGrav(zones.get(j).getGrav());
+					//set that bodies gravity zone to that zone
+					enemies.get(i).setGrav(zones.get(j).getGrav());
 				}
 			}
 		}
+		for(int i = 0; i < bubbles.size() ; i++){
+			//get the body of the object
+			Body o = bubbles.get(i).getBody();
+			//set the gravity to 1
+			bubbles.get(i).setGrav(1.0f);
+			for(int j = 0; j < zones.size(); j++){
+				//if the body is in the gravity zone
+				if(zones.get(j).inBounds(o.getPosition().x, o.getPosition().y)){
+					//set that bodies gravity zone to that zone
+					bubbles.get(i).setGrav(zones.get(j).getGrav());
+				}
+			}
+		}
+		avatar.setGrav(1);
+		for(int j = 0; j < zones.size(); j++){
+			//if the body is in the gravity zone
+			if(zones.get(j).inBounds(avatar.getPosition().x, avatar.getPosition().y)){
+				//set that bodies gravity zone to that zone
+				avatar.setGrav(zones.get(j).getGrav());
+			}
+		}
+
 	}
 
 
@@ -1173,7 +1229,7 @@ public class PlatformController implements ContactListener, Screen {
 		//Falling down
 		else if ((avatar.getGravZone() == 1 && !avatar.isGrounded() && avatar.getVY() < 0f) ||
 				(avatar.getGravZone() == -1 && !avatar.isGrounded() && avatar.getVY() > 0f)) {
-			if(Math.abs(avatar.getVX()) < 0.1) avatar.setTexture(downStrip);
+			if(Math.abs(avatar.getVX()) < 0.1) avatar.setTexture(fallingStrip);
 			else avatar.setTexture(fallStrip);
 		}
 		else avatar.setTexture(dude);
@@ -2133,6 +2189,10 @@ public class PlatformController implements ContactListener, Screen {
 
 
 		canvas.begin();
+
+
+
+
 		drawPrimaryBackground(skybackground);
 		for(Zone z: zones){ //draws the backgrounds of the zones
 			drawSecondaryBackground(icebackground, z);
@@ -2173,8 +2233,13 @@ public class PlatformController implements ContactListener, Screen {
 		for(PoisonGas pg : poisons){
 			pg.draw(canvas);
 		}
+		for (ButtonPrompt b: prompts) {
+			b.draw(canvas);
+		}
 		if(level6Token != null){level6Token.draw(canvas);}
 		if(level12Token != null){level12Token.draw(canvas);}
+		if (currLevel == 1) {
+		}
 
 		canvas.resetColor();
 		canvas.end();
@@ -2196,6 +2261,12 @@ public class PlatformController implements ContactListener, Screen {
 		if(assetsLoaded){
 			updateUI();
 		}
+
+
+
+
+
+
 		canvas.end();
 
 		if (debug) {
@@ -2206,6 +2277,8 @@ public class PlatformController implements ContactListener, Screen {
 			canvas.endDebug();
 		}
 
+
+
 		// Final message
 		if (complete && !failed) {
 			displayFont.setColor(Color.YELLOW);
@@ -2214,6 +2287,8 @@ public class PlatformController implements ContactListener, Screen {
 			canvas.end();
 		} else if (failed) {
 		}
+
+
 	}
 
 	/**

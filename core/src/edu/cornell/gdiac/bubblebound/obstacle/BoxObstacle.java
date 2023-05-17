@@ -148,6 +148,8 @@ public class BoxObstacle extends SimpleObstacle {
 	 */
 	public BoxObstacle(float x, float y, float width, float height) {
 		super(x,y);
+		Vector2 pos = new Vector2(x, y);
+		setPosition2(pos);
 		dimension = new Vector2(width,height);
 		sizeCache = new Vector2();
 		shape = new PolygonShape();

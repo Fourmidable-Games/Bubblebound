@@ -1006,6 +1006,15 @@
         "wrapV": "repeated"
       },
 
+
+      "shared:grapplePrompt" : {
+        "file":  "shared/grapplePrompt.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+
+
+
         "background:ice" : {
             "file":  "platform/icebackground.png"
         },
