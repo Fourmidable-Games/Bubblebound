@@ -192,6 +192,7 @@ public class GDXRoot extends Game implements ScreenListener {
 				setScreen(loading);
 			}else{
 				currlevel  = exitCode;
+				loading.stopMusic();
 				//System.out.println(exitCode);
 				launchGame();
 				setScreen(controller);
