@@ -3,7 +3,12 @@
         "background": "shared/loading.png",
 		"play": "shared/play.png",
         "settings": "shared/settings.png",
-        "lvlselect": "shared/lvl_select.png",
+        "lvlselect": "shared/lvlselect.png",
+        "quit": "shared/quit.png",
+        "playhovered": "shared/play2.png",
+        "lvlselecthovered": "shared/lvlselect2.png",
+        "settingshovered": "shared/settings2.png",
+        "quithovered":"shared/quit2.png",
         "screen": "shared/screenstrip.png",
         "progress": {
             "file": "shared/progressbar.png",

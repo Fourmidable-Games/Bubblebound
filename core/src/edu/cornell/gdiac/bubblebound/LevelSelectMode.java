@@ -140,23 +140,40 @@ public class LevelSelectMode implements Screen, InputProcessor, ControllerListen
      *
      * @return the asset directory produced by this loading screen
      */
-    public AssetDirectory getAssets() {
-        return assets;
+    public void gatherAssets(AssetDirectory directory){
+        System.out.println("AAAAAAAAAAAAAAAA");
+        background = directory.getEntry( "phase0background", Texture.class );
+        background.setFilter( Texture.TextureFilter.Linear, Texture.TextureFilter.Linear );
+        for(int i = 0; i < 4; i++){
+            for(int j = 0; j < 5; j++){
+                phaseLevels[i][j] = directory.getEntry("level" + (i+1) + "-" + (j+1), Texture.class);
+            }
+        }
+        for(int i = 0; i < 5; i++){
+            phasebackgrounds[i] = directory.getEntry("phase" + i + "background", Texture.class);
+        }
+        backButton = directory.getEntry("backbutton", Texture.class);
+        for(int i = 1; i <= 4; i++){
+            phases[i - 1] = directory.getEntry("phase" + i, Texture.class);
+        }
+        for(int i = 1; i <= 4; i++){
+            lightphases[i-1] = directory.getEntry("lightphase" + i, Texture.class);
+        }
     }
 
     /**
      * Creates a LoadingMode with the default budget, size and position.
      *
-     * @param file  	The asset directory to load in the background
+     *
      * @param canvas 	The game canvas to draw to
      */
-    public LevelSelectMode(String file, GameCanvas canvas) {
-        this(file, canvas, DEFAULT_BUDGET);
+    public LevelSelectMode(GameCanvas canvas) {
+        this(canvas, DEFAULT_BUDGET);
     }
 
     private int phase = 0; //represents which lvl select screen (0 for main)
     private int hovered = 0;
-
+    private GameCanvas canvas2;
 
     private Texture backButton;
     private Texture phasebackground;
@@ -181,54 +198,38 @@ public class LevelSelectMode implements Screen, InputProcessor, ControllerListen
      * frame is ~16 milliseconds. So if the budget is 10, you have 6 milliseconds to
      * do something else.  This is how game companies animate their loading screens.
      *
-     * @param file  	The asset directory to load in the background
+     *
      * @param canvas 	The game canvas to draw to
      * @param millis The loading budget in milliseconds
      */
-    public LevelSelectMode(String file, GameCanvas canvas, int millis) {
+    public LevelSelectMode(GameCanvas canvas, int millis) {
+        canvas2 = canvas;
         this.canvas  = canvas;
         budget = millis;
-
+        resize(canvas.getWidth(), canvas.getHeight());
         // Compute the dimensions from the canvas
 
 
         // We need these files loaded immediately
-        internal = new AssetDirectory( "levelselect.json" );
-        internal.loadAssets();
-        internal.finishLoading();
-        background = internal.getEntry( "phase0background", Texture.class );
-        background.setFilter( Texture.TextureFilter.Linear, Texture.TextureFilter.Linear );
-        resize(canvas.getWidth(),canvas.getHeight());
-        // Load the next two images immediately.
-        phasebackground = internal.getEntry("phasebackground", Texture.class);
-        for(int i = 0; i < 5; i++){
-            phasebackgrounds[i] = internal.getEntry("phase" + i + "background", Texture.class);
-        }
 
 
         //load the loading theme immediately
-        backButton = internal.getEntry("backbutton", Texture.class);
-        for(int i = 1; i <= 4; i++){
-            phases[i - 1] = internal.getEntry("phase" + i, Texture.class);
-        }
-        for(int i = 1; i <= 4; i++){
-            lightphases[i-1] = internal.getEntry("lightphase" + i, Texture.class);
-        }
 
-        int xoffset = phases[0].getWidth() / 2;
-        int yoffset = phases[0].getHeight() /2;
+
+        //int xoffset =  phases[0].getWidth()/ 2;
+        int xoffset = 406/2;
+        //int yoffset = phases[0].getHeight() /2;
+        int yoffset = 504/2;
         phasesPos[0] = createPos(71 + xoffset, 83 + yoffset);//represents the center
         phasesPos[1] = createPos(529 + xoffset, 490 + yoffset);
         phasesPos[2] = createPos(986 + xoffset, 83 + yoffset);
         phasesPos[3] = createPos(1443 + xoffset, 490 + yoffset);
 
-        for(int i = 0; i < 4; i++){
-            for(int j = 0; j < 5; j++){
-                phaseLevels[i][j] = internal.getEntry("level" + (i+1) + "-" + (j+1), Texture.class);
-            }
-        }
-        xoffset = phaseLevels[0][0].getWidth() / 2;
-        yoffset = phaseLevels[0][0].getHeight() / 2;
+        //xoffset = phaseLevels[0][0].getWidth() / 2;
+        //yoffset = phaseLevels[0][0].getHeight() / 2;
+        xoffset = 194/2;
+        yoffset = 194/2;
+
         phaseLevelsPos[0][0] = createPos(174 +xoffset, 131 +yoffset);
         phaseLevelsPos[0][1] = createPos(332 +xoffset, 518 +yoffset);
         phaseLevelsPos[0][2] = createPos(580 +xoffset, 780 +yoffset);
@@ -273,8 +274,6 @@ public class LevelSelectMode implements Screen, InputProcessor, ControllerListen
      */
     public void dispose() {
         Gdx.input.setInputProcessor(null);
-        internal.unloadAssets();
-        internal.dispose();
     }
 
     /**
@@ -373,9 +372,8 @@ public class LevelSelectMode implements Screen, InputProcessor, ControllerListen
      */
     public void resize(int width, int height) {
         // Compute the drawing scale
-        float sx = ((float)width)/background.getWidth();
-        float sy = ((float)height)/background.getHeight();
-        sx = sy;
+        float sx = ((float)width)/1920;
+        float sy = ((float)height)/1080;
         scale = new Vector2(sx, sy);
     }
 

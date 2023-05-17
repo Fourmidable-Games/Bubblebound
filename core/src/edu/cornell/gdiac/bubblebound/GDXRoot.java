@@ -148,7 +148,9 @@ public class GDXRoot extends Game implements ScreenListener {
 				setScreen(controller);
 			}
 			else if(exitCode == 1){ //lvl select
-				levelselect = new LevelSelectMode("assets.json", canvas, 1);
+				directory = loading.getLvlselect();
+				levelselect = new LevelSelectMode(canvas, 1);
+				levelselect.gatherAssets(directory);
 				levelselect.setScreenListener(this);
 				setScreen(levelselect);
 			}else if(exitCode == 2){// settings mode

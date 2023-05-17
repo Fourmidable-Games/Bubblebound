@@ -56,7 +56,9 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 	private AssetDirectory internal;
 	/** The actual assets to be loaded */
 	private AssetDirectory assets;
-	
+
+	private AssetDirectory lvlselect;
+
 	/** Background texture for start-up */
 	private Texture background;
 	/** Play button to display when done */
@@ -115,7 +117,7 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 	/** The height of the canvas window (necessary since sprite origin != screen origin) */
 	private int heightY;
 	/** Scaling factor for when the student changes the resolution. */
-	private float scale;
+	private Vector2 scale;
 
 	/** Current progress (0 to 1) of the asset manager */
 	private float progress;
@@ -178,6 +180,10 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 		return assets;
 	}
 
+	public AssetDirectory getLvlselect(){
+		return lvlselect;
+	}
+
 	/**
 	 * Creates a LoadingMode with the default budget, size and position.
 	 *
@@ -187,6 +193,17 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 	public LoadingMode(String file, GameCanvas canvas) {
 		this(file, canvas, DEFAULT_BUDGET);
 	}
+
+	private Vector2 playPos;
+	private Vector2 lvlSelectPos;
+	private Vector2 settingsPos;
+	private Vector2 quitPos;
+
+	private Texture hoveredPlayButton;
+	private Texture hoveredLvlSelect;
+	private Texture hoveredQuit;
+	private Texture hoveredSettings;
+
 
 	/**
 	 * Creates a LoadingMode with the default size and position.
@@ -222,6 +239,15 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 		background = internal.getEntry( "background", Texture.class );
 		background.setFilter( TextureFilter.Linear, TextureFilter.Linear );
 		statusBar = internal.getEntry( "progress", Texture.class );
+		hoveredPlayButton = internal.getEntry("playhovered", Texture.class);
+		hoveredLvlSelect = internal.getEntry("lvlselecthovered", Texture.class);
+		hoveredQuit = internal.getEntry("quithovered", Texture.class);
+		hoveredSettings = internal.getEntry("settingshovered",Texture.class);
+
+		playPos = createPos(892 + hoveredPlayButton.getWidth() / 2, 607 + hoveredPlayButton.getHeight() / 2);
+		lvlSelectPos = createPos(839 + hoveredLvlSelect.getWidth() / 2, 768 + hoveredLvlSelect.getHeight() / 2);
+		settingsPos = createPos(874 + hoveredSettings.getWidth() / 2, 845 + hoveredSettings.getHeight() / 2);
+		quitPos = createPos(913 + hoveredQuit.getWidth() / 2, 930 + hoveredQuit.getHeight() / 2);
 
 		//load the loading theme immediately
 		loadingMusic = internal.getEntry("menuscreen", Sound.class);
@@ -251,6 +277,9 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 		// Start loading the real assets
 		assets = new AssetDirectory( file );
 		assets.loadAssets();
+
+		lvlselect = new AssetDirectory("levelselect.json");
+		lvlselect.loadAssets();
 		active = true;
 	}
 
@@ -267,7 +296,15 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 		internal.unloadAssets();
 		internal.dispose();
 	}
-	
+
+	private float progress2 = 0;
+
+	private Vector2 createPos(int x, int y){
+		return new Vector2(x * scale.x, canvas.getHeight() - (y*scale.y));
+	}
+
+	int hovered = -1;
+
 	/**
 	 * Update the status of this player mode.
 	 *
@@ -282,16 +319,34 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 		if (playButton == null) {
 			assets.update(budget);
 			this.progress = assets.getProgress();
-			if (progress >= 1.0f) {
-				this.progress = 1.0f;
+			lvlselect.update(budget);
+			this.progress2 = lvlselect.getProgress();
+			if (progress + progress2 >= 2.0f) {
+
+				this.progress = 2.0f;
 				playButton = internal.getEntry("play",Texture.class);
 				settingsButton = internal.getEntry("settings", Texture.class);
 				lvlselectButton = internal.getEntry("lvlselect", Texture.class);
-				quitButton = internal.getEntry("play", Texture.class);
+				quitButton = internal.getEntry("quit", Texture.class);
 
 			}
+		}else{
+			int x = Gdx.input.getX();
+			int y = Gdx.input.getY();
+			hovered = 0;
+			if(pressedButton(x, y, playButton, playPos)){
+				hovered = 1;
+			}else if(pressedButton(x, y, lvlselectButton, lvlSelectPos)){
+				hovered = 2;
+			}else if(pressedButton(x, y, settingsButton, settingsPos)){
+				hovered = 3;
+			}else if(pressedButton(x, y, quitButton, quitPos)){
+				hovered = 4;
+			}
 		}
+
 	}
+
 
 	/**
 	 * Draw the status of this player mode.
@@ -311,13 +366,18 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 		if (playButton == null) {
 			drawProgress(canvas);
 		} else {
-			Color tint = (pressState == 1 ? Color.GRAY: Color.WHITE);
-			canvas.draw(playButton, tint, playButton.getWidth()/2, playButton.getHeight()/2, 
-						x, y, 0, BUTTON_SCALE*scale*0.83f, BUTTON_SCALE*scale*0.83f);
-			y -= canvas.getHeight() * 0.2f;
-			canvas.draw(lvlselectButton, tint, playButton.getWidth()/2, playButton.getHeight()/2, x, y, 0, BUTTON_SCALE*scale*0.83f, BUTTON_SCALE*scale*0.83f);
-			y -= canvas.getHeight() * 0.2f;
-			canvas.draw(settingsButton, tint, playButton.getWidth()/2, playButton.getHeight()/2, x, y, 0, BUTTON_SCALE*scale*0.83f, BUTTON_SCALE*scale*0.83f);
+			Texture temp = (hovered == 1) ? hoveredPlayButton : playButton;
+			canvas.draw(temp, Color.WHITE, temp.getWidth() / 2f, temp.getHeight() / 2f, playPos.x, playPos.y, 0, sx, sy);
+
+			temp = (hovered == 2) ? hoveredLvlSelect : lvlselectButton;
+			canvas.draw(temp, Color.WHITE, temp.getWidth() / 2f, temp.getHeight() / 2f, lvlSelectPos.x, lvlSelectPos.y, 0, sx, sy);
+
+			temp = (hovered == 3) ? hoveredSettings : settingsButton;
+			canvas.draw(temp, Color.WHITE, temp.getWidth() / 2f, temp.getHeight() / 2f, settingsPos.x, settingsPos.y, 0, sx, sy);
+
+			temp = (hovered == 4) ? hoveredQuit : quitButton;
+			canvas.draw(temp, Color.WHITE, temp.getWidth() / 2f, temp.getHeight() / 2f, quitPos.x, quitPos.y, 0, sx, sy);
+
 		}
 		canvas.end();
 	}
@@ -334,24 +394,24 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 	private void drawProgress(GameCanvas canvas) {
 		float adj = 330f;
 		canvas.draw(statusBkgLeft,   Color.WHITE, centerX-width/2, centerY-adj,
-				scale*statusBkgLeft.getRegionWidth(), scale*statusBkgLeft.getRegionHeight());
-		canvas.draw(statusBkgRight,  Color.WHITE,centerX+width/2-scale*statusBkgRight.getRegionWidth(), centerY-adj,
-				scale*statusBkgRight.getRegionWidth(), scale*statusBkgRight.getRegionHeight());
-		canvas.draw(statusBkgMiddle, Color.WHITE,centerX-width/2+scale*statusBkgLeft.getRegionWidth(), centerY-adj,
-				width-scale*(statusBkgRight.getRegionWidth()+statusBkgLeft.getRegionWidth()),
-				scale*statusBkgMiddle.getRegionHeight());
+				scale.x*statusBkgLeft.getRegionWidth(), scale.y*statusBkgLeft.getRegionHeight());
+		canvas.draw(statusBkgRight,  Color.WHITE,centerX+width/2-scale.x*statusBkgRight.getRegionWidth(), centerY-adj,
+				scale.x*statusBkgRight.getRegionWidth(), scale.y*statusBkgRight.getRegionHeight());
+		canvas.draw(statusBkgMiddle, Color.WHITE,centerX-width/2+scale.x*statusBkgLeft.getRegionWidth(), centerY-adj,
+				width-scale.x*(statusBkgRight.getRegionWidth()+statusBkgLeft.getRegionWidth()),
+				scale.y*statusBkgMiddle.getRegionHeight());
 
 		canvas.draw(statusFrgLeft,   Color.WHITE,centerX-width/2, centerY-adj,
-				scale*statusFrgLeft.getRegionWidth(), scale*statusFrgLeft.getRegionHeight());
+				scale.x*statusFrgLeft.getRegionWidth(), scale.y*statusFrgLeft.getRegionHeight());
 		if (progress > 0) {
-			float span = progress*(width-scale*(statusFrgLeft.getRegionWidth()+statusFrgRight.getRegionWidth()))/2.0f;
-			canvas.draw(statusFrgRight,  Color.WHITE,centerX-width/2+scale*statusFrgLeft.getRegionWidth()+span, centerY-adj,
-					scale*statusFrgRight.getRegionWidth(), scale*statusFrgRight.getRegionHeight());
-			canvas.draw(statusFrgMiddle, Color.WHITE,centerX-width/2+scale*statusFrgLeft.getRegionWidth(), centerY-adj,
-					span, scale*statusFrgMiddle.getRegionHeight());
+			float span = progress*(width-scale.x*(statusFrgLeft.getRegionWidth()+statusFrgRight.getRegionWidth()))/2.0f;
+			canvas.draw(statusFrgRight,  Color.WHITE,centerX-width/2+scale.x*statusFrgLeft.getRegionWidth()+span, centerY-adj,
+					scale.x*statusFrgRight.getRegionWidth(), scale.y*statusFrgRight.getRegionHeight());
+			canvas.draw(statusFrgMiddle, Color.WHITE,centerX-width/2+scale.x*statusFrgLeft.getRegionWidth(), centerY-adj,
+					span, scale.y*statusFrgMiddle.getRegionHeight());
 		} else {
-			canvas.draw(statusFrgRight,  Color.WHITE,centerX-width/2+scale*statusFrgLeft.getRegionWidth(), centerY-adj,
-					scale*statusFrgRight.getRegionWidth(), scale*statusFrgRight.getRegionHeight());
+			canvas.draw(statusFrgRight,  Color.WHITE,centerX-width/2+scale.x*statusFrgLeft.getRegionWidth(), centerY-adj,
+					scale.x*statusFrgRight.getRegionWidth(), scale.y*statusFrgRight.getRegionHeight());
 		}
 	}
 
@@ -364,7 +424,6 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 	}
 
 
-	LevelSelectMode levelselect;
 	// ADDITIONAL SCREEN METHODS
 	/**
 	 * Called when the Screen should render itself.
@@ -399,8 +458,10 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 				pressState = 0;
 				listener.exitScreen(this, 2);
 				Gdx.input.setInputProcessor(null);
-
-
+			}
+			if(pressState == 5){ //quit
+				pressState = 0;
+				listener.exitScreen(this, 3);
 			}
 		}
 	}
@@ -416,9 +477,10 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 	 */
 	public void resize(int width, int height) {
 		// Compute the drawing scale
-		float sx = ((float)width)/STANDARD_WIDTH;
-		float sy = ((float)height)/STANDARD_HEIGHT;
-		scale = (sx < sy ? sx : sy);
+		float sx = ((float)width)/1920;
+		float sy = ((float)height)/1080;
+		scale = new Vector2(sx, sy);
+
 		
 		this.width = (int)(BAR_WIDTH_RATIO*width);
 		centerY = (int)(BAR_HEIGHT_RATIO*height);
@@ -496,38 +558,36 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 
 		//System.out.println("DO this pls");
 		// Flip to match graphics coordinates
-		screenY = heightY-screenY;
-		
-		// TODO: Fix scaling
-		// Play button is a circle.
-		float x = canvas.getWidth() / 2f;
-		float y = canvas.getHeight() * 0.6f;
-		float button_w = playButton.getWidth()*BUTTON_SCALE*scale*0.83f;
-		float button_h = playButton.getHeight()*BUTTON_SCALE*scale*0.83f;
-		Vector2 button_center = new Vector2(x, y);
-		if(screenX >= button_center.x - button_w/2 && screenX <= button_center.x + button_w/2){
-			if(screenY >= button_center.y - button_h/2 && screenY <= button_center.y + button_h/2){
-				pressState = 1;
-			}
+		if(pressedButton(screenX, screenY, playButton, playPos)){
+			pressState = 1;
 		}
-		button_center.y -= canvas.getHeight() * 0.2f; //lvl select
-		if(screenX >= button_center.x - button_w/2 && screenX <= button_center.x + button_w/2){
-			if(screenY >= button_center.y - button_h/2 && screenY <= button_center.y + button_h/2){
-				//System.out.println("lvl select");
-				pressState = 3;
-			}
+		if(pressedButton(screenX, screenY, lvlselectButton, lvlSelectPos)){
+			pressState = 3;
 		}
-		button_center.y -= canvas.getHeight() * 0.2f; //settings
-		if(screenX >= button_center.x - button_w/2 && screenX <= button_center.x + button_w/2){
-			if(screenY >= button_center.y - button_h/2 && screenY <= button_center.y + button_h/2){
-				pressState = 4;
-				//System.out.println("settings");
-			}
+		if(pressedButton(screenX, screenY, settingsButton, settingsPos)){
+			pressState = 4;
+		}
+		if(pressedButton(screenX, screenY, quitButton, quitPos)){
+			pressState = 5;
 		}
 
 		return false;
 	}
-	
+
+	public boolean pressedButton(int screenX, int screenY, Texture texture, Vector2 button_pos){
+		float button_w = texture.getWidth() * scale.x / 2f;
+		float button_h = texture.getHeight() * scale.y / 2f;
+		screenY = canvas.getHeight() - screenY;
+		//System.out.println(button_center);
+		if(screenX >= button_pos.x - button_w && screenX <= button_pos.x + button_w){
+			if(screenY >= button_pos.y - button_h && screenY <= button_pos.y + button_h){
+				return true;
+			}
+		}
+		return false;
+	}
+
+
 	/** 
 	 * Called when a finger was lifted or a mouse button was released.
 	 *
