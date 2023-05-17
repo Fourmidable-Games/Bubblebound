@@ -1,5 +1,6 @@
 {
 	"textures": {
+      "logo": "shared/logo.png",
         "background0": "shared/Frame 1.png",
       "background1": "shared/Frame 2.png",
       "background2": "shared/Frame 3.png",
@@ -9,6 +10,7 @@
       "background6": "shared/Frame 7.png",
       "background7": "shared/Frame 8.png",
       "background8": "shared/Frame 9.png",
+      "defaultCursor": "shared/defaultCursor.png",
 		"play": "shared/play.png",
         "settings": "shared/settings.png",
         "lvlselect": "shared/lvlselect.png",

@@ -1034,6 +1034,8 @@
         "platform:emptyCooldownBubble": "platform/emptyCooldownBubble.png",
         "platform:fullCooldownBubble": "platform/fullCooldownBubble.png",
         "platform:dude2":  "platform/enemy.png",
+        "platform:platformcursor": "platform/platformcursor.png",
+        "platform:crosshair": "platform/scope.png",
         "platform:dude":  "platform/dude.png",
         "platform:dude3":  "platform/dude3.png",
         "platform:dude4":  "platform/dude4.png",

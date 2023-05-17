@@ -9,6 +9,7 @@ import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerListener;
 import com.badlogic.gdx.controllers.ControllerMapping;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -189,6 +190,12 @@ public class LevelSelectMode implements Screen, InputProcessor, ControllerListen
     private Texture[] phases = new Texture[4];
     private Texture[] lightphases = new Texture[4];
     private Vector2[] phasesPos = new Vector2[4];
+
+    private Cursor defaultCursor;
+
+    public void setDefaultCursor(Cursor defaultCursor){
+        this.defaultCursor = defaultCursor;
+    }
 
     /**
      * Creates a LoadingMode with the default size and position.
@@ -405,6 +412,7 @@ public class LevelSelectMode implements Screen, InputProcessor, ControllerListen
      */
     public void show() {
         // Useless if called in outside animation loop
+        Gdx.graphics.setCursor(defaultCursor);
         active = true;
     }
 

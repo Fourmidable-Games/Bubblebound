@@ -14,8 +14,11 @@
  package edu.cornell.gdiac.bubblebound;
 
 import com.badlogic.gdx.*;
+import com.badlogic.gdx.graphics.Cursor;
 import edu.cornell.gdiac.util.*;
 import edu.cornell.gdiac.assets.*;
+
+import java.awt.*;
 
 /**
  * Root class for a LibGDX.  
@@ -43,6 +46,7 @@ public class GDXRoot extends Game implements ScreenListener {
 	private int currlevel = 1;
 	/** List of all WorldControllers */
 	private PlatformController controller;
+	public Cursor defaultCursor;
 
 
 	
@@ -70,6 +74,8 @@ public class GDXRoot extends Game implements ScreenListener {
 
 		// Initialize the three game worlds
 		controller = new PlatformController();
+		controller.setDefaultCursor(defaultCursor);
+
 		//controllers[0] = new RocketController();
 //		controllers[0] = new PlatformController();
 		//controllers[2] = new RagdollController();
@@ -128,6 +134,7 @@ public class GDXRoot extends Game implements ScreenListener {
 		if(controller == null){
 			controller = new PlatformController();
 		}
+		controller.setDefaultCursor(defaultCursor);
 		directory = loading.getAssets();
 		controller.gatherAssets(directory);
 		controller.setSoundvolume(soundvolume);
@@ -154,6 +161,7 @@ public class GDXRoot extends Game implements ScreenListener {
 
 
 		if (screen == loading) {
+			defaultCursor = loading.getDefaultCursor();
 			if(exitCode == 0){ //normal start
 				launchGame();
 				setScreen(controller);
@@ -161,11 +169,13 @@ public class GDXRoot extends Game implements ScreenListener {
 			else if(exitCode == 1){ //lvl select
 				directory = loading.getLvlselect();
 				levelselect = new LevelSelectMode(canvas, 1);
+				levelselect.setDefaultCursor(defaultCursor);
 				levelselect.gatherAssets(directory);
 				levelselect.setScreenListener(this);
 				setScreen(levelselect);
 			}else if(exitCode == 2){// settings mode
 				settings = new SettingsMode(canvas,1);
+				settings.setDefaultCursor(defaultCursor);
 				settings.setScreenListener(this);
 				settings.setMusic(loading.getMusic(), loading.getMusicId());
 				setScreen(settings);

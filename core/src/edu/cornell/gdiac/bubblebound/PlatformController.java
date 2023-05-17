@@ -26,6 +26,7 @@ import edu.cornell.gdiac.bubblebound.obstacle.*;
 import edu.cornell.gdiac.util.PooledList;
 import edu.cornell.gdiac.util.ScreenListener;
 import edu.cornell.gdiac.util.FilmStrip;
+import org.w3c.dom.Text;
 
 import java.util.*;
 
@@ -46,6 +47,17 @@ public class PlatformController implements ContactListener, Screen {
 	protected Texture swingText;
 	protected FilmStrip swingStrip;
 	protected Texture idleText;
+	private Vector2 crosshairLoc;
+
+	Cursor emptyCursor;
+	Pixmap emptyCursorPixmap;
+	Texture emptyCursorTexture;
+	TextureData emptyCursorData;
+
+	Cursor defaultCursor;
+
+	TextureRegion crosshair;
+
 	protected FilmStrip idleStrip;
 	protected Texture jumpText;
 	protected FilmStrip jumpStrip;
@@ -317,6 +329,9 @@ public class PlatformController implements ContactListener, Screen {
 		sensorFixtures = new ObjectSet<Fixture>();
 	}
 
+	public void setDefaultCursor(Cursor defaultCursor) {
+		this.defaultCursor = defaultCursor;
+	}
 
 	/**
 	 * Gather the assets for this controller.
@@ -363,6 +378,14 @@ public class PlatformController implements ContactListener, Screen {
 		lucenTexture = directory.getEntry("platform:activatedlucen", Texture.class);
 		lucenStrip = new FilmStrip(lucenTexture, 1, 18, 18);
 		dormantlucen = new TextureRegion(directory.getEntry("platform:dormantlucen",Texture.class));
+		emptyCursorTexture = directory.getEntry("platform:platformcursor",Texture.class);
+		crosshair = new TextureRegion(directory.getEntry("platform:crosshair",Texture.class));
+		emptyCursorData = emptyCursorTexture.getTextureData();
+		emptyCursorData.prepare();
+		emptyCursorPixmap = emptyCursorData.consumePixmap();
+		emptyCursor = Gdx.graphics.newCursor(emptyCursorPixmap, emptyCursorTexture.getWidth()/2, emptyCursorTexture.getHeight()/2);
+
+
 
 		grapplePrompt = new TextureRegion(directory.getEntry("shared:grapplePrompt",Texture.class));
 
@@ -446,6 +469,7 @@ public class PlatformController implements ContactListener, Screen {
 	 * This method disposes of the world and creates a new one.
 	 */
 	public void reset(int targetLevelID) {
+		Gdx.graphics.setCursor(emptyCursor);
 		death_count = 0;
 		doored = false;
 		if(currLevel == targetLevelID){
@@ -545,7 +569,7 @@ public class PlatformController implements ContactListener, Screen {
 			door.isGoal = true;
 			addObject(door);
 			if(door.getTargetLevelID() == currLevel){
-				System.out.println("TARGET DOOR FOUND!");
+//				System.out.println("TARGET DOOR FOUND!");
 				avatarSpawnLocation = door.getPlayerSpawnLocation();
 				avatarSpawnDirection = door.getSpawnDirection();
 				needToInitializeSpawn = false;
@@ -564,13 +588,13 @@ public class PlatformController implements ContactListener, Screen {
 		currLevel = targetLevel;
 
 		avatar = needToInitializeSpawn ? Level2.getPlayer(Door.SpawnDirection.RIGHT) : Level2.getPlayerAtLocation(avatarSpawnLocation, avatarSpawnDirection);
-		System.out.println("PRESPAWN LOC: "+ avatar.getPosition());
+//		System.out.println("PRESPAWN LOC: "+ avatar.getPosition());
 		if(needToInitializeSpawn) {
 			avatarSpawnLocation = avatar.getPosition();
 			avatarSpawnDirection = Door.SpawnDirection.RIGHT;
 			needToInitializeSpawn = false;
 		}
-		System.out.println("AFTERCHECK LOC: "+ avatar.getPosition());
+//		System.out.println("AFTERCHECK LOC: "+ avatar.getPosition());
 
 		avatar.setGrappling(false);
 		avatar.setDrawScale(scale);
@@ -674,7 +698,7 @@ public class PlatformController implements ContactListener, Screen {
 			level6Token.setSensor(true);
 			level6Token.setDrawScale(scale);
 			level6Token.setTexture(tokenText);
-			System.out.println("ADDING TOKEN" + level6Token.getPosition());
+//			System.out.println("ADDING TOKEN" + level6Token.getPosition());
 
 			addObject(level6Token);
 		}
@@ -688,7 +712,7 @@ public class PlatformController implements ContactListener, Screen {
 			level12Token.setSensor(true);
 			level12Token.setDrawScale(scale);
 			level12Token.setTexture(tokenText);
-			System.out.println("ADDING TOKEN" + level12Token.getPosition());
+//			System.out.println("ADDING TOKEN" + level12Token.getPosition());
 
 			addObject(level12Token);
 		}
@@ -865,6 +889,7 @@ public class PlatformController implements ContactListener, Screen {
 	private int wait = 0;
 
 	public void update(float dt) {
+		updateMouse();
 		updateBubbles();
 		updateSpike();
 		updateEnemies();
@@ -883,6 +908,35 @@ public class PlatformController implements ContactListener, Screen {
 			rope.updateJoint();
 		}
 
+	}
+
+	private void updateMouse(){
+		crosshairLoc = InputController.getInstance().getCrossHair();
+		float xoffset = (cameraCoords.x / scale.x) - (CAMERA_WIDTH / 2f); //find bottom left corner of camera
+		float yoffset = (cameraCoords.y / scale.y) - (CAMERA_HEIGHT / 2f);
+		crosshairLoc.x += xoffset;
+		crosshairLoc.y += yoffset;
+
+//		System.out.println("CAMERA: " +cameraCoords.scl(1/scale.x,1/scale.y));
+//		System.out.println("Crosshair before: " +crosshairLoc);
+		Vector2 playerLoc = avatar.getPosition();
+//		System.out.println("Player Pos: " + playerLoc);
+		float dist = Vector2.dst(crosshairLoc.x,crosshairLoc.y, playerLoc.x, playerLoc.y);
+		if(dist > 4){
+			Vector2 tempCrosshair = crosshairLoc.cpy();
+			crosshairLoc.lerp(playerLoc, (dist-4f)/dist);
+			Vector2 normed_loc = crosshairLoc.cpy();
+			normed_loc.add(-1f*playerLoc.x, -1f*playerLoc.y);
+			normed_loc.nor();
+			if(dist > 5){
+				Vector2 av_screen = avatar.getPosition().cpy().add(-1f*xoffset, -1f*yoffset);
+				normed_loc.x *= 4.5f;
+				normed_loc.y *= 4.5f;
+				av_screen = av_screen.add(normed_loc);
+				Gdx.input.setCursorPosition((int)(scale.x*av_screen.x),canvas.getHeight()-(int)(scale.y*av_screen.y));
+			}
+		}
+		crosshairLoc = new Vector2(crosshairLoc);
 	}
 
 	private void updateLucens(){
@@ -1078,11 +1132,7 @@ public class PlatformController implements ContactListener, Screen {
 			camera = false;
 		}
 		if(InputController.getInstance().isMouseControlls()){
-			placeLocation = InputController.getInstance().getCrossHair();
-			float xoffset = (cameraCoords.x / scale.x) - (CAMERA_WIDTH / 2f); //find bottom left corner of camera
-			float yoffset = (cameraCoords.y / scale.y) - (CAMERA_HEIGHT / 2f);
-			placeLocation.x += xoffset;
-			placeLocation.y += yoffset;
+			placeLocation = crosshairLoc;
 		}else{
 			if(!avatar.isGrappling()){
 				if(Math.abs(avatar.getMovement()) < 0.5){
@@ -1778,6 +1828,8 @@ public class PlatformController implements ContactListener, Screen {
 	 * Pausing happens when we switch game modes.
 	 */
 	public void pause() {
+		Gdx.graphics.setCursor(defaultCursor);
+
 		jumpSound.stop(jumpId);
 		plopSound.stop(plopId);
 		popSound.stop(popID);
@@ -1785,7 +1837,7 @@ public class PlatformController implements ContactListener, Screen {
 	}
 
 	public void resume(){
-
+		Gdx.graphics.setCursor(emptyCursor);
 	}
 
 	/**
@@ -2180,7 +2232,12 @@ public class PlatformController implements ContactListener, Screen {
 
 	public boolean quit = false;
 
-
+	private void drawCrosshair(){
+		float crosshair_width = crosshair.getRegionWidth();
+		float crosshair_height = crosshair.getRegionHeight();
+//		System.out.println(crosshairLoc);
+		canvas.draw(crosshair,Color.WHITE,crosshair_width/2, crosshair_height/2, crosshairLoc.x*scale.x, crosshairLoc.y*scale.y,crosshair_width,crosshair_height);
+	}
 	public void draw(float dt) {
 		canvas.clear();
 
@@ -2189,7 +2246,6 @@ public class PlatformController implements ContactListener, Screen {
 
 
 		canvas.begin();
-
 
 
 
@@ -2240,6 +2296,7 @@ public class PlatformController implements ContactListener, Screen {
 		if(level12Token != null){level12Token.draw(canvas);}
 		if (currLevel == 1) {
 		}
+		drawCrosshair();
 
 		canvas.resetColor();
 		canvas.end();
