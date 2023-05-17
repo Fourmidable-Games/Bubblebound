@@ -1033,6 +1033,7 @@
         "platform:bubblecooldown": "platform/fixedBubbleCooldown.png",
         "platform:emptyCooldownBubble": "platform/emptyCooldownBubble.png",
         "platform:fullCooldownBubble": "platform/fullCooldownBubble.png",
+        "platform:paperfilter": "platform/paperfilter.png",
         "platform:dude2":  "platform/enemy.png",
         "platform:platformcursor": "platform/platformcursor.png",
         "platform:crosshair": "platform/scope.png",

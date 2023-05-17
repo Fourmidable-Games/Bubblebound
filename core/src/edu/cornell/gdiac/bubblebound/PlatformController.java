@@ -176,6 +176,8 @@ public class PlatformController implements ContactListener, Screen {
 	/** The font for giving messages to the player */
 	protected TextureRegion skybackground;
 	protected Texture icebackground;
+
+	protected Texture paperfilter;
 	protected TextureRegion losing;
 	protected TextureRegion spikeTexture;
 	protected TextureRegion spikeTexture2;
@@ -417,6 +419,7 @@ public class PlatformController implements ContactListener, Screen {
 		displayFont = directory.getEntry( "shared:retro" ,BitmapFont.class);
 		skybackground = new TextureRegion(directory.getEntry("background:sky", Texture.class));
 		icebackground = directory.getEntry("background:ice", Texture.class);
+		paperfilter = directory.getEntry("platform:paperfilter", Texture.class);
 		losing = new TextureRegion(directory.getEntry("losing", Texture.class));
 		bubble = new FilmStrip(bubbleText, 1, 8, 8);
 		bubble2 = new FilmStrip(bubbleText2, 1, 8, 8);
@@ -448,6 +451,7 @@ public class PlatformController implements ContactListener, Screen {
 			borderTextures[i] = directory.getEntry("platform:border" + i, Texture.class);
 			borderStrips[i] = new FilmStrip(borderTextures[i], 1, 12,12);
 		}
+
 
 
 
@@ -2161,6 +2165,14 @@ public class PlatformController implements ContactListener, Screen {
 
 	}
 
+	public void drawFilter(Texture filter){
+		System.out.println("FILTERISMADEBAYBE");
+//		TextureRegion fil = new TextureRegion(filter, cameraCoords.x, cameraCoords.y, canvas.getWidth(), canvas.getHeight());
+//		System.out.println(fil);
+		canvas.draw(filter, new Color(0.5f,0.5f,0.5f,0f), cameraCoords.x-canvas.getWidth()/2, cameraCoords.y-canvas.getHeight()/2, filter.getWidth(), filter.getHeight());
+	}
+
+
 
 
 	int delay = 0;
@@ -2308,6 +2320,7 @@ public class PlatformController implements ContactListener, Screen {
 		}
 		drawCrosshair();
 
+
 		canvas.resetColor();
 		canvas.end();
 
@@ -2334,6 +2347,9 @@ public class PlatformController implements ContactListener, Screen {
 
 
 
+		canvas.end();
+		canvas.begin();
+		drawFilter(paperfilter);
 		canvas.end();
 
 		if (debug) {
