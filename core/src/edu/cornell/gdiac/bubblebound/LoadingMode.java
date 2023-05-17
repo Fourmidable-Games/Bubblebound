@@ -61,6 +61,7 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 
 	/** Background texture for start-up */
 	private Texture background;
+	private FilmStrip backStrip;
 	/** Play button to display when done */
 	private Texture playButton;
 
@@ -238,6 +239,7 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 		quitButton = null;
 		background = internal.getEntry( "background", Texture.class );
 		background.setFilter( TextureFilter.Linear, TextureFilter.Linear );
+		backStrip = new FilmStrip(background, 1, 9, 9);
 		statusBar = internal.getEntry( "progress", Texture.class );
 		hoveredPlayButton = internal.getEntry("playhovered", Texture.class);
 		hoveredLvlSelect = internal.getEntry("lvlselecthovered", Texture.class);
@@ -344,9 +346,7 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 				hovered = 4;
 			}
 		}
-
 	}
-
 
 	/**
 	 * Draw the status of this player mode.

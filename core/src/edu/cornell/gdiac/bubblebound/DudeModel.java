@@ -520,8 +520,9 @@ public class DudeModel extends CapsuleObstacle {
 					filmstrip_idle.setFrame(temp % 3);
 					filmstrip_swing.setFrame(temp % 3);
 					filmstrip_falling.setFrame(temp % 3);
+					filmstrip_jump.setFrame(2 - temp % 3);
 				}
-				if(jumpAnimate){
+				/*if(jumpAnimate){
 					if (counter_jump == 0 ) {
 						int tmp = ii / 4;
 						int jumpFrame = tmp % 4;
@@ -537,7 +538,7 @@ public class DudeModel extends CapsuleObstacle {
 					}
 					counter_jump = (counter_jump + 1) % delay_jump;
 				}
-				else filmstrip_jump.setFrame(2);
+				else filmstrip_jump.setFrame(2);*/
 
 
 

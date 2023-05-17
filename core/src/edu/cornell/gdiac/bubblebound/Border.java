@@ -28,7 +28,7 @@ public class Border {
 
     protected int ii = 0;
     protected int counter1 = 0;
-    protected final int delay1 = 6;
+    protected final int delay1 = 1;
     public void initialize(FilmStrip f){
         filmstrip = f;
         if (counter1 == 0) { // execute setFrame only when counter reaches 0
