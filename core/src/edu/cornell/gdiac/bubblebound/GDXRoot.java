@@ -223,6 +223,7 @@ public class GDXRoot extends Game implements ScreenListener {
 		}else if(screen == controller){
 			if(exitCode == -1){
 				settings = new SettingsMode(canvas, 1);
+				settings.setDefaultCursor(defaultCursor);
 				settings.pause = true;
 				settings.setScreenListener(this);
 				setScreen(settings);

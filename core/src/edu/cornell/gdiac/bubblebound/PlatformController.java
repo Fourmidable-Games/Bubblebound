@@ -2166,6 +2166,8 @@ public class PlatformController implements ContactListener, Screen {
 	int delay = 0;
 
 	public void drawPause(){
+		Gdx.graphics.setCursor(defaultCursor);
+
 		cameraCoords.x = canvas.getWidth() / 2f;
 		cameraCoords.y = canvas.getHeight() / 2f;
 		canvas.camera.position.set(canvas.getWidth() / 2f, canvas.getHeight() / 2f, 0);
@@ -2200,6 +2202,8 @@ public class PlatformController implements ContactListener, Screen {
 			Vector2 ch = input.getCursor();
 			if(pressedButton((int)ch.x, (int)ch.y, playButton, playPos)){
 				pause_state = false;
+				Gdx.graphics.setCursor(emptyCursor);
+
 			}
 			if(pressedButton((int)ch.x, (int)ch.y, settingsButton, settingPos)){
 
