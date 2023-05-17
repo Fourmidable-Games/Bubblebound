@@ -205,6 +205,12 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 	private Texture hoveredQuit;
 	private Texture hoveredSettings;
 
+	private int count;
+	private int max_count;
+
+	private int delay;
+	private int max_delay;
+
 
 	/**
 	 * Creates a LoadingMode with the default size and position.
@@ -221,6 +227,10 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 	public LoadingMode(String file, GameCanvas canvas, int millis) {
 		this.canvas  = canvas;
 		budget = millis;
+		count = 0;
+		max_count = 9;
+		delay = 0;
+		max_delay = 10;
 		
 		// Compute the dimensions from the canvas
 		resize(canvas.getWidth(),canvas.getHeight());
@@ -248,10 +258,10 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 		hoveredQuit = internal.getEntry("quithovered", Texture.class);
 		hoveredSettings = internal.getEntry("settingshovered",Texture.class);
 
-		playPos = createPos(892 + hoveredPlayButton.getWidth() / 2, 607 + hoveredPlayButton.getHeight() / 2);
-		lvlSelectPos = createPos(839 + hoveredLvlSelect.getWidth() / 2, 768 + hoveredLvlSelect.getHeight() / 2);
-		settingsPos = createPos(874 + hoveredSettings.getWidth() / 2, 845 + hoveredSettings.getHeight() / 2);
-		quitPos = createPos(913 + hoveredQuit.getWidth() / 2, 930 + hoveredQuit.getHeight() / 2);
+		playPos = createPos(960, 90 + hoveredPlayButton.getHeight() / 2);
+		lvlSelectPos = createPos(960, 221 + hoveredLvlSelect.getHeight() / 2);
+		settingsPos = createPos(960, 301 + hoveredSettings.getHeight() / 2);
+		quitPos = createPos(960, 381 + hoveredQuit.getHeight() / 2);
 
 		//load the loading theme immediately
 		loadingMusic = internal.getEntry("menuscreen", Sound.class);
@@ -364,9 +374,8 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 //		canvas.draw(background, 0, 0);
 		float x = canvas.getWidth() / 2f;
 		float y = canvas.getHeight() * 0.6f;
-		for(Texture b : background) {
-			canvas.draw(b, Color.WHITE, 0, 0, 0, 0, 0, sx, sy);
-		}
+		System.out.println(count);
+		canvas.draw(background[count], Color.WHITE, 0, 0, 0, 0, 0, sx, sy);
 		//canvas.draw(background, Color.WHITE, 0, 0, 0, 0, 0, sx, sy);
 		if (playButton == null) {
 			drawProgress(canvas);
@@ -385,6 +394,16 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 
 		}
 		canvas.end();
+		delay++;
+		if(delay == max_delay){
+			delay = 0;
+		}
+		if(delay == 9){
+			count++;
+			if(count == max_count){
+				count = 0;
+			}
+		}
 	}
 	
 	/**
@@ -397,7 +416,7 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 	 * @param canvas The drawing context
 	 */	
 	private void drawProgress(GameCanvas canvas) {
-		float adj = 330f;
+		float adj = 440f *scale.y;
 		canvas.draw(statusBkgLeft,   Color.WHITE, centerX-width/2, centerY-adj,
 				scale.x*statusBkgLeft.getRegionWidth(), scale.y*statusBkgLeft.getRegionHeight());
 		canvas.draw(statusBkgRight,  Color.WHITE,centerX+width/2-scale.x*statusBkgRight.getRegionWidth(), centerY-adj,
