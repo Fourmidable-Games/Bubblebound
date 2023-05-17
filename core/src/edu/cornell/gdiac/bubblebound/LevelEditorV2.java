@@ -133,7 +133,7 @@ public class LevelEditorV2 {
 //                                    goals.getFloat("width")/64,
 //                                    goals.getFloat("height")/64
 //                            );
-                            Vector2 door_loc = new Vector2((goals.getFloat("x"))/64,((mapHeight - (goals.getFloat("y")))/64)+2);
+                            Vector2 door_loc = new Vector2((goals.getFloat("x"))/64+1,((mapHeight - (goals.getFloat("y")))/64)+2);
                             Door d = new Door(door_loc,player_spawn_direction,targetLevel);
 
 //                            wo.isGoal = true;
@@ -387,7 +387,7 @@ public class LevelEditorV2 {
 
                                 //////System.out.println(type.get("members"));
 
-                            Vector2 v = new Vector2((bub.getFloat("x")) / 64, ((mapHeight - (bub.getFloat("y"))) / 64)+1);
+                            Vector2 v = new Vector2((bub.getFloat("x")) / 64, ((mapHeight - (bub.getFloat("y"))) / 64)+1.5f);
 
                             Bubble wo = new Bubble(
                                     v,

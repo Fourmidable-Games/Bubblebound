@@ -1021,6 +1021,21 @@
       "background:sky" : {
         "file": "platform/skybackground.png"
       },
+      "platform:paperfilter": {
+        "file": "platform/paperfilter.png"
+      },
+      "platform:paperfilter1": {
+        "file": "platform/paperfilter1.png"
+      },
+      "platform:paperfilter2": {
+        "file": "platform/paperfilter2.png"
+      },
+      "platform:paperfilter3": {
+        "file": "platform/paperfilter3.png"
+      },
+      "platform:paperfilter4": {
+        "file": "platform/paperfilter4.png"
+      },
       "losing" : {
         "file" : "shared/losing.png"
       },

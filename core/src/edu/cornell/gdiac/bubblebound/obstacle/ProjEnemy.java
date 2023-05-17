@@ -16,7 +16,7 @@ public class ProjEnemy extends BoxObstacle{
 
     //implies 9x9 with flower moving thing at bottom middle for upwards rotation
 
-    int shoottimer = 0; //shoot every 100 frames;
+    int shoottimer = 1; //shoot every 100 frames;
     int shootcooldown = 200;
     private DudeModel avatar;
     private Body collidebody;
@@ -26,11 +26,15 @@ public class ProjEnemy extends BoxObstacle{
     private int rotation;
     private int collidedbodies;
 
+    private Color color;
+
     public int getRotation(){
         return rotation;
     }
     public ProjEnemy(float x, float y, int r) {
         this(x, y, 1, 1, r);
+        color = new Color(1,1,1,1);
+        shoottimer = 1;
     }
     protected int i = 0;
     protected int counter = 0;
@@ -50,6 +54,8 @@ public class ProjEnemy extends BoxObstacle{
         this.setBodyType(BodyDef.BodyType.StaticBody);
         this.rotation = rotation;
         fixture.filter.groupIndex = -1;
+        color = new Color(1,1,1,1);
+        shoottimer = 1;
 
         setSensor(true);
 
@@ -61,6 +67,7 @@ public class ProjEnemy extends BoxObstacle{
 
     public void deactivate(){
         shooting = false;
+        shoottimer = 1;
     }
 
     public boolean inBounds(Obstacle obj, Rectangle bounds) {
@@ -87,6 +94,7 @@ public class ProjEnemy extends BoxObstacle{
 //        ////System.out.println(shoottimer);
         if(shooting && shoottimer == 0){
             shoottimer++;
+            color = new Color((float)255 / 255,(float)(210-shoottimer) / 210,(float)(210-shoottimer) / 210,1);
             return true;
         }
         if(shoottimer > 0 && shoottimer < shootcooldown){
@@ -94,6 +102,7 @@ public class ProjEnemy extends BoxObstacle{
         }else{
             shoottimer = 0;
         }
+        color = new Color((float)255 / 255,(float)(210-shoottimer) / 210,(float)(210-shoottimer) / 210,1);
         return false;
     }
 
@@ -131,7 +140,8 @@ public class ProjEnemy extends BoxObstacle{
             }
             float sx = drawScale.x / 64f;
             float sy = drawScale.y / 64f;
-            canvas.draw(texture, Color.WHITE, ox, oy, getX() * drawScale.x, getY() * drawScale.y, (float)Math.toRadians(angle), sx, sy);
+            System.out.println("DRAWING SUNFLOWER WITH COLOR LEFT OF: " + color.b);
+            canvas.draw(texture, color, ox, oy, getX() * drawScale.x, getY() * drawScale.y, (float)Math.toRadians(angle), sx, sy);
         }
 
     }
@@ -140,7 +150,7 @@ public class ProjEnemy extends BoxObstacle{
                              PooledList<Obstacle> addQueue, Rectangle bounds, List<Bullet> bullets){
 
         Vector2 dir = avatar.getPosition().sub(pe.getPosition());
-
+        color = new Color((float)255 / 255,(float)(210-shoottimer) / 210,(float)(210-shoottimer) / 210,1);
         float radius = 0.3f;
 
         int[][] offsets = {{0,1}, {1,0}, {0,-1}, {-1,0}};

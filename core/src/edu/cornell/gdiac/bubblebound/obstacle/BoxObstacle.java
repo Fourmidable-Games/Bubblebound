@@ -294,4 +294,19 @@ public class BoxObstacle extends SimpleObstacle {
 
 	}
 
+	public void drawOutline(GameCanvas canvas) {
+		float boarderFactor = 1.05f;
+		float sx = drawScale.x * boarderFactor/ 64f;
+		float sy = drawScale.y * boarderFactor/ 64f;
+		if (texture != null) {
+			if(grav == 1) {
+				canvas.draw(texture, Color.BLACK, origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.y, getAngle(), sx, sy);
+			}else{
+				canvas.draw(texture, Color.BLACK, origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.y, getAngle(), sx, sy);
+			}
+		}
+
+
+	}
+
 }
