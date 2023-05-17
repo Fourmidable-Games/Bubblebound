@@ -212,6 +212,7 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 	private int max_delay;
 
 
+	public void stopMusic() { loadingMusic.stop();}
 	/**
 	 * Creates a LoadingMode with the default size and position.
 	 *
