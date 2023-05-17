@@ -128,7 +128,7 @@ public class GDXRoot extends Game implements ScreenListener {
 	}
 
 
-	public void launchGame(){
+	public void launchGame(boolean startup){
 
 
 		if(controller == null){
@@ -141,10 +141,14 @@ public class GDXRoot extends Game implements ScreenListener {
 		controller.setVolume(volume);
 		controller.setCanvas(canvas);
 		controller.setScreenListener(this);
-		controller.reset(currlevel);
-		controller.setTargetLevel(currlevel);
-		controller.setCurrLevel(currlevel - 1);
 
+		controller.setTargetLevel(currlevel);
+		if(startup == true) {
+			controller.setCurrLevel(currlevel);
+		}else{
+			controller.setCurrLevel(currlevel - 1);
+		}
+		controller.reset(currlevel);
 	}
 
 
@@ -163,7 +167,7 @@ public class GDXRoot extends Game implements ScreenListener {
 		if (screen == loading) {
 			defaultCursor = loading.getDefaultCursor();
 			if(exitCode == 0){ //normal start
-				launchGame();
+				launchGame(true);
 				setScreen(controller);
 			}
 			else if(exitCode == 1){ //lvl select
@@ -217,7 +221,7 @@ public class GDXRoot extends Game implements ScreenListener {
 				currlevel  = exitCode;
 				loading.stopMusic();
 				//System.out.println(exitCode);
-				launchGame();
+				launchGame(currlevel == 1);
 				setScreen(controller);
 			}
 		}else if(screen == controller){
