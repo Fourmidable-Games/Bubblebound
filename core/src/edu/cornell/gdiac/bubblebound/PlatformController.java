@@ -2240,7 +2240,13 @@ public class PlatformController implements ContactListener, Screen {
 		float crosshair_width = crosshair.getRegionWidth();
 		float crosshair_height = crosshair.getRegionHeight();
 //		System.out.println(crosshairLoc);
-		canvas.draw(crosshair,Color.WHITE,crosshair_width/2, crosshair_height/2, crosshairLoc.x*scale.x, crosshairLoc.y*scale.y,crosshair_width,crosshair_height);
+		if(canBubble(crosshairLoc)){
+			canvas.draw(crosshair,Color.GREEN,crosshair_width/2, crosshair_height/2, crosshairLoc.x*scale.x, crosshairLoc.y*scale.y,crosshair_width,crosshair_height);
+		}
+		else{
+			canvas.draw(crosshair,Color.RED,crosshair_width/2, crosshair_height/2, crosshairLoc.x*scale.x, crosshairLoc.y*scale.y,crosshair_width,crosshair_height);
+
+		}
 	}
 	public void draw(float dt) {
 		canvas.clear();
