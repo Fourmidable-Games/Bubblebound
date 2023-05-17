@@ -355,7 +355,7 @@ public class PlatformController implements ContactListener, Screen {
 		jumpText = directory.getEntry("platform:dude6", Texture.class);
 		jumpStrip = new FilmStrip(jumpText, 1, 3, 3);
 		fallText = directory.getEntry("platform:dude7", Texture.class);
-		fallStrip = new FilmStrip(fallText, 1, 1, 1);
+		fallStrip = new FilmStrip(fallText, 1, 3, 3);
 		topText = directory.getEntry("platform:dude8", Texture.class);
 		topStrip = new FilmStrip(topText, 1 ,1 ,1);
 		upText = directory.getEntry("platform:dudeUp", Texture.class);
