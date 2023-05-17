@@ -56,6 +56,7 @@ public class RopeBridge extends ComplexObstacle {
 	/** The spacing between each link */
 	protected float spacing = 0.0f;
 
+	protected boolean lastFacingRight;
 	protected Vector2 anchor3;
 
 	private float grav;
@@ -151,12 +152,13 @@ public class RopeBridge extends ComplexObstacle {
 		bubble = b;
 		avatar = a.getBody();
 		avatarCapsule = a;
+		lastFacingRight= ((DudeModel)avatarCapsule).isFacingRight();
 		float x0 = a.getPosition().x;
 		float y0 = a.getPosition().y;
 		planksize = new Vector2(lwidth,lheight);
 		linksize = planksize.x;
-
-		anchor3 = new Vector2(0,avatarCapsule.getHeight()/2 * avatarCapsule.grav);
+		int multiplier = (((DudeModel)avatarCapsule).isFacingRight()) ? 1: -1;
+		anchor3 = new Vector2(multiplier* ((avatarCapsule.getWidth()/2)-0.11f),0.55f * avatarCapsule.grav);
 		dimension = new Vector2(data.getFloat("width",0),0.1f);
 		// //////System.out.println("Dimension: " + dimension);
 		float length = bubble.getPosition().dst(avatar.getPosition().add(anchor3));
@@ -203,7 +205,34 @@ public class RopeBridge extends ComplexObstacle {
 		}
 	}
 
+	public int getJointLength(){
+		return joints.size();
+	}
+	public boolean updateJoint(){
+		if(lastFacingRight != ((DudeModel)avatarCapsule).isFacingRight()) {
+			Vector2 pos = bodies.get(0).getPosition();
+			pos.x -= linksize / 2;
+			RevoluteJointDef jointDef = new RevoluteJointDef();
+			Joint joint;
+			jointDef.bodyA = bodies.get(0).getBody();
+			jointDef.bodyB = avatar;
 
+			Vector2 anchor2 = new Vector2(-linksize / 2, 0);
+			int multiplier = (((DudeModel) avatarCapsule).isFacingRight()) ? 1 : -1;
+			Vector2 anchor3 = new Vector2(multiplier * ((avatarCapsule.getWidth() / 2) - 0.11f), 0.55f * avatarCapsule.grav);
+
+
+			jointDef.localAnchorA.set(anchor2);
+			jointDef.localAnchorB.set(anchor3);
+			jointDef.collideConnected = false;
+			world1.destroyJoint(joints.get(joints.size() - 1));
+			joint = world1.createJoint(jointDef);
+			joints.add(joint);
+			lastFacingRight = !lastFacingRight;
+			return true;
+		}
+		return false;
+	}
 	/**
 	 * Creates the joints for this object.
 	 *
@@ -221,7 +250,8 @@ public class RopeBridge extends ComplexObstacle {
 
 		Vector2 anchor1 = new Vector2();
 		Vector2 anchor2 = new Vector2(-linksize / 2, 0);
-		Vector2 anchor3 = new Vector2(0,avatarCapsule.getHeight()/2 * avatarCapsule.grav);
+		int multiplier = (((DudeModel)avatarCapsule).isFacingRight()) ? 1: -1;
+		Vector2 anchor3 = new Vector2(multiplier*((avatarCapsule.getWidth()/2)-0.11f),0.55f * avatarCapsule.grav);
 
 		// Create the leftmost anchor
 		// Normally, we would do this in constructor, but we have
@@ -373,6 +403,9 @@ public class RopeBridge extends ComplexObstacle {
 			joint = world.createJoint(jointDef);
 			joints.add(joint);
 		}
+		joints.add(joints.get(0));
+		joints.remove(0);
+
 		return true;
 	}
 
@@ -383,13 +416,17 @@ public class RopeBridge extends ComplexObstacle {
 	 * @param world Box2D world that stores body
 	 */
 	public void deactivatePhysics(World world) {
+
 		super.deactivatePhysics(world);
+
 		if (start != null) {
 			start.deactivatePhysics(world);
 		}
+
 		if (finish != null) {
 			finish.deactivatePhysics(world);
 		}
+
 	}
 
 	/**

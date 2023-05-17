@@ -851,6 +851,10 @@ public class PlatformController implements ContactListener, Screen {
 		updateBorders();
 		updateDoors();
 		updateAvatar();
+		if (rope != null && rope.getJointLength()>=2){
+
+			rope.updateJoint();
+		}
 
 	}
 
@@ -1909,6 +1913,7 @@ public class PlatformController implements ContactListener, Screen {
 			Obstacle obj = entry.getValue();
 			if (obj.isRemoved()) {
 				obj.deactivatePhysics(world);
+
 				entry.remove();
 			} else {
 				// Note that update is called last!
