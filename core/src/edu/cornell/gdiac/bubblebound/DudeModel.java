@@ -510,7 +510,7 @@ public class DudeModel extends CapsuleObstacle {
 				if (counter1 == 0) { // execute setFrame only when counter reaches 0
 					int next = ii++;
 					filmstrip.setFrame(10 - next % 11);
-					filmstrip_fall.setFrame(next % 1);
+
 					filmstrip_top.setFrame(next % 1);
 					filmstrip_up.setFrame(0);
 					filmstrip_down.setFrame(0);
@@ -521,6 +521,7 @@ public class DudeModel extends CapsuleObstacle {
 					filmstrip_swing.setFrame(temp % 3);
 					filmstrip_falling.setFrame(temp % 3);
 					filmstrip_jump.setFrame(2 - temp % 3);
+					filmstrip_fall.setFrame(temp % 3);
 				}
 
 				counter_idle = (counter_idle + 1) % delay_idle;

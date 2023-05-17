@@ -49,6 +49,8 @@ public class PlatformController implements ContactListener, Screen {
 	protected Texture idleText;
 	private Vector2 crosshairLoc;
 
+	public int[] keyboard_bindings = InputController.getInstance().buttons;
+
 	Cursor emptyCursor;
 	Pixmap emptyCursorPixmap;
 	Texture emptyCursorTexture;
@@ -80,6 +82,7 @@ public class PlatformController implements ContactListener, Screen {
 	protected TextureRegion fullBubbleCooldown;
 	protected FilmStrip bubblecooldownStrip;
 	protected TextureRegion grapplePrompt;
+	protected ArrayList<TextureRegion> buttonTextures = new ArrayList<>();
 
 	private Vector2 originalRopePlayerPos;
 
@@ -361,7 +364,7 @@ public class PlatformController implements ContactListener, Screen {
 		jumpText = directory.getEntry("platform:dude6", Texture.class);
 		jumpStrip = new FilmStrip(jumpText, 1, 3, 3);
 		fallText = directory.getEntry("platform:dude7", Texture.class);
-		fallStrip = new FilmStrip(fallText, 1, 1, 1);
+		fallStrip = new FilmStrip(fallText, 1, 3, 3);
 		topText = directory.getEntry("platform:dude8", Texture.class);
 		topStrip = new FilmStrip(topText, 1 ,1 ,1);
 		upText = directory.getEntry("platform:dudeUp", Texture.class);
@@ -369,7 +372,7 @@ public class PlatformController implements ContactListener, Screen {
 		downText = directory.getEntry("platform:dudeDown", Texture.class);
 		downStrip = new FilmStrip(downText, 1 ,1 ,1);
 		sunText = directory.getEntry("platform:sundrop2", Texture.class);
-		sunStrip = new FilmStrip(sunText, 1, 8, 8);
+		sunStrip = new FilmStrip(sunText, 1, 9, 9);
 		fallingText = directory.getEntry("platform:dudeFalling", Texture.class);
 		fallingStrip = new FilmStrip(fallingText, 1, 3, 3);
 		spikeText = directory.getEntry("shared:plantspike", Texture.class);
@@ -456,6 +459,13 @@ public class PlatformController implements ContactListener, Screen {
 		for(int i = 1; i < 5; i++){
 			textures.add(new TextureRegion(directory.getEntry("shared:con" + i, Texture.class)));
 		}
+		for(int i = 1; i < 42; i++){
+			textures.add(new TextureRegion(directory.getEntry("shared:new" + i, Texture.class)));
+		}
+		for(int i = 1; i < 51; i++){
+			buttonTextures.add(new TextureRegion(directory.getEntry("Letters:" + i, Texture.class)));
+		}
+
 
 
 		spikeTextureList.add(spikeStrip);
@@ -470,6 +480,7 @@ public class PlatformController implements ContactListener, Screen {
 
 
 
+
 		heart = new TextureRegion(directory.getEntry("platform:heart", Texture.class));
 		brokenheart = new TextureRegion(directory.getEntry("platform:brokenheart",Texture.class));
 		sundropTexture = new TextureRegion(directory.getEntry("platform:sundrop",Texture.class));
@@ -478,6 +489,16 @@ public class PlatformController implements ContactListener, Screen {
 
 
 		assetsLoaded = true;
+	}
+
+	public int getTexture(int x){
+		if(x <= 16){ // 0-9 are 30 - 39
+			return x + 23;
+		}
+		if(x < 23){
+			return x - 19; //up,down,left,right return 0-3
+		}
+		return x - 25; //alphabet return 4-29
 	}
 
 
@@ -661,9 +682,9 @@ public class PlatformController implements ContactListener, Screen {
 			Bubble wo = bubbleList.get(i);
 
 			if (i == 0) {
-
-
-				ButtonPrompt grapple = new ButtonPrompt(950, 350, 2, grapplePrompt, displayFont, "j");
+				int buttonMapInt = keyboard_bindings[8];
+				TextureRegion buttonText = buttonTextures.get(getTexture(buttonMapInt));
+				ButtonPrompt grapple = new ButtonPrompt(950, 350, 2, grapplePrompt, buttonText.getTexture());
 				grapple.setName("grapplePrompt");
 				grapple.setTexture(grapplePrompt);
 				prompts.add(grapple);
@@ -789,7 +810,7 @@ public class PlatformController implements ContactListener, Screen {
 		pe.setDrawScale(scale);
 
 		pe.setTexture(sunStrip);
-        //pe.initialize(sunStrip);
+        pe.initialize(sunStrip);
 		addObject(pe);
 		projenemies.add(pe);
 		////System.out.println("pe pos" + pe.getPosition());
@@ -1061,20 +1082,17 @@ public class PlatformController implements ContactListener, Screen {
 	private void updateDoors(){
 		for(int i = 0; i < doors.size(); i++){
 			Door door = doors.get(i);
-			//door.initialize(goalStrip);
 			door.update();
 		}
 	}
 	private void updateSpike() {
 		for(Spike s : spikelist) {
-			//s.initialize(spikeStrip);
 			s.update();
 		}
 	}
 	private void updateBorders(){
 		for(int i = 0; i<borders.size(); i++){
 			Border border = borders.get(i);
-			//border.initialize(borderStrips[border.getBorderStripNum()]);
 			border.update();
 		}
 	}
@@ -1088,7 +1106,6 @@ public class PlatformController implements ContactListener, Screen {
 
 		for(int i = 0; i < projenemies.size(); i++){
 			ProjEnemy pe = projenemies.get(i);
-			pe.initialize(sunStrip);
 
 			if(pe.update()){
 				if(canShoot(pe)) {
@@ -2271,7 +2288,13 @@ public class PlatformController implements ContactListener, Screen {
 		float crosshair_width = crosshair.getRegionWidth();
 		float crosshair_height = crosshair.getRegionHeight();
 //		System.out.println(crosshairLoc);
-		canvas.draw(crosshair,Color.WHITE,crosshair_width/2, crosshair_height/2, crosshairLoc.x*scale.x, crosshairLoc.y*scale.y,crosshair_width,crosshair_height);
+		if(canBubble(crosshairLoc)){
+			canvas.draw(crosshair,Color.GREEN,crosshair_width/2, crosshair_height/2, crosshairLoc.x*scale.x, crosshairLoc.y*scale.y,crosshair_width,crosshair_height);
+		}
+		else{
+			canvas.draw(crosshair,Color.RED,crosshair_width/2, crosshair_height/2, crosshairLoc.x*scale.x, crosshairLoc.y*scale.y,crosshair_width,crosshair_height);
+
+		}
 	}
 	public void draw(float dt) {
 		canvas.clear();
@@ -2341,7 +2364,6 @@ public class PlatformController implements ContactListener, Screen {
 
 		canvas.resetColor();
 		canvas.end();
-
 
 		// Draw life bar
 
