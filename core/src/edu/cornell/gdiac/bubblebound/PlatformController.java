@@ -2362,6 +2362,7 @@ public class PlatformController implements ContactListener, Screen {
 		}
 		drawCrosshair();
 
+
 		canvas.resetColor();
 		canvas.end();
 
