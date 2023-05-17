@@ -43,6 +43,8 @@ public class GDXRoot extends Game implements ScreenListener {
 	private int currlevel = 1;
 	/** List of all WorldControllers */
 	private PlatformController controller;
+
+
 	
 	/**
 	 * Creates a new game from the configuration settings.
@@ -59,6 +61,9 @@ public class GDXRoot extends Game implements ScreenListener {
 	 * the asynchronous loader for all other assets.
 	 */
 	public void create() {
+
+
+
 		canvas  = new GameCanvas();
 		loading = new LoadingMode("assets.json",canvas,1);
 
@@ -110,12 +115,16 @@ public class GDXRoot extends Game implements ScreenListener {
 	 * @param height The new height in pixels
 	 */
 	public void resize(int width, int height) {
+
 		canvas.resize();
 		super.resize(width,height);
+
 	}
 
 
 	public void launchGame(){
+
+
 		if(controller == null){
 			controller = new PlatformController();
 		}
@@ -128,6 +137,7 @@ public class GDXRoot extends Game implements ScreenListener {
 		controller.reset(currlevel);
 		controller.setTargetLevel(currlevel);
 		controller.setCurrLevel(currlevel - 1);
+
 	}
 
 
@@ -141,6 +151,7 @@ public class GDXRoot extends Game implements ScreenListener {
 	 * @param exitCode The state of the screen upon exit
 	 */
 	public void exitScreen(Screen screen, int exitCode) {
+
 
 		if (screen == loading) {
 			if(exitCode == 0){ //normal start
@@ -165,6 +176,8 @@ public class GDXRoot extends Game implements ScreenListener {
 			}
 
 		} else if(screen == settings){
+
+
 			volume = settings.getMusicVolume();
 			soundvolume = settings.getSoundVolume();
 			settings.disabled = true;

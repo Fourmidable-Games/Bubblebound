@@ -122,6 +122,10 @@ public abstract class Obstacle {
 	public Vector2 getPosition() {
 		return positionCache.set(bodyinfo.position);
 	}
+
+	public Vector2 getPosition2() {
+		return positionCache;
+	}
 	
 	/**
 	 * Sets the current position for this physics body
@@ -132,6 +136,10 @@ public abstract class Obstacle {
 	 */
 	public void setPosition(Vector2 value) {
 		bodyinfo.position.set(value);
+	}
+
+	public void setPosition2(Vector2 value) {
+		positionCache = value;
 	}
 
 	/**
