@@ -191,6 +191,9 @@ import edu.cornell.gdiac.util.XBoxController;
         Vector2 mAttachPos;
         Vector2 mPlacePos;
 
+        private boolean masterSoundSliderActive;
+        private boolean musicSliderActive;
+        private boolean sfxSliderActive;
 
 
         private Vector2 createPos(int x, int y){
@@ -214,6 +217,10 @@ import edu.cornell.gdiac.util.XBoxController;
         public SettingsMode(GameCanvas canvas, int millis) {
             this.canvas  = canvas;
             budget = millis;
+            masterSoundSliderActive = false;
+            sfxSliderActive = false;
+            musicSliderActive = false;
+
 
             // Compute the dimensions from the canvas
 
@@ -349,6 +356,27 @@ import edu.cornell.gdiac.util.XBoxController;
                     InputController.getInstance().buttons = inputs;
                     pressState = 0;
 
+                }
+            }
+            if(musicSliderActive) {
+                int screenX = Gdx.input.getX();
+                musicSliderActive = true;
+                if (pressedButton(screenX, slider, soundBarPos)) {
+                    float temp = screenX - musicBarPos.x;
+                    musicVolume = temp / (slider.getWidth() * scale.x);
+                    loadingMusic.setVolume(loadingMusicId, musicVolume);
+                }else{
+                    musicVolume = (sliderOutOfBoundDirection(screenX,slider,soundBarPos) < 0) ? 0 : 1;
+                    loadingMusic.setVolume(loadingMusicId,musicVolume);
+                }
+            }
+            if(sfxSliderActive) {
+                int screenX = Gdx.input.getX();
+                if (pressedButton(screenX, slider, soundBarPos)) {
+                    float temp = screenX - soundBarPos.x;
+                    soundVolume = temp / (slider.getWidth() * scale.x);
+                }else{
+                    soundVolume = (sliderOutOfBoundDirection(screenX,slider,soundBarPos) < 0) ? 0 : 1;
                 }
             }
         }
@@ -513,6 +541,36 @@ import edu.cornell.gdiac.util.XBoxController;
             }
             return false;
         }
+
+       public boolean pressedSlider(int screenX, int screenY, Texture texture, Vector2 button_pos){
+           float button_w = texture.getWidth() * scale.x;
+           float button_h = texture.getHeight() * scale.y;
+           screenY = canvas.getHeight() - screenY;
+           //System.out.println(button_center);
+           if(screenX >= button_pos.x - button_h && screenX <= button_pos.x + button_w + button_h){
+               if(screenY >= button_pos.y - button_h -button_h/2 && screenY <= button_pos.y + button_h/2){
+                   return true;
+               }
+           }
+           return false;
+       }
+       public boolean pressedButton(int screenX, Texture texture, Vector2 button_pos){
+           float button_w = texture.getWidth() * scale.x;
+           if(screenX >= button_pos.x && screenX <= button_pos.x + button_w){
+                   return true;
+           }
+           return false;
+       }
+
+       public int sliderOutOfBoundDirection(int screenX, Texture texture, Vector2 button_pos){
+           float button_w = texture.getWidth() * scale.x;
+           if(screenX < button_pos.x){
+               return -1;
+           }else if(screenX > button_pos.x + button_w){
+               return 1;
+           }
+           return 0;
+       }
         public boolean disabled = false;
         // PROCESSING PLAYER INPUT
         /**
@@ -541,15 +599,14 @@ import edu.cornell.gdiac.util.XBoxController;
                 //System.out.println("BACKK");
                 pressState = 1;
             }
-            if(pressedButton(screenX, screenY, slider, musicBarPos)){
-                float temp = screenX - musicBarPos.x;
-                musicVolume = temp / (slider.getWidth() * scale.x);
-                loadingMusic.setVolume(loadingMusicId, musicVolume);
+            if(pressedSlider(screenX, screenY, slider, musicBarPos)){
+                musicSliderActive = true;
             }
-            if(pressedButton(screenX, screenY, slider, soundBarPos)){
-                float temp = screenX - soundBarPos.x;
-                soundVolume = temp / (slider.getWidth() * scale.x);
+            if(pressedSlider(screenX, screenY, slider, soundBarPos)){
+                sfxSliderActive = true;
             }
+
+
 
             if(pressState < 20) {
                 for (int i = 0; i < buttons.length; i++) {
@@ -587,6 +644,15 @@ import edu.cornell.gdiac.util.XBoxController;
             if (pressState == 1) {
                 pressState = 2;
                 return false;
+            }
+            if(musicSliderActive){
+                musicSliderActive = false;
+            }
+            if(sfxSliderActive){
+                sfxSliderActive = false;
+            }
+            if(masterSoundSliderActive){
+                masterSoundSliderActive = false;
             }
             return true;
         }
