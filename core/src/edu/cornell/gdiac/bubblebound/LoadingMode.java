@@ -60,7 +60,7 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 	private AssetDirectory lvlselect;
 
 	/** Background texture for start-up */
-	private Texture background;
+	private Texture [] background = new Texture [9];
 	private FilmStrip backStrip;
 	/** Play button to display when done */
 	private Texture playButton;
@@ -237,9 +237,11 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 		lvlselectButton = null;
 		settingsButton = null;
 		quitButton = null;
-		background = internal.getEntry( "background", Texture.class );
-		background.setFilter( TextureFilter.Linear, TextureFilter.Linear );
-		backStrip = new FilmStrip(background, 1, 9, 9);
+		for(int i = 0; i < 9; i++) {
+			background[i] = internal.getEntry( "background" + i, Texture.class );
+			background[i].setFilter( TextureFilter.Linear, TextureFilter.Linear );
+		}
+
 		statusBar = internal.getEntry( "progress", Texture.class );
 		hoveredPlayButton = internal.getEntry("playhovered", Texture.class);
 		hoveredLvlSelect = internal.getEntry("lvlselecthovered", Texture.class);
@@ -357,12 +359,15 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 	 */
 	private void draw() {
 		canvas.begin();
-		float sx = ((float) canvas.getWidth()) / ((float) background.getWidth());
-		float sy = ((float) canvas.getHeight()) / ((float) background.getHeight());
+		float sx = ((float) canvas.getWidth()) / ((float) background[0].getWidth());
+		float sy = ((float) canvas.getHeight()) / ((float) background[0].getHeight());
 //		canvas.draw(background, 0, 0);
 		float x = canvas.getWidth() / 2f;
 		float y = canvas.getHeight() * 0.6f;
-		canvas.draw(background, Color.WHITE, 0, 0, 0, 0, 0, sx, sy);
+		for(Texture b : background) {
+			canvas.draw(b, Color.WHITE, 0, 0, 0, 0, 0, sx, sy);
+		}
+		//canvas.draw(background, Color.WHITE, 0, 0, 0, 0, 0, sx, sy);
 		if (playButton == null) {
 			drawProgress(canvas);
 		} else {
