@@ -995,13 +995,22 @@ public abstract class ComplexObstacle extends Obstacle {
 	public void deactivatePhysics(World world) {
 		if (bodyinfo.active) {
 			// Should be good for most (simple) applications.
-			for (Joint joint : joints) {
+			int i = 1;
+			Array<Joint> world_joints = new Array<>(world.getJointCount());
+			world.getJoints(world_joints);
+			for (Joint joint : world_joints) {
+
+
 				world.destroyJoint(joint);
+				i++;
 			}
+
 			joints.clear();
+
 			for (Obstacle obj : bodies) {
 				obj.deactivatePhysics(world);
 			}
+
 			bodyinfo.active = false;
 		}
 	}

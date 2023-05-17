@@ -69,7 +69,9 @@ public class PooledList<E> extends AbstractSequentialList<E> implements Iterable
 				tail = prev;
 			}
 			size--;
+
 			memory.free(this);
+
 		}
 		
 		/**

@@ -39,6 +39,8 @@ public class DudeModel extends CapsuleObstacle {
 
 
 
+
+
 	/** The factor to multiply by the input */
 	private final float force;
 	/** The amount to slow the character down */

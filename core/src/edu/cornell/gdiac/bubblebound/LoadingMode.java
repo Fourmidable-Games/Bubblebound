@@ -131,6 +131,8 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 	private boolean active;
 	private Texture screenText;
     private FilmStrip screenStrip;
+	private Cursor defaultCursor;
+	private Cursor emptyCursor;
 	/**
 	 * Returns the budget for the asset loader.
 	 *
@@ -143,6 +145,10 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 	 */
 	public int getBudget() {
 		return budget;
+	}
+
+	public Cursor getDefaultCursor() {
+		return defaultCursor;
 	}
 
 	/**
@@ -200,6 +206,8 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 	private Vector2 settingsPos;
 	private Vector2 quitPos;
 
+	private Texture logo;
+
 	private Texture hoveredPlayButton;
 	private Texture hoveredLvlSelect;
 	private Texture hoveredQuit;
@@ -253,6 +261,7 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 			background[i].setFilter( TextureFilter.Linear, TextureFilter.Linear );
 		}
 
+		logo = internal.getEntry("logo", Texture.class);
 		statusBar = internal.getEntry( "progress", Texture.class );
 		hoveredPlayButton = internal.getEntry("playhovered", Texture.class);
 		hoveredLvlSelect = internal.getEntry("lvlselecthovered", Texture.class);
@@ -270,6 +279,19 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 		//.play();
 
 		// Break up the status bar texture into regions
+		Texture defaultCursorTexture = internal.getEntry("defaultCursor",Texture.class);
+		TextureData defaultCursorData = defaultCursorTexture.getTextureData();
+		defaultCursorData.prepare();
+		Pixmap defaultCursorPixmap = defaultCursorData.consumePixmap();
+		defaultCursor = Gdx.graphics.newCursor(defaultCursorPixmap, 0, 0);
+
+		Texture emptyCursorTexture = internal.getEntry("emptyCursor",Texture.class);
+		TextureData emptyCursorData = emptyCursorTexture.getTextureData();
+		emptyCursorData.prepare();
+		Pixmap emptyCursorPixmap = emptyCursorData.consumePixmap();
+		emptyCursor = Gdx.graphics.newCursor(emptyCursorPixmap, 0, 0);
+
+
 		statusBkgLeft = internal.getEntry( "progress.backleft", TextureRegion.class );
 		statusBkgRight = internal.getEntry( "progress.backright", TextureRegion.class );
 		statusBkgMiddle = internal.getEntry( "progress.background", TextureRegion.class );
@@ -286,6 +308,8 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 		pressState = 0;
 
 		Gdx.input.setInputProcessor( this );
+		Gdx.graphics.setCursor(emptyCursor);
+
 
 		// Let ANY connected controller start the game.
 
@@ -343,6 +367,7 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 				settingsButton = internal.getEntry("settings", Texture.class);
 				lvlselectButton = internal.getEntry("lvlselect", Texture.class);
 				quitButton = internal.getEntry("quit", Texture.class);
+				Gdx.graphics.setCursor(defaultCursor);
 
 			}
 		}else{
@@ -370,17 +395,19 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 	 */
 	private void draw() {
 		canvas.begin();
-		float sx = ((float) canvas.getWidth()) / ((float) background[0].getWidth());
-		float sy = ((float) canvas.getHeight()) / ((float) background[0].getHeight());
-//		canvas.draw(background, 0, 0);
-		float x = canvas.getWidth() / 2f;
-		float y = canvas.getHeight() * 0.6f;
-		System.out.println(count);
-		canvas.draw(background[count], Color.WHITE, 0, 0, 0, 0, 0, sx, sy);
+
 		//canvas.draw(background, Color.WHITE, 0, 0, 0, 0, 0, sx, sy);
 		if (playButton == null) {
 			drawProgress(canvas);
 		} else {
+			float sx = ((float) canvas.getWidth()) / ((float) background[0].getWidth());
+			float sy = ((float) canvas.getHeight()) / ((float) background[0].getHeight());
+//		canvas.draw(background, 0, 0);
+			float x = canvas.getWidth() / 2f;
+			float y = canvas.getHeight() * 0.6f;
+			System.out.println(count);
+			canvas.draw(background[count], Color.WHITE, 0, 0, 0, 0, 0, sx, sy);
+
 			Texture temp = (hovered == 1) ? hoveredPlayButton : playButton;
 			canvas.draw(temp, Color.WHITE, temp.getWidth() / 2f, temp.getHeight() / 2f, playPos.x, playPos.y, 0, sx, sy);
 
@@ -393,18 +420,19 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 			temp = (hovered == 4) ? hoveredQuit : quitButton;
 			canvas.draw(temp, Color.WHITE, temp.getWidth() / 2f, temp.getHeight() / 2f, quitPos.x, quitPos.y, 0, sx, sy);
 
-		}
-		canvas.end();
-		delay++;
-		if(delay == max_delay){
-			delay = 0;
-		}
-		if(delay == 9){
-			count++;
-			if(count == max_count){
-				count = 0;
+			delay++;
+			if(delay == max_delay){
+				delay = 0;
+			}
+			if(delay == 9){
+				count++;
+				if(count == max_count){
+					count = 0;
+				}
 			}
 		}
+		canvas.end();
+
 	}
 	
 	/**
@@ -417,6 +445,9 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 	 * @param canvas The drawing context
 	 */	
 	private void drawProgress(GameCanvas canvas) {
+		float logo_width = logo.getWidth()*scale.x;
+		float logo_height = logo.getHeight()*scale.y;
+		canvas.draw(logo,Color.WHITE,logo_width/2,logo_height/2,centerX, centerY,logo_width,logo_height);
 		float adj = 440f *scale.y;
 		canvas.draw(statusBkgLeft,   Color.WHITE, centerX-width/2, centerY-adj,
 				scale.x*statusBkgLeft.getRegionWidth(), scale.y*statusBkgLeft.getRegionHeight());
