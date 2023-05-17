@@ -54,7 +54,7 @@ public class DesktopLauncher {
 
 
 
-		config.fullscreen = true;
+		config.fullscreen = false;
 
 
 		config.resizable = false;
