@@ -372,8 +372,10 @@ public class LevelSelectMode implements Screen, InputProcessor, ControllerListen
      */
     public void resize(int width, int height) {
         // Compute the drawing scale
+
         float sx = ((float)width)/1920;
         float sy = ((float)height)/1080;
+
         scale = new Vector2(sx, sy);
     }
 
