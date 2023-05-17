@@ -166,7 +166,7 @@ public class Bubble extends WheelObstacle {
                     this.setTexture(filmstrip);
                 }
                 if (grav == 1) {
-                    canvas.draw(texture, gold, origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.y, getAngle(), sx, sy);
+                    canvas.draw(texture, white, origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.y, getAngle(), sx, sy);
                 } else {
                     canvas.draw(texture, white, origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.y, getAngle(), sx, sy);
                 }

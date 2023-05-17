@@ -2182,7 +2182,7 @@ public class PlatformController implements ContactListener, Screen {
 	}
 
 	public void drawFilter(Texture filter){
-		System.out.println("FILTERISMADEBAYBE");
+		//System.out.println("FILTERISMADEBAYBE");
 //		TextureRegion fil = new TextureRegion(filter, cameraCoords.x, cameraCoords.y, canvas.getWidth(), canvas.getHeight());
 //		System.out.println(fil);
 		canvas.draw(filter, new Color(0.5f,0.5f,0.5f,0f), cameraCoords.x-canvas.getWidth()/2, cameraCoords.y-canvas.getHeight()/2, filter.getWidth(), filter.getHeight());
