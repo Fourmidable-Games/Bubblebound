@@ -996,15 +996,44 @@ public class PlatformController implements ContactListener, Screen {
 
 	//TODO more efficient
 	private void updateObjectGravs(){
-		for(int i = 0; i < objects.size(); i++){
-			Body o = objects.get(i).getBody();
-			objects.get(i).setGrav(1.0f);
+		//iterate player
+		//iterate enemies
+		//iterate bubble
+		for(int i = 0; i < enemies.size() ; i++){
+			//get the body of the object
+			Body o = enemies.get(i).getBody();
+			//set the gravity to 1
+			enemies.get(i).setGrav(1.0f);
 			for(int j = 0; j < zones.size(); j++){
+				//if the body is in the gravity zone
 				if(zones.get(j).inBounds(o.getPosition().x, o.getPosition().y)){
-					objects.get(i).setGrav(zones.get(j).getGrav());
+					//set that bodies gravity zone to that zone
+					enemies.get(i).setGrav(zones.get(j).getGrav());
 				}
 			}
 		}
+		for(int i = 0; i < bubbles.size() ; i++){
+			//get the body of the object
+			Body o = bubbles.get(i).getBody();
+			//set the gravity to 1
+			bubbles.get(i).setGrav(1.0f);
+			for(int j = 0; j < zones.size(); j++){
+				//if the body is in the gravity zone
+				if(zones.get(j).inBounds(o.getPosition().x, o.getPosition().y)){
+					//set that bodies gravity zone to that zone
+					bubbles.get(i).setGrav(zones.get(j).getGrav());
+				}
+			}
+		}
+		avatar.setGrav(1);
+		for(int j = 0; j < zones.size(); j++){
+			//if the body is in the gravity zone
+			if(zones.get(j).inBounds(avatar.getPosition().x, avatar.getPosition().y)){
+				//set that bodies gravity zone to that zone
+				avatar.setGrav(zones.get(j).getGrav());
+			}
+		}
+
 	}
 
 
@@ -1169,7 +1198,7 @@ public class PlatformController implements ContactListener, Screen {
 		//Falling down
 		else if ((avatar.getGravZone() == 1 && !avatar.isGrounded() && avatar.getVY() < 0f) ||
 				(avatar.getGravZone() == -1 && !avatar.isGrounded() && avatar.getVY() > 0f)) {
-			if(Math.abs(avatar.getVX()) < 0.1) avatar.setTexture(downStrip);
+			if(Math.abs(avatar.getVX()) < 0.1) avatar.setTexture(fallingStrip);
 			else avatar.setTexture(fallStrip);
 		}
 		else avatar.setTexture(dude);
