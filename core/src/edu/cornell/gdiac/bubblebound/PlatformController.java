@@ -566,6 +566,8 @@ public class PlatformController implements ContactListener, Screen {
 		avatar.setRightDeathTexture(deathRight);
 		avatar.restoreHealth();
 		avatar.setName("avatar");
+		avatar.initialize(dude, swingStrip, idleStrip, jumpStrip, fallStrip,
+				topStrip, upStrip, downStrip, fallingStrip);
 		addObject(avatar);
 
 		for (int i = 0; i < gravityZoneList.size(); i++) {
@@ -594,6 +596,7 @@ public class PlatformController implements ContactListener, Screen {
 			spike.setName("spike");
 			spike.setTexture2(spikeTexture2);
 			addObject(spike);
+			spike.initialize(spikeStrip);
 			spikelist.add(spike);
 		}
 
@@ -614,6 +617,7 @@ public class PlatformController implements ContactListener, Screen {
 			Enemy enemy = enemies.get(i);
 			enemy.setTexture(enemyStrip);
 			enemy.setDrawScale(scale);
+			enemy.initialize(enemyStrip);
 			addObject(enemy);
 		}
 
@@ -959,14 +963,14 @@ public class PlatformController implements ContactListener, Screen {
 	}
 	private void updateSpike() {
 		for(Spike s : spikelist) {
-			s.initialize(spikeStrip);
+			//s.initialize(spikeStrip);
 			s.update();
 		}
 	}
 	private void updateBorders(){
 		for(int i = 0; i<borders.size(); i++){
 			Border border = borders.get(i);
-			border.initialize(borderStrips[border.getBorderStripNum()]);
+			//border.initialize(borderStrips[border.getBorderStripNum()]);
 			border.update();
 		}
 	}
@@ -1960,12 +1964,14 @@ public class PlatformController implements ContactListener, Screen {
 				Border b = new Border(z.xpos, z.ypos + i, true, (i%3));
 				b.setDrawScale(scale);
 				b.setTexture(borderStrips[i % 3]);
+				b.initialize(borderStrips[b.getBorderStripNum()]);
 				borders.add(b);
 			}
 			if(checkAndRemoveBorder(z.xpos + z.width, z.ypos + i, true)){
 				Border b = new Border(z.xpos + z.width, z.ypos + i, true, (i%3));
 				b.setDrawScale(scale);
 				b.setTexture(borderStrips[i % 3]);
+				b.initialize(borderStrips[b.getBorderStripNum()]);
 				borders.add(b);
 			}
 		}
@@ -1975,12 +1981,14 @@ public class PlatformController implements ContactListener, Screen {
 				Border b = new Border(z.xpos + i, z.ypos, false, (i%3));
 				b.setDrawScale(scale);
 				b.setTexture(borderStrips[i % 3]);
+				b.initialize(borderStrips[b.getBorderStripNum()]);
 				borders.add(b);
 			}
 			if(checkAndRemoveBorder(z.xpos + i, z.ypos + z.height, false)){ //top side
 				Border b = new Border(z.xpos + i, z.ypos + z.height, false, (i%3));
 				b.setDrawScale(scale);
 				b.setTexture(borderStrips[i % 3]);
+				b.initialize(borderStrips[b.getBorderStripNum()]);
 				borders.add(b);
 			}
 		}
