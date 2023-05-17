@@ -363,7 +363,7 @@ public class PlatformController implements ContactListener, Screen {
 		downText = directory.getEntry("platform:dudeDown", Texture.class);
 		downStrip = new FilmStrip(downText, 1 ,1 ,1);
 		sunText = directory.getEntry("platform:sundrop2", Texture.class);
-		sunStrip = new FilmStrip(sunText, 1, 8, 8);
+		sunStrip = new FilmStrip(sunText, 1, 9, 9);
 		fallingText = directory.getEntry("platform:dudeFalling", Texture.class);
 		fallingStrip = new FilmStrip(fallingText, 1, 3, 3);
 		spikeText = directory.getEntry("shared:plantspike", Texture.class);
@@ -774,7 +774,7 @@ public class PlatformController implements ContactListener, Screen {
 		pe.setDrawScale(scale);
 
 		pe.setTexture(sunStrip);
-        //pe.initialize(sunStrip);
+        pe.initialize(sunStrip);
 		addObject(pe);
 		projenemies.add(pe);
 		////System.out.println("pe pos" + pe.getPosition());
@@ -1046,20 +1046,17 @@ public class PlatformController implements ContactListener, Screen {
 	private void updateDoors(){
 		for(int i = 0; i < doors.size(); i++){
 			Door door = doors.get(i);
-			//door.initialize(goalStrip);
 			door.update();
 		}
 	}
 	private void updateSpike() {
 		for(Spike s : spikelist) {
-			//s.initialize(spikeStrip);
 			s.update();
 		}
 	}
 	private void updateBorders(){
 		for(int i = 0; i<borders.size(); i++){
 			Border border = borders.get(i);
-			//border.initialize(borderStrips[border.getBorderStripNum()]);
 			border.update();
 		}
 	}
@@ -1073,7 +1070,6 @@ public class PlatformController implements ContactListener, Screen {
 
 		for(int i = 0; i < projenemies.size(); i++){
 			ProjEnemy pe = projenemies.get(i);
-			pe.initialize(sunStrip);
 
 			if(pe.update()){
 				if(canShoot(pe)) {

@@ -34,7 +34,7 @@ public class ProjEnemy extends BoxObstacle{
     }
     protected int i = 0;
     protected int counter = 0;
-    protected final int delay = 30; // adjust this value to change the delay
+    protected final int delay = 10; // adjust this value to change the delay
 
     public void initialize(FilmStrip f) {
         filmstrip = f;
@@ -77,8 +77,9 @@ public class ProjEnemy extends BoxObstacle{
     public boolean update(){
             if (filmstrip != null) {
                 if (counter == 0) { // execute setFrame only when counter reaches 0
-                    int next = (i++) / 8;
-                    filmstrip.setFrame(next % 8);
+                    //int next = (i++) / 5;
+                    filmstrip.setFrame(i % 9);
+                    i++;
                 }
                 counter = (counter + 1) % delay; // increment counter and reset to 0 when it reaches delay
             }
