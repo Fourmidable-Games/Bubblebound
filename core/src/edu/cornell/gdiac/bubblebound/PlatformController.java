@@ -49,6 +49,8 @@ public class PlatformController implements ContactListener, Screen {
 	protected Texture idleText;
 	private Vector2 crosshairLoc;
 
+	public int[] keyboard_bindings = InputController.getInstance().buttons;
+
 	Cursor emptyCursor;
 	Pixmap emptyCursorPixmap;
 	Texture emptyCursorTexture;
@@ -80,6 +82,7 @@ public class PlatformController implements ContactListener, Screen {
 	protected TextureRegion fullBubbleCooldown;
 	protected FilmStrip bubblecooldownStrip;
 	protected TextureRegion grapplePrompt;
+	protected ArrayList<TextureRegion> buttonTextures = new ArrayList<>();
 
 	private Vector2 originalRopePlayerPos;
 
@@ -440,6 +443,13 @@ public class PlatformController implements ContactListener, Screen {
 		for(int i = 1; i < 5; i++){
 			textures.add(new TextureRegion(directory.getEntry("shared:con" + i, Texture.class)));
 		}
+		for(int i = 1; i < 42; i++){
+			textures.add(new TextureRegion(directory.getEntry("shared:new" + i, Texture.class)));
+		}
+		for(int i = 1; i < 51; i++){
+			buttonTextures.add(new TextureRegion(directory.getEntry("Letters:" + i, Texture.class)));
+		}
+
 
 
 		spikeTextureList.add(spikeStrip);
@@ -463,6 +473,16 @@ public class PlatformController implements ContactListener, Screen {
 
 
 		assetsLoaded = true;
+	}
+
+	public int getTexture(int x){
+		if(x <= 16){ // 0-9 are 30 - 39
+			return x + 23;
+		}
+		if(x < 23){
+			return x - 19; //up,down,left,right return 0-3
+		}
+		return x - 25; //alphabet return 4-29
 	}
 
 
@@ -646,9 +666,9 @@ public class PlatformController implements ContactListener, Screen {
 			Bubble wo = bubbleList.get(i);
 
 			if (i == 0) {
-
-
-				ButtonPrompt grapple = new ButtonPrompt(950, 350, 2, grapplePrompt, displayFont, "j");
+				int buttonMapInt = keyboard_bindings[8];
+				TextureRegion buttonText = buttonTextures.get(getTexture(buttonMapInt));
+				ButtonPrompt grapple = new ButtonPrompt(950, 350, 2, grapplePrompt, buttonText.getTexture());
 				grapple.setName("grapplePrompt");
 				grapple.setTexture(grapplePrompt);
 				prompts.add(grapple);
