@@ -295,7 +295,7 @@ public class BoxObstacle extends SimpleObstacle {
 	}
 
 	public void drawOutline(GameCanvas canvas) {
-		float boarderFactor = 1.05f;
+		float boarderFactor = 1.1f;
 		float sx = drawScale.x * boarderFactor/ 64f;
 		float sy = drawScale.y * boarderFactor/ 64f;
 		if (texture != null) {
