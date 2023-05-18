@@ -929,14 +929,14 @@ public class PlatformController implements ContactListener, Screen {
 	private int wait = 0;
 
 	public void update(float dt) {
-		updateMouse();
+
 		updateBubbles();
 		updateSpike();
 		updateEnemies();
 		moveZones();
 		updateSounds();
 		updateCamera(avatar.getX()*scale.x, avatar.getY()*scale.y);
-
+		updateMouse();
 		updateObjectGravs();
 		updateLucens();
 		updatePoisons();
@@ -951,6 +951,9 @@ public class PlatformController implements ContactListener, Screen {
 	}
 
 	private void updateMouse(){
+		if(!InputController.getInstance().isMouseControlls()){
+			return;
+		}
 		crosshairLoc = InputController.getInstance().getCrossHair();
 		float xoffset = (cameraCoords.x / scale.x) - (CAMERA_WIDTH / 2f); //find bottom left corner of camera
 		float yoffset = (cameraCoords.y / scale.y) - (CAMERA_HEIGHT / 2f);
@@ -1157,6 +1160,9 @@ public class PlatformController implements ContactListener, Screen {
 
 	}
 
+	public Vector2 pl;
+	public Vector2 ploffset;
+
 
 	public boolean camera = false;
     private float oldY = 0;
@@ -1176,10 +1182,12 @@ public class PlatformController implements ContactListener, Screen {
 				}else {
 					placeLocation = avatar.getPosition().add(avatar.getVX() * 0.3f, 2f * avatar.grav);
 				}
+
 			}else{
 				placeLocation = avatar.getPosition().add(avatar.getVX() * 0.3f,  1f * avatar.grav);
-			}
 
+			}
+			crosshairLoc.set(placeLocation);
 		}
 
 		Bubble closest = null;
@@ -1208,10 +1216,12 @@ public class PlatformController implements ContactListener, Screen {
 		//do bubble stuff
 		boolean spawned = false;
 		if(InputController.getInstance().didTertiary()){
-			if(canBubble(placeLocation)) {
+			Vector2 bp = canBubble2(placeLocation);
+			System.out.println(bp);
+			if(bp != null) {
 				if (wait > 20) {
 					if (!InputController.getInstance().isFiniteBubbles() || bubbles_left > 0) {
-						closest = spawnBubble(placeLocation);
+						closest = spawnBubble(bp);
 					}
 					wait = 0;
 					spawned = true;
@@ -1220,7 +1230,6 @@ public class PlatformController implements ContactListener, Screen {
 		}
 		if(closest != null){
 			if (avatar.getPosition().dst(closest.getPosition()) < 4.5 && canShoot(closest)) {
-				setCollidebodies(0);
 				closest.canRopeTo = true;
 			}
 		}
@@ -1427,46 +1436,104 @@ public class PlatformController implements ContactListener, Screen {
 		collidedbodies = update;
 	};
 
+	public Vector2 checkBubbleVertical(Vector2 point, float dst){
+		boolean found = false;
+		Vector2 bp = new Vector2(0,0);
+		point.y = point.y + dst; //sets to two to the left
+		for(int i = 0; i < 5; i++){
+			dst /= 2f;
+			if(canBubble(point)){
+				found = true;
+				bp.set(point);
+				point.y -= dst;
+			}else{
+				if(!found){
+					break;
+				}
+				point.y += dst;
+			}
+		}
+		if(found){
+			return bp;
+		}else{
+			return null;
+		}
+	}
 
+
+	public Vector2 checkBubbleHorizontal(Vector2 point, float dst){
+		boolean found = false;
+		Vector2 bp = new Vector2(0,0);
+		point.x = point.x + dst; //sets to two to the left
+		for(int i = 0; i < 5; i++){
+			dst /= 2f;
+			if(canBubble(point)){
+				found = true;
+				bp.set(point);
+				point.x -= dst;
+			}else{
+				if(!found){
+					break;
+				}
+				point.x += dst;
+			}
+		}
+		if(found){
+			return bp;
+		}else{
+			return null;
+		}
+	}
 
 
 
 	public Vector2 canBubble2(Vector2 p){
+
+		if(canBubble(p)){
+			return p;
+		}
 		float dst = 2;
 
-		Vector2 point = p.cpy();
+		Vector2 bp = null;
+		Vector2 point = new Vector2(p);
 		point.x -= 1; //if something on the left
 
-		if(!canBubble(point)){
-			point.x = p.x + dst; //sets to two to the left
-			boolean found = false;
-			while(true){
-				dst /= 2f;
-				if(dst <= 0.125){
-					break;
-				}
-				if(canBubble(point)){
-					found = true;
-					point.x -= dst;
-				}else{
-					if(!found){
-						break;
-					}
-					point.x += dst;
-				}
-			}
-			if(found){
-				return point;
+		if(!canBubble(point)){ //checks if something on left
+			bp = checkBubbleHorizontal(p.cpy(), dst); //finds spot on right
+			if(bp != null){
+				return bp;
 			}
 		}
 
+		point.set(p);
+		point.x += 1;
 
-		dst = 2;
-		point.x = p.x;
-		point.y = p.y;
+		if(!canBubble(point)){ //check if something on right
+			bp = checkBubbleHorizontal(p.cpy(), -dst); //finds spot on left
+			if(bp != null){
+				return bp;
+			}
+		}
 
+		point.set(p);
+		point.y -= 1;
 
+		if(!canBubble(point)) { //checks bottom
+			bp = checkBubbleVertical(p.cpy(), dst); //finds spot on top
+			if(bp != null){
+				return bp;
+			}
+		}
 
+		point.set(p);
+		point.y += 1;
+
+		if(!canBubble(point)) { //checks top
+			bp = checkBubbleVertical(p.cpy(), -dst); //finds spot on bottom
+			if(bp != null){
+				return bp;
+			}
+		}
 		return null;
 	}
 
@@ -1481,8 +1548,8 @@ public class PlatformController implements ContactListener, Screen {
 				collidePos = fixture.getBody().getPosition();
 				collidebody = fixture.getBody();
 
-				if (!fixture.isSensor() && !collidebody.isBullet() && collidebody.getUserData() != avatar) {
-
+				if (!fixture.isSensor() && !collidebody.isBullet()) {
+					// && collidebody.getUserData() != avatar
 					collidedbodies++;
 				}
 
@@ -2355,8 +2422,13 @@ public class PlatformController implements ContactListener, Screen {
 	private void drawCrosshair(){
 		float crosshair_width = crosshair.getRegionWidth();
 		float crosshair_height = crosshair.getRegionHeight();
-//		System.out.println(crosshairLoc);
-		if(canBubble(crosshairLoc)){
+
+
+		Vector2 temp = canBubble2(crosshairLoc);
+		if(temp != null){
+			if(!InputController.getInstance().isMouseControlls()){
+				crosshairLoc.set(temp);
+			}
 			canvas.draw(crosshair,Color.GREEN,crosshair_width/2, crosshair_height/2, crosshairLoc.x*scale.x, crosshairLoc.y*scale.y,crosshair_width,crosshair_height);
 		}
 		else{
@@ -2364,6 +2436,9 @@ public class PlatformController implements ContactListener, Screen {
 
 		}
 	}
+
+
+
 	public void draw(float dt) {
 		canvas.clear();
 
