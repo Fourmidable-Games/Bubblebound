@@ -1200,7 +1200,7 @@ public class GameCanvas {
 		wrapPosition(pos, w);
 		pos.y -= 500;
 		pos.x -= 800; //just initial offset, needed cuz spawns too close to the left of the bounds
-		// ////////System.out.println("pos" + pos);
+		// //////////System.out.println("pos" + pos);
 
 		// Have to draw the background twice for continuous scrolling.
 		spriteBatch.draw(image, pos.x,   pos.y);

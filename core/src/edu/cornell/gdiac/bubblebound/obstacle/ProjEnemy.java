@@ -91,8 +91,8 @@ public class ProjEnemy extends BoxObstacle{
                 counter = (counter + 1) % delay; // increment counter and reset to 0 when it reaches delay
             }
 
-//        //////System.out.println(shooting);
-//        //////System.out.println(shoottimer);
+//        ////////System.out.println(shooting);
+//        ////////System.out.println(shoottimer);
         if(shooting && shoottimer == 0){
             shoottimer++;
             color = new Color((float)255 / 255,(float)(210-shoottimer) / 210,(float)(210-shoottimer) / 210,1);
@@ -136,12 +136,12 @@ public class ProjEnemy extends BoxObstacle{
                     angle = 90;
                     break;
                 default:
-                    ////////System.out.println("uh oh");
+                    //////////System.out.println("uh oh");
                     break;
             }
             float sx = drawScale.x / 64f;
             float sy = drawScale.y / 64f;
-            //System.out.println("DRAWING SUNFLOWER WITH COLOR LEFT OF: " + color.b);
+            ////System.out.println("DRAWING SUNFLOWER WITH COLOR LEFT OF: " + color.b);
             canvas.draw(texture, color, ox, oy, getX() * drawScale.x, getY() * drawScale.y, (float)Math.toRadians(angle), sx, sy);
         }
 
