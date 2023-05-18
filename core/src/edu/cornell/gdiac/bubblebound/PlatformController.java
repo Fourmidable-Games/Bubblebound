@@ -464,7 +464,7 @@ public class PlatformController implements ContactListener, Screen {
 		for(int i = 1; i < 42; i++){
 			textures.add(new TextureRegion(directory.getEntry("shared:new" + i, Texture.class)));
 		}
-		for(int i = 1; i < 51; i++){
+		for(int i = 1; i < 53; i++){
 			buttonTextures.add(new TextureRegion(directory.getEntry("Letters:" + i, Texture.class)));
 		}
 
@@ -494,13 +494,37 @@ public class PlatformController implements ContactListener, Screen {
 	}
 
 	public int getTexture(int x){
-		if(x <= 16){ // 0-9 are 30 - 39
-			return x + 23;
+
+		if(x<7 ){
+			System.out.println("arrow Test");
+			System.out.println("Button Texture Test");
+			System.out.println(x);
+			return x+1; //up,down,left,right return 0-3
 		}
-		if(x < 23){
-			return x - 19; //up,down,left,right return 0-3
+		if(x <= 7 && x <= 16){ // numbers 0-9
+			System.out.println("Button Texture Test");
+			System.out.println(x);
+			return x-3+2;
 		}
-		return x - 25; //alphabet return 4-29
+		if(x >= 19 && x <= 22 ){
+			System.out.println("arrow Test");
+			System.out.println("Button Texture Test");
+			System.out.println(x);
+			return x+30-8+2-1-1-1+3+1+1-2; //up,down,left,right return 0-3
+		}
+		if(x > 22 ){
+			System.out.println("arrow Test");
+			System.out.println("Button Texture Test");
+			System.out.println(x);
+			return x-3; //up,down,left,right return 0-3
+
+		}
+
+		System.out.println("Button Texture Test");
+		System.out.println(x);
+		return x-9; //alphabet return 4-29
+
+
 	}
 
 
@@ -687,10 +711,17 @@ public class PlatformController implements ContactListener, Screen {
 			if (i == 0) {
 				int buttonMapInt = keyboard_bindings[8];
 				TextureRegion buttonText = buttonTextures.get(getTexture(buttonMapInt));
-				ButtonPrompt grapple = new ButtonPrompt(400, 500, 3, grapplePrompt, buttonText, canvas.getWidth(), canvas.height);
+				ButtonPrompt grapple;
+				if (buttonMapInt == 31) {
+					grapple = new ButtonPrompt(400, 500, 3, grapplePrompt, buttonText, canvas.getWidth(), canvas.height, 170);
+				}
+				else {
+					grapple = new ButtonPrompt(400, 500, 3, grapplePrompt, buttonText, canvas.getWidth(), canvas.height);
+				}
 				grapple.setName("grapplePrompt");
 				grapple.setTexture(grapplePrompt);
 				prompts.add(grapple);
+
 
 			}
 

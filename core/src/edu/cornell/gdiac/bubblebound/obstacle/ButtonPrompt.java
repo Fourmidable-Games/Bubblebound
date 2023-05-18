@@ -23,26 +23,23 @@ public class ButtonPrompt extends BoxObstacle {
 
     float canvasWidth;
     float canvasHeight;
+    float scaleAdjustment = -100;
 
     BitmapFont font = null;
 
     int level;
     TextureRegion buttonTexture;
 
-    public ButtonPrompt(Vector2 location, int level_drawn, TextureRegion buttonTexture){
-        super(location.x, location.y);
-        this.posX = location.x;
-        this.posY = location.y;
-        level = level_drawn;
-        this.buttonTexture = buttonTexture;
-    }
-
-    public ButtonPrompt(float x, float y, int level_drawn, TextureRegion buttonTexture){
+    public ButtonPrompt(float x, float y, int level_drawn, TextureRegion buttonTexture, TextureRegion ButtonChar, float canvasWidth, float canvasHeight, float scaleAdjustment) {
         super(x, y);
         this.posX = x;
         this.posY = y;
         level = level_drawn;
         this.buttonTexture = buttonTexture;
+        this.buttonChar = ButtonChar;
+        this.canvasWidth = canvasWidth;
+        this.canvasHeight = canvasHeight;
+        this.scaleAdjustment = scaleAdjustment;
     }
 
     public ButtonPrompt(float x, float y, int level_drawn, TextureRegion buttonTexture, TextureRegion ButtonChar, float canvasWidth, float canvasHeight) {
@@ -67,8 +64,12 @@ public class ButtonPrompt extends BoxObstacle {
         float sx = drawScale.x/6;
         float sy = drawScale.y/6;
         //////System.out.println("fuck:" + (posY) * drawScale.y);
-        if (buttonChar == null) {
-            canvas.draw(texture, Color.WHITE, posX, posY, (posX * drawScale.x), (posY * drawScale.y), getAngle(), sx, sy);
+
+
+        if (scaleAdjustment != -100) {
+            canvas.draw(texture, Color.WHITE, posX, posY, posX * drawScale.x, posY * drawScale.y, getAngle(), sx, sy);
+            int ratio = 60;
+            canvas.draw(buttonChar, Color.WHITE, (canvasWidth/1920) + posX-11, (canvasHeight/1080)+posY-51, (this.scaleAdjustment/ratio), ((posY) * drawScale.y)/ratio);
         }
 
         else {

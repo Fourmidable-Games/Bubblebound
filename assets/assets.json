@@ -1462,46 +1462,56 @@
         "wrapV": "repeated"
       },
       "Letters:43" : {
-        "file":  "Letters/Vector-1.png",
+        "file":  "Letters/V.png",
         "wrapU": "repeated",
         "wrapV": "repeated"
       },
       "Letters:44" : {
-        "file":  "Letters/Vector-2.png",
+        "file":  "Letters/Vector.png",
         "wrapU": "repeated",
         "wrapV": "repeated"
       },
       "Letters:45" : {
-        "file":  "Letters/Vector-3.png",
+        "file":  "Letters/Vector-1.png",
         "wrapU": "repeated",
         "wrapV": "repeated"
       },
       "Letters:46" : {
-        "file":  "Letters/W.png",
+        "file":  "Letters/Vector-2.png",
         "wrapU": "repeated",
         "wrapV": "repeated"
       },
       "Letters:47" : {
-        "file":  "Letters/X.png",
+        "file":  "Letters/Vector-3.png",
         "wrapU": "repeated",
         "wrapV": "repeated"
       },
       "Letters:48" : {
-        "file":  "Letters/X-1.png",
+        "file":  "Letters/W.png",
         "wrapU": "repeated",
         "wrapV": "repeated"
       },
       "Letters:49" : {
-        "file":  "Letters/Y.png",
+        "file":  "Letters/X.png",
         "wrapU": "repeated",
         "wrapV": "repeated"
       },
       "Letters:50" : {
-        "file":  "Letters/Z.png",
+        "file":  "Letters/X-1.png",
         "wrapU": "repeated",
         "wrapV": "repeated"
       },
       "Letters:51" : {
+        "file":  "Letters/Y.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "Letters:52" : {
+        "file":  "Letters/Z.png",
+        "wrapU": "repeated",
+        "wrapV": "repeated"
+      },
+      "Letters:53" : {
         "file":  "Letters/‘.png",
         "wrapU": "repeated",
         "wrapV": "repeated"
