@@ -130,6 +130,8 @@ public class PlatformController implements ContactListener, Screen {
 	private Sound level1MusicSunset;
 	private long level1MusicSunsetID;
 
+	private boolean playingTheme = false;
+
 	private Sound level1MusicCave;
 	private long level1MusicCaveID;
 	/** The default sound volume */
@@ -330,6 +332,7 @@ public class PlatformController implements ContactListener, Screen {
 		switchLevel = false;
 		currLevel = 1;
 		targetLevel = 1;
+		playingTheme = false;
 		avatarSpawnLocation = new Vector2();
 		avatarSpawnDirection = Door.SpawnDirection.RIGHT;
 
@@ -538,8 +541,6 @@ public class PlatformController implements ContactListener, Screen {
 
 		}
 		//actually find a way to delete and reinitialize these later
-		level1MusicSunset.stop();
-		level1MusicCave.stop();
 		windSound.stop();
 
 		objects.clear();
@@ -1346,8 +1347,11 @@ public class PlatformController implements ContactListener, Screen {
 	}
 
 	private void setSounds(){
-		level1MusicSunsetID = level1MusicSunset.loop(0.0f);
-		level1MusicCaveID = level1MusicCave.loop(0.0f);
+		if(!playingTheme){
+			level1MusicSunsetID = level1MusicSunset.loop(0.0f);
+			level1MusicCaveID = level1MusicCave.loop(0.0f);
+			playingTheme = true;
+		}
 		windSoundID = windSound.loop(0.0f);
 	}
 
