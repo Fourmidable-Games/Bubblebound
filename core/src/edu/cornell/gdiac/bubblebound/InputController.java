@@ -65,7 +65,9 @@ public class InputController {
 	private boolean prevPrevious;
 	/** Whether the primary action button was pressed. */
 	private boolean primePressed;
+	private boolean primeUpsideDownPressed;
 	private boolean primePrevious;
+	private boolean primeUpsideDownPrevious;
 	/** Whether the secondary action button was pressed. */
 	private boolean secondPressed;
 	private boolean secondPrevious;
@@ -166,6 +168,8 @@ public class InputController {
 	public boolean didPrimary() {
 		return primePressed && !primePrevious;
 	}
+
+	public boolean didPrimaryUpsideDown(){return primeUpsideDownPressed && !primeUpsideDownPrevious;}
 
 	/**
 	 * Returns true if the secondary action button was pressed.
@@ -285,6 +289,7 @@ public class InputController {
 		// Copy state from last animation frame
 		// Helps us ignore buttons that are held down
 		primePrevious  = primePressed;
+		primeUpsideDownPrevious = primeUpsideDownPressed;
 		secondPrevious = secondPressed;
 		resetPrevious  = resetPressed;
 		doorPrevious = doorPressed;
@@ -326,6 +331,7 @@ public class InputController {
 		nextPressed  = xbox.getRBumper();
 		prevPressed  = xbox.getLBumper();
 		primePressed = xbox.getA();
+		primeUpsideDownPressed = xbox.getA();
 		debugPressed  = xbox.getY();
 
 		// Increase animation frame, but only if trying to move
@@ -377,7 +383,9 @@ public class InputController {
 		doorPressed = (secondary && doorPressed) || (Gdx.input.isKeyPressed(Input.Keys.E));
 		healthRestorePressed = (secondary && healthRestorePressed) || (Gdx.input.isKeyPressed(Input.Keys.Q));
 		debugPressed = (secondary && debugPressed) || (Gdx.input.isKeyPressed(Input.Keys.L));
-		primePressed = (secondary && primePressed) || (Gdx.input.isKeyPressed(buttons[0]) || (Gdx.input.isKeyPressed(buttons[1])) || (Gdx.input.isKeyPressed(Input.Keys.SPACE)));
+		primePressed = (secondary && primePressed) || (Gdx.input.isKeyPressed(buttons[0]) || (Gdx.input.isKeyPressed(buttons[1])) );
+		primeUpsideDownPressed = (secondary && primeUpsideDownPressed) || (Gdx.input.isKeyPressed(buttons[2]) || (Gdx.input.isKeyPressed(buttons[3])));
+
 		secondPressed = (secondary && secondPressed) || (Gdx.input.isKeyPressed(Input.Keys.SPACE));
 		prevPressed = (secondary && prevPressed) || (Gdx.input.isKeyPressed(Input.Keys.P));
 		nextPressed = (secondary && nextPressed) || (Gdx.input.isKeyPressed(Input.Keys.N));

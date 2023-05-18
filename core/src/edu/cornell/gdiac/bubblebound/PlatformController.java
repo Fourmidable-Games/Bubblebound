@@ -1212,7 +1212,11 @@ public class PlatformController implements ContactListener, Screen {
 		}
 		if(!camera) {
 			avatar.setMovement(InputController.getInstance().getHorizontal() * avatar.getForce());
-			avatar.setJumping(InputController.getInstance().didPrimary());
+			if(avatar.getGravZone() == 1){
+				avatar.setJumping(InputController.getInstance().didPrimary());
+			}else{
+				avatar.setJumping(InputController.getInstance().didPrimaryUpsideDown());
+			}
 		}else{
 			avatar.setMovement(0);
 			avatar.setJumping(false);

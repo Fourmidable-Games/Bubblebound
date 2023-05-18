@@ -18,7 +18,12 @@ import edu.cornell.gdiac.util.Controllers;
 import edu.cornell.gdiac.util.ScreenListener;
 import edu.cornell.gdiac.util.XBoxController;
 
-   public class SettingsMode implements Screen, InputProcessor, ControllerListener {
+import java.awt.image.AreaAveragingScaleFilter;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+
+public class SettingsMode implements Screen, InputProcessor, ControllerListener {
         // There are TWO asset managers.  One to load the loading screen.  The other to load the assets
         /** Internal assets for this loading screen */
         private AssetDirectory internal;
@@ -158,7 +163,10 @@ import edu.cornell.gdiac.util.XBoxController;
             this(canvas, DEFAULT_BUDGET);
         }
 
+        private List<Integer> jump_with_arrows_pair = Arrays.asList(0,2);
+        private List<Integer> jump_with_letters_pair = Arrays.asList(1,3);
 
+        private List<List<Integer>> whitelisted_pairs = Arrays.asList(jump_with_arrows_pair,jump_with_letters_pair);
 
 
         public float masterVolume = 1.0f;
@@ -360,14 +368,32 @@ import edu.cornell.gdiac.util.XBoxController;
                 mPlace = leftClick;
             }
             if(pressState >= 20){
+                System.out.println("Press State: " +pressState);
+
                 int in = getInput();
                 for(int i = 0; i < inputs.length; i++){
-                    if(i == pressState - 20) continue;
+                    if(i == pressState - 20) {
+                        System.out.println("continuing");
+                        continue;
+                    }
+
                     if(in == inputs[i]){
+                        boolean bypass = false;
+                        for(List<Integer> pair: whitelisted_pairs){
+                            if (pair.contains(i) && pair.contains(pressState-20)){
+                                bypass = true;
+                            }
+                        }
+                        if(bypass){
+                            System.out.println("BYPASSING");
+                            continue;
+                        }
+                        System.out.println("Returning");
                         return;
                     }
                 }
                 if(in != -1){
+                    System.out.println("3rd section");
                     inputs[pressState - 20] = in;
                     buttons[pressState - 20] = unclickedButton;
                     InputController.getInstance().buttons = inputs;
