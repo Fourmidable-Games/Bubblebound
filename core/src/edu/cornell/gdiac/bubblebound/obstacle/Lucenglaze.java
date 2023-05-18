@@ -78,7 +78,7 @@ public class Lucenglaze extends BoxObstacle{
                     angle = 90;
                     break;
                 default:
-                    //////System.out.println("uh oh");
+                    ////////////System.out.println("uh oh");
                     break;
             }
             float sx = drawScale.x / 64f;

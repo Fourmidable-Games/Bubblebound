@@ -142,7 +142,7 @@ public class LevelSelectMode implements Screen, InputProcessor, ControllerListen
      * @return the asset directory produced by this loading screen
      */
     public void gatherAssets(AssetDirectory directory){
-        System.out.println("AAAAAAAAAAAAAAAA");
+        //////System.out.println("AAAAAAAAAAAAAAAA");
         background = directory.getEntry( "phase0background", Texture.class );
         background.setFilter( Texture.TextureFilter.Linear, Texture.TextureFilter.Linear );
         for(int i = 0; i < 4; i++){
@@ -439,7 +439,7 @@ public class LevelSelectMode implements Screen, InputProcessor, ControllerListen
         float button_w = texture.getWidth() * scale.x;
         float button_h = texture.getHeight() * scale.y;
         screenY = canvas.getHeight() - screenY;
-        //System.out.println(button_center);
+        ////////System.out.println(button_center);
         if(screenX >= button_pos.x && screenX <= button_pos.x + button_w){
             if(screenY >= button_pos.y - button_h && screenY <= button_pos.y){
                 return true;
@@ -471,7 +471,7 @@ public class LevelSelectMode implements Screen, InputProcessor, ControllerListen
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 
         if(disabled){
-            //System.out.println("bad howdy");
+            ////////System.out.println("bad howdy");
             return true;
         }
         if(pressedButton(screenX, screenY, backButton, backButtonPos)){

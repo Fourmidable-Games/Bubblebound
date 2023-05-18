@@ -70,6 +70,7 @@ public class GDXRoot extends Game implements ScreenListener {
 
 		canvas  = new GameCanvas();
 		loading = new LoadingMode("assets.json",canvas,1);
+		loading.startMusic();
 
 
 		// Initialize the three game worlds
@@ -138,8 +139,8 @@ public class GDXRoot extends Game implements ScreenListener {
 		controller.setDefaultCursor(defaultCursor);
 		directory = loading.getAssets();
 		controller.gatherAssets(directory);
-		controller.setSoundvolume(soundvolume);
-		controller.setVolume(volume);
+		controller.setSoundvolume(InputController.getInstance().audio_levels[1]);
+		controller.setVolume(InputController.getInstance().audio_levels[0]);
 		controller.setCanvas(canvas);
 		controller.setScreenListener(this);
 
@@ -166,12 +167,17 @@ public class GDXRoot extends Game implements ScreenListener {
 
 
 		if (screen == loading) {
+			////System.out.println("Exiting loading");
 			defaultCursor = loading.getDefaultCursor();
 			if(exitCode == 0){ //normal start
+				////System.out.println("Starting game");
+
 				launchGame(true);
 				setScreen(controller);
 			}
 			else if(exitCode == 1){ //lvl select
+				////System.out.println("Starting lvl select");
+
 				directory = loading.getLvlselect();
 				levelselect = new LevelSelectMode(canvas, 1);
 				levelselect.setDefaultCursor(defaultCursor);
@@ -179,27 +185,35 @@ public class GDXRoot extends Game implements ScreenListener {
 				levelselect.setScreenListener(this);
 				setScreen(levelselect);
 			}else if(exitCode == 2){// settings mode
+				////System.out.println("Starting setting");
+
 				settings = new SettingsMode(canvas,1);
-				settings.setVolumes(mastervolume, volume, soundvolume);
 				settings.setDefaultCursor(defaultCursor);
 				settings.setScreenListener(this);
 				settings.setMusic(loading.getMusic(), loading.getMusicId());
 				setScreen(settings);
 
 			}else if(exitCode == 3){ //quit game
+				////System.out.println("Starting quit game");
+
 				loading.dispose();
 				Gdx.app.exit();
 			}
 
 		} else if(screen == settings){
+			////System.out.println("Exiting settings");
 
-			mastervolume = settings.getMasterVolume();
+//			////System.out.println("Volume");
 			volume = settings.getMusicVolume();
 			soundvolume = settings.getSoundVolume();
+//			////System.out.println(volume);
+//			////System.out.println(soundvolume);
 			settings.disabled = true;
 			settings.dispose();
 			settings = null;
 			if(exitCode == -1) {
+				////System.out.println("Starting game");
+				loading.stopMusic();
 				controller.setVolume(volume);
 				controller.setSoundvolume(soundvolume);
 				controller.setScreenListener(this);
@@ -207,6 +221,8 @@ public class GDXRoot extends Game implements ScreenListener {
 				setScreen(controller);
 
 			}else {
+				////System.out.println("Starting loading");
+
 				loading.poopypants();
 				loading.setScreenListener(this);
 				setScreen(loading);
@@ -214,37 +230,52 @@ public class GDXRoot extends Game implements ScreenListener {
 
 
 		}else if(screen == levelselect){
+			////System.out.println("Exiting lvl select");
+
 			levelselect.dispose();
 			levelselect = null;
 			if(exitCode == -1){
+				////System.out.println("Starting loading");
+
 				loading.poopypants();
 				setScreen(loading);
 			}else{
+				////System.out.println("Starting game");
+
 				currlevel  = exitCode;
 				loading.stopMusic();
-				//System.out.println(exitCode);
+				////////System.out.println(exitCode);
 				launchGame(currlevel == 1);
 				setScreen(controller);
 			}
 		}else if(screen == controller){
+			////System.out.println("Exiting controller");
+
 			if(exitCode == -1){
+				////System.out.println("Starting settings");
+
 				settings = new SettingsMode(canvas, 1);
 				settings.setDefaultCursor(defaultCursor);
-				settings.setMusic(controller.getMusic(), controller.getMusicID());
-				settings.setVolumes(mastervolume, volume, soundvolume);
+				settings.setMusic(loading.getMusic(), loading.getMusicId());
+				settings.startMusic();
 				settings.pause = true;
 				settings.setScreenListener(this);
 				setScreen(settings);
 			}else {
+				////System.out.println("Starting loading");
+
 				controller.dispose();
 				controller = null;
 				currlevel = exitCode;
-				loading.playMusic(volume);
+
+				loading.startMusic();
 				loading.poopypants();
 				loading.setScreenListener(this);
 				setScreen(loading);
 			}
 		} else if (exitCode == PlatformController.EXIT_QUIT) {
+			////System.out.println("quitting");
+
 			// We quit the main application
 			Gdx.app.exit();
 		}
