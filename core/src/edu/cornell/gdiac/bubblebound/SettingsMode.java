@@ -168,11 +168,18 @@ import edu.cornell.gdiac.util.XBoxController;
 
         public float getMasterVolume() {return masterVolume;}
         public float getMusicVolume(){
-            return musicVolume;
+            return masterVolume * musicVolume;
         }
         public float getSoundVolume(){
-            return musicVolume;
+            return masterVolume * soundVolume;
         }
+
+        public void setVolumes(float master, float mvolume, float svolume){
+            masterVolume = master;
+            musicVolume = mvolume / masterVolume;
+            soundVolume = svolume / masterVolume;
+        }
+
 
        private Texture background;
        private Texture backButton;
@@ -355,6 +362,7 @@ import edu.cornell.gdiac.util.XBoxController;
             if(pressState >= 20){
                 int in = getInput();
                 for(int i = 0; i < inputs.length; i++){
+                    if(i == pressState - 20) continue;
                     if(in == inputs[i]){
                         return;
                     }

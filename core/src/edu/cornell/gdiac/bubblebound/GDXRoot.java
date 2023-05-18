@@ -109,6 +109,7 @@ public class GDXRoot extends Game implements ScreenListener {
 		super.dispose();
 	}
 
+	private float mastervolume = 1.0f;
 	private float volume = 1.0f;
 	private float soundvolume = 1.0f;
 	/**
@@ -179,6 +180,7 @@ public class GDXRoot extends Game implements ScreenListener {
 				setScreen(levelselect);
 			}else if(exitCode == 2){// settings mode
 				settings = new SettingsMode(canvas,1);
+				settings.setVolumes(mastervolume, volume, soundvolume);
 				settings.setDefaultCursor(defaultCursor);
 				settings.setScreenListener(this);
 				settings.setMusic(loading.getMusic(), loading.getMusicId());
@@ -191,7 +193,7 @@ public class GDXRoot extends Game implements ScreenListener {
 
 		} else if(screen == settings){
 
-
+			mastervolume = settings.getMasterVolume();
 			volume = settings.getMusicVolume();
 			soundvolume = settings.getSoundVolume();
 			settings.disabled = true;
@@ -228,6 +230,8 @@ public class GDXRoot extends Game implements ScreenListener {
 			if(exitCode == -1){
 				settings = new SettingsMode(canvas, 1);
 				settings.setDefaultCursor(defaultCursor);
+				settings.setMusic(controller.getMusic(), controller.getMusicID());
+				settings.setVolumes(mastervolume, volume, soundvolume);
 				settings.pause = true;
 				settings.setScreenListener(this);
 				setScreen(settings);
@@ -235,6 +239,7 @@ public class GDXRoot extends Game implements ScreenListener {
 				controller.dispose();
 				controller = null;
 				currlevel = exitCode;
+				loading.playMusic(volume);
 				loading.poopypants();
 				loading.setScreenListener(this);
 				setScreen(loading);

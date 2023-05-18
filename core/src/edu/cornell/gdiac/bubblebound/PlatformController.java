@@ -1219,8 +1219,7 @@ public class PlatformController implements ContactListener, Screen {
 			}
 		}
 		if(closest != null){
-			if (avatar.getPosition().dst(closest.getPosition()) < 4.5 && avatar.canShoot(closest, collidePos,
-					collidebody, collidedbodies, world)) {
+			if (avatar.getPosition().dst(closest.getPosition()) < 4.5 && canShoot(closest)) {
 				setCollidebodies(0);
 				closest.canRopeTo = true;
 			}
@@ -1339,12 +1338,12 @@ public class PlatformController implements ContactListener, Screen {
 			level1MusicCave.setVolume(level1MusicCaveID,volume * 1f);
 		}
 		if (avatar.justJumped()) {
-			jumpSound.setVolume(jumpId,soundvolume * 2f);
-			jumpId = playSound( jumpSound, jumpId);
+			//jumpSound.setVolume(jumpId,soundvolume * 2f);
+			jumpId = playSound( jumpSound, jumpId, soundvolume);
 		}
 		if (avatar.justGrounded()) {
-			plopSound.setVolume(plopId,soundvolume * 2f);
-			plopId = playSound( plopSound, jumpId);
+			//plopSound.setVolume(plopId,soundvolume * 2f);
+			plopId = playSound( plopSound, jumpId, soundvolume);
 		}
 		windSound.setVolume(windSoundID, soundvolume * Math.min((float) Math.abs((avatar.getVX() + (avatar.getVY() * 0.5)) * 0.06f),0.4f));
 
@@ -1415,8 +1414,8 @@ public class PlatformController implements ContactListener, Screen {
 		bubble.setActive(false);
 		bubble.stopDraw();
 		bubbles.remove(bubble);
-		popSound.setVolume(popID, soundvolume * 10f);
-		popID = playSound(popSound,popID,0.5f);
+		//popSound.setVolume(popID, soundvolume * 10f);
+		popID = playSound(popSound,popID,0.5f * soundvolume);
 
 	}
 
@@ -1427,6 +1426,51 @@ public class PlatformController implements ContactListener, Screen {
 	public void setCollidebodies(int update) {
 		collidedbodies = update;
 	};
+
+
+
+
+
+	public Vector2 canBubble2(Vector2 p){
+		float dst = 2;
+
+		Vector2 point = p.cpy();
+		point.x -= 1; //if something on the left
+
+		if(!canBubble(point)){
+			point.x = p.x + dst; //sets to two to the left
+			boolean found = false;
+			while(true){
+				dst /= 2f;
+				if(dst <= 0.125){
+					break;
+				}
+				if(canBubble(point)){
+					found = true;
+					point.x -= dst;
+				}else{
+					if(!found){
+						break;
+					}
+					point.x += dst;
+				}
+			}
+			if(found){
+				return point;
+			}
+		}
+
+
+		dst = 2;
+		point.x = p.x;
+		point.y = p.y;
+
+
+
+		return null;
+	}
+
+
 
 
 	public boolean canBubble(Vector2 p){
@@ -1447,18 +1491,18 @@ public class PlatformController implements ContactListener, Screen {
 		};
 		collidedbodies = 0;
 
-		Vector2 left = p.cpy();
+		Vector2 left = p.cpy(); //bottom left
 		left.x -= 1;
 		left.y -= 1;
 
-		Vector2 right = p.cpy();
+		Vector2 right = p.cpy(); //top right
 		right.x += 1;
 		right.y += 1;
 
-		world.rayCast(rcc, left, right);
+		world.rayCast(rcc, left, right); //bottom left to top right
 		left.y += 2;
 		right.y -= 2;
-		world.rayCast(rcc, left, right);
+		world.rayCast(rcc, left, right); //top left to bottom right
 		return collidedbodies < 1;
 	}
 
@@ -2207,7 +2251,7 @@ public class PlatformController implements ContactListener, Screen {
 		//filter = filterlist.get((int)(scuffed_counter / scuffed_delay));
 		filter = filterlist.get(0);
 		scuffed_counter++;
-		canvas.draw(filter, new Color(0.5f, 0.5f, 0.5f, 0.25f), cameraCoords.x - canvas.getWidth()/2, cameraCoords.y- canvas.getHeight()/2, filter.getWidth(), filter.getHeight());
+		canvas.draw(filter, new Color(0.5f, 0.5f, 0.5f, 0.13f), cameraCoords.x - canvas.getWidth()/2, cameraCoords.y- canvas.getHeight()/2, filter.getWidth(), filter.getHeight());
 	}
 
 
@@ -2259,6 +2303,8 @@ public class PlatformController implements ContactListener, Screen {
 				listener.exitScreen(this, -1);
 			}
 			if(pressedButton((int) ch.x, (int)ch.y, quitButton, quitPos)){
+				level1MusicCave.stop();
+				level1MusicSunset.stop();
 				pause_state = false;
 				listener.exitScreen(this, targetLevel);
 				Gdx.input.setInputProcessor(null);
@@ -2266,7 +2312,28 @@ public class PlatformController implements ContactListener, Screen {
 		}
 	}
 
-	public SettingsMode settings;
+
+	public long getMusicID(){
+		if(avatar != null){
+			if(avatar.grav == -1){
+				return level1MusicCaveID;
+			}else{
+				return level1MusicSunsetID;
+			}
+		}
+		return 0l;
+	}
+
+	public Sound getMusic(){
+		if(avatar != null){
+			if(avatar.grav == -1){
+				return  level1MusicCave;
+			}else{
+				return level1MusicSunset;
+			}
+		}
+		return null;
+	}
 
 	public boolean pressedButton(int screenX, int screenY, Texture texture, Vector2 button_pos){
 		float button_w = texture.getWidth() * scale.x;
@@ -2434,7 +2501,7 @@ public class PlatformController implements ContactListener, Screen {
 	 * @return the new sound instance for this asset.
 	 */
 	public long playSound(Sound sound, long soundId) {
-		return playSound( sound, soundId, 1.0f );
+		return playSound( sound, soundId, soundvolume );
 	}
 
 

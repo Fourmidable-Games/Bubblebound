@@ -479,6 +479,9 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 		return loadingMusicId;
 	}
 
+	public void playMusic(float f){
+		loadingMusic.loop(f);
+	}
 
 	// ADDITIONAL SCREEN METHODS
 	/**
