@@ -2204,9 +2204,10 @@ public class PlatformController implements ContactListener, Screen {
 		if (scuffed_counter >=5 * scuffed_delay) {
 			scuffed_counter = 0;
 		}
-		filter = filterlist.get((int)(scuffed_counter / scuffed_delay));
+		//filter = filterlist.get((int)(scuffed_counter / scuffed_delay));
+		filter = filterlist.get(0);
 		scuffed_counter++;
-		canvas.draw(filter, new Color(0.5f, 0.5f, 0.5f, 0.2f), cameraCoords.x - canvas.getWidth()/2, cameraCoords.y- canvas.getHeight()/2, filter.getWidth(), filter.getHeight());
+		canvas.draw(filter, new Color(0.5f, 0.5f, 0.5f, 0.25f), cameraCoords.x - canvas.getWidth()/2, cameraCoords.y- canvas.getHeight()/2, filter.getWidth(), filter.getHeight());
 	}
 
 
