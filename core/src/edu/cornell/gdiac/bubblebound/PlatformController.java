@@ -181,6 +181,12 @@ public class PlatformController implements ContactListener, Screen {
 	protected Texture icebackground;
 
 	protected Texture paperfilter;
+	protected Texture paperfilter1;
+	protected Texture paperfilter2;
+	protected Texture paperfilter3;
+	protected Texture paperfilter4;
+
+	private ArrayList<Texture> filterlist;
 	protected TextureRegion losing;
 	protected TextureRegion spikeTexture;
 	protected TextureRegion spikeTexture2;
@@ -423,6 +429,16 @@ public class PlatformController implements ContactListener, Screen {
 		skybackground = new TextureRegion(directory.getEntry("background:sky", Texture.class));
 		icebackground = directory.getEntry("background:ice", Texture.class);
 		paperfilter = directory.getEntry("platform:paperfilter", Texture.class);
+		paperfilter1 = directory.getEntry("platform:paperfilter1", Texture.class);
+		paperfilter2 = directory.getEntry("platform:paperfilter2", Texture.class);
+		paperfilter3 = directory.getEntry("platform:paperfilter3", Texture.class);
+		paperfilter4 = directory.getEntry("platform:paperfilter4", Texture.class);
+		filterlist = new ArrayList<Texture>();
+		filterlist.add(paperfilter);
+		filterlist.add(paperfilter1);
+		filterlist.add(paperfilter2);
+		filterlist.add(paperfilter3);
+		filterlist.add(paperfilter4);
 		losing = new TextureRegion(directory.getEntry("losing", Texture.class));
 		bubble = new FilmStrip(bubbleText, 1, 8, 8);
 		bubble2 = new FilmStrip(bubbleText2, 1, 8, 8);
@@ -2181,13 +2197,17 @@ public class PlatformController implements ContactListener, Screen {
 
 	}
 
-	public void drawFilter(Texture filter){
-		//System.out.println("FILTERISMADEBAYBE");
-//		TextureRegion fil = new TextureRegion(filter, cameraCoords.x, cameraCoords.y, canvas.getWidth(), canvas.getHeight());
-//		System.out.println(fil);
-		canvas.draw(filter, new Color(0.5f,0.5f,0.5f,0f), cameraCoords.x-canvas.getWidth()/2, cameraCoords.y-canvas.getHeight()/2, filter.getWidth(), filter.getHeight());
+	int scuffed_counter = 0;
+	int scuffed_delay = 15;
+	public void drawFilter(){
+		Texture filter;
+		if (scuffed_counter >=5 * scuffed_delay) {
+			scuffed_counter = 0;
+		}
+		filter = filterlist.get((int)(scuffed_counter / scuffed_delay));
+		scuffed_counter++;
+		canvas.draw(filter, new Color(0.5f, 0.5f, 0.5f, 0.2f), cameraCoords.x - canvas.getWidth()/2, cameraCoords.y- canvas.getHeight()/2, filter.getWidth(), filter.getHeight());
 	}
-
 
 
 
@@ -2291,6 +2311,12 @@ public class PlatformController implements ContactListener, Screen {
 		for(Zone z: zones){ //draws the backgrounds of the zones
 			drawSecondaryBackground(icebackground, z);
 		}
+		boolean drawTileOutlines = true;
+		if(drawTileOutlines == true) {
+			for (BoxObstacle b : platforms) {
+				b.drawOutline(canvas);
+			}
+		}
 		for(BoxObstacle b: platforms){
 			b.draw(canvas);
 		}
@@ -2364,9 +2390,6 @@ public class PlatformController implements ContactListener, Screen {
 
 
 		canvas.end();
-		canvas.begin();
-		drawFilter(paperfilter);
-		canvas.end();
 
 		if (debug) {
 			canvas.beginDebug();
@@ -2386,7 +2409,12 @@ public class PlatformController implements ContactListener, Screen {
 			canvas.end();
 		} else if (failed) {
 		}
-
+		boolean drawFilter = true;
+		if(drawFilter == true) {
+			canvas.begin();
+			drawFilter();
+			canvas.end();
+		}
 
 	}
 
