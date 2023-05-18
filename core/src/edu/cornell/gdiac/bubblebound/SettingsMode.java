@@ -173,13 +173,11 @@ public class SettingsMode implements Screen, InputProcessor, ControllerListener 
         public static float musicVolume = 1.0f;
         public static float soundVolume = 1.0f;
         public int controls = 0; //0 is mouse, 1 is keyboard
-
-        public float getMasterVolume() {return masterVolume;}
         public float getMusicVolume(){
-            return masterVolume * musicVolume;
+            return InputController.getInstance().audio_levels[0];
         }
         public float getSoundVolume(){
-            return masterVolume * soundVolume;
+            return InputController.getInstance().audio_levels[1];
         }
 
         public void setVolumes(float master, float mvolume, float svolume){
@@ -207,6 +205,7 @@ public class SettingsMode implements Screen, InputProcessor, ControllerListener 
        private Texture mAttach;
        private Texture[] inputTextures = new Texture[40];
        public int[] inputs;
+       private float music_volume = 0;
        public float[] audio_levels;
         Vector2 backButtonPos;
         Vector2 masterSoundBarPos;
@@ -362,6 +361,13 @@ public class SettingsMode implements Screen, InputProcessor, ControllerListener 
          */
         private void update(float delta) {
             Gdx.input.setInputProcessor( this );
+            float new_music_volume = InputController.getInstance().audio_levels[0];
+            System.out.println(new_music_volume);
+            if(new_music_volume != music_volume){
+                loadingMusic.setVolume(loadingMusicId,new_music_volume);
+                System.out.println("UPDATED");
+                music_volume = new_music_volume;
+            }
             if(InputController.getInstance().mouse){
                 mAttach = leftClick;
                 mPlace = rightClick;
@@ -433,6 +439,10 @@ public class SettingsMode implements Screen, InputProcessor, ControllerListener 
                 audio_levels[1] = soundVolume * masterVolume;
             }
             InputController.getInstance().audio_levels = audio_levels;
+        }
+        public void startMusic(){
+            music_volume = InputController.getInstance().audio_levels[0];
+            loadingMusicId = loadingMusic.loop(music_volume);
         }
 
         /**

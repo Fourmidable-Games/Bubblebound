@@ -218,6 +218,7 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 
 	private int delay;
 	private int max_delay;
+	private float music_volume = 0;
 
 
 	public void stopMusic() { loadingMusic.stop();}
@@ -354,7 +355,13 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 	 * @param delta Number of seconds since last animation frame
 	 */
 	private void update(float delta) {
+		System.out.println("Loading updating");
 		Gdx.input.setInputProcessor( this );
+		float new_music_volume = InputController.getInstance().audio_levels[0];
+		if(new_music_volume != music_volume){
+			loadingMusic.setVolume(loadingMusicId,new_music_volume);
+			music_volume = new_music_volume;
+		}
 		if (playButton == null) {
 			assets.update(budget);
 			this.progress = assets.getProgress();
@@ -480,13 +487,17 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 	}
 
 	public void playMusic(float f){
-		loadingMusic.loop(f);
+		music_volume = f;
+		loadingMusicId =loadingMusic.loop(music_volume);
 	}
+
+
 
 	// ADDITIONAL SCREEN METHODS
 	/**
 	 * Called when the Screen should render itself.
 	 *
+	 * We defer to the other methods update() and draw().  However, it is VERY important
 	 * We defer to the other methods update() and draw().  However, it is VERY important
 	 * that we only quit AFTER a draw.
 	 *

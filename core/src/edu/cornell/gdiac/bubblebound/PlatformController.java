@@ -932,7 +932,6 @@ public class PlatformController implements ContactListener, Screen {
 	private int wait = 0;
 
 	public void update(float dt) {
-
 		updateBubbles();
 		updateSpike();
 		updateEnemies();
@@ -1991,15 +1990,17 @@ public class PlatformController implements ContactListener, Screen {
 	 */
 	public void pause() {
 		Gdx.graphics.setCursor(defaultCursor);
-
 		jumpSound.stop(jumpId);
 		plopSound.stop(plopId);
 		popSound.stop(popID);
 		fireSound.stop(fireId);
+		level1MusicCave.pause(level1MusicCaveID);
+		level1MusicSunset.pause(level1MusicSunsetID);
+
 	}
 
 	public void resume(){
-		Gdx.graphics.setCursor(emptyCursor);
+
 	}
 
 	/**
@@ -2344,7 +2345,8 @@ public class PlatformController implements ContactListener, Screen {
 
 	public void drawPause(){
 		Gdx.graphics.setCursor(defaultCursor);
-
+		level1MusicCave.pause(level1MusicCaveID);
+		level1MusicSunset.pause(level1MusicSunsetID);
 		cameraCoords.x = canvas.getWidth() / 2f;
 		cameraCoords.y = canvas.getHeight() / 2f;
 		canvas.camera.position.set(canvas.getWidth() / 2f, canvas.getHeight() / 2f, 0);
@@ -2380,10 +2382,13 @@ public class PlatformController implements ContactListener, Screen {
 			if(pressedButton((int)ch.x, (int)ch.y, playButton, playPos)){
 				pause_state = false;
 				Gdx.graphics.setCursor(emptyCursor);
+				level1MusicCave.resume(level1MusicCaveID);
+				level1MusicSunset.resume(level1MusicSunsetID);
 
 			}
 			if(pressedButton((int)ch.x, (int)ch.y, settingsButton, settingPos)){
-
+				level1MusicCave.pause();
+				level1MusicSunset.pause();
 				listener.exitScreen(this, -1);
 			}
 			if(pressedButton((int) ch.x, (int)ch.y, quitButton, quitPos)){
