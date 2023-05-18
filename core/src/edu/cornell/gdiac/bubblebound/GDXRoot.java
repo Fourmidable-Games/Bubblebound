@@ -222,7 +222,7 @@ public class GDXRoot extends Game implements ScreenListener {
 			}else{
 				currlevel  = exitCode;
 				loading.stopMusic();
-				//System.out.println(exitCode);
+				////System.out.println(exitCode);
 				launchGame(currlevel == 1);
 				setScreen(controller);
 			}

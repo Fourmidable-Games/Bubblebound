@@ -368,12 +368,10 @@ public class SettingsMode implements Screen, InputProcessor, ControllerListener 
                 mPlace = leftClick;
             }
             if(pressState >= 20){
-                System.out.println("Press State: " +pressState);
 
                 int in = getInput();
                 for(int i = 0; i < inputs.length; i++){
                     if(i == pressState - 20) {
-                        System.out.println("continuing");
                         continue;
                     }
 
@@ -385,15 +383,13 @@ public class SettingsMode implements Screen, InputProcessor, ControllerListener 
                             }
                         }
                         if(bypass){
-                            System.out.println("BYPASSING");
+
                             continue;
                         }
-                        System.out.println("Returning");
                         return;
                     }
                 }
                 if(in != -1){
-                    System.out.println("3rd section");
                     inputs[pressState - 20] = in;
                     buttons[pressState - 20] = unclickedButton;
                     InputController.getInstance().buttons = inputs;
@@ -597,7 +593,7 @@ public class SettingsMode implements Screen, InputProcessor, ControllerListener 
             float button_w = texture.getWidth() * scale.x;
             float button_h = texture.getHeight() * scale.y;
             screenY = canvas.getHeight() - screenY;
-            //System.out.println(button_center);
+            ////System.out.println(button_center);
             if(screenX >= button_pos.x && screenX <= button_pos.x + button_w){
                 if(screenY >= button_pos.y - button_h && screenY <= button_pos.y){
                    return true;
@@ -610,7 +606,7 @@ public class SettingsMode implements Screen, InputProcessor, ControllerListener 
            float button_w = texture.getWidth() * scale.x;
            float button_h = texture.getHeight() * scale.y;
            screenY = canvas.getHeight() - screenY;
-           //System.out.println(button_center);
+           ////System.out.println(button_center);
            if(screenX >= button_pos.x - button_h && screenX <= button_pos.x + button_w + button_h){
                if(screenY >= button_pos.y - button_h -button_h/2 && screenY <= button_pos.y + button_h/2){
                    return true;
@@ -652,7 +648,7 @@ public class SettingsMode implements Screen, InputProcessor, ControllerListener 
         public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 
             if(disabled){
-                //System.out.println("bad howdy");
+                ////System.out.println("bad howdy");
                 return true;
             }
 
@@ -660,7 +656,7 @@ public class SettingsMode implements Screen, InputProcessor, ControllerListener 
             //screenY = heightY-screenY;
 
             if(pressedButton(screenX, screenY, backButton, backButtonPos)){
-                //System.out.println("BACKK");
+                ////System.out.println("BACKK");
                 pressState = 1;
             }
             if(pressedSlider(screenX, screenY, slider, masterSoundBarPos)){

@@ -527,7 +527,7 @@ public class PlatformController implements ContactListener, Screen {
 		Vector2 gravity = new Vector2(world.getGravity() );
 		zones.clear();
 		if(rope != null){
-			System.out.println("DESTRUCT ROPE 1");
+			//System.out.println("DESTRUCT ROPE 1");
 			destructRope();
 			rope = null;
 		}
@@ -598,8 +598,8 @@ public class PlatformController implements ContactListener, Screen {
 
 		float dwidth  = goalStrip.getRegionWidth()/scale.x;
 		float dheight = goalStrip.getRegionHeight()/scale.y;
-//		System.out.println("currLevel: " + currLevel);
-//		System.out.println("targetLevel: " + targetLevel);
+//		//System.out.println("currLevel: " + currLevel);
+//		//System.out.println("targetLevel: " + targetLevel);
 		// Add level goal
 		for(int i = 0; i < doors.size(); i++){
 			Door door = doors.get(i);
@@ -612,7 +612,7 @@ public class PlatformController implements ContactListener, Screen {
 			door.isGoal = true;
 			addObject(door);
 			if(door.getTargetLevelID() == currLevel){
-//				System.out.println("TARGET DOOR FOUND!");
+//				//System.out.println("TARGET DOOR FOUND!");
 				avatarSpawnLocation = door.getPlayerSpawnLocation();
 				avatarSpawnDirection = door.getSpawnDirection();
 				needToInitializeSpawn = false;
@@ -631,13 +631,13 @@ public class PlatformController implements ContactListener, Screen {
 		currLevel = targetLevel;
 
 		avatar = needToInitializeSpawn ? Level2.getPlayer(Door.SpawnDirection.RIGHT) : Level2.getPlayerAtLocation(avatarSpawnLocation, avatarSpawnDirection);
-//		System.out.println("PRESPAWN LOC: "+ avatar.getPosition());
+//		//System.out.println("PRESPAWN LOC: "+ avatar.getPosition());
 		if(needToInitializeSpawn) {
 			avatarSpawnLocation = avatar.getPosition();
 			avatarSpawnDirection = Door.SpawnDirection.RIGHT;
 			needToInitializeSpawn = false;
 		}
-//		System.out.println("AFTERCHECK LOC: "+ avatar.getPosition());
+//		//System.out.println("AFTERCHECK LOC: "+ avatar.getPosition());
 
 		avatar.setGrappling(false);
 		avatar.setDrawScale(scale);
@@ -741,7 +741,7 @@ public class PlatformController implements ContactListener, Screen {
 			level6Token.setSensor(true);
 			level6Token.setDrawScale(scale);
 			level6Token.setTexture(tokenText);
-//			System.out.println("ADDING TOKEN" + level6Token.getPosition());
+//			//System.out.println("ADDING TOKEN" + level6Token.getPosition());
 
 			addObject(level6Token);
 		}
@@ -755,7 +755,7 @@ public class PlatformController implements ContactListener, Screen {
 			level12Token.setSensor(true);
 			level12Token.setDrawScale(scale);
 			level12Token.setTexture(tokenText);
-//			System.out.println("ADDING TOKEN" + level12Token.getPosition());
+//			//System.out.println("ADDING TOKEN" + level12Token.getPosition());
 
 			addObject(level12Token);
 		}
@@ -816,7 +816,7 @@ public class PlatformController implements ContactListener, Screen {
         pe.initialize(sunStrip);
 		addObject(pe);
 		projenemies.add(pe);
-		////System.out.println("pe pos" + pe.getPosition());
+		//////System.out.println("pe pos" + pe.getPosition());
 		return pe;
 	}
 
@@ -963,10 +963,10 @@ public class PlatformController implements ContactListener, Screen {
 		crosshairLoc.x += xoffset;
 		crosshairLoc.y += yoffset;
 
-//		System.out.println("CAMERA: " +cameraCoords.scl(1/scale.x,1/scale.y));
-//		System.out.println("Crosshair before: " +crosshairLoc);
+//		//System.out.println("CAMERA: " +cameraCoords.scl(1/scale.x,1/scale.y));
+//		//System.out.println("Crosshair before: " +crosshairLoc);
 		Vector2 playerLoc = avatar.getPosition();
-//		System.out.println("Player Pos: " + playerLoc);
+//		//System.out.println("Player Pos: " + playerLoc);
 		float dist = Vector2.dst(crosshairLoc.x,crosshairLoc.y, playerLoc.x, playerLoc.y);
 		if(dist > 4){
 			Vector2 tempCrosshair = crosshairLoc.cpy();
@@ -1024,7 +1024,7 @@ public class PlatformController implements ContactListener, Screen {
 			b.canRopeTo = false;
 			if(b.timedOut()){
 				if(b.isGrappled()){
-					System.out.println("DESTRUCT ROPE 2");
+					//System.out.println("DESTRUCT ROPE 2");
 
 					destructRope();
 					avatar.setGrappling(false);
@@ -1226,7 +1226,7 @@ public class PlatformController implements ContactListener, Screen {
 		boolean spawned = false;
 		if(InputController.getInstance().didTertiary()){
 			Vector2 bp = canBubble2(placeLocation);
-			System.out.println(bp);
+			//System.out.println(bp);
 			if(bp != null) {
 				if (wait > 20) {
 					if (!InputController.getInstance().isFiniteBubbles() || bubbles_left > 0) {
@@ -1292,7 +1292,7 @@ public class PlatformController implements ContactListener, Screen {
 			avatar.setGrappleBoost(true);
 			Bubble b = (Bubble) rope.bubble.getUserData();
 			b.setGrappled(false);
-			System.out.println("DESTRUCT ROPE 3");
+			//System.out.println("DESTRUCT ROPE 3");
 
 			destructRope();
 			rope = null;
@@ -1748,9 +1748,9 @@ public class PlatformController implements ContactListener, Screen {
 				doored = true;
 				Door door = (bd1 == avatar) ? (Door)bd2: (Door)bd1;
 
-				////System.out.println("COLLISION WITH " + door.getName());
+				//////System.out.println("COLLISION WITH " + door.getName());
 				nextLevelID = door.getTargetLevelID();
-				////System.out.println("Next Level: " + nextLevelID);
+				//////System.out.println("Next Level: " + nextLevelID);
 
 			}
 
@@ -2018,7 +2018,7 @@ public class PlatformController implements ContactListener, Screen {
 		spikelist.clear();
 		bullets.clear();
 		if(rope != null){
-			System.out.println("DESTRUCT ROPE 4");
+			//System.out.println("DESTRUCT ROPE 4");
 
 			destructRope();
 			rope = null;
@@ -2422,7 +2422,7 @@ public class PlatformController implements ContactListener, Screen {
 	public boolean pressedButton(int screenX, int screenY, Texture texture, Vector2 button_pos){
 		float button_w = texture.getWidth() * scale.x;
 		float button_h = texture.getHeight() * scale.y;
-		//System.out.println(button_center);
+		////System.out.println(button_center);
 		screenY = canvas.getHeight() - screenY;
 		if(screenX >= button_pos.x && screenX <= button_pos.x + button_w){
 			if(screenY >= button_pos.y - button_h && screenY <= button_pos.y){

@@ -435,18 +435,18 @@ public class InputController {
 			finiteBubblesPressed = !finiteBubblesPressed;
 
 			if(finiteBubblesPressed == true){
-				////////System.out.println("finitebubbles :(");
+				//////////System.out.println("finitebubbles :(");
 			}else{
-				////////System.out.println("INFINITE BUBBLES :)");
+				//////////System.out.println("INFINITE BUBBLES :)");
 			}
 		}
-		////////System.out.println("Finite Bubbles in IC?: "+ finiteBubblesPressed);
+		//////////System.out.println("Finite Bubbles in IC?: "+ finiteBubblesPressed);
 		if ((secondary && reloadBubblesOnGroundPressed) || (Gdx.input.isKeyJustPressed(Input.Keys.NUM_4))) {
 			reloadBubblesOnGroundPressed = !reloadBubblesOnGroundPressed;
 			if(reloadBubblesOnGroundPressed == true){
-				//////System.out.println("Ready to RELOAD");
+				////////System.out.println("Ready to RELOAD");
 			}else{
-				//////System.out.println("not reloadin' not ever!");
+				////////System.out.println("not reloadin' not ever!");
 			}
 		}
 

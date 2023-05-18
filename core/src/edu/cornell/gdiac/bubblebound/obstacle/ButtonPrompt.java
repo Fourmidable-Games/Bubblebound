@@ -66,7 +66,7 @@ public class ButtonPrompt extends BoxObstacle {
 
         float sx = drawScale.x/6;
         float sy = drawScale.y/6;
-        System.out.println("fuck:" + (posY) * drawScale.y);
+        //System.out.println("fuck:" + (posY) * drawScale.y);
         if (buttonChar == null) {
             canvas.draw(texture, Color.WHITE, posX, posY, (posX * drawScale.x), (posY * drawScale.y), getAngle(), sx, sy);
         }
@@ -75,7 +75,7 @@ public class ButtonPrompt extends BoxObstacle {
             canvas.draw(texture, Color.WHITE, posX, posY, posX * drawScale.x, posY * drawScale.y, getAngle(), sx, sy);
             int ratio = 60;
             canvas.draw(buttonChar, Color.WHITE, (canvasWidth/1920) + posX-11, (canvasHeight/1080)+posY-51, (400/ratio), ((posY) * drawScale.y)/ratio);
-            //System.out.println("fuck:" + (posX) * drawScale.x);
+            ////System.out.println("fuck:" + (posX) * drawScale.x);
         }
 
         drawtimer++;
