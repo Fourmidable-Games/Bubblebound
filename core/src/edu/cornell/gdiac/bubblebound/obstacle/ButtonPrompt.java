@@ -19,7 +19,10 @@ public class ButtonPrompt extends BoxObstacle {
 
     String buttonText = null;
 
-    Texture buttonChar = null;
+    TextureRegion buttonChar = null;
+
+    float canvasWidth;
+    float canvasHeight;
 
     BitmapFont font = null;
 
@@ -42,13 +45,15 @@ public class ButtonPrompt extends BoxObstacle {
         this.buttonTexture = buttonTexture;
     }
 
-    public ButtonPrompt(float x, float y, int level_drawn, TextureRegion buttonTexture, Texture ButtonChar) {
+    public ButtonPrompt(float x, float y, int level_drawn, TextureRegion buttonTexture, TextureRegion ButtonChar, float canvasWidth, float canvasHeight) {
         super(x, y);
         this.posX = x;
         this.posY = y;
         level = level_drawn;
         this.buttonTexture = buttonTexture;
         this.buttonChar = ButtonChar;
+        this.canvasWidth = canvasWidth;
+        this.canvasHeight = canvasHeight;
     }
 
     public int getLevel() {
@@ -61,17 +66,16 @@ public class ButtonPrompt extends BoxObstacle {
 
         float sx = drawScale.x/6;
         float sy = drawScale.y/6;
-
+        System.out.println("fuck:" + (posY) * drawScale.y);
         if (buttonChar == null) {
-            canvas.draw(texture, Color.WHITE, posX, posY, posX * drawScale.x, posY * drawScale.y, getAngle(), sx, sy);
+            canvas.draw(texture, Color.WHITE, posX, posY, (posX * drawScale.x), (posY * drawScale.y), getAngle(), sx, sy);
         }
 
         else {
-//            canvas.draw(texture, Color.WHITE, posX, posY, posX * drawScale.x, posY * drawScale.y, getAngle(), sx, sy);
-//            canvas.draw(buttonChar, Color.WHITE, posX-111, posY-14, (posX-111) * drawScale.x, (posY-14) * drawScale.y, getAngle(), sx, sy );
-            sx = drawScale.x/6;
-            sy = drawScale.y/6;
-            canvas.draw(buttonChar, Color.WHITE, posX, posY, (posX) * drawScale.x, (posY) * drawScale.y, getAngle(), sx, sy );
+            canvas.draw(texture, Color.WHITE, posX, posY, posX * drawScale.x, posY * drawScale.y, getAngle(), sx, sy);
+            int ratio = 60;
+            canvas.draw(buttonChar, Color.WHITE, (canvasWidth/1920) + posX-11, (canvasHeight/1080)+posY-51, (400/ratio), ((posY) * drawScale.y)/ratio);
+            //System.out.println("fuck:" + (posX) * drawScale.x);
         }
 
         drawtimer++;

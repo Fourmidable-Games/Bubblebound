@@ -684,7 +684,7 @@ public class PlatformController implements ContactListener, Screen {
 			if (i == 0) {
 				int buttonMapInt = keyboard_bindings[8];
 				TextureRegion buttonText = buttonTextures.get(getTexture(buttonMapInt));
-				ButtonPrompt grapple = new ButtonPrompt(950, 350, 2, grapplePrompt, buttonText.getTexture());
+				ButtonPrompt grapple = new ButtonPrompt(400, 500, 3, grapplePrompt, buttonText, canvas.getWidth(), canvas.height);
 				grapple.setName("grapplePrompt");
 				grapple.setTexture(grapplePrompt);
 				prompts.add(grapple);
@@ -2412,6 +2412,9 @@ public class PlatformController implements ContactListener, Screen {
 		for(Bullet b: bullets){
 			b.draw(canvas);
 		}
+		for (ButtonPrompt b: prompts) {
+			b.draw(canvas);
+		}
 		if(avatar != null){
 			avatar.draw(canvas);
 		}
@@ -2420,9 +2423,6 @@ public class PlatformController implements ContactListener, Screen {
 		}
 		for(PoisonGas pg : poisons){
 			pg.draw(canvas);
-		}
-		for (ButtonPrompt b: prompts) {
-			b.draw(canvas);
 		}
 		if(level6Token != null){level6Token.draw(canvas);}
 		if(level12Token != null){level12Token.draw(canvas);}
