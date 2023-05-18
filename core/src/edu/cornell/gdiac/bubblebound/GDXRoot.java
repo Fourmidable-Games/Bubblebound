@@ -267,6 +267,7 @@ public class GDXRoot extends Game implements ScreenListener {
 				controller.dispose();
 				controller = null;
 				currlevel = exitCode;
+
 				loading.startMusic();
 				loading.poopypants();
 				loading.setScreenListener(this);

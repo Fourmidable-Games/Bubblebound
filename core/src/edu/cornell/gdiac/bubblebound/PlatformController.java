@@ -2345,8 +2345,10 @@ public class PlatformController implements ContactListener, Screen {
 
 	public void drawPause(){
 		Gdx.graphics.setCursor(defaultCursor);
-		level1MusicCave.pause(level1MusicCaveID);
-		level1MusicSunset.pause(level1MusicSunsetID);
+//		level1MusicCave.pause(level1MusicCaveID);
+//		level1MusicSunset.pause(level1MusicSunsetID);
+		level1MusicCave.resume(level1MusicCaveID);
+		level1MusicSunset.resume(level1MusicSunsetID);
 		cameraCoords.x = canvas.getWidth() / 2f;
 		cameraCoords.y = canvas.getHeight() / 2f;
 		canvas.camera.position.set(canvas.getWidth() / 2f, canvas.getHeight() / 2f, 0);
@@ -2382,8 +2384,7 @@ public class PlatformController implements ContactListener, Screen {
 			if(pressedButton((int)ch.x, (int)ch.y, playButton, playPos)){
 				pause_state = false;
 				Gdx.graphics.setCursor(emptyCursor);
-				level1MusicCave.resume(level1MusicCaveID);
-				level1MusicSunset.resume(level1MusicSunsetID);
+
 
 			}
 			if(pressedButton((int)ch.x, (int)ch.y, settingsButton, settingPos)){
@@ -2411,17 +2412,6 @@ public class PlatformController implements ContactListener, Screen {
 			}
 		}
 		return 0l;
-	}
-
-	public Sound getMusic(){
-		if(avatar != null){
-			if(avatar.grav == -1){
-				return  level1MusicCave;
-			}else{
-				return level1MusicSunset;
-			}
-		}
-		return null;
 	}
 
 	public boolean pressedButton(int screenX, int screenY, Texture texture, Vector2 button_pos){

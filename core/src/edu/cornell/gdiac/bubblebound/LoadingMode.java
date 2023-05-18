@@ -362,6 +362,7 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 //			music_volume = new_music_volume;
 //		}
 		//System.out.println(music_volume);
+		loadingMusic.setVolume(loadingMusicId,(long)InputController.getInstance().audio_levels[0]);
 		if (playButton == null) {
 			assets.update(budget);
 			this.progress = assets.getProgress();
@@ -487,6 +488,7 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 	}
 
 	public void startMusic(){
+		loadingMusic.stop();
 		float temp_volume = InputController.getInstance().audio_levels[0];
 		System.out.println(temp_volume);
 		loadingMusicId =loadingMusic.loop(temp_volume);
