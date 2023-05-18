@@ -169,9 +169,9 @@ public class SettingsMode implements Screen, InputProcessor, ControllerListener 
         private List<List<Integer>> whitelisted_pairs = Arrays.asList(jump_with_arrows_pair,jump_with_letters_pair);
 
 
-        public float masterVolume = 1.0f;
-        public float musicVolume = 1.0f;
-        public float soundVolume = 1.0f;
+        public static float masterVolume = 1.0f;
+        public static float musicVolume = 1.0f;
+        public static float soundVolume = 1.0f;
         public int controls = 0; //0 is mouse, 1 is keyboard
 
         public float getMasterVolume() {return masterVolume;}
@@ -207,6 +207,7 @@ public class SettingsMode implements Screen, InputProcessor, ControllerListener 
        private Texture mAttach;
        private Texture[] inputTextures = new Texture[40];
        public int[] inputs;
+       public float[] audio_levels;
         Vector2 backButtonPos;
         Vector2 masterSoundBarPos;
         Vector2 soundBarPos;
@@ -270,6 +271,7 @@ public class SettingsMode implements Screen, InputProcessor, ControllerListener 
             slidercircle = internal.getEntry("slidercircle", Texture.class);
 
             inputs = InputController.getInstance().buttons;
+            audio_levels = InputController.getInstance().audio_levels;
             for(int i = 0; i < buttons.length; i++){
                 buttons[i] = unclickedButton;
             }
@@ -403,11 +405,11 @@ public class SettingsMode implements Screen, InputProcessor, ControllerListener 
                 if (pressedButton(screenX, slider, masterSoundBarPos)) {
                     float temp = screenX - masterSoundBarPos.x;
                     masterVolume = temp / (slider.getWidth() * scale.x);
-                    loadingMusic.setVolume(loadingMusicId, masterVolume*musicVolume);
+
                 }else{
                     masterVolume = (sliderOutOfBoundDirection(screenX,slider,masterSoundBarPos) < 0) ? 0 : 1;
-                    loadingMusic.setVolume(loadingMusicId,masterVolume*musicVolume);
                 }
+                audio_levels[0] = masterVolume * musicVolume;
             }
             if(musicSliderActive) {
                 int screenX = Gdx.input.getX();
@@ -415,11 +417,10 @@ public class SettingsMode implements Screen, InputProcessor, ControllerListener 
                 if (pressedButton(screenX, slider, musicBarPos)) {
                     float temp = screenX - musicBarPos.x;
                     musicVolume = temp / (slider.getWidth() * scale.x);
-                    loadingMusic.setVolume(loadingMusicId, musicVolume*masterVolume);
                 }else{
                     musicVolume = (sliderOutOfBoundDirection(screenX,slider,musicBarPos) < 0) ? 0 : 1;
-                    loadingMusic.setVolume(loadingMusicId,musicVolume*masterVolume);
                 }
+                audio_levels[0] = masterVolume * musicVolume;
             }
             if(sfxSliderActive) {
                 int screenX = Gdx.input.getX();
@@ -429,7 +430,9 @@ public class SettingsMode implements Screen, InputProcessor, ControllerListener 
                 }else{
                     soundVolume = (sliderOutOfBoundDirection(screenX,slider,soundBarPos) < 0) ? 0 : 1;
                 }
+                audio_levels[1] = soundVolume * masterVolume;
             }
+            InputController.getInstance().audio_levels = audio_levels;
         }
 
         /**
