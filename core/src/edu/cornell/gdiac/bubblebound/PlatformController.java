@@ -985,9 +985,6 @@ public class PlatformController implements ContactListener, Screen {
 	}
 
 	private void updateMouse(){
-		if(!InputController.getInstance().isMouseControlls()){
-			return;
-		}
 		crosshairLoc = InputController.getInstance().getCrossHair();
 		float xoffset = (cameraCoords.x / scale.x) - (CAMERA_WIDTH / 2f); //find bottom left corner of camera
 		float yoffset = (cameraCoords.y / scale.y) - (CAMERA_HEIGHT / 2f);
@@ -2394,6 +2391,7 @@ public class PlatformController implements ContactListener, Screen {
 		input.readInput(new Rectangle(0,0,CAMERA_WIDTH,CAMERA_HEIGHT), scale);
 		if(input.didExit()){
 			pause_state = false;
+			Gdx.graphics.setCursor(emptyCursor);
 		}
 		canvas.begin();
 		float sx = (float)canvas.getWidth()/pauseScreen.getWidth();
