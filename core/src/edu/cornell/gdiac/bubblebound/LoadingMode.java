@@ -354,14 +354,14 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 	 * @param delta Number of seconds since last animation frame
 	 */
 	private void update(float delta) {
-		// //System.out.println("Loading updating");
+		// ////System.out.println("Loading updating");
 		Gdx.input.setInputProcessor( this );
 //		float new_music_volume = InputController.getInstance().audio_levels[0];
 //		if(new_music_volume != music_volume){
 //			loadingMusic.setVolume(loadingMusicId,new_music_volume);
 //			music_volume = new_music_volume;
 //		}
-		//System.out.println(music_volume);
+		////System.out.println(music_volume);
 		loadingMusic.setVolume(loadingMusicId,(long)InputController.getInstance().audio_levels[0]);
 		if (playButton == null) {
 			assets.update(budget);
@@ -413,7 +413,7 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 //		canvas.draw(background, 0, 0);
 			float x = canvas.getWidth() / 2f;
 			float y = canvas.getHeight() * 0.6f;
-			////System.out.println(count);
+			//////System.out.println(count);
 			canvas.draw(background[count], Color.WHITE, 0, 0, 0, 0, 0, sx, sy);
 
 			Texture temp = (hovered == 1) ? hoveredPlayButton : playButton;
@@ -490,7 +490,7 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 	public void startMusic(){
 		loadingMusic.stop();
 		float temp_volume = InputController.getInstance().audio_levels[0];
-		System.out.println(temp_volume);
+		//System.out.println(temp_volume);
 		loadingMusicId =loadingMusic.loop(temp_volume);
 	}
 
@@ -625,11 +625,11 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 	 */
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		if (playButton == null || pressState == 2) {
-			//////System.out.println("howdy");
+			////////System.out.println("howdy");
 			return true;
 		}
 
-		//////System.out.println("DO this pls");
+		////////System.out.println("DO this pls");
 		// Flip to match graphics coordinates
 		if(pressedButton(screenX, screenY, playButton, playPos)){
 			pressState = 1;
@@ -651,7 +651,7 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 		float button_w = texture.getWidth() * scale.x / 2f;
 		float button_h = texture.getHeight() * scale.y / 2f;
 		screenY = canvas.getHeight() - screenY;
-		//////System.out.println(button_center);
+		////////System.out.println(button_center);
 		if(screenX >= button_pos.x - button_w && screenX <= button_pos.x + button_w){
 			if(screenY >= button_pos.y - button_h && screenY <= button_pos.y + button_h){
 				return true;
