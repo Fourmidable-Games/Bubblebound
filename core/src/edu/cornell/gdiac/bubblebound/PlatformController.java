@@ -149,6 +149,7 @@ public class PlatformController implements ContactListener, Screen {
 	private JsonValue constants;
 
 	private int BUBBLE_LIMIT = 2;
+	private int constructRopeNextCycle;
 
 	private int bubbles_left = 0;
 
@@ -316,6 +317,7 @@ public class PlatformController implements ContactListener, Screen {
 	 * The game has default gravity and other settings
 	 */
 	public PlatformController() {
+		constructRopeNextCycle = 0;
 		Rectangle worldBounds = new Rectangle(0,0,DEFAULT_WIDTH,DEFAULT_HEIGHT);
 		Vector2 worldGravityVector = new Vector2(0, DEFAULT_GRAVITY);
 		world = new World(worldGravityVector,false);
@@ -525,6 +527,7 @@ public class PlatformController implements ContactListener, Screen {
 		Vector2 gravity = new Vector2(world.getGravity() );
 		zones.clear();
 		if(rope != null){
+			System.out.println("DESTRUCT ROPE 1");
 			destructRope();
 			rope = null;
 		}
@@ -1021,6 +1024,8 @@ public class PlatformController implements ContactListener, Screen {
 			b.canRopeTo = false;
 			if(b.timedOut()){
 				if(b.isGrappled()){
+					System.out.println("DESTRUCT ROPE 2");
+
 					destructRope();
 					avatar.setGrappling(false);
 					b.setGrappled(false);
@@ -1283,12 +1288,17 @@ public class PlatformController implements ContactListener, Screen {
 			avatar.setGrappleBoost(true);
 			Bubble b = (Bubble) rope.bubble.getUserData();
 			b.setGrappled(false);
+			System.out.println("DESTRUCT ROPE 3");
+
 			destructRope();
 			rope = null;
 			releaseRopeSoundId = playSound(releaseRopeSound, releaseRopeSoundId, soundvolume );
 		}
+		if (constructRope || constructRopeNextCycle>0) {
+			constructRopeNextCycle++;
+		}
 
-		if(constructRope && closest != null){
+		if(constructRopeNextCycle >=5 && closest != null){
 
 			if(canShoot(closest)) { //TODO:: make this good
 				avatar.setGrappling(true);
@@ -1297,6 +1307,7 @@ public class PlatformController implements ContactListener, Screen {
 				rope = createGrapple(closest);
 				shootRopeSoundId = playSound(shootRopeSound, shootRopeSoundId, soundvolume);
 			}
+			constructRopeNextCycle = 0;
 
 		}
 
@@ -2003,6 +2014,8 @@ public class PlatformController implements ContactListener, Screen {
 		spikelist.clear();
 		bullets.clear();
 		if(rope != null){
+			System.out.println("DESTRUCT ROPE 4");
+
 			destructRope();
 			rope = null;
 		}
