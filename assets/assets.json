@@ -1251,271 +1251,47 @@
         "wrapU": "repeated",
         "wrapV": "repeated"
       },
-      "Letters:1" : {
-        "file":  "Letters/+.png",
-        "wrapU": "repeated",
-        "wrapV": "repeated"
-      },
-      "Letters:2" : {
-        "file":  "Letters/,.png",
-        "wrapU": "repeated",
-        "wrapV": "repeated"
-      },
-      "Letters:3" : {
-        "file":  "Letters/..png",
-        "wrapU": "repeated",
-        "wrapV": "repeated"
-      },
-      "Letters:4" : {
-        "file":  "Letters/.png",
-        "wrapU": "repeated",
-        "wrapV": "repeated"
-      },
-      "Letters:5" : {
-        "file":  "Letters/0.png",
-        "wrapU": "repeated",
-        "wrapV": "repeated"
-      },
-      "Letters:6" : {
-        "file":  "Letters/1.png",
-        "wrapU": "repeated",
-        "wrapV": "repeated"
-      },
-      "Letters:7" : {
-        "file":  "Letters/2.png",
-        "wrapU": "repeated",
-        "wrapV": "repeated"
-      },
-      "Letters:8" : {
-        "file":  "Letters/3.png",
-        "wrapU": "repeated",
-        "wrapV": "repeated"
-      },
-      "Letters:9" : {
-        "file":  "Letters/4.png",
-        "wrapU": "repeated",
-        "wrapV": "repeated"
-      },
-      "Letters:10" : {
-        "file":  "Letters/5.png",
-        "wrapU": "repeated",
-        "wrapV": "repeated"
-      },
-      "Letters:11" : {
-        "file":  "Letters/6.png",
-        "wrapU": "repeated",
-        "wrapV": "repeated"
-      },
-      "Letters:12" : {
-        "file":  "Letters/7.png",
-        "wrapU": "repeated",
-        "wrapV": "repeated"
-      },
-      "Letters:13" : {
-        "file":  "Letters/8.png",
-        "wrapU": "repeated",
-        "wrapV": "repeated"
-      },
-      "Letters:14" : {
-        "file":  "Letters/9.png",
-        "wrapU": "repeated",
-        "wrapV": "repeated"
-      },
-      "Letters:15" : {
-        "file":  "Letters/=.png",
-        "wrapU": "repeated",
-        "wrapV": "repeated"
-      },
-      "Letters:16" : {
-        "file":  "Letters/[.png",
-        "wrapU": "repeated",
-        "wrapV": "repeated"
-      },
-      "Letters:17" : {
-        "file":  "Letters/].png",
-        "wrapU": "repeated",
-        "wrapV": "repeated"
-      },
-      "Letters:18" : {
-        "file":  "Letters/-.png",
-        "wrapU": "repeated",
-        "wrapV": "repeated"
-      },
-      "Letters:19" : {
-        "file":  "Letters/_(1).png",
-        "wrapU": "repeated",
-        "wrapV": "repeated"
-      },
-      "Letters:20" : {
-        "file":  "Letters/_.png",
-        "wrapU": "repeated",
-        "wrapV": "repeated"
-      },
-      "Letters:21" : {
-        "file":  "Letters/A.png",
-        "wrapU": "repeated",
-        "wrapV": "repeated"
-      },
-      "Letters:22" : {
-        "file":  "Letters/B.png",
-        "wrapU": "repeated",
-        "wrapV": "repeated"
-      },
-      "Letters:23" : {
-        "file":  "Letters/C.png",
-        "wrapU": "repeated",
-        "wrapV": "repeated"
-      },
-      "Letters:24" : {
-        "file":  "Letters/D.png",
-        "wrapU": "repeated",
-        "wrapV": "repeated"
-      },
-      "Letters:25" : {
-        "file":  "Letters/E.png",
-        "wrapU": "repeated",
-        "wrapV": "repeated"
-      },
-      "Letters:26" : {
-        "file":  "Letters/F.png",
-        "wrapU": "repeated",
-        "wrapV": "repeated"
-      },
-      "Letters:27" : {
-        "file":  "Letters/G.png",
-        "wrapU": "repeated",
-        "wrapV": "repeated"
-      },
-      "Letters:28" : {
-        "file":  "Letters/H.png",
-        "wrapU": "repeated",
-        "wrapV": "repeated"
-      },
-      "Letters:29" : {
-        "file":  "Letters/I.png",
-        "wrapU": "repeated",
-        "wrapV": "repeated"
-      },
-      "Letters:30" : {
-        "file":  "Letters/J.png",
-        "wrapU": "repeated",
-        "wrapV": "repeated"
-      },
-      "Letters:31" : {
-        "file":  "Letters/K.png",
-        "wrapU": "repeated",
-        "wrapV": "repeated"
-      },
-      "Letters:32" : {
-        "file":  "Letters/L.png",
-        "wrapU": "repeated",
-        "wrapV": "repeated"
-      },
-      "Letters:33" : {
-        "file":  "Letters/M.png",
-        "wrapU": "repeated",
-        "wrapV": "repeated"
-      },
-      "Letters:34" : {
-        "file":  "Letters/N.png",
-        "wrapU": "repeated",
-        "wrapV": "repeated"
-      },
-      "Letters:35" : {
-        "file":  "Letters/O.png",
-        "wrapU": "repeated",
-        "wrapV": "repeated"
-      },
-      "Letters:36" : {
-        "file":  "Letters/P.png",
-        "wrapU": "repeated",
-        "wrapV": "repeated"
-      },
-      "Letters:37" : {
-        "file":  "Letters/Q.png",
-        "wrapU": "repeated",
-        "wrapV": "repeated"
-      },
-      "Letters:38" : {
-        "file":  "Letters/R.png",
-        "wrapU": "repeated",
-        "wrapV": "repeated"
-      },
-      "Letters:39" : {
-        "file":  "Letters/S.png",
-        "wrapU": "repeated",
-        "wrapV": "repeated"
-      },
-      "Letters:40" : {
-        "file":  "Letters/T.png",
-        "wrapU": "repeated",
-        "wrapV": "repeated"
-      },
-      "Letters:41" : {
-        "file":  "Letters/U.png",
-        "wrapU": "repeated",
-        "wrapV": "repeated"
-      },
-      "Letters:42" : {
-        "file":  "Letters/Untitled.png",
-        "wrapU": "repeated",
-        "wrapV": "repeated"
-      },
-      "Letters:43" : {
-        "file":  "Letters/V.png",
-        "wrapU": "repeated",
-        "wrapV": "repeated"
-      },
-      "Letters:44" : {
-        "file":  "Letters/Vector.png",
-        "wrapU": "repeated",
-        "wrapV": "repeated"
-      },
-      "Letters:45" : {
-        "file":  "Letters/Vector-1.png",
-        "wrapU": "repeated",
-        "wrapV": "repeated"
-      },
-      "Letters:46" : {
-        "file":  "Letters/Vector-2.png",
-        "wrapU": "repeated",
-        "wrapV": "repeated"
-      },
-      "Letters:47" : {
-        "file":  "Letters/Vector-3.png",
-        "wrapU": "repeated",
-        "wrapV": "repeated"
-      },
-      "Letters:48" : {
-        "file":  "Letters/W.png",
-        "wrapU": "repeated",
-        "wrapV": "repeated"
-      },
-      "Letters:49" : {
-        "file":  "Letters/X.png",
-        "wrapU": "repeated",
-        "wrapV": "repeated"
-      },
-      "Letters:50" : {
-        "file":  "Letters/X-1.png",
-        "wrapU": "repeated",
-        "wrapV": "repeated"
-      },
-      "Letters:51" : {
-        "file":  "Letters/Y.png",
-        "wrapU": "repeated",
-        "wrapV": "repeated"
-      },
-      "Letters:52" : {
-        "file":  "Letters/Z.png",
-        "wrapU": "repeated",
-        "wrapV": "repeated"
-      },
-      "Letters:53" : {
-        "file":  "Letters/‘.png",
-        "wrapU": "repeated",
-        "wrapV": "repeated"
-      },
+      "input0" : "Letters/Vector.png",
+      "input1" : "Letters/Vector-1.png",
+      "input2" : "Letters/Vector-2.png",
+      "input3" : "Letters/Vector-3.png",
+      "input4" : "Letters/A.png",
+      "input5" : "Letters/B.png",
+      "input6" : "Letters/C.png",
+      "input7" : "Letters/D.png",
+      "input8" : "Letters/E.png",
+      "input9" : "Letters/F.png",
+      "input10" : "Letters/G.png",
+      "input11" : "Letters/H.png",
+      "input12" : "Letters/I.png",
+      "input13" : "Letters/J.png",
+      "input14" : "Letters/K.png",
+      "input15" : "Letters/L.png",
+      "input16" : "Letters/M.png",
+      "input17" : "Letters/N.png",
+      "input18" : "Letters/O.png",
+      "input19" : "Letters/P.png",
+      "input20" : "Letters/Q.png",
+      "input21" : "Letters/R.png",
+      "input22" : "Letters/S.png",
+      "input23" : "Letters/T.png",
+      "input24" : "Letters/U.png",
+      "input25" : "Letters/V.png",
+      "input26" : "Letters/W.png",
+      "input27" : "Letters/X.png",
+      "input28" : "Letters/Y.png",
+      "input29" : "Letters/Z.png",
+      "input30" : "Letters/0.png",
+      "input31" : "Letters/1.png",
+      "input32" : "Letters/2.png",
+      "input33" : "Letters/3.png",
+      "input34" : "Letters/4.png",
+      "input35" : "Letters/5.png",
+      "input36" : "Letters/6.png",
+      "input37" : "Letters/7.png",
+      "input38" : "Letters/8.png",
+      "input39" : "Letters/9.png",
+      "jumpBP" : "shared/jumpBP.png",
         "shared:goal":   "shared/goaldoor.png",
         "platform:bubblecooldown": "platform/fixedBubbleCooldown.png",
         "platform:emptyCooldownBubble": "platform/emptyCooldownBubble.png",
