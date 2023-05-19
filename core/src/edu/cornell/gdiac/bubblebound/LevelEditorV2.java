@@ -536,7 +536,7 @@ public class LevelEditorV2 {
                                     arrayOffset = 332-1;
                                 }
 
-                                else if (k > 802) {
+                                else if (k > 802 || k<0) {
                                     flip = true;
                                 }
 
