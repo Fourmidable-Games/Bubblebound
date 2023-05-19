@@ -2255,8 +2255,8 @@ public class PlatformController implements ContactListener, Screen {
 			y = ((CAMERA_HEIGHT + 1) / 2f) * scale.y;
 		}
 
-		cameraCoords.x = x;
-		cameraCoords.y = y;
+		cameraCoords.x = Math.round(x);
+		cameraCoords.y = Math.round(y);
 
 		canvas.camera.position.set(cameraCoords, 0);
 		canvas.camera.update();
