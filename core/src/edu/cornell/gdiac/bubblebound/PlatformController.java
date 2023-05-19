@@ -204,6 +204,8 @@ public class PlatformController implements ContactListener, Screen {
 	protected TextureRegion dormantlucen;
 	protected TextureRegion sundropTexture;
 
+	protected Texture jumpBP;
+	protected Texture[] letters = new Texture[40];
 
 	protected Texture pauseScreen;
 	protected Texture playButton;
@@ -467,11 +469,13 @@ public class PlatformController implements ContactListener, Screen {
 		for(int i = 1; i < 42; i++){
 			textures.add(new TextureRegion(directory.getEntry("shared:new" + i, Texture.class)));
 		}
-		for(int i = 1; i < 53; i++){
-			buttonTextures.add(new TextureRegion(directory.getEntry("Letters:" + i, Texture.class)));
+
+
+		for(int i = 0; i < letters.length; i++){
+			letters[i] = directory.getEntry("input" + i, Texture.class);
 		}
 
-
+		jumpBP = directory.getEntry("jumpBP", Texture.class);
 
 		spikeTextureList.add(spikeStrip);
 		spikeTextureList.add(new TextureRegion(directory.getEntry("shared:skyspike", Texture.class)));
@@ -709,22 +713,6 @@ public class PlatformController implements ContactListener, Screen {
 		for (int i = 0; i < bubbleList.size(); i++) {
 			Bubble wo = bubbleList.get(i);
 
-			if (i == 0) {
-				int buttonMapInt = keyboard_bindings[8];
-				TextureRegion buttonText = buttonTextures.get(getTexture(buttonMapInt));
-				ButtonPrompt grapple;
-				if (buttonMapInt == 31) {
-					grapple = new ButtonPrompt(400, 500, 3, grapplePrompt, buttonText, canvas.getWidth(), canvas.height, 170);
-				}
-				else {
-					grapple = new ButtonPrompt(400, 500, 3, grapplePrompt, buttonText, canvas.getWidth(), canvas.height);
-				}
-				grapple.setName("grapplePrompt");
-				grapple.setTexture(grapplePrompt);
-				prompts.add(grapple);
-
-
-			}
 
 
 
@@ -757,6 +745,16 @@ public class PlatformController implements ContactListener, Screen {
 			createProjEnemy(projEnemyData.get(i).get(0),projEnemyData.get(i).get(1), Math.round(projEnemyData.get(i).get(2)));
 		}
 
+
+
+
+
+		ButtonPrompt bp = new ButtonPrompt(2, 8, jumpBP, 0, 1);
+		ButtonPrompt bp2 = new ButtonPrompt(5, 5, jumpBP, 8);
+		bp.setScale(scale);
+		//bp.setMouse(leftMouse, rightMouse);
+		bp.setLetters(letters);
+		prompts.add(bp);
 
 
 
