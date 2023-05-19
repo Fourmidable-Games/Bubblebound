@@ -1316,7 +1316,7 @@ public class PlatformController implements ContactListener, Screen {
 			if(avatar.getGravZone() == 1){
 				avatar.setJumping(InputController.getInstance().didPrimary());
 			}else{
-				avatar.setJumping(InputController.getInstance().didPrimaryUpsideDown());
+				avatar.setJumping(InputController.getInstance().didPrimaryUpsideDown() || InputController.getInstance().didPrimary());
 			}
 		}else{
 			avatar.setMovement(0);
