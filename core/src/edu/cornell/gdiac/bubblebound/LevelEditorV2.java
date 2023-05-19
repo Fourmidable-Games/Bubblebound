@@ -486,8 +486,12 @@ public class LevelEditorV2 {
 
                                 boolean flip = false;
 
-                                //////System.out.println("Texture Size List");
-                                //////System.out.println(textureObjects.size());
+                                boolean flower = false;
+
+
+                                if (k == 802 || k == 801) {
+                                    flower = true;
+                                }
 
 
                                 if (k >= 517 && k <= 522) {
@@ -532,6 +536,10 @@ public class LevelEditorV2 {
                                     arrayOffset = 332-1;
                                 }
 
+                                if (k-arrayOffset <0) {
+                                    flip = true;
+                                }
+
 
 //                                if (k-arrayOffset >= 219) {
 //                                    flip = true;
@@ -552,8 +560,13 @@ public class LevelEditorV2 {
 
                                 else {
                                     wo.setTexture(textureObjects.get(textureObjects.size() -1));
+                                    if (flower == true) {
+                                        wo.setSensor(true);
+                                    }
                                     boxes.add(wo);
                                 }
+
+
 
                             }
                         }
