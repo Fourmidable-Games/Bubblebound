@@ -66,6 +66,14 @@ public class ButtonPrompt  {
 
     }
 
+    public boolean noButtons = false;
+    public ButtonPrompt(float x, float y, Texture buttonTexture){
+        posX = x;
+        posY = y;
+        noButtons = true;
+        this.buttonTexture = buttonTexture;
+    }
+
     public int getTexture(int x){
         if(x <= 16){ // 0-9 are 30 - 39
             return x + 23;
@@ -97,23 +105,28 @@ public class ButtonPrompt  {
             Texture two = letters[getTexture(buttons[mapping2])];
             canvas.draw(two, Color.WHITE, two.getWidth()/2f, two.getHeight()/2f, x + (264 * sx), y - (175 * sy), 0,1.5f * sx, 1.5f * sy);
 
+        }else if(noButtons) {
+
         }else{
+
             if(input.isMouseControlls()) {
-                if (input.mouse) { //mouse == true mouse controls r normal
-                    Texture t = left;
-                    left = right;
-                    right = left;
+                Texture lc = left;
+                Texture rc = right;
+                if (!input.mouse) { //mouse == true mouse controls r normal
+                    lc = right;
+                    rc = left;
                 }
                 if(mapping1 == 8){ //this is for grapple/release
-                    canvas.draw(left, Color.WHITE, 0, left.getHeight(), x + (175 * sx), y - (175 * sy), sx, sy);
-                }else{//place
-                    canvas.draw(left, Color.WHITE, 0, left.getHeight(), x + (175 * sx), y - (175 * sy), sx, sy);
+                    canvas.draw(lc, Color.WHITE, lc.getWidth()/2f, lc.getHeight()/2f, x + (175 * sx), y - (175 * sy), 0, sx, sy);
+                }else{//
+                    canvas.draw(rc, Color.WHITE, rc.getWidth()/2f, lc.getHeight()/2f, x + (175 * sx), y - (175 * sy), 0, sx, sy);
                 }
 
 
             }else{
+                System.out.println("BBBBBBBBB");
                 Texture t = letters[getTexture(buttons[mapping1])];
-                canvas.draw(t, Color.WHITE, 0, t.getHeight(), x + (175 * sx), y - (175 * sy), sx, sy);
+                canvas.draw(t, Color.WHITE, t.getWidth()/ 2f, t.getHeight() / 2f, x + (175 * sx), y - (175 * sy), 0, 1.5f * sx, 1.5f * sy);
             }
         }
 

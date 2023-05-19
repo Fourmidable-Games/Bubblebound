@@ -81,7 +81,6 @@ public class PlatformController implements ContactListener, Screen {
 	protected TextureRegion emptyBubbleCooldown;
 	protected TextureRegion fullBubbleCooldown;
 	protected FilmStrip bubblecooldownStrip;
-	protected TextureRegion grapplePrompt;
 	protected ArrayList<TextureRegion> buttonTextures = new ArrayList<>();
 
 	private Vector2 originalRopePlayerPos;
@@ -205,7 +204,17 @@ public class PlatformController implements ContactListener, Screen {
 	protected TextureRegion sundropTexture;
 
 	protected Texture jumpBP;
+	protected Texture rightBP;
+	protected Texture leftBP;
+	protected Texture restartBP;
+	protected Texture toggleBP;
+	protected Texture pauseBP;
+	protected Texture placeBP;
+	protected Texture grappleBP;
+	protected Texture detachBP;
 	protected Texture[] letters = new Texture[40];
+	protected Texture leftMouse;
+	protected Texture rightMouse;
 
 	protected Texture pauseScreen;
 	protected Texture playButton;
@@ -404,9 +413,6 @@ public class PlatformController implements ContactListener, Screen {
 		emptyCursor = Gdx.graphics.newCursor(emptyCursorPixmap, emptyCursorTexture.getWidth()/2, emptyCursorTexture.getHeight()/2);
 
 
-
-		grapplePrompt = new TextureRegion(directory.getEntry("shared:grapplePrompt",Texture.class));
-
 		deathLeft = new TextureRegion(directory.getEntry("platform:leftdeath", Texture.class));
 		deathRight = new TextureRegion(directory.getEntry("platform:rightdeath", Texture.class));
 
@@ -476,6 +482,18 @@ public class PlatformController implements ContactListener, Screen {
 		}
 
 		jumpBP = directory.getEntry("jumpBP", Texture.class);
+		rightBP = directory.getEntry("rightBP", Texture.class);
+		leftBP = directory.getEntry("leftBP", Texture.class);
+		restartBP = directory.getEntry("restartBP", Texture.class);
+		toggleBP = directory.getEntry("toggleBP", Texture.class);
+		pauseBP = directory.getEntry("pauseBP", Texture.class);
+		placeBP = directory.getEntry("placeBP", Texture.class);
+		grappleBP = directory.getEntry("grappleBP", Texture.class);
+		detachBP = directory.getEntry("detachBP", Texture.class);
+		leftMouse = directory.getEntry("leftmouse", Texture.class);
+		rightMouse = directory.getEntry("rightmouse", Texture.class);
+
+
 
 		spikeTextureList.add(spikeStrip);
 		spikeTextureList.add(new TextureRegion(directory.getEntry("shared:skyspike", Texture.class)));
@@ -747,14 +765,70 @@ public class PlatformController implements ContactListener, Screen {
 
 
 
+//
+//
+//		ButtonPrompt bp = new ButtonPrompt(2, 8, jumpBP, 0, 1);
+//		//ButtonPrompt bp2 = new ButtonPrompt(5, 5, jumpBP, 8);
+//		bp.setScale(scale);
+//		bp.setMouse(leftMouse, rightMouse);
+//		bp.setLetters(letters);
+//		prompts.add(bp);
+//
+//		ButtonPrompt bp2 = new ButtonPrompt(5, 8, jumpBP, 2, 3); //jump down
+//		bp2.setScale(scale);
+//		bp2.setMouse(leftMouse, rightMouse);
+//		bp2.setLetters(letters);
+//		prompts.add(bp2);
+//
+//		ButtonPrompt bp3 = new ButtonPrompt(8, 8, leftBP, 4, 5);
+//		bp3.setScale(scale);
+//		bp3.setMouse(leftMouse, rightMouse);
+//		bp3.setLetters(letters);
+//		prompts.add(bp3);
+////
+//		ButtonPrompt bp4 = new ButtonPrompt(11, 8, rightBP, 6, 7);
+//		bp4.setScale(scale);
+//		bp4.setMouse(leftMouse, rightMouse);
+//		bp4.setLetters(letters);
+//		prompts.add(bp4);
+
+		ButtonPrompt bp5 = new ButtonPrompt(14, 8, grappleBP, 8);
+		bp5.setScale(scale);
+		bp5.setMouse(leftMouse, rightMouse);
+		bp5.setLetters(letters);
+		prompts.add(bp5);
+
+		ButtonPrompt bp6 = new ButtonPrompt(17, 8, detachBP, 8);
+		bp6.setScale(scale);
+		bp6.setMouse(leftMouse, rightMouse);
+		bp6.setLetters(letters);
+		prompts.add(bp6);
+
+		ButtonPrompt bp7 = new ButtonPrompt(20, 8, placeBP, 9);
+		bp7.setScale(scale);
+		bp7.setMouse(leftMouse, rightMouse);
+		bp7.setLetters(letters);
+		prompts.add(bp7);
+
+//		ButtonPrompt bp8 = new ButtonPrompt(23, 8, toggleBP);
+//		bp8.setScale(scale);
+//		bp8.setMouse(leftMouse, rightMouse);
+//		bp8.setLetters(letters);
+//		prompts.add(bp8);
+//
+//		ButtonPrompt bp9 = new ButtonPrompt(26, 8, restartBP);
+//		bp9.setScale(scale);
+//		bp9.setMouse(leftMouse, rightMouse);
+//		bp9.setLetters(letters);
+//		prompts.add(bp9);
+//
+//		ButtonPrompt bp10 = new ButtonPrompt(29, 8, pauseBP);
+//		bp10.setScale(scale);
+//		bp10.setMouse(leftMouse, rightMouse);
+//		bp10.setLetters(letters);
+//		prompts.add(bp10);
 
 
-		ButtonPrompt bp = new ButtonPrompt(2, 8, jumpBP, 0, 1);
-		ButtonPrompt bp2 = new ButtonPrompt(5, 5, jumpBP, 8);
-		bp.setScale(scale);
-		//bp.setMouse(leftMouse, rightMouse);
-		bp.setLetters(letters);
-		prompts.add(bp);
 
 
 
@@ -771,6 +845,7 @@ public class PlatformController implements ContactListener, Screen {
 			level6Token.setSensor(true);
 			level6Token.setDrawScale(scale);
 			level6Token.setTexture(tokenText);
+
 //			//////System.out.println("ADDING TOKEN" + level6Token.getPosition());
 
 			addObject(level6Token);

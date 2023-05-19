@@ -1214,12 +1214,6 @@
       },
 
 
-      "shared:grapplePrompt" : {
-        "file":  "shared/grapplePrompt.png",
-        "wrapU": "repeated",
-        "wrapV": "repeated"
-      },
-
 
 
         "background:ice" : {
@@ -1292,6 +1286,16 @@
       "input38" : "Letters/8.png",
       "input39" : "Letters/9.png",
       "jumpBP" : "shared/jumpBP.png",
+      "rightBP" : "shared/rightBP.png",
+      "leftBP" : "shared/leftBP.png",
+      "restartBP" : "shared/restartBP.png",
+      "toggleBP" : "shared/toggleBP.png",
+      "pauseBP" : "shared/pauseBP.png",
+      "grappleBP" : "shared/grappleBP.png",
+      "placeBP" : "shared/placeBP.png",
+      "detachBP" : "shared/detachBP.png",
+      "leftmouse" : "shared/leftmouse.png",
+      "rightmouse" : "shared/rightmouse.png",
         "shared:goal":   "shared/goaldoor.png",
         "platform:bubblecooldown": "platform/fixedBubbleCooldown.png",
         "platform:emptyCooldownBubble": "platform/emptyCooldownBubble.png",
