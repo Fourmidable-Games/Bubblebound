@@ -133,7 +133,10 @@ public class BoxObstacle extends SimpleObstacle {
 	public BoxObstacle(float width, float height) {
 		this(0, 0, width, height);
 	}
-
+	float sx = 0;
+	float sy = 0;
+	float bsx = 0;
+	float bsy = 0;
 	/**
 	 * Creates a new box object.
 	 *
@@ -155,11 +158,29 @@ public class BoxObstacle extends SimpleObstacle {
 		shape = new PolygonShape();
 		vertices = new float[8];
 		geometry = null;
+
+
+
 		
 		// Initialize
 		resize(width, height);	
 	}
-	
+
+
+	@Override
+	public void setDrawScale(Vector2 value) {
+		sx = value.x / 64f;
+		sy = value.y / 64f;
+		sx = Math.round(32 * sx) / 32f;
+		sy = Math.round(32 * sy) / 32f;
+
+		float bordereffect = 1.1f;
+		bsx = value.x * bordereffect / 64f;
+		bsy = value.y * bordereffect / 64f;
+		bsx = Math.round(32 * bsx) / 32f;
+		bsy = Math.round(32 * bsy) / 32f;
+		setDrawScale(value.x,value.y);
+	}
 	/**
 	 * Reset the polygon vertices in the shape to match the dimension.
 	 */
@@ -260,23 +281,27 @@ public class BoxObstacle extends SimpleObstacle {
 	public int draworder = 0;
 	public int drawtimer = 0;
 
+	public boolean complete = false;
+
 	@Override
 	public void draw(GameCanvas canvas) {
-		float sx = drawScale.x / 64f;
-		float sy = drawScale.y / 64f;
-		sx = Math.round(32 * sx) / 32f; //roudns to x.x
-		sy = Math.round(32 * sy) / 32f;
 //		System.out.println("width" + canvas.getWidth() + "height" + canvas.getHeight());
 //		System.out.println("sx" + sx + "   sy" + sy);
 		if (isRope == true) {
 			if(drawtimer >= draworder){
-				sx *= 2;
-				sy*=2;
-				canvas.draw(texture, Color.WHITE, origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.y, getAngle(), sx, sy);
+				float sx2 = drawScale.x / 64f;
+				float sy2 = drawScale.y / 64f;
+				sx2 = 2 * Math.round(32 * sx2) / 32f;
+				sy2 = 2 * Math.round(32 * sy2) / 32f;
+				canvas.draw(texture, Color.WHITE, origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.y, getAngle(), sx2, sy2);
 			}
 			drawtimer++;
 		}
 		else if (isGoal == true) {
+			if(complete){
+				sx *= 1.3;
+				sy *= 1.3;
+			}
 			if(grav == 1){
 				canvas.draw(texture, Color.WHITE, origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.y, getAngle(), sx, sy);
 
@@ -298,13 +323,8 @@ public class BoxObstacle extends SimpleObstacle {
 
 
 	public void drawOutline(GameCanvas canvas) {
-		float boarderFactor = 1.1f;
-		float sx = drawScale.x * boarderFactor/ 64f;
-		float sy = drawScale.y * boarderFactor/ 64f;
-		sx = Math.round(32 * sx) / 32f; //roudns to x.x
-		sy = Math.round(32 * sy) / 32f;
 		if (texture != null) {
-			canvas.draw(texture, Color.BLACK, origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.y, getAngle(), sx, sy);
+			canvas.draw(texture, Color.BLACK, origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.y, getAngle(), bsx, bsy);
 		}
 
 
