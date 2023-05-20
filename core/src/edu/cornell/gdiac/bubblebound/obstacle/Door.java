@@ -77,5 +77,4 @@ public class Door extends Goal{
 
     public Vector2 getPlayerSpawnLocation(){return spawnLoc;}
 
-
 }
