@@ -2813,8 +2813,11 @@ public class PlatformController implements ContactListener, Screen {
 	 * @param delta Number of seconds since last animation frame
 	 */
 	public void render(float delta) {
-
+		if(delta > 0.022){
+			System.out.println(delta);
+		}
 		if(pause_state){
+			System.out.println("paused");
 			drawPause();
 		}else if (active) {
 			if (preUpdate(delta)) {
