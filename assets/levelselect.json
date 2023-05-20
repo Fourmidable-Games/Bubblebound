@@ -33,7 +33,8 @@
     "level4-2" : "levelselect/Level4-2.png",
     "level4-3" : "levelselect/Level4-3.png",
     "level4-4" : "levelselect/Level4-4.png",
-    "level4-5" : "levelselect/Level4-5.png"
+    "level4-5" : "levelselect/Level4-5.png",
+    "button" : "Buttons/button2.png"
   },
 
     "fonts": {

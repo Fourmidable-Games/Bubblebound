@@ -185,7 +185,7 @@ public class GDXRoot extends Game implements ScreenListener {
 
 				directory = loading.getLvlselect();
 				levelselect = new LevelSelectMode(canvas, 1);
-				levelselect.setProfMode(profMode);
+//				levelselect.setProfMode(profMode);
 				levelselect.setDefaultCursor(defaultCursor);
 				levelselect.gatherAssets(directory);
 				levelselect.setScreenListener(this);

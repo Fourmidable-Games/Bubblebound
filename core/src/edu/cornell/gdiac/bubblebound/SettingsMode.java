@@ -190,6 +190,8 @@ public class SettingsMode implements Screen, InputProcessor, ControllerListener 
        private Texture slider;
        private Texture slidercircle;
        private Texture unclickbutton;
+       private Texture greyedK;
+       private Texture greyedM;
 
        //boolean mouse = true; //idk mouse == true means left click for place
 
@@ -207,6 +209,8 @@ public class SettingsMode implements Screen, InputProcessor, ControllerListener 
         Vector2 musicBarPos;
         Vector2 mAttachPos;
         Vector2 mPlacePos;
+        Vector2 greyedKPos;
+        Vector2 greyedMPos;
 
         private boolean masterSoundSliderActive;
         private boolean musicSliderActive;
@@ -262,6 +266,8 @@ public class SettingsMode implements Screen, InputProcessor, ControllerListener 
             rightClick = internal.getEntry("rightclick", Texture.class);
             slider = internal.getEntry("slider", Texture.class);
             slidercircle = internal.getEntry("slidercircle", Texture.class);
+            greyedK = internal.getEntry("greyedK",Texture.class);
+            greyedM = internal.getEntry("greyedK", Texture.class);
 
             inputs = InputController.getInstance().buttons;
             audio_levels = InputController.getInstance().audio_levels;
@@ -289,6 +295,9 @@ public class SettingsMode implements Screen, InputProcessor, ControllerListener 
             soundBarPos = createPos(485, 356);
             mAttachPos = createPos(878, 886);
             mPlacePos = createPos(1271, 886);
+            greyedKPos = createPos(789, 527);
+            greyedMPos = createPos(789, 838);
+
 
 
 
@@ -303,6 +312,19 @@ public class SettingsMode implements Screen, InputProcessor, ControllerListener 
 
             // Start loading the real assets
         }
+
+        public void reset(){
+            InputController input = InputController.getInstance();
+            int[] temp = {Input.Keys.UP, Input.Keys.W, Input.Keys.DOWN, Input.Keys.S, Input.Keys.LEFT, Input.Keys.A, Input.Keys.RIGHT, Input.Keys.D, Input.Keys.J, Input.Keys.K};
+            input.buttons = temp;
+            input.times = new float[20];
+            masterVolume = 0.8f;
+            musicVolume = 0.8f;
+            soundVolume = 0.8f;
+            input.mouse = true;
+            input.controlMapping = InputController.ControlMapping.MOUSE;
+        }
+
 
         public int getInput(){
             for(int i = 19; i <= 22; i++){ //0-3 are up, down, left, right
@@ -453,6 +475,18 @@ public class SettingsMode implements Screen, InputProcessor, ControllerListener 
 //		canvas.draw(background, 0, 0);
 
             canvas.draw(background, Color.WHITE, 0, 0, 0, 0, 0, sx, sy);
+
+            Color mColor = Color.WHITE;
+            Color kColor = Color.WHITE;
+            if(InputController.getInstance().isMouseControlls()){
+                kColor = Color.GRAY;
+                canvas.draw(greyedK, Color.WHITE, 0, greyedK.getHeight(), greyedKPos.x, greyedKPos.y, 0, scale.x, scale.y);
+            }else{
+                mColor = Color.GRAY;
+                canvas.draw(greyedM, Color.WHITE, 0, greyedM.getHeight(), greyedMPos.x, greyedMPos.y, 0, scale.x, scale.y);
+            }
+
+
             canvas.draw(backButton, Color.WHITE, 0, backButton.getHeight(),
                     backButtonPos.x, backButtonPos.y, 0, scale.x, scale.y);
 
@@ -475,19 +509,32 @@ public class SettingsMode implements Screen, InputProcessor, ControllerListener 
                     temp, musicBarPos.y - (slider.getHeight() * scale.y / 2f), 0, scale.x, scale.y);
 
 
-            canvas.draw(mAttach, Color.WHITE, 0, mAttach.getHeight(),
+            canvas.draw(mAttach, mColor, 0, mAttach.getHeight(),
                     mAttachPos.x, mAttachPos.y, 0, scale.x, scale.y);
-            canvas.draw(mPlace, Color.WHITE, 0, mPlace.getHeight(),
+            canvas.draw(mPlace, mColor, 0, mPlace.getHeight(),
                     mPlacePos.x, mPlacePos.y, 0, scale.x, scale.y);
 
 
             for(int i = 0; i < buttons.length; i++){
-                canvas.draw(buttons[i], Color.WHITE, 0, buttons[i].getHeight(), buttonPos[i].x, buttonPos[i].y, 0, scale.x, scale.y);
 
-                if(buttons[i] == unclickedButton) {
-                    Texture inputT = inputTextures[getTexture(inputs[i])];
-                    canvas.draw(inputT, Color.WHITE, inputT.getWidth() / 2f, inputT.getHeight() / 2f,
-                            buttonPos[i].x + (unclickedButton.getWidth() * scale.x / 2f ), buttonPos[i].y - (unclickedButton.getHeight() * scale.y / 2f), 0, scale.x, scale.y);
+                if(i == 8 || i == 9){
+                    canvas.draw(buttons[i], kColor, 0, buttons[i].getHeight(), buttonPos[i].x, buttonPos[i].y, 0, scale.x, scale.y);
+
+                    if(buttons[i] == unclickedButton) {
+                        Texture inputT = inputTextures[getTexture(inputs[i])];
+                        canvas.draw(inputT, kColor, inputT.getWidth() / 2f, inputT.getHeight() / 2f,
+                                buttonPos[i].x + (unclickedButton.getWidth() * scale.x / 2f ), buttonPos[i].y - (unclickedButton.getHeight() * scale.y / 2f), 0, scale.x, scale.y);
+                    }
+                }else {
+
+
+                    canvas.draw(buttons[i], Color.WHITE, 0, buttons[i].getHeight(), buttonPos[i].x, buttonPos[i].y, 0, scale.x, scale.y);
+
+                    if (buttons[i] == unclickedButton) {
+                        Texture inputT = inputTextures[getTexture(inputs[i])];
+                        canvas.draw(inputT, Color.WHITE, inputT.getWidth() / 2f, inputT.getHeight() / 2f,
+                                buttonPos[i].x + (unclickedButton.getWidth() * scale.x / 2f), buttonPos[i].y - (unclickedButton.getHeight() * scale.y / 2f), 0, scale.x, scale.y);
+                    }
                 }
             }
 
@@ -675,8 +722,12 @@ public class SettingsMode implements Screen, InputProcessor, ControllerListener 
             if(pressedSlider(screenX, screenY, slider, soundBarPos)){
                 sfxSliderActive = true;
             }
-
-
+            if(pressedButton(screenX, screenY, greyedK, greyedKPos)){
+                InputController.getInstance().controlMapping = InputController.ControlMapping.KEYBOARD;
+            }
+            if(pressedButton(screenX, screenY, greyedM, greyedMPos)){
+                InputController.getInstance().controlMapping = InputController.ControlMapping.MOUSE;
+            }
 
             if(pressState < 20) {
                 for (int i = 0; i < buttons.length; i++) {
