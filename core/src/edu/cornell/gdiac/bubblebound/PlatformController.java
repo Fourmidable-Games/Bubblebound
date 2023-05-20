@@ -349,7 +349,8 @@ public class PlatformController implements ContactListener, Screen {
 		playingTheme = false;
 		avatarSpawnLocation = new Vector2();
 		avatarSpawnDirection = Door.SpawnDirection.RIGHT;
-
+		ScreenUtils.clear(Color.BLACK);
+		fitViewport = new FitViewport(1920, 1080);
 		needToInitializeSpawn = true;
 		countdown = -1;
 		setDebug(false);
@@ -1027,8 +1028,6 @@ public class PlatformController implements ContactListener, Screen {
 	private int wait = 0;
 
 	public void update(float dt) {
-		create();
-		fitViewport.update(canvas.getWidth(), canvas.getHeight());
 		if(InputController.getInstance().didBubble()) {
 			System.out.println(InputController.getInstance().didBubble());
 		}
@@ -2419,7 +2418,6 @@ public class PlatformController implements ContactListener, Screen {
 
 	public void drawSecondaryBackground(Texture bg, Zone z){
 //		create();
-		fitViewport.update(canvas.getWidth(), canvas.getHeight());
 		Vector2 temp = cameraCoords.cpy();
 		temp.x -= canvas.getWidth() / 2f;
 		temp.y -= canvas.getHeight() / 2f;
@@ -2452,8 +2450,7 @@ public class PlatformController implements ContactListener, Screen {
 	int delay = 0;
 
 	public void drawPause(){
-		create();
-		fitViewport.update(canvas.getWidth(), canvas.getHeight());
+
 		Gdx.graphics.setCursor(defaultCursor);
 		level1MusicCave.resume(level1MusicCaveID);
 		level1MusicSunset.resume(level1MusicSunsetID);
@@ -2542,7 +2539,7 @@ public class PlatformController implements ContactListener, Screen {
 
 	private void drawCrosshair(){
 //		create();
-		fitViewport.update(canvas.getWidth(), canvas.getHeight());
+
 		float crosshair_width = crosshair.getRegionWidth();
 		float crosshair_height = crosshair.getRegionHeight();
 
@@ -2568,9 +2565,6 @@ public class PlatformController implements ContactListener, Screen {
 
 		//TODO: parallaxing and stuff kinda relies on pixel size not ideal for diff screen sizes
 
-		create();
-
-		fitViewport.update(canvas.getWidth(), canvas.getHeight());
 
 
 
@@ -2631,7 +2625,6 @@ public class PlatformController implements ContactListener, Screen {
 		}
 		drawCrosshair();
 
-		fitViewport.update(canvas.getWidth(), canvas.getHeight());
 
 		canvas.resetColor();
 		canvas.end();
@@ -2664,7 +2657,6 @@ public class PlatformController implements ContactListener, Screen {
 		canvas.end();
 //		create();
 
-		fitViewport.update(canvas.getWidth(), canvas.getHeight());
 
 		if (debug) {
 			canvas.beginDebug();
@@ -2691,7 +2683,6 @@ public class PlatformController implements ContactListener, Screen {
 			canvas.end();
 		}
 
-		fitViewport.update(canvas.getWidth(), canvas.getHeight());
 
 	}
 
@@ -2760,7 +2751,7 @@ public class PlatformController implements ContactListener, Screen {
 	 */
 
 	public void render(float delta) {
-		create();
+
 		fitViewport.update(canvas.getWidth(), canvas.getHeight());
 
 		if(pause_state){
@@ -2787,11 +2778,7 @@ public class PlatformController implements ContactListener, Screen {
 	}
 
 
-	public void create() {
-		ScreenUtils.clear(Color.BLACK);
-		fitViewport = new FitViewport(canvas.getWidth(), canvas.getHeight());
-		fitViewport.update(canvas.getWidth(), canvas.getHeight(), true);
-	}
+
 
 	/**
 	 * Called when this screen becomes the current screen for a Game.
