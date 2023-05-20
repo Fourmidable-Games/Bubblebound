@@ -966,7 +966,7 @@ public class PlatformController implements ContactListener, Screen {
 		updateSpike();
 		updateEnemies();
 		moveZones();
-		updateSounds();
+
 		updateCamera(avatar.getX()*scale.x, avatar.getY()*scale.y);
 		updateMouse();
 		updateObjectGravs();
@@ -975,6 +975,7 @@ public class PlatformController implements ContactListener, Screen {
 		updateBorders();
 		updateDoors();
 		updateAvatar();
+		updateSounds();
 		if (rope != null && rope.getJointLength()>=2){
 
 			rope.updateJoint();
@@ -1273,11 +1274,12 @@ public class PlatformController implements ContactListener, Screen {
 		if(InputController.getInstance().isFiniteBubbles()){
 			if(avatar.isGrounded() && InputController.getInstance().isReloadBubblesOnGround()){
 				if(bubbles_left < BUBBLE_LIMIT){
-					if(bubble_regen_timer <=0){
+					bubbles_left++;
+					/*if(bubble_regen_timer <=0){
 						bubbles_left++;
 						bubble_regen_timer = bubble_regen_timer_max;
 					}
-					bubble_regen_timer--;
+					bubble_regen_timer--;*/
 				}
 			}else{
 				bubble_regen_timer = bubble_regen_timer_max;
@@ -1383,12 +1385,12 @@ public class PlatformController implements ContactListener, Screen {
 
 	public void updateSounds(){
 		if(avatar.getGravZone() == 1){
-			level1MusicSunset.setVolume(level1MusicSunsetID,volume * 1f);
+			level1MusicSunset.setVolume(level1MusicSunsetID,volume * 0.2f);
 			level1MusicCave.setVolume(level1MusicCaveID,0.0f);
 		}
 		if(avatar.getGravZone() == -1){
 			level1MusicSunset.setVolume(level1MusicSunsetID,0.0f);
-			level1MusicCave.setVolume(level1MusicCaveID,volume * 1f);
+			level1MusicCave.setVolume(level1MusicCaveID,volume * 0.2f);
 		}
 		if (avatar.justJumped()) {
 			//jumpSound.setVolume(jumpId,soundvolume * 2f);
@@ -1753,8 +1755,8 @@ public class PlatformController implements ContactListener, Screen {
 			}
 
 			// See if we have landed on the ground.
-			if ((avatar.getSensorName().equals(fd2) && avatar != bd1 && !bd1.getName().equals("bubble") && !bd1.getName().contains("plank") && !bd1.getName().equals("lucenglazesensor") && !bd1.getName().contains("gas") && !bd1.isSensor()) ||
-					(avatar.getSensorName().equals(fd1) && avatar != bd2 && !bd2.getName().equals("bubble") && !bd2.getName().contains("plank") && !bd2.getName().equals("lucenglazesensor") && !bd2.getName().contains("gas") && !bd2.isSensor())) {
+			if ((avatar.getSensorName().equals(fd2) && avatar != bd1 && !bd1.getName().equals("bubble") && !bd1.getName().contains("plank") && !bd1.getName().contains("sundropBullet") && !bd1.getName().equals("lucenglazesensor") && !bd1.getName().contains("gas") && !bd1.isSensor()) ||
+					(avatar.getSensorName().equals(fd1) && avatar != bd2 && !bd2.getName().equals("bubble") && !bd2.getName().contains("plank") && !bd1.getName().contains("sundropBullet") && !bd2.getName().equals("lucenglazesensor") && !bd2.getName().contains("gas") && !bd2.isSensor())) {
 
 				avatar.setGrounded(true);
 				sensorFixtures.add(avatar == bd1 ? fix2 : fix1); // Could have more than one ground

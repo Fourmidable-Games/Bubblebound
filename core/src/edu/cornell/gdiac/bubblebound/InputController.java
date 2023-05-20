@@ -91,6 +91,8 @@ public class InputController {
 	public float[] audio_levels ={1.0f,1.0f};
 	public boolean mouse = true;
 
+	//public Array<boolean> unlockedLevels = [true, false, false, false, false, false, false, false false, false, false, false, false false, false, false, false, false false, false]
+
 
 	public enum ControlMapping{
 		MOUSE,
