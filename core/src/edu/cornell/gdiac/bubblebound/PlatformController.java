@@ -1351,6 +1351,7 @@ public class PlatformController implements ContactListener, Screen {
 	public Vector2 ploffset;
 
 
+	public int launchCooldown = 0;
 	public boolean camera = false;
     private float oldY = 0;
 	private void updateAvatar(){
@@ -1376,7 +1377,6 @@ public class PlatformController implements ContactListener, Screen {
 			}
 			crosshairLoc.set(placeLocation);
 		}
-
 		Bubble closest = null;
 		float min = Float.MAX_VALUE;
 		for(int i = 0; i < bubbles.size(); i++){
@@ -1454,6 +1454,7 @@ public class PlatformController implements ContactListener, Screen {
 		boolean constructRope = false;
 		if(!spawned && closest != null) { //temp prevents people from left and right clicking at same time (which breaks for some reason)
 			if (avatar.isGrappling()) {
+				launchCooldown++;
 				ropeDir = closest.getPosition().sub(avatar.getPosition());
 				if (InputController.getInstance().didBubble()) {
 					destructRope = true;
@@ -1472,7 +1473,10 @@ public class PlatformController implements ContactListener, Screen {
 
 		if(destructRope){
 			avatar.setGrappling(false);
-			avatar.setGrappleBoost(true);
+			if(launchCooldown >= 5) {
+				avatar.setGrappleBoost(true);
+			}
+			launchCooldown = 0;
 			Bubble b = (Bubble) rope.bubble.getUserData();
 			b.setGrappled(false);
 			////////System.out.println("DESTRUCT ROPE 3");
@@ -1487,7 +1491,7 @@ public class PlatformController implements ContactListener, Screen {
 
 		if(constructRopeNextCycle >=5 && closest != null){
 
-			if(canShoot(closest)) { //TODO:: make this good
+			if(canShoot(closest) && closest.getBody() != null) { //TODO:: make this good
 				avatar.setGrappling(true);
 				avatar.setGrappledBubble(closest);
 				avatar.setGrappledBubbleDist(avatar.getPosition().dst(closest.getPosition()));
@@ -1500,6 +1504,9 @@ public class PlatformController implements ContactListener, Screen {
 		}
 
 		avatar.breathe(); //used for poison gas stuff
+		if(launchCooldown <= 5){
+			ropeDir.set(0, 0);
+		}
 		avatar.applyForce(ropeDir);
 		life = avatar.getLife();//update health bar
 
@@ -1561,7 +1568,9 @@ public class PlatformController implements ContactListener, Screen {
 	}
 
 	private RopeBridge createGrapple(Bubble bubble){
-
+		if(bubble.getBody() == null){
+			return null;
+		}
 		bubble.setGrappled(true);
 		float dwidth  = bridgeTexture.getRegionWidth()/64f;
 		float dheight = bridgeTexture.getRegionHeight()/64f;
@@ -2274,6 +2283,8 @@ public class PlatformController implements ContactListener, Screen {
 		return horiz && vert;
 	}
 	public boolean pause_state = false;
+
+	public int complete_timer = 0;
 	/**
 	 * Returns whether to process the update loop
 	 *
@@ -2311,19 +2322,31 @@ public class PlatformController implements ContactListener, Screen {
 
 		// Handle resets
 		if (input.didReset()) {
-
-			reset(currLevel, false);
+			if(!switchLevel) {
+				reset(currLevel, false);
+			}
 		}
 
 		if (input.didHealthRestore()){
 			avatar.restoreHealth();
 		}
 		if (switchLevel){
+			for(Door d: doors){
+				if(d.getTargetLevelID() > currLevel){
+					d.complete = true;
+					break;
+				}
+			}
 			if(input.times[currLevel - 1] > timer || input.times[currLevel - 1] == 0) {
 				InputController.getInstance().times[currLevel - 1] = timer;
 			}
+			if(complete_timer < 20){
+				complete_timer++;
+				return true;
+			}
 			switchLevel = false;
 			reset(targetLevel, true);
+			complete_timer = 0;
 		}
 		if(failed){
 			reset(currLevel, false);
@@ -2487,17 +2510,21 @@ public class PlatformController implements ContactListener, Screen {
 	private float vertical_parallax = 2;
 
 	public void setParallax(TextureRegion bg){
-		float wpixels = bounds.getWidth()*scale.x;
-		float hpixels = bounds.getHeight()*scale.y;
-		if(canvas.isFullscreen()) {
-			horizontal_parallax = (float) (bg.getRegionWidth()) / wpixels;
-			vertical_parallax = (float) (bg.getRegionHeight()) / hpixels;
-		}else{
-			horizontal_parallax = 0.1f;
-		}
+//		float wpixels = bounds.getWidth()*scale.x;
+//		float hpixels = bounds.getHeight()*scale.y;
+//		if(canvas.isFullscreen()) {
+//			horizontal_parallax = (float) (bg.getRegionWidth()) / wpixels;
+//			vertical_parallax = (float) (bg.getRegionHeight()) / hpixels;
+//		}else{
+//			horizontal_parallax = 0.1f;
+//		}
+		horizontal_parallax = 0.8f;
+		vertical_parallax = 1f;
+//		System.out.println(horizontal_parallax);
+//		System.out.println(vertical_parallax);
 	}
 
-	public void drawPrimaryBackground(TextureRegion bg){
+	public void drawPrimaryBackground2(TextureRegion bg){
 		Vector2 temp = cameraCoords.cpy();
 
 		temp.x -= canvas.getWidth() / 2f;
@@ -2509,7 +2536,7 @@ public class PlatformController implements ContactListener, Screen {
 		canvas.draw(bg, temp.x, temp.y);
 	}
 
-	public void drawSecondaryBackground(Texture bg, Zone z){
+	public void drawSecondaryBackground2(Texture bg, Zone z){
 		Vector2 temp = cameraCoords.cpy();
 		temp.x -= canvas.getWidth() / 2f;
 		temp.y -= canvas.getHeight() / 2f;
@@ -2521,6 +2548,45 @@ public class PlatformController implements ContactListener, Screen {
 		float y = bg.getHeight() - temp.y - (z.height * scale.y); //finds y coord
 		TextureRegion br = new TextureRegion(bg, (int)temp.x, (int)y, (int)(z.width * scale.x), (int)(z.height * scale.y));
 		canvas.draw(br, Color.WHITE, z.xpos * scale.x, z.ypos * scale.y,br.getRegionWidth(), br.getRegionHeight());
+
+	}
+
+	public void drawPrimaryBackground(TextureRegion bg){
+		Vector2 temp = cameraCoords.cpy();
+
+		temp.x -= canvas.getWidth() / 2f;
+		temp.y -= canvas.getHeight() / 2f;
+
+		temp.x *= horizontal_parallax;
+		temp.x -= 250; //offset so player doesn'
+		temp.y -= 250;
+
+		float sx = canvas.getWidth() / 1920f;
+		float sy = canvas.getHeight() / 1080f;
+
+
+
+		canvas.draw(bg, Color.WHITE, temp.x, temp.y, (int)(bg.getRegionWidth() * sx), (int)(bg.getRegionHeight() * sy));
+	}
+
+	public void drawSecondaryBackground(Texture bg, Zone z){
+		Vector2 temp = cameraCoords.cpy();
+		float sx = canvas.getWidth() / 1920f;
+		float sy = canvas.getHeight() / 1080f;
+		temp.x -= canvas.getWidth() / 2f;
+		temp.y -= canvas.getHeight() / 2f;
+		temp.x *= horizontal_parallax;
+		temp.x -= 250; //offset so player doesn'
+		temp.y -= 250;
+		temp.x = (z.xpos * scale.x) - temp.x;
+		temp.y = (z.ypos * scale.y) - temp.y;
+		temp.x /= sx;
+
+		float y = bg.getHeight() - temp.y - (z.height * scale.y); //finds y coord
+		y /= sy;
+		TextureRegion br = new TextureRegion(bg, (int)temp.x, (int)y, (int)(z.width * scale.x / sx), (int)(z.height * scale.y / sy));
+
+		canvas.draw(br, Color.WHITE, 0,0, z.xpos * scale.x, z.ypos * scale.y,0, sx, sy);
 
 	}
 
@@ -2700,10 +2766,16 @@ public class PlatformController implements ContactListener, Screen {
 		canvas.begin();
 
 
-
-		drawPrimaryBackground(skybackground);
-		for(Zone z: zones){ //draws the backgrounds of the zones
-			drawSecondaryBackground(icebackground, z);
+		if(canvas.getWidth() > 2050 || canvas.getWidth() < 1200){
+			drawPrimaryBackground2(skybackground);
+			for(Zone z: zones){ //draws the backgrounds of the zones
+				drawSecondaryBackground2(icebackground, z);
+			}
+		}else {
+			drawPrimaryBackground(skybackground);
+			for (Zone z : zones) { //draws the backgrounds of the zones
+				drawSecondaryBackground(icebackground, z);
+			}
 		}
 		boolean drawTileOutlines = true;
 		if(drawTileOutlines == true) {

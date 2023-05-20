@@ -44,6 +44,7 @@ public class DesktopLauncher {
 		config.resizable = false;
 
 
+
 		new GDXApp(new GDXRoot(), config);
 
 
