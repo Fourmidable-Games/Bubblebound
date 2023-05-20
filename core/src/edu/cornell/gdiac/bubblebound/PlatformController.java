@@ -175,7 +175,8 @@ public class PlatformController implements ContactListener, Screen {
 	protected FilmStrip enemyStrip;
 	protected Texture enemyText;
 
-	protected TextureRegion tokenText;
+	protected Texture tokenText;
+	protected FilmStrip tokenStrip;
 	protected Texture bubbleText;
 	protected Texture bubbleText2;
 	/** The font for giving messages to the player */
@@ -397,7 +398,8 @@ public class PlatformController implements ContactListener, Screen {
 		bubblecooldownStrip = new FilmStrip(bubblecooldownText, 1, 8, 8);
 		emptyBubbleCooldown = new TextureRegion(directory.getEntry("platform:emptyCooldownBubble", Texture.class));
 		fullBubbleCooldown = new TextureRegion(directory.getEntry("platform:fullCooldownBubble", Texture.class));
-		tokenText = new TextureRegion(directory.getEntry("platform:token",Texture.class));
+		tokenText = directory.getEntry("platform:token",Texture.class);
+		tokenStrip = new FilmStrip(tokenText, 1, 5, 5);
 		bulletTexture = new TextureRegion(directory.getEntry("platform:bullet",Texture.class));
 		bridgeTexture = new TextureRegion(directory.getEntry("platform:rope",Texture.class));
 		barrierTexture = new TextureRegion(directory.getEntry("platform:barrier",Texture.class));
@@ -624,6 +626,8 @@ public class PlatformController implements ContactListener, Screen {
 	 * Lays out the game geography.
 	 */
 	private void populateLevel(String jsonPath) {
+		System.out.println("canvas width " + canvas.getWidth());
+		System.out.println("canvas height" + canvas.getHeight());
 		setSounds();
 
 
@@ -810,24 +814,6 @@ public class PlatformController implements ContactListener, Screen {
 		bp7.setLetters(letters);
 		prompts.add(bp7);
 
-//		ButtonPrompt bp8 = new ButtonPrompt(23, 8, toggleBP);
-//		bp8.setScale(scale);
-//		bp8.setMouse(leftMouse, rightMouse);
-//		bp8.setLetters(letters);
-//		prompts.add(bp8);
-//
-//		ButtonPrompt bp9 = new ButtonPrompt(26, 8, restartBP);
-//		bp9.setScale(scale);
-//		bp9.setMouse(leftMouse, rightMouse);
-//		bp9.setLetters(letters);
-//		prompts.add(bp9);
-//
-//		ButtonPrompt bp10 = new ButtonPrompt(29, 8, pauseBP);
-//		bp10.setScale(scale);
-//		bp10.setMouse(leftMouse, rightMouse);
-//		bp10.setLetters(letters);
-//		prompts.add(bp10);
-
 
 
 
@@ -844,7 +830,8 @@ public class PlatformController implements ContactListener, Screen {
 			level6Token.setBodyType(BodyDef.BodyType.StaticBody);
 			level6Token.setSensor(true);
 			level6Token.setDrawScale(scale);
-			level6Token.setTexture(tokenText);
+			level6Token.setTexture(tokenStrip);
+			level6Token.initialize(tokenStrip);
 
 //			//////System.out.println("ADDING TOKEN" + level6Token.getPosition());
 
@@ -859,7 +846,8 @@ public class PlatformController implements ContactListener, Screen {
 			level12Token.setBodyType(BodyDef.BodyType.StaticBody);
 			level12Token.setSensor(true);
 			level12Token.setDrawScale(scale);
-			level12Token.setTexture(tokenText);
+			level12Token.setTexture(tokenStrip);
+			level12Token.initialize(tokenStrip);
 //			//////System.out.println("ADDING TOKEN" + level12Token.getPosition());
 
 			addObject(level12Token);
@@ -1055,7 +1043,8 @@ public class PlatformController implements ContactListener, Screen {
 
 			rope.updateJoint();
 		}
-
+        if (level6Token != null)level6Token.update();
+		if (level12Token != null) level12Token.update();
 	}
 
 	private void updateMouse(){
