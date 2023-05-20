@@ -25,6 +25,7 @@ package edu.cornell.gdiac.bubblebound;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.audio.Sound;
 //import com.badlogic.gdx.audio.*;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.math.Vector2;
 
 import com.badlogic.gdx.graphics.*;
@@ -34,8 +35,13 @@ import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerListener;
 import com.badlogic.gdx.controllers.ControllerMapping;
 
+import com.badlogic.gdx.video.VideoPlayer;
+import com.badlogic.gdx.video.VideoPlayerCreator;
 import edu.cornell.gdiac.assets.*;
 import edu.cornell.gdiac.util.*;
+
+import java.io.FileNotFoundException;
+
 
 /**
  * Class that provides a loading screen for the state of the game.
@@ -64,6 +70,7 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 	private FilmStrip backStrip;
 	/** Play button to display when done */
 	private Texture playButton;
+	public static boolean first_play = false;
 
 	private Texture lvlselectButton;
 	private Texture settingsButton;
@@ -191,6 +198,9 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 		return lvlselect;
 	}
 
+	SpriteBatch batch;
+	private VideoPlayer videoPlayer;
+
 	/**
 	 * Creates a LoadingMode with the default budget, size and position.
 	 *
@@ -199,6 +209,19 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 	 */
 	public LoadingMode(String file, GameCanvas canvas) {
 		this(file, canvas, DEFAULT_BUDGET);
+		videoPlayer = VideoPlayerCreator.createVideoPlayer();
+		videoPlayer.setOnCompletionListener(new VideoPlayer.CompletionListener() {
+			@Override
+			public void onCompletionListener(FileHandle file) {
+				//DO SOMETHING
+			}
+		});
+
+		try{
+			videoPlayer.play(Gdx.files.local("shared/cutscene.webm"));
+		}catch(FileNotFoundException e){
+			Gdx.app.error("gdx-video", "Cutscene file not found!");
+		}
 	}
 
 	private Vector2 playPos;
@@ -392,6 +415,9 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 				hovered = 4;
 			}
 		}
+		if(pressState == 5 && first_play){
+
+		}
 	}
 
 	/**
@@ -532,7 +558,7 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 				listener.exitScreen(this, 2);
 				Gdx.input.setInputProcessor(null);
 			}
-			if(pressState == 5){ //quit
+			if(pressState == 5 && !first_play){ //quit
 				pressState = 0;
 				listener.exitScreen(this, 3);
 			}

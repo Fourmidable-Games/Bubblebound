@@ -26,6 +26,7 @@ allprojects {
         aiVersion = '1.8.2'
         gdxControllersVersion = '2.2.3'
         lwjglVersion = '3.3.1'
+        gdxVideo = '1.3.2-SNAPSHOT'
     }
 
     repositories {
@@ -53,8 +54,7 @@ project(":desktop") {
         implementation files("../dependencies/soundlib.jar")
         implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.3'
         api 'com.google.code.gson:gson:2.10.1'
-
-
+        implementation "com.badlogicgames.gdx-video:gdx-video-lwjgl:$gdxVideo"
     }
 }
 
@@ -69,6 +69,7 @@ project(":core") {
         api "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
         implementation files("../dependencies/soundlib.jar")
         api 'com.google.code.gson:gson:2.10.1'
+        implementation "com.badlogicgames.gdx-video:gdx-video:$gdxVideo"
         
     }
 }

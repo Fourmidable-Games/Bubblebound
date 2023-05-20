@@ -51,7 +51,7 @@ public class LevelSelectMode implements Screen, InputProcessor, ControllerListen
     /** Right cap to the status forground (colored region) */
     private TextureRegion statusFrgRight;
 
-    private static boolean prof_mode = false;
+    private static boolean prof_mode = true;
 
 
     /** Default budget for asset loader (do nothing but load 60 fps) */

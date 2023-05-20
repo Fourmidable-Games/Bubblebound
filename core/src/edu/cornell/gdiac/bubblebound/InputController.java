@@ -214,7 +214,8 @@ public class InputController {
 	}
 	public boolean didDoor() {return doorPressed && !doorPrevious;}
 
-	public boolean didHealthRestore(){return healthRestorePressed && !healthRestorePrevious;}
+//	public boolean didHealthRestore(){return healthRestorePressed && !healthRestorePrevious;}
+	public boolean didHealthRestore(){return false;}
 
 	/**
 	 * Returns true if the player wants to go to the next level.
@@ -240,10 +241,13 @@ public class InputController {
 	 *
 	 * @return true if the player wants to go toggle the debug mode.
 	 */
-	public boolean didDebug() {
-		return debugPressed && !debugPrevious;
+//	public boolean didDebug() {
+//		return debugPressed && !debugPrevious;
+//	}
+
+	public  boolean didDebug(){
+		return false;
 	}
-	
 	/**
 	 * Returns true if the exit button was pressed.
 	 *

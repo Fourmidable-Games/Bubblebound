@@ -173,6 +173,7 @@ public class PlatformController implements ContactListener, Screen {
 	protected TextureRegion earthTile;
 	protected TextureRegion iceTile;
 	FilmStrip goalStrip;
+	TextureRegion arke;
 	/** The texture for the exit condition */
 	protected Texture goalText;
 	protected FilmStrip bubble;
@@ -186,6 +187,9 @@ public class PlatformController implements ContactListener, Screen {
 	protected Texture bubbleText2;
 	/** The font for giving messages to the player */
 	protected TextureRegion skybackground;
+	protected TextureRegion winnerpage;
+	protected TextureRegion creditspage;
+
 	protected Texture icebackground;
 
 	protected Texture paperfilter;
@@ -246,7 +250,7 @@ public class PlatformController implements ContactListener, Screen {
 	/** Exit code for jumping back to previous level */
 	public static final int EXIT_PREV = 2;
 	/** How many frames after winning/losing do we continue? */
-	public static final int EXIT_COUNT = 120;
+	public static final int EXIT_COUNT = 240;
 
 	/** The amount of time for a physics engine step. */
 	public static final float WORLD_STEP = 1/60.0f;
@@ -469,12 +473,16 @@ public class PlatformController implements ContactListener, Screen {
 		//System.out.println(displayFont);
 		//System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 		skybackground = new TextureRegion(directory.getEntry("background:sky", Texture.class));
+		creditspage = new TextureRegion(directory.getEntry("credits", Texture.class));
+		winnerpage = new TextureRegion(directory.getEntry("winner", Texture.class));
+
 		icebackground = directory.getEntry("background:ice", Texture.class);
 		paperfilter = directory.getEntry("platform:paperfilter", Texture.class);
 		paperfilter1 = directory.getEntry("platform:paperfilter1", Texture.class);
 		paperfilter2 = directory.getEntry("platform:paperfilter2", Texture.class);
 		paperfilter3 = directory.getEntry("platform:paperfilter3", Texture.class);
 		paperfilter4 = directory.getEntry("platform:paperfilter4", Texture.class);
+		arke = new TextureRegion(directory.getEntry("arke",Texture.class));
 		filterlist = new ArrayList<Texture>();
 		filterlist.add(paperfilter);
 		filterlist.add(paperfilter1);
@@ -678,6 +686,7 @@ public class PlatformController implements ContactListener, Screen {
 		List<Integer> glazeRotations = Level2.getGlazeRotations();
 		List<List<Float>> projEnemyData = Level2.getProjEnemyData();
 		doors = Level2.getDoors();
+
 		enemies = Level2.getEnemies();
 		setParallax(skybackground);
 
@@ -696,6 +705,13 @@ public class PlatformController implements ContactListener, Screen {
 			door.setTexture(goalStrip);
 			door.setName("door_" + targetLevel + "_to_" + door.getTargetLevelID());
 			door.isGoal = true;
+			if (door.getTargetLevelID() >20){
+				door.setArke(arke);
+				door.setLastPortal(true);
+			}
+			else{
+				door.setLastPortal(false);
+			}
 			addObject(door);
 			if (door.getTargetLevelID() == currLevel) {
 //				////////System.out.println("TARGET DOOR FOUND!");
@@ -703,6 +719,7 @@ public class PlatformController implements ContactListener, Screen {
 				avatarSpawnDirection = door.getSpawnDirection();
 				needToInitializeSpawn = false;
 			}
+
 		}
 		for (int i = 0; i < glazes.size(); i++) {
 
@@ -712,9 +729,17 @@ public class PlatformController implements ContactListener, Screen {
 
 		currLevel = targetLevel;
 
+
 		BUBBLE_LIMIT = (currLevel - 1) / 5;
 		bubbles_left = BUBBLE_LIMIT;
-
+		for(Door d: doors){
+			if(d.getTargetLevelID() <currLevel){
+				d.setClosed(true);
+			}
+			else{
+				d.setClosed(false);
+			}
+		}
 		avatar = needToInitializeSpawn ? Level2.getPlayer(Door.SpawnDirection.RIGHT) : Level2.getPlayerAtLocation(avatarSpawnLocation, avatarSpawnDirection);
 //		////////System.out.println("PRESPAWN LOC: "+ avatar.getPosition());
 		if (needToInitializeSpawn) {
@@ -1043,7 +1068,6 @@ public class PlatformController implements ContactListener, Screen {
 
 		// Create rope bridge
 		setCamera(avatar.getX(), avatar.getY() + 0.5f);
-
 
 //		volume = constants.getFloat("volume", 1.0f);
 	}
@@ -2212,6 +2236,12 @@ public class PlatformController implements ContactListener, Screen {
 	 * @param value whether the level is completed.
 	 */
 	public void setComplete(boolean value) {
+		if(currLevel == 20 && value){
+			InputController input = InputController.getInstance();
+			if(input.times[currLevel - 1] > timer || input.times[currLevel - 1] == 0) {
+				InputController.getInstance().times[currLevel - 1] = timer;
+			}
+		}
 		if (value) {
 			countdown = EXIT_COUNT;
 		}
@@ -2407,8 +2437,9 @@ public class PlatformController implements ContactListener, Screen {
 //		if (doored && input.didDoor()){
 		if (doored){
 				if (nextLevelID > MAX_LEVELS){
-
-					setComplete(true);
+					if(!complete){
+						setComplete(true);
+					}
 				}else{
 
 					switchLevel = true;
@@ -2466,7 +2497,7 @@ public class PlatformController implements ContactListener, Screen {
 
 
 		} else if (countdown > 0) {
-			countdown--;
+//			countdown--;
 		} else if (countdown == 0) {
 			if (failed) {
 				reset(currLevel, false);
@@ -2707,6 +2738,30 @@ public class PlatformController implements ContactListener, Screen {
 
 
 	int delay = 0;
+
+	public void drawWin(){
+		canvas.begin();
+		Vector2 temp = cameraCoords.cpy();
+//
+//		temp.x -= canvas.getWidth() / 2f;
+//		temp.y -= canvas.getHeight() / 2f;
+
+		canvas.draw(winnerpage,Color.WHITE,winnerpage.getRegionWidth()/2,winnerpage.getRegionHeight()/2,temp.x,temp.y,0,1.5f,1.5f);
+		canvas.end();
+		countdown--;
+		System.out.println(countdown);
+	}
+
+	public void drawCredits(){
+		canvas.begin();
+		Vector2 temp = cameraCoords.cpy();
+//
+//		temp.x -= canvas.getWidth() / 2f;
+//		temp.y -= canvas.getHeight() / 2f;
+
+		canvas.draw(creditspage,Color.WHITE,creditspage.getRegionWidth()/2,creditspage.getRegionHeight()/2,temp.x,temp.y,0,1.15f,1.15f);
+		canvas.end();
+	}
 
 	public void drawPause(){
 		Gdx.graphics.setCursor(defaultCursor);
@@ -2993,6 +3048,11 @@ public class PlatformController implements ContactListener, Screen {
 			canvas.begin();
 			drawFilter();
 			canvas.end();
+		}
+		if(currLevel == 20 && complete == true && countdown>1){
+			drawWin();
+		} else if (currLevel == 20 && complete == true && countdown == 1) {
+			drawCredits();
 		}
 
 	}

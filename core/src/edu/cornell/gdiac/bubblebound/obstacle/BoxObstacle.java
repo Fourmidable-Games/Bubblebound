@@ -11,6 +11,7 @@
  */
 package edu.cornell.gdiac.bubblebound.obstacle;
 
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.physics.box2d.*;
@@ -281,7 +282,19 @@ public class BoxObstacle extends SimpleObstacle {
 	public int draworder = 0;
 	public int drawtimer = 0;
 
+	private boolean door_closed = false;
+	private boolean last_portal = false;
+	public void setClosed(boolean status){
+		door_closed = status;
+	}
+	public void setLastPortal(boolean status){last_portal = status;}
+
 	public boolean complete = false;
+	public TextureRegion arke;
+
+	public void setArke(TextureRegion arke_text){
+		arke = arke_text;
+	}
 
 	@Override
 	public void draw(GameCanvas canvas) {
@@ -298,16 +311,22 @@ public class BoxObstacle extends SimpleObstacle {
 			drawtimer++;
 		}
 		else if (isGoal == true) {
-			if(complete){
-				sx *= 1.3;
-				sy *= 1.3;
+			if(last_portal) {
+				canvas.draw(arke, Color.WHITE, origin.x, origin.y, getX()* drawScale.x, getY()*drawScale.y-arke.getRegionHeight()/4, getAngle(), 0.5f, 0.5f);
 			}
-			if(grav == 1){
-				canvas.draw(texture, Color.WHITE, origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.y, getAngle(), sx, sy);
+			else{
 
-			}else{
-				canvas.draw(texture, Color.WHITE, origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.y, getAngle(), sx, sy);
+				if (complete) {
+					sx *= 1.3;
+					sy *= 1.3;
+				}
+				if (door_closed) {
+					canvas.draw(texture, new Color(1, 0f, 0f, 1), origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.y, getAngle(), sx, sy);
 
+				} else {
+					canvas.draw(texture, Color.WHITE, origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.y, getAngle(), sx, sy);
+
+				}
 			}
 		}
 
