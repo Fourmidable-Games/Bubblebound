@@ -707,7 +707,7 @@
                                 {
                                  "name":"targetLevel",
                                  "type":"int",
-                                 "value":10
+                                 "value":12
                                 }],
                          "rotation":0,
                          "type":"",
@@ -730,7 +730,7 @@
                                 {
                                  "name":"targetLevel",
                                  "type":"int",
-                                 "value":12
+                                 "value":14
                                 }],
                          "rotation":0,
                          "type":"",
