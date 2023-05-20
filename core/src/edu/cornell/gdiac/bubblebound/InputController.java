@@ -71,13 +71,13 @@ public class InputController {
 	private boolean attached_to_bubble;
 	private boolean primeUpsideDownPressed;
 	private boolean primePrevious;
+	private boolean tertiaryPrevious;
 	private boolean primeUpsideDownPrevious;
 	/** Whether the secondary action button was pressed. */
 	private boolean secondPressed;
 	private boolean secondPrevious;
 	/** Whether the teritiary action button was pressed. */
 	private boolean tertiaryPressed;
-	private boolean tertiaryPrevious;
 	/** Whether the debug toggle was pressed. */
 	private boolean debugPressed;
 	private boolean debugPrevious;
@@ -202,7 +202,7 @@ public class InputController {
 	 *
 	 * @return true if the secondary action button was pressed.
 	 */
-	public boolean didTertiary() { return tertiaryPressed;}
+	public boolean didTertiary() { return tertiaryPressed && !tertiaryPrevious;}
 	/**
 	 * Returns true if the reset button was pressed.
 	 *
@@ -326,6 +326,7 @@ public class InputController {
 		// Copy state from last animation frame
 		// Helps us ignore buttons that are held down
 		primePrevious  = primePressed;
+		tertiaryPrevious = tertiaryPressed;
 		primeUpsideDownPrevious = primeUpsideDownPressed;
 		secondPrevious = secondPressed;
 		resetPrevious  = resetPressed;
