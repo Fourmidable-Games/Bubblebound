@@ -1491,7 +1491,7 @@ public class PlatformController implements ContactListener, Screen {
 
 		if(constructRopeNextCycle >=5 && closest != null){
 
-			if(canShoot(closest)) { //TODO:: make this good
+			if(canShoot(closest) && closest.getBody() != null) { //TODO:: make this good
 				avatar.setGrappling(true);
 				avatar.setGrappledBubble(closest);
 				avatar.setGrappledBubbleDist(avatar.getPosition().dst(closest.getPosition()));
@@ -1568,7 +1568,9 @@ public class PlatformController implements ContactListener, Screen {
 	}
 
 	private RopeBridge createGrapple(Bubble bubble){
-
+		if(bubble.getBody() == null){
+			return null;
+		}
 		bubble.setGrappled(true);
 		float dwidth  = bridgeTexture.getRegionWidth()/64f;
 		float dheight = bridgeTexture.getRegionHeight()/64f;
