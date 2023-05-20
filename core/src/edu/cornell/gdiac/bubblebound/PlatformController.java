@@ -253,7 +253,7 @@ public class PlatformController implements ContactListener, Screen {
 	/** The default value of gravity (going down) */
 	protected static final float DEFAULT_GRAVITY = -4.9f;
 
-	private final int MAX_LEVELS = 15;
+	private final int MAX_LEVELS = 17;
 
 	private int currLevel;
 
@@ -1812,17 +1812,19 @@ public class PlatformController implements ContactListener, Screen {
 	 * @param contact The two bodies that collided
 	 */
 	public void beginContact(Contact contact) {
-		Fixture fix1 = contact.getFixtureA();
-		Fixture fix2 = contact.getFixtureB();
 
-		Body body1 = fix1.getBody();
-		Body body2 = fix2.getBody();
 
-		Object fd1 = fix1.getUserData();
-		Object fd2 = fix2.getUserData();
 
 
 		try {
+			Fixture fix1 = contact.getFixtureA();
+			Fixture fix2 = contact.getFixtureB();
+
+			Body body1 = fix1.getBody();
+			Body body2 = fix2.getBody();
+
+			Object fd1 = fix1.getUserData();
+			Object fd2 = fix2.getUserData();
 
 			Obstacle bd1 = (Obstacle)body1.getUserData();
 			Obstacle bd2 = (Obstacle)body2.getUserData();
@@ -2001,26 +2003,29 @@ public class PlatformController implements ContactListener, Screen {
 	 * double jumping.
 	 */
 	public void endContact(Contact contact) {
-		Fixture fix1 = contact.getFixtureA();
-		Fixture fix2 = contact.getFixtureB();
 
-		Body body1 = fix1.getBody();
-		Body body2 = fix2.getBody();
 
-		Object fd1 = fix1.getUserData();
-		Object fd2 = fix2.getUserData();
 
-		Object bd1 = body1.getUserData();
-		Object bd2 = body2.getUserData();
-
-		if ((avatar.getSensorName().equals(fd2) && avatar != bd1) ||
-				(avatar.getSensorName().equals(fd1) && avatar != bd2)) {
-			sensorFixtures.remove(avatar == bd1 ? fix2 : fix1);
-			if (sensorFixtures.size == 0) {
-				avatar.setGrounded(false);
-			}
-		}
 		try {
+			Fixture fix1 = contact.getFixtureA();
+			Fixture fix2 = contact.getFixtureB();
+
+			Body body1 = fix1.getBody();
+			Body body2 = fix2.getBody();
+
+			Object fd1 = fix1.getUserData();
+			Object fd2 = fix2.getUserData();
+
+			Object bd1 = body1.getUserData();
+			Object bd2 = body2.getUserData();
+
+			if ((avatar.getSensorName().equals(fd2) && avatar != bd1) ||
+					(avatar.getSensorName().equals(fd1) && avatar != bd2)) {
+				sensorFixtures.remove(avatar == bd1 ? fix2 : fix1);
+				if (sensorFixtures.size == 0) {
+					avatar.setGrounded(false);
+				}
+			}
 
 			Obstacle cd1 = (Obstacle) body1.getUserData(); //idk man
 			Obstacle cd2 = (Obstacle) body2.getUserData(); //copied begin contact but bd was already taken so used cd
@@ -2028,6 +2033,8 @@ public class PlatformController implements ContactListener, Screen {
 					(cd1.getName().contains("door") && cd2 == avatar))) {
 				doored = false;
 			}
+
+
 
 			if ((cd1 == avatar && cd2.getName().equals("gas")) || (cd1.getName().equals("gas") && cd2 == avatar)) {
 				avatar.gas--;
@@ -2047,6 +2054,7 @@ public class PlatformController implements ContactListener, Screen {
 			}
 
 		}catch(Exception e){
+
 			e.printStackTrace();
 		}
 
