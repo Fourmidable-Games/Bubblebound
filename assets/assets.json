@@ -1063,6 +1063,9 @@
         "wrapU": "repeated",
         "wrapV": "repeated"
       },
+      "phase2" : "levelselect/phase2light.png",
+      "phase3" : "levelselect/phase3light.png",
+      "phase4" : "levelselect/phase4light.png",
 
       "shared:sky70" : {
         "file":  "shared/b70.png",
@@ -1294,6 +1297,12 @@
       "grappleBP" : "shared/grappleBP.png",
       "placeBP" : "shared/placeBP.png",
       "detachBP" : "shared/detachBP.png",
+      "detachswingingBP" : "shared/detachswingingBP.png",
+      "movegravitiesBP" : "shared/movegravitiesBP.png",
+      "placegrappleBP" : "shared/placegrappleBP.png",
+      "rangeBP" : "shared/rangeBP.png",
+      "portalBP" : "shared/portalBP.png",
+      "momentumBP" : "shared/momentumBP.png",
       "leftmouse" : "shared/leftmouse.png",
       "rightmouse" : "shared/rightmouse.png",
         "shared:goal":   "shared/goaldoor.png",

@@ -101,7 +101,7 @@ public class Enemy extends CapsuleObstacle { //capsule not working for some reas
      *
      * @param canvas Drawing context
      */
-    public void draw(GameCanvas canvas) {
+    public void draw(GameCanvas canvas, DudeModel avatar) {
 
         float sx = drawScale.x / 64f;
         float sy = drawScale.y / 64f;
@@ -110,8 +110,9 @@ public class Enemy extends CapsuleObstacle { //capsule not working for some reas
 
         float effect = faceRight ? 1.0f : -1.0f;;
         float upside = (grav == -1) ? -1.5f : 1.5f;
-        //////////////System.out.println(texture);
-        canvas.draw(texture, Color.WHITE,origin.x,origin.y,getX()*drawScale.x,getY()*drawScale.y,getAngle(),sx * effect,sy * upside);
+        ////////////////System.out.println(texture);
+        Color tint_mouse = (checkSpeedUp(avatar)) ? Color.RED: Color.WHITE;
+        canvas.draw(texture, tint_mouse,origin.x,origin.y,getX()*drawScale.x,getY()*drawScale.y,getAngle(),sx * effect,sy * upside);
 
 
 

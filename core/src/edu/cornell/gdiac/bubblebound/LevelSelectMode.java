@@ -18,6 +18,7 @@ import edu.cornell.gdiac.assets.AssetDirectory;
 import edu.cornell.gdiac.util.Controllers;
 import edu.cornell.gdiac.util.ScreenListener;
 import edu.cornell.gdiac.util.XBoxController;
+import org.w3c.dom.Text;
 
 public class LevelSelectMode implements Screen, InputProcessor, ControllerListener {
     // There are TWO asset managers.  One to load the loading screen.  The other to load the assets
@@ -49,6 +50,8 @@ public class LevelSelectMode implements Screen, InputProcessor, ControllerListen
     private TextureRegion statusFrgMiddle;
     /** Right cap to the status forground (colored region) */
     private TextureRegion statusFrgRight;
+
+    private boolean prof_mode;
 
 
     /** Default budget for asset loader (do nothing but load 60 fps) */
@@ -145,7 +148,7 @@ public class LevelSelectMode implements Screen, InputProcessor, ControllerListen
      * @return the asset directory produced by this loading screen
      */
     public void gatherAssets(AssetDirectory directory){
-        //////System.out.println("AAAAAAAAAAAAAAAA");
+        ////////System.out.println("AAAAAAAAAAAAAAAA");
         background = directory.getEntry( "phase0background", Texture.class );
         background.setFilter( Texture.TextureFilter.Linear, Texture.TextureFilter.Linear );
         for(int i = 0; i < 4; i++){
@@ -305,7 +308,20 @@ public class LevelSelectMode implements Screen, InputProcessor, ControllerListen
         hovered = -1;
         for(int i = 0; i < phasesPos.length; i++){
             if(pressedCircle(x, y, phases[i], phasesPos[i])){
-                hovered = i;
+                if(prof_mode) {
+                    hovered = i;
+                }
+                else{
+                    float[] timers = InputController.getInstance().times;
+                    if(i == 0) {
+                        hovered = i;
+                    }
+                    else if(timers[i*5-1] != 0){
+                        hovered = i;
+                    }else{
+                       hovered = -1;
+                    }
+                }
             }
         }
 
@@ -329,10 +345,23 @@ public class LevelSelectMode implements Screen, InputProcessor, ControllerListen
         if(phase == 0) {
             for (int i = 0; i < phasesPos.length; i++) {
                 Texture text = (i == hovered) ? lightphases[i] : phases[i];
-                canvas.draw(text, Color.WHITE, text.getWidth() / 2f, text.getHeight() / 2f, phasesPos[i].x, phasesPos[i].y, 0, scale.x, scale.y);
+                float[] timers = InputController.getInstance().times;
+                if(prof_mode) {
+                    canvas.draw(text, Color.WHITE, text.getWidth() / 2f, text.getHeight() / 2f, phasesPos[i].x, phasesPos[i].y, 0, scale.x, scale.y);
+                }
+                else{
+                    if(i == 0){
+                        canvas.draw(text, Color.WHITE, text.getWidth() / 2f, text.getHeight() / 2f, phasesPos[i].x, phasesPos[i].y, 0, scale.x, scale.y);
+                    }
+                    else if(timers[i*5-1] != 0){
+                        canvas.draw(text, Color.WHITE, text.getWidth() / 2f, text.getHeight() / 2f, phasesPos[i].x, phasesPos[i].y, 0, scale.x, scale.y);
+                    }else{
+                        canvas.draw(text, Color.DARK_GRAY, text.getWidth() / 2f, text.getHeight() / 2f, phasesPos[i].x, phasesPos[i].y, 0, scale.x, scale.y);
+
+                    }
+                }
                 boolean drawTime = true;
                 float totalTime = 0;
-                float[] timers = InputController.getInstance().times;
                 for(int j = i * 5; j < i * 5 + 5; j++){
                     if(timers[j] == 0) drawTime = false;
                     totalTime += timers[j];
@@ -351,7 +380,23 @@ public class LevelSelectMode implements Screen, InputProcessor, ControllerListen
                     time = "--:--.--";
                 }
                 displayFont.getData().setScale(0.8f * scale.x, 0.8f * scale.y);
+                if(prof_mode) {
+                    displayFont.setColor(1,1,1,1);
+                }
+                else{
+                    if(i == 0) {
+                        displayFont.setColor(1,1,1,1);
+
+                    }
+                    else if(timers[i*5-1] != 0){
+                        displayFont.setColor(1,1,1,1);
+                    }else{
+                        displayFont.setColor(0.5f,0.5f,0.5f,0.8f);
+                    }
+                }
+
                 canvas.drawText(time, displayFont, phasesPos[i].x - (75 * scale.x), phasesPos[i].y - (250*scale.y));
+                displayFont.setColor(1,1,1,1);
 
 
 
@@ -362,8 +407,23 @@ public class LevelSelectMode implements Screen, InputProcessor, ControllerListen
             Texture[] texts = phaseLevels[p];
             Vector2[] pos = phaseLevelsPos[p];
             for(int i = 0; i < texts.length; i++){
-                canvas.draw(texts[i], Color.WHITE, texts[i].getWidth() / 2f, texts[i].getHeight() / 2f, pos[i].x, pos[i].y, 0, scale.x, scale.y);
                 float timer = InputController.getInstance().times[(p*5) + i];
+                if(prof_mode) {
+                    canvas.draw(texts[i], Color.WHITE, texts[i].getWidth() / 2f, texts[i].getHeight() / 2f, pos[i].x, pos[i].y, 0, scale.x, scale.y);
+                }else{
+                    Texture text = texts[i];
+                    System.out.println(InputController.getInstance().times.length);
+                    if(i == 0){
+                        canvas.draw(text, Color.WHITE, text.getWidth() / 2f, text.getHeight() / 2f, phaseLevelsPos[p][i].x, phaseLevelsPos[p][i].y, 0, scale.x, scale.y);
+                    }
+                    else if(InputController.getInstance().times[p*5 +i -1] != 0){
+                        canvas.draw(text, Color.WHITE, text.getWidth() / 2f, text.getHeight() / 2f, phaseLevelsPos[p][i].x, phaseLevelsPos[p][i].y, 0, scale.x, scale.y);
+                    }else{
+                        canvas.draw(text, Color.DARK_GRAY, text.getWidth() / 2f, text.getHeight() / 2f, phaseLevelsPos[p][i].x, phaseLevelsPos[p][i].y, 0, scale.x, scale.y);
+
+                    }
+                }
+
                 int minutes = (int) timer / 60;
                 String time = String.format("%.02f", timer % 60);
                  if(timer % 60 < 10){
@@ -380,7 +440,22 @@ public class LevelSelectMode implements Screen, InputProcessor, ControllerListen
                 if(scale.x != 0) {
                     displayFont.getData().setScale(0.8f * scale.x, 0.8f * scale.y);
                 }
-                canvas.drawText(time, displayFont, pos[i].x - (70 * scale.x), pos[i].y - (100 *scale.y));
+                if(prof_mode) {
+                    displayFont.setColor(1,1,1,1);
+                }
+                else{
+                    if(i == 0) {
+                        displayFont.setColor(1,1,1,1);
+
+                    }
+                    else if(InputController.getInstance().times[p*5 +i -1] != 0){
+                        displayFont.setColor(1,1,1,1);
+                    }else{
+                        displayFont.setColor(0.5f,0.5f,0.5f,0.8f);
+                    }
+                }
+                canvas.drawText(time, displayFont, pos[i].x - (70 * scale.x), pos[i].y - (100 * scale.y));
+
             }
         }
 
@@ -416,6 +491,10 @@ public class LevelSelectMode implements Screen, InputProcessor, ControllerListen
                 listener.exitScreen(this, -1);
             }
         }
+    }
+
+    public void setProfMode(boolean profMode){
+        prof_mode = profMode;
     }
 
     /**
@@ -489,7 +568,7 @@ public class LevelSelectMode implements Screen, InputProcessor, ControllerListen
         float button_w = texture.getWidth() * scale.x;
         float button_h = texture.getHeight() * scale.y;
         screenY = canvas.getHeight() - screenY;
-        ////////System.out.println(button_center);
+        //////////System.out.println(button_center);
         if(screenX >= button_pos.x && screenX <= button_pos.x + button_w){
             if(screenY >= button_pos.y - button_h && screenY <= button_pos.y){
                 return true;
@@ -521,7 +600,7 @@ public class LevelSelectMode implements Screen, InputProcessor, ControllerListen
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 
         if(disabled){
-            ////////System.out.println("bad howdy");
+            //////////System.out.println("bad howdy");
             return true;
         }
         if(pressedButton(screenX, screenY, backButton, backButtonPos)){
@@ -534,7 +613,18 @@ public class LevelSelectMode implements Screen, InputProcessor, ControllerListen
         if(phase == 0){
             for(int i = 0; i < phasesPos.length; i++){
                 if(pressedCircle(screenX, screenY, phases[i], phasesPos[i])){
-                    phase = i + 1;
+                    if(prof_mode) {
+                        phase = i + 1;
+                    }
+                    else{
+                        float[] timers = InputController.getInstance().times;
+                        if(i == 0) {
+                            phase = i + 1;
+                        }
+                        else if(timers[i*5-1] != 0){
+                            phase = i + 1;
+                        }
+                    }
                 }
             }
         }else{
@@ -543,7 +633,18 @@ public class LevelSelectMode implements Screen, InputProcessor, ControllerListen
             Vector2[] pos = phaseLevelsPos[p];
             for(int i = 0; i < texts.length; i++){
                 if(pressedCircle(screenX, screenY, texts[i], pos[i])){
-                   listener.exitScreen(this, 5 * (phase - 1) + i + 1); //which lvl
+                    if(prof_mode) {
+                        listener.exitScreen(this, 5 * (phase - 1) + i + 1); //which lvl
+                    }
+                    else{
+                        float[] timers = InputController.getInstance().times;
+                        if(i == 0) {
+                            listener.exitScreen(this, 5 * (phase - 1) + i + 1); //which lvl
+                        }
+                        else if(timers[p*5 +i -1] != 0){
+                            listener.exitScreen(this, 5 * (phase - 1) + i + 1); //which lvl
+                        }
+                    }
                 }
             }
         }

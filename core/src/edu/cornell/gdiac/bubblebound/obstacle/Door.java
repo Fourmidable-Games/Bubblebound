@@ -1,7 +1,9 @@
 package edu.cornell.gdiac.bubblebound.obstacle;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import edu.cornell.gdiac.bubblebound.DudeModel;
+import edu.cornell.gdiac.bubblebound.GameCanvas;
 import edu.cornell.gdiac.util.FilmStrip;
 
 import java.util.ArrayList;
@@ -74,6 +76,5 @@ public class Door extends Goal{
     }
 
     public Vector2 getPlayerSpawnLocation(){return spawnLoc;}
-
 
 }
