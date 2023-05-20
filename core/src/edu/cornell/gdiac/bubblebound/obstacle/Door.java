@@ -1,7 +1,9 @@
 package edu.cornell.gdiac.bubblebound.obstacle;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import edu.cornell.gdiac.bubblebound.DudeModel;
+import edu.cornell.gdiac.bubblebound.GameCanvas;
 import edu.cornell.gdiac.util.FilmStrip;
 
 import java.util.ArrayList;
@@ -75,5 +77,28 @@ public class Door extends Goal{
 
     public Vector2 getPlayerSpawnLocation(){return spawnLoc;}
 
+    @Override
+    public void draw(GameCanvas canvas) {
+        float sx = drawScale.x / 64f;
+        float sy = drawScale.y / 64f;
+        sx = Math.round(32 * sx) / 32f; //roudns to x.x
+        sy = Math.round(32 * sy) / 32f;
+//        if(targetID == 6 || targetID == 11 || targetID == 16) {
+//            if (grav == 1) {
+//                canvas.draw(texture, new Color(1, 1, 1, 0.95f), origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.y, getAngle(), sx, sy);
+//
+//            } else {
+//                canvas.draw(texture, new Color(1, 1, 1, 0.95f), origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.y, getAngle(), sx, sy);
+//
+//            }
+//        }else{
+            if (grav == 1) {
+                canvas.draw(texture, new Color(1, 1, 1, 1f), origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.y, getAngle(), sx, sy);
 
+            } else {
+                canvas.draw(texture, new Color(1, 1, 1, 1f), origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.y, getAngle(), sx, sy);
+
+            }
+//        }
+    }
 }

@@ -89,7 +89,7 @@ public class Lucenglaze extends BoxObstacle{
                     angle = 90;
                     break;
                 default:
-                    ////////////System.out.println("uh oh");
+                    //////////////System.out.println("uh oh");
                     break;
             }
             float sx = drawScale.x / 64f;
@@ -104,7 +104,7 @@ public class Lucenglaze extends BoxObstacle{
         if(!triggered) return;
         float sx = drawScale.x / 64f;
         float sy = drawScale.y / 64f;
-        System.out.println("hello" + filmstrip);
+        //System.out.println("hello" + filmstrip);
         canvas.draw(filmstrip2, Color.WHITE, origin.x, origin.y, (getX() + 1) * drawScale.x, getY() * drawScale.y, (float)Math.toRadians(angle), sx, sy);
     }
 

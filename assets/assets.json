@@ -1063,6 +1063,9 @@
         "wrapU": "repeated",
         "wrapV": "repeated"
       },
+      "phase2" : "levelselect/phase2.png",
+      "phase3" : "levelselect/phase3.png",
+      "phase4" : "levelselect/phase4.png",
 
       "shared:sky70" : {
         "file":  "shared/b70.png",

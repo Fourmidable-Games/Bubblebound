@@ -266,8 +266,8 @@ public class BoxObstacle extends SimpleObstacle {
 		float sy = drawScale.y / 64f;
 		sx = Math.round(32 * sx) / 32f; //roudns to x.x
 		sy = Math.round(32 * sy) / 32f;
-//		System.out.println("width" + canvas.getWidth() + "height" + canvas.getHeight());
-//		System.out.println("sx" + sx + "   sy" + sy);
+//		//System.out.println("width" + canvas.getWidth() + "height" + canvas.getHeight());
+//		//System.out.println("sx" + sx + "   sy" + sy);
 		if (isRope == true) {
 			if(drawtimer >= draworder){
 				sx *= 2;

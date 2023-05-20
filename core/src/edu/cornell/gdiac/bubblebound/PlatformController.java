@@ -19,6 +19,7 @@ import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.physics.box2d.*;
 
+import com.sun.org.apache.xerces.internal.util.TeeXMLDocumentFilterImpl;
 import edu.cornell.gdiac.assets.AssetDirectory;
 import edu.cornell.gdiac.bubblebound.obstacle.BoxObstacle;
 import edu.cornell.gdiac.bubblebound.obstacle.Obstacle;
@@ -66,6 +67,9 @@ public class PlatformController implements ContactListener, Screen {
 	protected Texture fallText;
 	protected FilmStrip fallStrip;
 	protected Texture upText;
+	private Vector2 phase2Loc;
+	private Vector2 phase3Loc;
+	private Vector2 phase4Loc;
 	protected FilmStrip upStrip;
 	protected Texture downText;
 	protected FilmStrip downStrip;
@@ -320,6 +324,9 @@ public class PlatformController implements ContactListener, Screen {
 	private Token level10Token;
 
 	private Token level15Token;
+	private TextureRegion phase2Text;
+	private TextureRegion phase3Text;
+	private TextureRegion phase4Text;
 
 
 	private boolean level5TokenCollected = false;
@@ -424,6 +431,9 @@ public class PlatformController implements ContactListener, Screen {
 		deathLeft = new TextureRegion(directory.getEntry("platform:leftdeath", Texture.class));
 		deathRight = new TextureRegion(directory.getEntry("platform:rightdeath", Texture.class));
 
+		phase2Text = new TextureRegion(directory.getEntry("phase2", Texture.class));
+		phase3Text = new TextureRegion(directory.getEntry("phase3", Texture.class));
+		phase4Text = new TextureRegion(directory.getEntry("phase4", Texture.class));
 
 		jumpSound = directory.getEntry( "bubbleboundsfx:jump", Sound.class );
 		fireSound = directory.getEntry( "bubbleboundsfx:ropeshoot", Sound.class );
@@ -447,8 +457,8 @@ public class PlatformController implements ContactListener, Screen {
 		bubbleText = directory.getEntry( "shared:bubble2", Texture.class );
 		bubbleText2 = directory.getEntry( "shared:bubblerange", Texture.class );
 		displayFont = directory.getEntry( "shared:retro" ,BitmapFont.class);
-		System.out.println(displayFont);
-		System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+		//System.out.println(displayFont);
+		//System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 		skybackground = new TextureRegion(directory.getEntry("background:sky", Texture.class));
 		icebackground = directory.getEntry("background:ice", Texture.class);
 		paperfilter = directory.getEntry("platform:paperfilter", Texture.class);
@@ -531,32 +541,32 @@ public class PlatformController implements ContactListener, Screen {
 	public int getTexture(int x){
 
 		if(x<7 ){
-			System.out.println("arrow Test");
-			System.out.println("Button Texture Test");
-			System.out.println(x);
+			//System.out.println("arrow Test");
+			//System.out.println("Button Texture Test");
+			//System.out.println(x);
 			return x+1; //up,down,left,right return 0-3
 		}
 		if(x <= 7 && x <= 16){ // numbers 0-9
-			System.out.println("Button Texture Test");
-			System.out.println(x);
+			//System.out.println("Button Texture Test");
+			//System.out.println(x);
 			return x-3+2;
 		}
 		if(x >= 19 && x <= 22 ){
-			System.out.println("arrow Test");
-			System.out.println("Button Texture Test");
-			System.out.println(x);
+			//System.out.println("arrow Test");
+			//System.out.println("Button Texture Test");
+			//System.out.println(x);
 			return x+30-8+2-1-1-1+3+1+1-2; //up,down,left,right return 0-3
 		}
 		if(x > 22 ){
-			System.out.println("arrow Test");
-			System.out.println("Button Texture Test");
-			System.out.println(x);
+			//System.out.println("arrow Test");
+			//System.out.println("Button Texture Test");
+			//System.out.println(x);
 			return x-3; //up,down,left,right return 0-3
 
 		}
 
-		System.out.println("Button Texture Test");
-		System.out.println(x);
+		//System.out.println("Button Texture Test");
+		//System.out.println(x);
 		return x-9; //alphabet return 4-29
 
 
@@ -589,7 +599,7 @@ public class PlatformController implements ContactListener, Screen {
 		Vector2 gravity = new Vector2(world.getGravity() );
 		zones.clear();
 		if(rope != null){
-			//////System.out.println("DESTRUCT ROPE 1");
+			////////System.out.println("DESTRUCT ROPE 1");
 			destructRope();
 			rope = null;
 		}
@@ -637,8 +647,8 @@ public class PlatformController implements ContactListener, Screen {
 	 * Lays out the game geography.
 	 */
 	private void populateLevel(String jsonPath) {
-		System.out.println("canvas width " + canvas.getWidth());
-		System.out.println("canvas height" + canvas.getHeight());
+		//System.out.println("canvas width " + canvas.getWidth());
+		//System.out.println("canvas height" + canvas.getHeight());
 		setSounds();
 
 
@@ -660,8 +670,8 @@ public class PlatformController implements ContactListener, Screen {
 
 		float dwidth  = goalStrip.getRegionWidth()/scale.x;
 		float dheight = goalStrip.getRegionHeight()/scale.y;
-//		//////System.out.println("currLevel: " + currLevel);
-//		//////System.out.println("targetLevel: " + targetLevel);
+//		////////System.out.println("currLevel: " + currLevel);
+//		////////System.out.println("targetLevel: " + targetLevel);
 		// Add level goal
 		for(int i = 0; i < doors.size(); i++){
 			Door door = doors.get(i);
@@ -674,7 +684,7 @@ public class PlatformController implements ContactListener, Screen {
 			door.isGoal = true;
 			addObject(door);
 			if(door.getTargetLevelID() == currLevel){
-//				//////System.out.println("TARGET DOOR FOUND!");
+//				////////System.out.println("TARGET DOOR FOUND!");
 				avatarSpawnLocation = door.getPlayerSpawnLocation();
 				avatarSpawnDirection = door.getSpawnDirection();
 				needToInitializeSpawn = false;
@@ -696,13 +706,13 @@ public class PlatformController implements ContactListener, Screen {
 		bubbles_left = BUBBLE_LIMIT;
 
 		avatar = needToInitializeSpawn ? Level2.getPlayer(Door.SpawnDirection.RIGHT) : Level2.getPlayerAtLocation(avatarSpawnLocation, avatarSpawnDirection);
-//		//////System.out.println("PRESPAWN LOC: "+ avatar.getPosition());
+//		////////System.out.println("PRESPAWN LOC: "+ avatar.getPosition());
 		if(needToInitializeSpawn) {
 			avatarSpawnLocation = avatar.getPosition();
 			avatarSpawnDirection = Door.SpawnDirection.RIGHT;
 			needToInitializeSpawn = false;
 		}
-//		//////System.out.println("AFTERCHECK LOC: "+ avatar.getPosition());
+//		////////System.out.println("AFTERCHECK LOC: "+ avatar.getPosition());
 
 		avatar.setGrappling(false);
 		avatar.setDrawScale(scale);
@@ -837,71 +847,100 @@ public class PlatformController implements ContactListener, Screen {
 
 		world.setGravity( new Vector2(0,defaults.getFloat("gravity",0)) );
 
-		if(currLevel == 5 && !level5TokenCollected){
-			Vector2 location = new Vector2();
-			for(Door d: doors){
-				if(currLevel<d.getTargetLevelID()){
-					location = d.getPlayerSpawnLocation();
+		if(currLevel == 5){
+			Door end_door = null;
+			for (Door d : doors) {
+				if (currLevel < d.getTargetLevelID()) {
+					end_door = d;
 					break;
 				}
 			}
-			level5Token = new Token(location, 1, 5);
+			if(!level5TokenCollected) {
+				Vector2 location = end_door.getPlayerSpawnLocation();
 
-			level5Token.setName("token5");
-			level5Token.setBodyType(BodyDef.BodyType.StaticBody);
-			level5Token.setSensor(true);
-			level5Token.setDrawScale(scale);
-			level5Token.setTexture(tokenStrip);
-			level5Token.initialize(tokenStrip);
+				level5Token = new Token(location, 1, 5);
 
-//			//////System.out.println("ADDING TOKEN" + level6Token.getPosition());
+				level5Token.setName("token5");
+				level5Token.setBodyType(BodyDef.BodyType.StaticBody);
+				level5Token.setSensor(true);
+				level5Token.setDrawScale(scale);
+				level5Token.setTexture(tokenStrip);
+				level5Token.initialize(tokenStrip);
+				//			////////System.out.println("ADDING TOKEN" + level12Token.getPosition());
 
-			addObject(level5Token);
+				addObject(level5Token);
+			}
+			phase2Loc = end_door.getPosition();
+
+
 		}
 
-		if(currLevel == 10 && !level10TokenCollected){
-			Vector2 location = new Vector2();
-			for(Door d: doors){
-				if(currLevel<d.getTargetLevelID()){
-					location = d.getPlayerSpawnLocation();
+		if(currLevel == 10){
+			Door end_door = null;
+			for (Door d : doors) {
+				if (currLevel < d.getTargetLevelID()) {
+					end_door = d;
 					break;
 				}
 			}
-			level10Token = new Token(location, 1,	10);
+			if(!level10TokenCollected) {
+				Vector2 location = end_door.getPlayerSpawnLocation();
 
-			level10Token.setName("token10");
-			level10Token.setBodyType(BodyDef.BodyType.StaticBody);
-			level10Token.setSensor(true);
-			level10Token.setDrawScale(scale);
-			level10Token.setTexture(tokenStrip);
-			level10Token.initialize(tokenStrip);
-//			//////System.out.println("ADDING TOKEN" + level12Token.getPosition());
+				level10Token = new Token(location, 1, 10);
 
-			addObject(level10Token);
+				level10Token.setName("token10");
+				level10Token.setBodyType(BodyDef.BodyType.StaticBody);
+				level10Token.setSensor(true);
+				level10Token.setDrawScale(scale);
+				level10Token.setTexture(tokenStrip);
+				level10Token.initialize(tokenStrip);
+				//			////////System.out.println("ADDING TOKEN" + level12Token.getPosition());
+
+				addObject(level10Token);
+			}
+			phase3Loc = end_door.getPosition();
+
+
 		}
 
-		if(currLevel == 15 && !level15TokenCollected){
-			Vector2 location = new Vector2();
-			for(Door d: doors){
-				if(currLevel<d.getTargetLevelID()){
-					location = d.getPlayerSpawnLocation();
+		if(currLevel == 15){
+			Door end_door = null;
+			for (Door d : doors) {
+				if (currLevel < d.getTargetLevelID()) {
+					end_door = d;
 					break;
 				}
 			}
-			level15Token = new Token(location, 1,15);
+			if(!level15TokenCollected) {
+				Vector2 location = end_door.getPlayerSpawnLocation();
 
-			level15Token.setName("token15");
-			level15Token.setBodyType(BodyDef.BodyType.StaticBody);
-			level15Token.setSensor(true);
-			level15Token.setDrawScale(scale);
-			level15Token.setTexture(tokenStrip);
-			level15Token.initialize(tokenStrip);
-//			//////System.out.println("ADDING TOKEN" + level12Token.getPosition());
+				level15Token = new Token(location, 1, 15);
 
-			addObject(level15Token);
+				level15Token.setName("token15");
+				level15Token.setBodyType(BodyDef.BodyType.StaticBody);
+				level15Token.setSensor(true);
+				level15Token.setDrawScale(scale);
+				level15Token.setTexture(tokenStrip);
+				level15Token.initialize(tokenStrip);
+	//			////////System.out.println("ADDING TOKEN" + level12Token.getPosition());
+
+				addObject(level15Token);
+			}
+			phase4Loc = end_door.getPosition();
+
+
 		}
+		switch(currLevel){
+			case 5:
 
-
+				break;
+			case 10:
+				break;
+			case 15:
+				break;
+			default:
+				break;
+		}
 
 
 		// Create rope bridge
@@ -957,7 +996,7 @@ public class PlatformController implements ContactListener, Screen {
         pe.initialize(sunStrip);
 		addObject(pe);
 		projenemies.add(pe);
-		//////////System.out.println("pe pos" + pe.getPosition());
+		////////////System.out.println("pe pos" + pe.getPosition());
 		return pe;
 	}
 
@@ -1074,7 +1113,7 @@ public class PlatformController implements ContactListener, Screen {
 
 	public void update(float dt) {
 		if(InputController.getInstance().didBubble()) {
-			System.out.println(InputController.getInstance().didBubble());
+			//System.out.println(InputController.getInstance().didBubble());
 		}
 		updateBubbles();
 		updateSpike();
@@ -1106,10 +1145,10 @@ public class PlatformController implements ContactListener, Screen {
 		crosshairLoc.x += xoffset;
 		crosshairLoc.y += yoffset;
 
-//		//////System.out.println("CAMERA: " +cameraCoords.scl(1/scale.x,1/scale.y));
-//		//////System.out.println("Crosshair before: " +crosshairLoc);
+//		////////System.out.println("CAMERA: " +cameraCoords.scl(1/scale.x,1/scale.y));
+//		////////System.out.println("Crosshair before: " +crosshairLoc);
 		Vector2 playerLoc = avatar.getPosition();
-//		//////System.out.println("Player Pos: " + playerLoc);
+//		////////System.out.println("Player Pos: " + playerLoc);
 		float dist = Vector2.dst(crosshairLoc.x,crosshairLoc.y, playerLoc.x, playerLoc.y);
 		if(dist > 4){
 			Vector2 tempCrosshair = crosshairLoc.cpy();
@@ -1167,7 +1206,7 @@ public class PlatformController implements ContactListener, Screen {
 			b.canRopeTo = false;
 			if(b.timedOut()){
 				if(b.isGrappled()){
-					//////System.out.println("DESTRUCT ROPE 2");
+					////////System.out.println("DESTRUCT ROPE 2");
 
 					destructRope();
 					avatar.setGrappling(false);
@@ -1369,7 +1408,7 @@ public class PlatformController implements ContactListener, Screen {
 		boolean spawned = false;
 		if(InputController.getInstance().didTertiary()){
 			Vector2 bp = canBubble2(placeLocation);
-			//////System.out.println(bp);
+			////////System.out.println(bp);
 			if(bp != null) {
 				if (wait > 20) {
 					if (!InputController.getInstance().isFiniteBubbles() || bubbles_left > 0) {
@@ -1436,7 +1475,7 @@ public class PlatformController implements ContactListener, Screen {
 			avatar.setGrappleBoost(true);
 			Bubble b = (Bubble) rope.bubble.getUserData();
 			b.setGrappled(false);
-			//////System.out.println("DESTRUCT ROPE 3");
+			////////System.out.println("DESTRUCT ROPE 3");
 
 			destructRope();
 			rope = null;
@@ -1898,9 +1937,9 @@ public class PlatformController implements ContactListener, Screen {
 				int temp_id = door.getTargetLevelID();
 				if(temp_id > currLevel) {
 					doored = true;
-					//////////System.out.println("COLLISION WITH " + door.getName());
+					////////////System.out.println("COLLISION WITH " + door.getName());
 					nextLevelID = door.getTargetLevelID();
-					//////////System.out.println("Next Level: " + nextLevelID);
+					////////////System.out.println("Next Level: " + nextLevelID);
 				}
 
 			}
@@ -2168,7 +2207,7 @@ public class PlatformController implements ContactListener, Screen {
 		spikelist.clear();
 		bullets.clear();
 		if(rope != null){
-			//////System.out.println("DESTRUCT ROPE 4");
+			////////System.out.println("DESTRUCT ROPE 4");
 
 			destructRope();
 			rope = null;
@@ -2567,7 +2606,7 @@ public class PlatformController implements ContactListener, Screen {
 	public boolean pressedButton(int screenX, int screenY, Texture texture, Vector2 button_pos){
 		float button_w = texture.getWidth() * scale.x;
 		float button_h = texture.getHeight() * scale.y;
-		////////System.out.println(button_center);
+		//////////System.out.println(button_center);
 		screenY = canvas.getHeight() - screenY;
 		if(screenX >= button_pos.x && screenX <= button_pos.x + button_w){
 			if(screenY >= button_pos.y - button_h && screenY <= button_pos.y){
@@ -2577,6 +2616,16 @@ public class PlatformController implements ContactListener, Screen {
 		return false;
 	}
 
+	private void drawDebugLocation(){
+		displayFont.setColor(Color.RED);
+		displayFont.getData().scaleX = scale.x / 90;
+		displayFont.getData().scaleY = scale.y / 90;
+		canvas.begin(); // DO NOT SCALE
+		String location_s = "Location: (" + (int)avatar.getPosition().x + ", " + (int)avatar.getPosition().y +")";
+		canvas.drawText(location_s, displayFont, cameraCoords.x - scale.x, cameraCoords.y + (canvas.getHeight()/2f) - 2*scale.y);
+		canvas.end();
+
+	}
 
 	private void drawTimer(){
 		displayFont.setColor(Color.RED);
@@ -2619,6 +2668,18 @@ public class PlatformController implements ContactListener, Screen {
 		}
 	}
 
+	public void drawPhases(){
+		if(currLevel == 5){
+			canvas.draw(phase2Text, new Color(1,1,1,0.5f),phase2Text.getRegionWidth()/2,phase2Text.getRegionHeight()/2,phase2Loc.x*scale.x,phase2Loc.y*scale.y,0,0.35f,0.35f);
+		}
+		if(currLevel == 10){
+			System.out.println("DRAWING phase3 at " + phase3Loc);
+			canvas.draw(phase3Text,  new Color(1,1,1,0.5f),phase2Text.getRegionWidth()/2,phase2Text.getRegionHeight()/2,phase3Loc.x*scale.x,phase3Loc.y*scale.y,0,0.35f,0.35f);
+		}
+		if(currLevel == 15){
+			canvas.draw(phase4Text,  new Color(1,1,1,0.5f),phase2Text.getRegionWidth()/2,phase2Text.getRegionHeight()/2,phase4Loc.x*scale.x,phase4Loc.y*scale.y,0,0.35f,0.35f);
+		}
+	}
 
 
 	public void draw(float dt) {
@@ -2648,6 +2709,8 @@ public class PlatformController implements ContactListener, Screen {
 		for(Door d: doors){
 			d.draw(canvas);
 		}
+		drawPhases();
+
 		for(Border b: borders){
 			b.draw(canvas);
 		}
@@ -2722,7 +2785,9 @@ public class PlatformController implements ContactListener, Screen {
 			for(Obstacle obj : objects) {
 				obj.drawDebug(canvas);
 			}
+
 			canvas.endDebug();
+			drawDebugLocation();
 		}
 
 

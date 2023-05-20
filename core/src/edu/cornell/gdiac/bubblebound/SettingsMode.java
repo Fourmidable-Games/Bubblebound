@@ -356,10 +356,10 @@ public class SettingsMode implements Screen, InputProcessor, ControllerListener 
         private void update(float delta) {
             Gdx.input.setInputProcessor( this );
             float new_music_volume = InputController.getInstance().audio_levels[0];
-            ////System.out.println(new_music_volume);
+            //////System.out.println(new_music_volume);
             if(new_music_volume != music_volume){
                 loadingMusic.setVolume(loadingMusicId,new_music_volume);
-                ////System.out.println("UPDATED");
+                //////System.out.println("UPDATED");
                 music_volume = new_music_volume;
             }
             if(InputController.getInstance().mouse){
@@ -600,7 +600,7 @@ public class SettingsMode implements Screen, InputProcessor, ControllerListener 
             float button_w = texture.getWidth() * scale.x;
             float button_h = texture.getHeight() * scale.y;
             screenY = canvas.getHeight() - screenY;
-            ////////System.out.println(button_center);
+            //////////System.out.println(button_center);
             if(screenX >= button_pos.x && screenX <= button_pos.x + button_w){
                 if(screenY >= button_pos.y - button_h && screenY <= button_pos.y){
                    return true;
@@ -613,7 +613,7 @@ public class SettingsMode implements Screen, InputProcessor, ControllerListener 
            float button_w = texture.getWidth() * scale.x;
            float button_h = texture.getHeight() * scale.y;
            screenY = canvas.getHeight() - screenY;
-           ////////System.out.println(button_center);
+           //////////System.out.println(button_center);
            if(screenX >= button_pos.x - button_h && screenX <= button_pos.x + button_w + button_h){
                if(screenY >= button_pos.y - button_h -button_h/2 && screenY <= button_pos.y + button_h/2){
                    return true;
@@ -655,7 +655,7 @@ public class SettingsMode implements Screen, InputProcessor, ControllerListener 
         public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 
             if(disabled){
-                ////////System.out.println("bad howdy");
+                //////////System.out.println("bad howdy");
                 return true;
             }
 
@@ -663,7 +663,7 @@ public class SettingsMode implements Screen, InputProcessor, ControllerListener 
             //screenY = heightY-screenY;
 
             if(pressedButton(screenX, screenY, backButton, backButtonPos)){
-                ////////System.out.println("BACKK");
+                //////////System.out.println("BACKK");
                 pressState = 1;
             }
             if(pressedSlider(screenX, screenY, slider, masterSoundBarPos)){
