@@ -59,7 +59,7 @@ public class GDXRoot extends Game implements ScreenListener {
 	 * or assign any screen.
 	 */
 	public GDXRoot() {
-		profMode = true;
+		profMode = false;
 	}
 
 	/** 

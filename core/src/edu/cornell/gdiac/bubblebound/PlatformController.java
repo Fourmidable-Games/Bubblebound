@@ -611,7 +611,7 @@ public class PlatformController implements ContactListener, Screen {
 		}
 		//actually find a way to delete and reinitialize these later
 		windSound.stop();
-
+		prompts.clear();
 		objects.clear();
 		bubbles.clear();
 		enemies.clear();
@@ -795,29 +795,37 @@ public class PlatformController implements ContactListener, Screen {
 
 //
 //
-		ButtonPrompt bp = new ButtonPrompt(2, 8, jumpBP, 0, 1);
-		bp.setScale(scale);
-		bp.setMouse(leftMouse, rightMouse);
-		bp.setLetters(letters);
-    	prompts.add(bp);
+		if(currLevel == 1) {
+			ButtonPrompt bp = new ButtonPrompt(19, 14, jumpBP, 0, 1);
+			bp.setScale(scale);
+			bp.setMouse(leftMouse, rightMouse);
+			bp.setLetters(letters);
+			prompts.add(bp);
+		}
 //
-		ButtonPrompt bp2 = new ButtonPrompt(5, 8, jumpBP, 2, 3); //jump down
-		bp2.setScale(scale);
-		bp2.setMouse(leftMouse, rightMouse);
-		bp2.setLetters(letters);
-		prompts.add(bp2);
+		if(currLevel == 2) {
+			ButtonPrompt bp2 = new ButtonPrompt(10, 12, jumpBP, 2, 3); //jump down
+			bp2.setScale(scale);
+			bp2.setMouse(leftMouse, rightMouse);
+			bp2.setLetters(letters);
+			prompts.add(bp2);
+		}
 //
-		ButtonPrompt bp3 = new ButtonPrompt(8, 8, leftBP, 4, 5);
-		bp3.setScale(scale);
-		bp3.setMouse(leftMouse, rightMouse);
-		bp3.setLetters(letters);
-		prompts.add(bp3);
+		if(currLevel == 1) {
+			ButtonPrompt bp3 = new ButtonPrompt(3.5f, 11, leftBP, 4, 5);
+			bp3.setScale(scale);
+			bp3.setMouse(leftMouse, rightMouse);
+			bp3.setLetters(letters);
+			prompts.add(bp3);
+		}
 ////
-		ButtonPrompt bp4 = new ButtonPrompt(11, 8, rightBP, 6, 7);
-		bp4.setScale(scale);
-		bp4.setMouse(leftMouse, rightMouse);
-		bp4.setLetters(letters);
-		prompts.add(bp4);
+		if(currLevel == 1) {
+			ButtonPrompt bp4 = new ButtonPrompt(7.5f, 11, rightBP, 6, 7);
+			bp4.setScale(scale);
+			bp4.setMouse(leftMouse, rightMouse);
+			bp4.setLetters(letters);
+			prompts.add(bp4);
+		}
 
 		ButtonPrompt bp5 = new ButtonPrompt(14, 8, grappleBP, 8);//grapple
 		bp5.setScale(scale);
@@ -2695,7 +2703,7 @@ public class PlatformController implements ContactListener, Screen {
 		displayFont.getData().scaleX = scale.x / 90;
 		displayFont.getData().scaleY = scale.y / 90;
 		canvas.begin(); // DO NOT SCALE
-		String location_s = "Location: (" + (int)avatar.getPosition().x + ", " + (int)avatar.getPosition().y +")";
+		String location_s = "Location: (" + (int)crosshairLoc.x + ", " + (int)crosshairLoc.y +")";
 		canvas.drawText(location_s, displayFont, cameraCoords.x - scale.x, cameraCoords.y + (canvas.getHeight()/2f) - 2*scale.y);
 		canvas.end();
 
@@ -2795,7 +2803,7 @@ public class PlatformController implements ContactListener, Screen {
 			b.draw(canvas);
 		}
 		for(Enemy e : enemies){
-			e.draw(canvas);
+			e.draw(canvas,avatar);
 		}
 		for(LucenglazeSensor lg : lucens){
 			lg.draw(canvas);
