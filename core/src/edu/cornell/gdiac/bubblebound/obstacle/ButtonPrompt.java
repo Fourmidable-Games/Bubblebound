@@ -98,19 +98,19 @@ public class ButtonPrompt  {
         int[] buttons = input.buttons;
         canvas.draw(buttonTexture, Color.WHITE, 0, buttonTexture.getHeight(),x, y, 0, sx, sy);
         if(two){
-            System.out.println("TWO");
+            //System.out.println("TWO");
             float sx2 = sx;
             float sy2 = sy;
             Texture one = letters[getTexture(buttons[mapping1])];
             if(mapping1 == 8 && input.isMouseControlls()){
-                System.out.println("mapping1 8");
+                //System.out.println("mapping1 8");
 
                 if(input.mouse){
-                    System.out.println("one left");
+                    //System.out.println("one left");
 
                     one = left;
                 }else{
-                    System.out.println("one right");
+                    //System.out.println("one right");
 
                     one = right;
                 }
@@ -118,14 +118,14 @@ public class ButtonPrompt  {
                 sy2 /= 1.7;
             }
             if(mapping1 == 9 && input.isMouseControlls()){
-                System.out.println("mapping1 9");
+                //System.out.println("mapping1 9");
 
                 if(input.mouse){
-                    System.out.println("one right");
+                    //System.out.println("one right");
 
                     one = right;
                 }else{
-                    System.out.println("one left");
+                    //System.out.println("one left");
 
                     one = left;
                 }

@@ -113,7 +113,7 @@ public class RopeBridge extends ComplexObstacle {
 //			bodies.add(plank);
 
 //
-//			////////System.out.println(bodies.get(bodies.size()-1).getBody() != null);
+//			//////////System.out.println(bodies.get(bodies.size()-1).getBody() != null);
 
 
 //			DistanceJointDef distJointDef = new DistanceJointDef();
@@ -146,7 +146,7 @@ public class RopeBridge extends ComplexObstacle {
 		super(b.getPosition().x, b.getPosition().y);
 		fixture.filter.groupIndex = -2;
 
-		// //////////////System.out.println(getPosition());
+		// ////////////////System.out.println(getPosition());
 		setName("bridge");
 		this.data = data;
 		bubble = b;
@@ -160,17 +160,17 @@ public class RopeBridge extends ComplexObstacle {
 		int multiplier = (((DudeModel)avatarCapsule).isFacingRight()) ? 1: -1;
 		anchor3 = new Vector2(multiplier* ((avatarCapsule.getWidth()/2)-0.11f),0.55f * avatarCapsule.grav);
 		dimension = new Vector2(data.getFloat("width",0),0.1f);
-		// //////////////System.out.println("Dimension: " + dimension);
+		// ////////////////System.out.println("Dimension: " + dimension);
 		float length = bubble.getPosition().dst(avatar.getPosition().add(anchor3));
 		//	(float)Math.sqrt(Math.pow(bubble.getPosition().x-avatar.getPosition().x,2)+ Math.pow(bubble.getPosition().y-avatar.getPosition().y,2));
 		Vector2 norm = new Vector2(bubble.getPosition().sub(avatar.getPosition().add(anchor3)));
-		// //////////////System.out.println("Norm:" + norm);
+		// ////////////////System.out.println("Norm:" + norm);
 		norm.nor();
-		// //////////////System.out.println("Norm normed:" + norm);
+		// ////////////////System.out.println("Norm normed:" + norm);
 
 		// If too small, only make one plank.;
 		int nLinks = (int)(length / lwidth);
-		//////////////System.out.println();
+		////////////////System.out.println();
 		if (nLinks <= 1) {
 			nLinks = 1;
 			linksize = length;
@@ -395,7 +395,7 @@ public class RopeBridge extends ComplexObstacle {
 			anchor2.y = 0;
 			jointDef.bodyA = last.getBody();
 			jointDef.bodyB = bubble;
-			// //////////////System.out.println(bubble);
+			// ////////////////System.out.println(bubble);
 			jointDef.localAnchorA.set(anchor1);
 			jointDef.localAnchorB.set(anchor2);
 			jointDef.collideConnected = false;

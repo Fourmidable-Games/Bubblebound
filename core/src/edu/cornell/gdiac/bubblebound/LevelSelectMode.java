@@ -148,7 +148,7 @@ public class LevelSelectMode implements Screen, InputProcessor, ControllerListen
      * @return the asset directory produced by this loading screen
      */
     public void gatherAssets(AssetDirectory directory){
-        ////////System.out.println("AAAAAAAAAAAAAAAA");
+        //////////System.out.println("AAAAAAAAAAAAAAAA");
         background = directory.getEntry( "phase0background", Texture.class );
         background.setFilter( Texture.TextureFilter.Linear, Texture.TextureFilter.Linear );
         profbutton = directory.getEntry("button", Texture.class);
@@ -429,7 +429,7 @@ public class LevelSelectMode implements Screen, InputProcessor, ControllerListen
                     canvas.draw(texts[i], Color.WHITE, texts[i].getWidth() / 2f, texts[i].getHeight() / 2f, pos[i].x, pos[i].y, 0, scale.x, scale.y);
                 }else{
                     Texture text = texts[i];
-                    System.out.println(InputController.getInstance().times.length);
+                    //System.out.println(InputController.getInstance().times.length);
                     if(i == 0){
                         canvas.draw(text, Color.WHITE, text.getWidth() / 2f, text.getHeight() / 2f, phaseLevelsPos[p][i].x, phaseLevelsPos[p][i].y, 0, scale.x, scale.y);
                     }
@@ -585,7 +585,7 @@ public class LevelSelectMode implements Screen, InputProcessor, ControllerListen
         float button_w = texture.getWidth() * scale.x;
         float button_h = texture.getHeight() * scale.y;
         screenY = canvas.getHeight() - screenY;
-        //////////System.out.println(button_center);
+        ////////////System.out.println(button_center);
         if(screenX >= button_pos.x && screenX <= button_pos.x + button_w){
             if(screenY >= button_pos.y - button_h && screenY <= button_pos.y){
                 return true;
@@ -617,7 +617,7 @@ public class LevelSelectMode implements Screen, InputProcessor, ControllerListen
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 
         if(disabled){
-            //////////System.out.println("bad howdy");
+            ////////////System.out.println("bad howdy");
             return true;
         }
         if(pressedButton(screenX, screenY, backButton, backButtonPos)){
