@@ -1845,12 +1845,15 @@ public class PlatformController implements ContactListener, Screen {
 			if (((bd1 == avatar   && bd2.getName().contains("door")) ||
 					(bd1.getName().contains("door") && bd2 == avatar))) {
 
-				doored = true;
 				Door door = (bd1 == avatar) ? (Door)bd2: (Door)bd1;
+				int temp_id = door.getTargetLevelID();
+				if(temp_id > currLevel) {
+					doored = true;
 
-				//////////System.out.println("COLLISION WITH " + door.getName());
-				nextLevelID = door.getTargetLevelID();
-				//////////System.out.println("Next Level: " + nextLevelID);
+					//////////System.out.println("COLLISION WITH " + door.getName());
+					nextLevelID = door.getTargetLevelID();
+					//////////System.out.println("Next Level: " + nextLevelID);
+				}
 
 			}
 
