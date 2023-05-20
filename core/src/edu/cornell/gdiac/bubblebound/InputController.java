@@ -67,15 +67,17 @@ public class InputController {
 	private boolean primePressed;
 
 	private boolean searching_for_bubble;
+
+	private boolean attached_to_bubble;
 	private boolean primeUpsideDownPressed;
 	private boolean primePrevious;
+	private boolean tertiaryPrevious;
 	private boolean primeUpsideDownPrevious;
 	/** Whether the secondary action button was pressed. */
 	private boolean secondPressed;
 	private boolean secondPrevious;
 	/** Whether the teritiary action button was pressed. */
 	private boolean tertiaryPressed;
-	private boolean tertiaryPrevious;
 	/** Whether the debug toggle was pressed. */
 	private boolean debugPressed;
 	private boolean debugPrevious;
@@ -201,7 +203,7 @@ public class InputController {
 	 *
 	 * @return true if the secondary action button was pressed.
 	 */
-	public boolean didTertiary() { return tertiaryPressed;}
+	public boolean didTertiary() { return tertiaryPressed && !tertiaryPrevious;}
 	/**
 	 * Returns true if the reset button was pressed.
 	 *
@@ -251,27 +253,33 @@ public class InputController {
 		return exitPressed && !exitPrevious;
 	}
 
-	public boolean didBubble(){
+	public boolean didBubbleReleaseNoDetach(){
 		if(!bubblePressed){
-//			System.out.println("Not pressed");
 			return false;
 		}
 		if(bubblePressed && searching_for_bubble && !avatar_grappling){
-//			System.out.println("pressed, searching, not grappling");
 			return true;
 		}
 		if(bubblePressed && searching_for_bubble && avatar_grappling){
-//			System.out.println("pressed, searching, grappling");
 			return false;
 		}
 		if(bubblePressed && !searching_for_bubble && avatar_grappling){
-//			System.out.println("pressed, not searching, grappling");
 			return true;
 		}
 
-//		System.out.println("other false");
 		return false;
 
+	}
+
+	public boolean didBubbleReleaseDetach(){
+		if(bubblePressed && !avatar_grappling) return true;
+		if(bubblePressed && avatar_grappling) return false;
+		if(!bubblePressed && avatar_grappling) return true;
+		return false;
+	}
+
+	public boolean didBubble(){
+		return didBubbleReleaseDetach();
 	}
 
 	public boolean isMouseControlls(){return controlMapping == ControlMapping.MOUSE; }
@@ -320,6 +328,7 @@ public class InputController {
 		// Copy state from last animation frame
 		// Helps us ignore buttons that are held down
 		primePrevious  = primePressed;
+		tertiaryPrevious = tertiaryPressed;
 		primeUpsideDownPrevious = primeUpsideDownPressed;
 		secondPrevious = secondPressed;
 		resetPrevious  = resetPressed;
@@ -437,6 +446,42 @@ public class InputController {
 		if(!mouse){
 			temp = Input.Buttons.RIGHT;
 		}
+//		if(controlMapping == ControlMapping.KEYBOARD){
+//			bubblePressed = (secondary && bubblePressed) || (Gdx.input.isKeyPressed(buttons[8]));
+//			if(Gdx.input.isKeyJustPressed(buttons[8]) && !avatar_grappling){
+//				searching_for_bubble = true;
+//				attachCycle = true;
+//				detachCycle = false;
+//			}else if(Gdx.input.isKeyJustPressed(buttons[8]) && avatar_grappling){
+//				searching_for_bubble = false;
+//				attachCycle = false;
+//				detachCycle = true;
+//			}
+//
+//			if(!bubblePressed){
+//				attachCycle = false;
+//				detachCycle = false;
+//				searching_for_bubble = false;
+//			}
+//		}else {
+//			bubblePressed = (secondary && bubblePressed) || (Gdx.input.isButtonPressed(temp)); //TODO:::::::
+//			if(Gdx.input.isButtonJustPressed(temp) && !avatar_grappling){
+//				searching_for_bubble = true;
+//				attachCycle = true;
+//				detachCycle = false;
+//			}else if(Gdx.input.isButtonJustPressed(temp) && avatar_grappling){
+//				searching_for_bubble = false;
+//				attachCycle = false;
+//				detachCycle = true;
+//			}
+//
+//			if(!bubblePressed){
+//				attachCycle = false;
+//				detachCycle = false;
+//				searching_for_bubble = false;
+//			}
+//		}
+
 		if(controlMapping == ControlMapping.KEYBOARD){
 			bubblePressed = (secondary && bubblePressed) || (Gdx.input.isKeyPressed(buttons[8]));
 			if(Gdx.input.isKeyJustPressed(buttons[8]) && !avatar_grappling){
@@ -450,8 +495,6 @@ public class InputController {
 			}
 
 			if(!bubblePressed){
-				attachCycle = false;
-				detachCycle = false;
 				searching_for_bubble = false;
 			}
 		}else {
