@@ -13,10 +13,6 @@
 package edu.cornell.gdiac.physics.desktop;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Graphics;
-import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
-import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
-import com.badlogic.gdx.utils.SharedLibraryLoader;
 import edu.cornell.gdiac.backend.GDXApp;
 import edu.cornell.gdiac.backend.GDXAppSettings;
 import edu.cornell.gdiac.bubblebound.GDXRoot;
@@ -40,26 +36,18 @@ public class DesktopLauncher {
 	public static void main (String[] arg) {
 
 
-
-
-
-
-
-
 		GDXAppSettings config = new GDXAppSettings();
-
 
 		config.width  = 1024;
 		config.height = 576;
 
-
 		config.fullscreen = true;
-
-
 		config.resizable = false;
 
 
+
 		new GDXApp(new GDXRoot(), config);
+
 
 
 	}
