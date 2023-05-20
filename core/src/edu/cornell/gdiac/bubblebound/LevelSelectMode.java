@@ -11,6 +11,7 @@ import com.badlogic.gdx.controllers.ControllerMapping;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import edu.cornell.gdiac.assets.AssetDirectory;
@@ -67,6 +68,8 @@ public class LevelSelectMode implements Screen, InputProcessor, ControllerListen
     private GameCanvas canvas;
     /** Listener that will update the player mode when we are done */
     private ScreenListener listener;
+
+    protected BitmapFont displayFont;
 
     /** The width of the progress bar */
     private int width;
@@ -160,6 +163,9 @@ public class LevelSelectMode implements Screen, InputProcessor, ControllerListen
         for(int i = 1; i <= 4; i++){
             lightphases[i-1] = directory.getEntry("lightphase" + i, Texture.class);
         }
+
+        displayFont = directory.getEntry( "shared:retro" ,BitmapFont.class);
+
     }
 
     /**
@@ -324,6 +330,32 @@ public class LevelSelectMode implements Screen, InputProcessor, ControllerListen
             for (int i = 0; i < phasesPos.length; i++) {
                 Texture text = (i == hovered) ? lightphases[i] : phases[i];
                 canvas.draw(text, Color.WHITE, text.getWidth() / 2f, text.getHeight() / 2f, phasesPos[i].x, phasesPos[i].y, 0, scale.x, scale.y);
+                boolean drawTime = true;
+                float totalTime = 0;
+                float[] timers = InputController.getInstance().times;
+                for(int j = i * 5; j < i * 5 + 5; j++){
+                    if(timers[j] == 0) drawTime = false;
+                    totalTime += timers[j];
+                }
+                int minutes = (int) totalTime / 60;
+                String time = String.format("%.02f", totalTime % 60);
+                if(totalTime % 60 < 10){
+                    time = minutes + ":0" + time;
+                }else{
+                    time = minutes + ":" + time;
+                }
+                if(minutes < 10){
+                    time = "0" + time;
+                }
+                if(!drawTime){
+                    time = "--:--.--";
+                }
+                displayFont.getData().setScale(0.8f * scale.x, 0.8f * scale.y);
+                canvas.drawText(time, displayFont, phasesPos[i].x - (75 * scale.x), phasesPos[i].y - (250*scale.y));
+
+
+
+
             }
         }else if(phase >= 1){
             int p = phase - 1;
@@ -331,6 +363,24 @@ public class LevelSelectMode implements Screen, InputProcessor, ControllerListen
             Vector2[] pos = phaseLevelsPos[p];
             for(int i = 0; i < texts.length; i++){
                 canvas.draw(texts[i], Color.WHITE, texts[i].getWidth() / 2f, texts[i].getHeight() / 2f, pos[i].x, pos[i].y, 0, scale.x, scale.y);
+                float timer = InputController.getInstance().times[(p*5) + i];
+                int minutes = (int) timer / 60;
+                String time = String.format("%.02f", timer % 60);
+                 if(timer % 60 < 10){
+                    time = minutes + ":0" + time;
+                 }else{
+                    time = minutes + ":" + time;
+                }
+                if(minutes < 10){
+                    time = "0" + time;
+                }
+                if(timer == 0){
+                    time = "--:--.--";
+                }
+                if(scale.x != 0) {
+                    displayFont.getData().setScale(0.8f * scale.x, 0.8f * scale.y);
+                }
+                canvas.drawText(time, displayFont, pos[i].x - (70 * scale.x), pos[i].y - (100 *scale.y));
             }
         }
 

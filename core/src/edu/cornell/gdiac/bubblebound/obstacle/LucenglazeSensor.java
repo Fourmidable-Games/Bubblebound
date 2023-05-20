@@ -17,6 +17,7 @@ public class LucenglazeSensor extends BoxObstacle{
     private int x;
     private int y;
     private FilmStrip filmstrip;
+    private FilmStrip filmstrip2;
     private int resettimer = 0;
 
     private int spawndelay = 40;
@@ -27,7 +28,7 @@ public class LucenglazeSensor extends BoxObstacle{
     protected int counter1 = 0;
     protected final int delay1 = 3; // adjust this value to change the delay
     public void initialize(FilmStrip f) {
-        lucen.initialize(filmstrip);
+        lucen.initialize(filmstrip, filmstrip2);
     }
     public LucenglazeSensor(float x, float y, int lucenx, int luceny, int w, int h, int rotation){ //rotation 1 is upright, 2 is facing right, 3 is facing down, 4 is facing left
         super(x, y, w, h); //idk y 1.5

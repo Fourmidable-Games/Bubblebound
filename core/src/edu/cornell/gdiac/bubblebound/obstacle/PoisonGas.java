@@ -6,6 +6,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import edu.cornell.gdiac.bubblebound.GameCanvas;
+import edu.cornell.gdiac.util.FilmStrip;
 
 public class PoisonGas extends BoxObstacle{
 
@@ -15,7 +16,6 @@ public class PoisonGas extends BoxObstacle{
     public boolean faded = false;
 
     public final int fadeawaytimer = 200;
-
 
 
 
