@@ -13,7 +13,6 @@
 package edu.cornell.gdiac.physics.desktop;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.utils.SharedLibraryLoader;
 import edu.cornell.gdiac.backend.GDXApp;
 import edu.cornell.gdiac.backend.GDXAppSettings;
 import edu.cornell.gdiac.bubblebound.GDXRoot;
@@ -36,35 +35,15 @@ public class DesktopLauncher {
 	 */
 	public static void main (String[] arg) {
 
-		if (SharedLibraryLoader.isMac && Gdx.app == null) {
-			org.lwjgl.system.Configuration.GLFW_LIBRARY_NAME.set("glfw_async");
-		}
-
 		GDXAppSettings config = new GDXAppSettings();
-
 
 		config.width  = 1024;
 		config.height = 576;
 
-		if (SharedLibraryLoader.isMac && Gdx.app == null) {
-			org.lwjgl.system.Configuration.GLFW_LIBRARY_NAME.set("glfw_async");
-		}
-
-
-
 		config.fullscreen = true;
-
-
 		config.resizable = false;
-
-		if (SharedLibraryLoader.isMac && Gdx.app == null) {
-			org.lwjgl.system.Configuration.GLFW_LIBRARY_NAME.set("glfw_async");
-		}
 
 		new GDXApp(new GDXRoot(), config);
 
-		if (SharedLibraryLoader.isMac && Gdx.app == null) {
-			org.lwjgl.system.Configuration.GLFW_LIBRARY_NAME.set("glfw_async");
-		}
 	}
 }
