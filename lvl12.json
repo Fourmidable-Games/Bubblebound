@@ -1,0 +1,1965 @@
+{ "compressionlevel":-1,
+ "height":32,
+ "infinite":false,
+ "layers":[
+        {
+         "id":18,
+         "image":"",
+         "name":"background",
+         "opacity":1,
+         "type":"imagelayer",
+         "visible":true,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "id":6,
+         "layers":[
+                {
+                 "draworder":"topdown",
+                 "id":20,
+                 "name":"minor upgrades (not implemented)",
+                 "objects":[],
+                 "opacity":1,
+                 "type":"objectgroup",
+                 "visible":true,
+                 "x":0,
+                 "y":0
+                }, 
+                {
+                 "draworder":"topdown",
+                 "id":21,
+                 "name":"major upgrades (not implemented)",
+                 "objects":[],
+                 "opacity":1,
+                 "type":"objectgroup",
+                 "visible":true,
+                 "x":0,
+                 "y":0
+                }, 
+                {
+                 "draworder":"topdown",
+                 "id":15,
+                 "name":"Projectile Enemy",
+                 "objects":[
+                        {
+                         "gid":544,
+                         "height":64,
+                         "id":737,
+                         "name":"",
+                         "rotation":-90,
+                         "type":"",
+                         "visible":true,
+                         "width":63,
+                         "x":3200,
+                         "y":448
+                        }],
+                 "opacity":1,
+                 "type":"objectgroup",
+                 "visible":true,
+                 "x":0,
+                 "y":0
+                }, 
+                {
+                 "draworder":"topdown",
+                 "id":14,
+                 "name":"goal tile",
+                 "objects":[],
+                 "opacity":1,
+                 "type":"objectgroup",
+                 "visible":true,
+                 "x":0,
+                 "y":0
+                }, 
+                {
+                 "draworder":"topdown",
+                 "id":13,
+                 "name":"lucen glaze",
+                 "objects":[
+                        {
+                         "gid":556,
+                         "height":64,
+                         "id":738,
+                         "name":"",
+                         "rotation":180,
+                         "type":"",
+                         "visible":true,
+                         "width":64,
+                         "x":2496,
+                         "y":960
+                        }],
+                 "opacity":1,
+                 "type":"objectgroup",
+                 "visible":true,
+                 "x":0,
+                 "y":0
+                }, 
+                {
+                 "draworder":"topdown",
+                 "id":11,
+                 "name":"gravity zones",
+                 "objects":[
+                        {
+                         "height":2048,
+                         "id":741,
+                         "name":"",
+                         "rotation":0,
+                         "type":"",
+                         "visible":true,
+                         "width":1728,
+                         "x":2368,
+                         "y":0
+                        }, 
+                        {
+                         "height":0,
+                         "id":742,
+                         "name":"",
+                         "rotation":0,
+                         "type":"",
+                         "visible":true,
+                         "width":0,
+                         "x":1280,
+                         "y":-128
+                        }],
+                 "opacity":1,
+                 "type":"objectgroup",
+                 "visible":false,
+                 "x":0,
+                 "y":0
+                }, 
+                {
+                 "draworder":"topdown",
+                 "id":9,
+                 "name":"spikes",
+                 "objects":[
+                        {
+                         "gid":595,
+                         "height":64,
+                         "id":700,
+                         "name":"",
+                         "rotation":0,
+                         "type":"",
+                         "visible":true,
+                         "width":64,
+                         "x":832,
+                         "y":256
+                        }, 
+                        {
+                         "gid":595,
+                         "height":64,
+                         "id":701,
+                         "name":"",
+                         "rotation":0,
+                         "type":"",
+                         "visible":true,
+                         "width":64,
+                         "x":1536,
+                         "y":128
+                        }, 
+                        {
+                         "gid":595,
+                         "height":64,
+                         "id":702,
+                         "name":"",
+                         "rotation":0,
+                         "type":"",
+                         "visible":true,
+                         "width":64,
+                         "x":1216,
+                         "y":768
+                        }, 
+                        {
+                         "gid":595,
+                         "height":64,
+                         "id":703,
+                         "name":"",
+                         "rotation":90,
+                         "type":"",
+                         "visible":true,
+                         "width":64,
+                         "x":896,
+                         "y":256
+                        }, 
+                        {
+                         "gid":595,
+                         "height":64,
+                         "id":704,
+                         "name":"",
+                         "rotation":90,
+                         "type":"",
+                         "visible":true,
+                         "width":64,
+                         "x":1600,
+                         "y":128
+                        }, 
+                        {
+                         "gid":595,
+                         "height":64,
+                         "id":705,
+                         "name":"",
+                         "rotation":90,
+                         "type":"",
+                         "visible":true,
+                         "width":64,
+                         "x":1280,
+                         "y":768
+                        }, 
+                        {
+                         "gid":595,
+                         "height":64,
+                         "id":706,
+                         "name":"",
+                         "rotation":-90,
+                         "type":"",
+                         "visible":true,
+                         "width":64,
+                         "x":1536,
+                         "y":192
+                        }, 
+                        {
+                         "gid":595,
+                         "height":64,
+                         "id":707,
+                         "name":"",
+                         "rotation":-90,
+                         "type":"",
+                         "visible":true,
+                         "width":64,
+                         "x":832,
+                         "y":320
+                        }, 
+                        {
+                         "gid":595,
+                         "height":64,
+                         "id":708,
+                         "name":"",
+                         "rotation":-90,
+                         "type":"",
+                         "visible":true,
+                         "width":64,
+                         "x":1216,
+                         "y":832
+                        }, 
+                        {
+                         "gid":595,
+                         "height":64,
+                         "id":709,
+                         "name":"",
+                         "rotation":-180,
+                         "type":"",
+                         "visible":true,
+                         "width":64,
+                         "x":896,
+                         "y":320
+                        }, 
+                        {
+                         "gid":595,
+                         "height":64,
+                         "id":711,
+                         "name":"",
+                         "rotation":-180,
+                         "type":"",
+                         "visible":true,
+                         "width":64,
+                         "x":1600,
+                         "y":192
+                        }, 
+                        {
+                         "gid":595,
+                         "height":64,
+                         "id":712,
+                         "name":"",
+                         "rotation":-180,
+                         "type":"",
+                         "visible":true,
+                         "width":64,
+                         "x":1280,
+                         "y":832
+                        }, 
+                        {
+                         "gid":778,
+                         "height":64,
+                         "id":713,
+                         "name":"",
+                         "rotation":0,
+                         "type":"",
+                         "visible":true,
+                         "width":64,
+                         "x":2624,
+                         "y":1408
+                        }, 
+                        {
+                         "gid":778,
+                         "height":64,
+                         "id":714,
+                         "name":"",
+                         "rotation":0,
+                         "type":"",
+                         "visible":true,
+                         "width":64,
+                         "x":2688,
+                         "y":1408
+                        }, 
+                        {
+                         "gid":778,
+                         "height":64,
+                         "id":715,
+                         "name":"",
+                         "rotation":0,
+                         "type":"",
+                         "visible":true,
+                         "width":64,
+                         "x":2752,
+                         "y":1408
+                        }, 
+                        {
+                         "gid":778,
+                         "height":64,
+                         "id":716,
+                         "name":"",
+                         "rotation":0,
+                         "type":"",
+                         "visible":true,
+                         "width":64,
+                         "x":2816,
+                         "y":1408
+                        }, 
+                        {
+                         "gid":778,
+                         "height":64,
+                         "id":718,
+                         "name":"",
+                         "rotation":0,
+                         "type":"",
+                         "visible":true,
+                         "width":64,
+                         "x":2944,
+                         "y":704
+                        }, 
+                        {
+                         "gid":778,
+                         "height":64,
+                         "id":719,
+                         "name":"",
+                         "rotation":0,
+                         "type":"",
+                         "visible":true,
+                         "width":64,
+                         "x":3008,
+                         "y":704
+                        }, 
+                        {
+                         "gid":778,
+                         "height":64,
+                         "id":720,
+                         "name":"",
+                         "rotation":0,
+                         "type":"",
+                         "visible":true,
+                         "width":64,
+                         "x":3072,
+                         "y":704
+                        }, 
+                        {
+                         "gid":778,
+                         "height":64,
+                         "id":721,
+                         "name":"",
+                         "rotation":0,
+                         "type":"",
+                         "visible":true,
+                         "width":64,
+                         "x":3136,
+                         "y":704
+                        }, 
+                        {
+                         "gid":778,
+                         "height":64,
+                         "id":722,
+                         "name":"",
+                         "rotation":-90,
+                         "type":"",
+                         "visible":true,
+                         "width":64,
+                         "x":2944,
+                         "y":768
+                        }, 
+                        {
+                         "gid":778,
+                         "height":64,
+                         "id":723,
+                         "name":"",
+                         "rotation":-180,
+                         "type":"",
+                         "visible":true,
+                         "width":64,
+                         "x":3008,
+                         "y":768
+                        }, 
+                        {
+                         "gid":778,
+                         "height":64,
+                         "id":724,
+                         "name":"",
+                         "rotation":-180,
+                         "type":"",
+                         "visible":true,
+                         "width":64,
+                         "x":3008,
+                         "y":768
+                        }, 
+                        {
+                         "gid":778,
+                         "height":64,
+                         "id":725,
+                         "name":"",
+                         "rotation":-180,
+                         "type":"",
+                         "visible":true,
+                         "width":64,
+                         "x":3072,
+                         "y":768
+                        }, 
+                        {
+                         "gid":778,
+                         "height":64,
+                         "id":729,
+                         "name":"",
+                         "rotation":-180,
+                         "type":"",
+                         "visible":true,
+                         "width":64,
+                         "x":3136,
+                         "y":768
+                        }, 
+                        {
+                         "gid":778,
+                         "height":64,
+                         "id":730,
+                         "name":"",
+                         "rotation":-180,
+                         "type":"",
+                         "visible":true,
+                         "width":64,
+                         "x":3200,
+                         "y":768
+                        }, 
+                        {
+                         "gid":778,
+                         "height":64,
+                         "id":732,
+                         "name":"",
+                         "rotation":-180,
+                         "type":"",
+                         "visible":true,
+                         "width":64,
+                         "x":2880,
+                         "y":1472
+                        }, 
+                        {
+                         "gid":778,
+                         "height":64,
+                         "id":733,
+                         "name":"",
+                         "rotation":-180,
+                         "type":"",
+                         "visible":true,
+                         "width":64,
+                         "x":2816,
+                         "y":1472
+                        }, 
+                        {
+                         "gid":778,
+                         "height":64,
+                         "id":734,
+                         "name":"",
+                         "rotation":-180,
+                         "type":"",
+                         "visible":true,
+                         "width":64,
+                         "x":2752,
+                         "y":1472
+                        }, 
+                        {
+                         "gid":778,
+                         "height":64,
+                         "id":735,
+                         "name":"",
+                         "rotation":-180,
+                         "type":"",
+                         "visible":true,
+                         "width":64,
+                         "x":2688,
+                         "y":1472
+                        }, 
+                        {
+                         "gid":778,
+                         "height":64,
+                         "id":740,
+                         "name":"",
+                         "rotation":90,
+                         "type":"",
+                         "visible":true,
+                         "width":64,
+                         "x":2880,
+                         "y":1408
+                        }],
+                 "opacity":1,
+                 "type":"objectgroup",
+                 "visible":true,
+                 "x":0,
+                 "y":0
+                }, 
+                {
+                 "draworder":"topdown",
+                 "id":5,
+                 "name":"enemies",
+                 "objects":[],
+                 "opacity":0.94,
+                 "type":"objectgroup",
+                 "visible":true,
+                 "x":0,
+                 "y":0
+                }, 
+                {
+                 "draworder":"topdown",
+                 "id":7,
+                 "name":"goal",
+                 "objects":[
+                        {
+                         "gid":534,
+                         "height":256,
+                         "id":609,
+                         "name":"",
+                         "properties":[
+                                {
+                                 "name":"direction",
+                                 "type":"string",
+                                 "value":"right"
+                                }, 
+                                {
+                                 "name":"targetLevel",
+                                 "type":"int",
+                                 "value":11
+                                }],
+                         "rotation":0,
+                         "type":"",
+                         "visible":true,
+                         "width":256,
+                         "x":256,
+                         "y":896
+                        }, 
+                        {
+                         "gid":534,
+                         "height":256,
+                         "id":743,
+                         "name":"",
+                         "properties":[
+                                {
+                                 "name":"direction",
+                                 "type":"string",
+                                 "value":"left"
+                                }, 
+                                {
+                                 "name":"targetLevel",
+                                 "type":"int",
+                                 "value":13
+                                }],
+                         "rotation":0,
+                         "type":"",
+                         "visible":true,
+                         "width":256,
+                         "x":3520,
+                         "y":1792
+                        }],
+                 "opacity":1,
+                 "type":"objectgroup",
+                 "visible":true,
+                 "x":0,
+                 "y":0
+                }, 
+                {
+                 "draworder":"topdown",
+                 "id":8,
+                 "name":"bubbles",
+                 "objects":[],
+                 "opacity":1,
+                 "type":"objectgroup",
+                 "visible":true,
+                 "x":0,
+                 "y":0
+                }, 
+                {
+                 "draworder":"topdown",
+                 "id":10,
+                 "name":"player",
+                 "objects":[
+                        {
+                         "gid":592,
+                         "height":128,
+                         "id":744,
+                         "name":"",
+                         "rotation":0,
+                         "type":"",
+                         "visible":true,
+                         "width":64,
+                         "x":512,
+                         "y":896
+                        }],
+                 "opacity":1,
+                 "type":"objectgroup",
+                 "visible":true,
+                 "x":0,
+                 "y":0
+                }, 
+                {
+                 "data":[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 776, 776, 776, 776, 776, 776, 776, 776, 776, 776, 776, 776, 776, 776, 776, 776, 796, 792, 796, 792, 792, 792, 792, 508, 792, 792, 792,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 776, 776, 776, 776, 776, 776, 776, 776, 794, 794, 794, 794, 794, 794, 794, 794, 796, 792, 796, 776, 776, 776, 776, 794, 794, 794, 794,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 673, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 823, 776, 776, 776, 776, 776, 776, 776, 776, 776, 776, 776, 776, 776, 776, 0, 796, 792, 796, 776, 776, 776, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 776, 776, 789, 796, 792, 796, 776, 776, 776, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 673, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 776, 776, 776, 796, 792, 796, 822, 0, 776, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 776, 776, 776, 796, 792, 796, 0, 0, 820, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 776, 776, 776, 796, 792, 796, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 776, 776, 776, 796, 792, 796, 789, 0, 0, 0, 0, 0, 0, 785,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 776, 776, 776, 796, 792, 796, 776, 0, 0, 0, 0, 0, 0, 776,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 643, 776, 776, 776, 789, 0, 0, 0, 0, 0, 0, 0, 0, 0, 776, 776, 776, 796, 792, 796, 776, 789, 0, 0, 0, 0, 788, 776,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 801, 0, 643, 718, 776, 776, 776, 776, 0, 0, 0, 0, 0, 0, 0, 0, 0, 776, 776, 776, 796, 792, 796, 776, 776, 0, 0, 0, 788, 776, 776,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 662, 663, 666, 663, 666, 663, 666, 661, 718, 718, 776, 776, 776, 776, 0, 0, 0, 0, 0, 776, 776, 776, 776, 776, 776, 822, 796, 792, 796, 776, 776, 0, 0, 0, 776, 776, 776,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 673, 0, 0, 0, 0, 0, 0, 0, 718, 718, 718, 718, 718, 718, 718, 718, 718, 718, 776, 776, 776, 776, 0, 0, 0, 0, 0, 0, 0, 0, 0, 776, 776, 0, 796, 792, 796, 776, 776, 789, 0, 788, 776, 776, 776,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 801, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 718, 718, 718, 718, 656, 718, 718, 718, 718, 718, 776, 776, 776, 776, 0, 0, 0, 0, 0, 0, 0, 0, 0, 776, 776, 0, 796, 792, 796, 776, 776, 776, 776, 776, 776, 776, 776,
+                    0, 0, 0, 0, 662, 668, 667, 668, 667, 668, 668, 661, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 718, 718, 718, 718, 718, 718, 718, 718, 718, 718, 776, 776, 776, 776, 0, 0, 0, 0, 0, 0, 0, 0, 0, 776, 776, 0, 796, 792, 796, 776, 776, 776, 776, 776, 776, 776, 776,
+                    0, 0, 0, 0, 718, 718, 718, 718, 718, 718, 718, 718, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 718, 718, 718, 718, 718, 718, 718, 718, 718, 718, 776, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 776, 776, 0, 796, 0, 796, 776, 776, 776, 776, 776, 776, 776, 776,
+                    0, 0, 0, 0, 718, 656, 718, 718, 642, 641, 718, 718, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 718, 718, 642, 0, 507, 508, 650, 718, 718, 718, 776, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 776, 776, 812, 796, 0, 796, 776, 776, 776, 776, 776, 776, 776, 776,
+                    0, 0, 0, 0, 718, 718, 718, 642, 0, 0, 641, 649, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 718, 718, 718, 0, 794, 718, 794, 650, 718, 718, 776, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 776, 776, 776, 796, 0, 796, 776, 776, 776, 776, 776, 776, 776, 776,
+                    0, 0, 0, 0, 718, 718, 642, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 650, 718, 793, 793, 509, 793, 793, 793, 793, 718, 776, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 776, 776, 776, 796, 0, 796, 776, 776, 776, 776, 776, 776, 776, 776,
+                    0, 0, 0, 0, 718, 649, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 718, 718, 718, 642, 0, 0, 0, 797, 642, 776, 776, 776, 789, 0, 0, 0, 0, 0, 0, 0, 0, 0, 776, 776, 776, 796, 0, 796, 776, 776, 776, 776, 776, 776, 776, 776,
+                    0, 0, 0, 0, 647, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 718, 718, 718, 0, 0, 0, 0, 797, 0, 776, 776, 776, 776, 0, 0, 0, 0, 0, 0, 0, 0, 0, 776, 776, 776, 796, 0, 796, 776, 776, 776, 776, 776, 776, 776, 776,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 718, 718, 797, 0, 0, 0, 0, 797, 0, 776, 776, 776, 776, 0, 0, 0, 0, 0, 0, 0, 0, 0, 776, 776, 776, 796, 0, 796, 776, 776, 776, 776, 776, 776, 776, 776,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 650, 718, 797, 0, 0, 0, 0, 797, 0, 776, 776, 776, 776, 775, 775, 775, 775, 0, 0, 0, 0, 0, 776, 776, 776, 776, 776, 776, 776, 776, 776, 776, 776, 776, 776, 776,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 718, 718, 0, 0, 0, 0, 797, 0, 776, 776, 776, 776, 0, 0, 0, 0, 0, 0, 0, 0, 0, 823, 776, 776, 776, 776, 776, 776, 776, 776, 776, 776, 776, 776, 776,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 718, 718, 0, 0, 0, 0, 797, 0, 776, 776, 776, 776, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 776, 776, 776, 776, 776,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 718, 718, 662, 669, 661, 802, 797, 0, 776, 776, 776, 776, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 776, 776, 776, 776, 776,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 650, 718, 718, 718, 718, 662, 669, 661, 776, 776, 776, 776, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 776, 776, 776, 776, 776,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 650, 718, 718, 718, 718, 718, 776, 776, 776, 776, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 776, 776, 776, 776, 776,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 650, 718, 718, 718, 718, 776, 776, 776, 776, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 776, 776, 776, 776, 776,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 650, 718, 718, 776, 776, 776, 776, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 776, 776, 776, 776, 776,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 718, 718, 776, 776, 776, 776, 789, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 788, 776, 776, 776, 776, 776,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 718, 718, 776, 776, 776, 776, 776, 776, 776, 776, 776, 776, 776, 776, 776, 776, 776, 776, 776, 776, 776, 776, 776, 776, 776, 776, 776, 776, 776],
+                 "height":32,
+                 "id":1,
+                 "name":"Tile Layer 1",
+                 "opacity":1,
+                 "type":"tilelayer",
+                 "visible":true,
+                 "width":64,
+                 "x":0,
+                 "y":0
+                }],
+         "name":"Group 1",
+         "opacity":1,
+         "type":"group",
+         "visible":true,
+         "x":0,
+         "y":0
+        }],
+ "nextlayerid":22,
+ "nextobjectid":746,
+ "orientation":"orthogonal",
+ "properties":[
+        {
+         "name":"ran",
+         "type":"int",
+         "value":0
+        }],
+ "renderorder":"right-down",
+ "tiledversion":"1.10.0",
+ "tileheight":64,
+ "tilesets":[
+        {
+         "columns":0,
+         "firstgid":1,
+         "grid":
+            {
+             "height":1,
+             "orientation":"orthogonal",
+             "width":1
+            },
+         "margin":0,
+         "name":"tiles",
+         "spacing":0,
+         "tilecount":242,
+         "tileheight":256,
+         "tiles":[
+                {
+                 "id":60,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/1.png"
+                }, 
+                {
+                 "id":61,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/2.png"
+                }, 
+                {
+                 "id":62,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/3.png"
+                }, 
+                {
+                 "id":63,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/4.png"
+                }, 
+                {
+                 "id":64,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/5.png"
+                }, 
+                {
+                 "id":65,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/6.png"
+                }, 
+                {
+                 "id":66,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/7.png"
+                }, 
+                {
+                 "id":67,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/8.png"
+                }, 
+                {
+                 "id":68,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/9.png"
+                }, 
+                {
+                 "id":69,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/10.png"
+                }, 
+                {
+                 "id":70,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/11.png"
+                }, 
+                {
+                 "id":71,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/12.png"
+                }, 
+                {
+                 "id":72,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/13.png"
+                }, 
+                {
+                 "id":73,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/14.png"
+                }, 
+                {
+                 "id":74,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/15.png"
+                }, 
+                {
+                 "id":75,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/16.png"
+                }, 
+                {
+                 "id":76,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/17.png"
+                }, 
+                {
+                 "id":77,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/18.png"
+                }, 
+                {
+                 "id":78,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/19.png"
+                }, 
+                {
+                 "id":79,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/20.png"
+                }, 
+                {
+                 "id":80,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/21.png"
+                }, 
+                {
+                 "id":81,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/22.png"
+                }, 
+                {
+                 "id":82,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/23.png"
+                }, 
+                {
+                 "id":83,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/24.png"
+                }, 
+                {
+                 "id":84,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/25.png"
+                }, 
+                {
+                 "id":85,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/26.png"
+                }, 
+                {
+                 "id":86,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/27.png"
+                }, 
+                {
+                 "id":87,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/28.png"
+                }, 
+                {
+                 "id":88,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/29.png"
+                }, 
+                {
+                 "id":127,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/30.png"
+                }, 
+                {
+                 "id":128,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/31.png"
+                }, 
+                {
+                 "id":129,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/32.png"
+                }, 
+                {
+                 "id":130,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/33.png"
+                }, 
+                {
+                 "id":131,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/34.png"
+                }, 
+                {
+                 "id":132,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/35.png"
+                }, 
+                {
+                 "id":330,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/36.png"
+                }, 
+                {
+                 "id":331,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/37.png"
+                }, 
+                {
+                 "id":332,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/38.png"
+                }, 
+                {
+                 "id":333,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/39.png"
+                }, 
+                {
+                 "id":334,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/40.png"
+                }, 
+                {
+                 "id":335,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/41.png"
+                }, 
+                {
+                 "id":336,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/42.png"
+                }, 
+                {
+                 "id":337,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/43.png"
+                }, 
+                {
+                 "id":338,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/44.png"
+                }, 
+                {
+                 "id":339,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/45.png"
+                }, 
+                {
+                 "id":340,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/46.png"
+                }, 
+                {
+                 "id":341,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/47.png"
+                }, 
+                {
+                 "id":342,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/48.png"
+                }, 
+                {
+                 "id":343,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/49.png"
+                }, 
+                {
+                 "id":344,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/50.png"
+                }, 
+                {
+                 "id":345,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/51.png"
+                }, 
+                {
+                 "id":346,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/52.png"
+                }, 
+                {
+                 "id":347,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/53.png"
+                }, 
+                {
+                 "id":348,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/54.png"
+                }, 
+                {
+                 "id":349,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/55.png"
+                }, 
+                {
+                 "id":350,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/56.png"
+                }, 
+                {
+                 "id":351,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/57.png"
+                }, 
+                {
+                 "id":352,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/58.png"
+                }, 
+                {
+                 "id":353,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/59.png"
+                }, 
+                {
+                 "id":354,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/60.png"
+                }, 
+                {
+                 "id":355,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/61.png"
+                }, 
+                {
+                 "id":356,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/62.png"
+                }, 
+                {
+                 "id":357,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/63.png"
+                }, 
+                {
+                 "id":358,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/64.png"
+                },
+            
+                {
+                 "id":359,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/65.png"
+                }, 
+                {
+                 "id":360,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/66.png"
+                }, 
+                {
+                 "id":361,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/67.png"
+                }, 
+                {
+                 "id":362,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/68.png"
+                }, 
+                {
+                 "id":363,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/69.png"
+                }, 
+                {
+                 "id":364,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/70.png"
+                }, 
+                {
+                 "id":365,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/71.png"
+                }, 
+                {
+                 "id":366,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/72.png"
+                }, 
+                {
+                 "id":367,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/73.png"
+                }, 
+                {
+                 "id":368,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/74.png"
+                }, 
+                {
+                 "id":369,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/75.png"
+                }, 
+                {
+                 "id":370,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/76.png"
+                }, 
+                {
+                 "id":371,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/77.png"
+                }, 
+                {
+                 "id":372,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/78.png"
+                }, 
+                {
+                 "id":373,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/79.png"
+                }, 
+                {
+                 "id":374,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/80.png"
+                }, 
+                {
+                 "id":375,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/81.png"
+                }, 
+                {
+                 "id":376,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/82.png"
+                }, 
+                {
+                 "id":377,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/83.png"
+                }, 
+                {
+                 "id":378,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/84.png"
+                }, 
+                {
+                 "id":379,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/85.png"
+                }, 
+                {
+                 "id":380,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/86.png"
+                }, 
+                {
+                 "id":381,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/87.png"
+                }, 
+                {
+                 "id":382,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/88.png"
+                }, 
+                {
+                 "id":383,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/89.png"
+                }, 
+                {
+                 "id":384,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/90.png"
+                }, 
+                {
+                 "id":385,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/91.png"
+                }, 
+                {
+                 "id":386,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/92.png"
+                }, 
+                {
+                 "id":241,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/b1.png"
+                }, 
+                {
+                 "id":242,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/b2.png"
+                }, 
+                {
+                 "id":243,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/b3.png"
+                }, 
+                {
+                 "id":244,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/b4.png"
+                }, 
+                {
+                 "id":245,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/b5.png"
+                }, 
+                {
+                 "id":246,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/b6.png"
+                }, 
+                {
+                 "id":247,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/b7.png"
+                }, 
+                {
+                 "id":248,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/b8.png"
+                }, 
+                {
+                 "id":249,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/b9.png"
+                }, 
+                {
+                 "id":250,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/b10.png"
+                }, 
+                {
+                 "id":251,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/b11.png"
+                }, 
+                {
+                 "id":253,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/b12.png",
+                 "probability":0
+                }, 
+                {
+                 "id":252,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/b13.png"
+                }, 
+                {
+                 "id":254,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/b14.png"
+                }, 
+                {
+                 "id":255,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/b15.png"
+                }, 
+                {
+                 "id":256,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/b16.png"
+                }, 
+                {
+                 "id":257,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/b17.png"
+                }, 
+                {
+                 "id":258,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/b18.png"
+                }, 
+                {
+                 "id":259,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/b19.png"
+                }, 
+                {
+                 "id":260,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/b20.png"
+                }, 
+                {
+                 "id":261,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/b21.png"
+                }, 
+                {
+                 "id":262,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/b22.png"
+                }, 
+                {
+                 "id":263,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/b23.png"
+                }, 
+                {
+                 "id":264,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/b24.png"
+                }, 
+                {
+                 "id":265,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/b25.png"
+                }, 
+                {
+                 "id":266,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/b26.png"
+                }, 
+                {
+                 "id":267,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/b27.png"
+                }, 
+                {
+                 "id":268,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/b28.png"
+                }, 
+                {
+                 "id":269,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/b29.png"
+                }, 
+                {
+                 "id":270,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/b30.png"
+                }, 
+                {
+                 "id":271,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/b31.png"
+                }, 
+                {
+                 "id":272,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/b32.png"
+                }, 
+                {
+                 "id":273,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/b33.png"
+                }, 
+                {
+                 "id":274,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/b34.png"
+                }, 
+                {
+                 "id":275,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/b35.png"
+                }, 
+                {
+                 "id":276,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/b36.png"
+                },
+            
+                {
+                 "id":277,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/b37.png"
+                }, 
+                {
+                 "id":278,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/b38.png"
+                }, 
+                {
+                 "id":279,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/b39.png"
+                }, 
+                {
+                 "id":280,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/b40.png"
+                }, 
+                {
+                 "id":281,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/b41.png"
+                }, 
+                {
+                 "id":282,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/b42.png"
+                }, 
+                {
+                 "id":283,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/b43.png"
+                }, 
+                {
+                 "id":284,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/b44.png"
+                }, 
+                {
+                 "id":285,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/b45.png"
+                }, 
+                {
+                 "id":286,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/b46.png"
+                }, 
+                {
+                 "id":287,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/b47.png"
+                }, 
+                {
+                 "id":288,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/b48.png"
+                }, 
+                {
+                 "id":289,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/b49.png"
+                }, 
+                {
+                 "id":290,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/b50.png"
+                }, 
+                {
+                 "id":291,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/b51.png"
+                }, 
+                {
+                 "id":292,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/b52.png"
+                }, 
+                {
+                 "id":293,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/b53.png"
+                }, 
+                {
+                 "id":294,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/b54.png"
+                }, 
+                {
+                 "id":295,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/b55.png"
+                }, 
+                {
+                 "id":296,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/b56.png"
+                }, 
+                {
+                 "id":297,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/b57.png"
+                }, 
+                {
+                 "id":298,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/b58.png"
+                }, 
+                {
+                 "id":299,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/b59.png"
+                }, 
+                {
+                 "id":300,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/b60.png"
+                }, 
+                {
+                 "id":301,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/b61.png"
+                }, 
+                {
+                 "id":302,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/b62.png"
+                }, 
+                {
+                 "id":303,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/b63.png"
+                }, 
+                {
+                 "id":304,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/b64.png"
+                }, 
+                {
+                 "id":305,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/b65.png"
+                }, 
+                {
+                 "id":306,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/b66.png"
+                }, 
+                {
+                 "id":307,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/b67.png"
+                }, 
+                {
+                 "id":308,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/b68.png"
+                }, 
+                {
+                 "id":309,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/b69.png"
+                }, 
+                {
+                 "id":310,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/b70.png"
+                }, 
+                {
+                 "id":311,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/b71.png"
+                }, 
+                {
+                 "id":312,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/b72.png"
+                }, 
+                {
+                 "id":313,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/b73.png"
+                }, 
+                {
+                 "id":314,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/b74.png"
+                }, 
+                {
+                 "id":315,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/b75.png"
+                }, 
+                {
+                 "id":320,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/b76.png"
+                }, 
+                {
+                 "id":321,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/b77.png"
+                }, 
+                {
+                 "id":322,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/b78.png"
+                }, 
+                {
+                 "id":323,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/b79.png"
+                }, 
+                {
+                 "id":324,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/b80.png"
+                }, 
+                {
+                 "id":325,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/b81.png"
+                }, 
+                {
+                 "id":326,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/b82.png"
+                }, 
+                {
+                 "id":327,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/b83.png"
+                }, 
+                {
+                 "id":328,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/b84.png"
+                }, 
+                {
+                 "id":117,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/CON1.png"
+                }, 
+                {
+                 "id":118,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/CON2.png"
+                }, 
+                {
+                 "id":119,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/CON3.png"
+                }, 
+                {
+                 "id":120,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/CON4.png"
+                }, 
+                {
+                 "animation":[
+                        {
+                         "duration":190,
+                         "tileid":162
+                        }, 
+                        {
+                         "duration":190,
+                         "tileid":163
+                        }, 
+                        {
+                         "duration":190,
+                         "tileid":164
+                        }, 
+                        {
+                         "duration":190,
+                         "tileid":165
+                        }],
+                 "id":162,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/Fire Plant 1.png.png",
+                 "type":"spike"
+                }, 
+                {
+                 "id":163,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/Fire Plant 2.png.png"
+                }, 
+                {
+                 "id":164,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/Fire Plant 3.png.png"
+                }, 
+                {
+                 "id":165,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/Fire Plant 4.png.png"
+                }, 
+                {
+                 "animation":[
+                        {
+                         "duration":190,
+                         "tileid":181
+                        }, 
+                        {
+                         "duration":190,
+                         "tileid":182
+                        }, 
+                        {
+                         "duration":190,
+                         "tileid":183
+                        }, 
+                        {
+                         "duration":190,
+                         "tileid":184
+                        }, 
+                        {
+                         "duration":190,
+                         "tileid":185
+                        }, 
+                        {
+                         "duration":190,
+                         "tileid":186
+                        }, 
+                        {
+                         "duration":190,
+                         "tileid":187
+                        }, 
+                        {
+                         "duration":190,
+                         "tileid":188
+                        }, 
+                        {
+                         "duration":190,
+                         "tileid":189
+                        }, 
+                        {
+                         "duration":190,
+                         "tileid":190
+                        }, 
+                        {
+                         "duration":190,
+                         "tileid":191
+                        }, 
+                        {
+                         "duration":190,
+                         "tileid":192
+                        }],
+                 "id":181,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/cr1.png",
+                 "type":"breadcrumbs"
+                }, 
+                {
+                 "id":182,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/cr2.png"
+                }, 
+                {
+                 "id":183,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/cr3.png"
+                }, 
+                {
+                 "id":184,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/cr4.png"
+                }, 
+                {
+                 "id":185,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/cr5.png"
+                }, 
+                {
+                 "id":186,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/cr6.png"
+                }, 
+                {
+                 "id":187,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/cr7.png"
+                }, 
+                {
+                 "id":188,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/cr8.png"
+                },
+            
+                {
+                 "id":189,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/cr9.png"
+                }, 
+                {
+                 "id":190,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/cr10.png"
+                }, 
+                {
+                 "id":191,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/cr11.png"
+                }, 
+                {
+                 "id":192,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/cr12.png"
+                }, 
+                {
+                 "animation":[
+                        {
+                         "duration":100,
+                         "tileid":193
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":194
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":195
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":196
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":197
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":198
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":200
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":199
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":201
+                        }],
+                 "id":193,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/m1.png",
+                 "type":"enemy"
+                }, 
+                {
+                 "id":194,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/m2.png",
+                 "type":"enemy"
+                }, 
+                {
+                 "id":195,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/m3.png",
+                 "type":"enemy"
+                }, 
+                {
+                 "id":196,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/m4.png",
+                 "type":"enemy"
+                }, 
+                {
+                 "id":197,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/m5.png",
+                 "type":"enemy"
+                }, 
+                {
+                 "id":198,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/m6.png",
+                 "type":"enemy"
+                }, 
+                {
+                 "id":199,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/m7.png",
+                 "type":"enemy"
+                }, 
+                {
+                 "id":200,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/m8.png",
+                 "type":"enemy"
+                }, 
+                {
+                 "id":201,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/m9.png",
+                 "type":"enemy"
+                }, 
+                {
+                 "animation":[
+                        {
+                         "duration":300,
+                         "tileid":202
+                        }, 
+                        {
+                         "duration":300,
+                         "tileid":203
+                        }, 
+                        {
+                         "duration":300,
+                         "tileid":204
+                        }],
+                 "id":202,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/p1.png",
+                 "type":"player"
+                }, 
+                {
+                 "id":203,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/p2.png",
+                 "type":"player"
+                }, 
+                {
+                 "id":204,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/p3.png",
+                 "type":"player"
+                }, 
+                {
+                 "animation":[
+                        {
+                         "duration":200,
+                         "tileid":144
+                        }, 
+                        {
+                         "duration":200,
+                         "tileid":145
+                        }, 
+                        {
+                         "duration":200,
+                         "tileid":146
+                        }, 
+                        {
+                         "duration":200,
+                         "tileid":147
+                        }, 
+                        {
+                         "duration":200,
+                         "tileid":148
+                        }, 
+                        {
+                         "duration":200,
+                         "tileid":149
+                        }, 
+                        {
+                         "duration":200,
+                         "tileid":150
+                        }, 
+                        {
+                         "duration":200,
+                         "tileid":151
+                        }],
+                 "id":144,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/portal1.png",
+                 "type":"goal"
+                }, 
+                {
+                 "id":145,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/portal2.png"
+                }, 
+                {
+                 "id":146,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/portal3.png"
+                }, 
+                {
+                 "id":147,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/portal4.png"
+                }, 
+                {
+                 "id":148,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/portal5.png"
+                }, 
+                {
+                 "id":149,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/portal6.png"
+                }, 
+                {
+                 "id":150,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/portal7.png"
+                }, 
+                {
+                 "id":151,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/portal8.png"
+                }, 
+                {
+                 "animation":[
+                        {
+                         "duration":190,
+                         "tileid":154
+                        }, 
+                        {
+                         "duration":190,
+                         "tileid":155
+                        }, 
+                        {
+                         "duration":190,
+                         "tileid":156
+                        }, 
+                        {
+                         "duration":190,
+                         "tileid":157
+                        }, 
+                        {
+                         "duration":190,
+                         "tileid":158
+                        }, 
+                        {
+                         "duration":190,
+                         "tileid":159
+                        }, 
+                        {
+                         "duration":190,
+                         "tileid":160
+                        }, 
+                        {
+                         "duration":190,
+                         "tileid":161
+                        }],
+                 "id":154,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/sun1.png",
+                 "type":"projectile enemy"
+                }, 
+                {
+                 "id":155,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/sun2.png",
+                 "type":"projectile enemy"
+                }, 
+                {
+                 "id":156,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/sun3.png",
+                 "type":"projectile enemy"
+                }, 
+                {
+                 "id":157,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/sun4.png",
+                 "type":"projectile enemy"
+                }, 
+                {
+                 "id":158,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/sun5.png",
+                 "type":"projectile enemy"
+                }, 
+                {
+                 "id":159,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/sun6.png",
+                 "type":"projectile enemy"
+                }, 
+                {
+                 "id":160,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/sun7.png",
+                 "type":"projectile enemy"
+                }, 
+                {
+                 "id":161,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/sun8.png",
+                 "type":"projectile enemy"
+                }, 
+                {
+                 "animation":[
+                        {
+                         "duration":250,
+                         "tileid":166
+                        }, 
+                        {
+                         "duration":250,
+                         "tileid":167
+                        }, 
+                        {
+                         "duration":250,
+                         "tileid":168
+                        }, 
+                        {
+                         "duration":250,
+                         "tileid":169
+                        }, 
+                        {
+                         "duration":250,
+                         "tileid":170
+                        }, 
+                        {
+                         "duration":250,
+                         "tileid":171
+                        }, 
+                        {
+                         "duration":250,
+                         "tileid":172
+                        }, 
+                        {
+                         "duration":250,
+                         "tileid":173
+                        }, 
+                        {
+                         "duration":250,
+                         "tileid":174
+                        }, 
+                        {
+                         "duration":250,
+                         "tileid":175
+                        }, 
+                        {
+                         "duration":250,
+                         "tileid":176
+                        }, 
+                        {
+                         "duration":250,
+                         "tileid":177
+                        }, 
+                        {
+                         "duration":250,
+                         "tileid":178
+                        }, 
+                        {
+                         "duration":250,
+                         "tileid":179
+                        }, 
+                        {
+                         "duration":250,
+                         "tileid":180
+                        }],
+                 "id":166,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/lu1.png",
+                 "type":"lucen glaze"
+                }, 
+                {
+                 "id":167,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/lu2.png",
+                 "type":"lucen glaze"
+                }, 
+                {
+                 "id":168,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/lu3.png",
+                 "type":"lucen glaze"
+                }, 
+                {
+                 "id":169,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/lu4.png",
+                 "type":"lucen glaze"
+                }, 
+                {
+                 "id":170,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/lu5.png",
+                 "type":"lucen glaze"
+                }, 
+                {
+                 "id":171,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/lu6.png",
+                 "type":"lucen glaze"
+                }, 
+                {
+                 "id":172,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/lu7.png",
+                 "type":"lucen glaze"
+                }, 
+                {
+                 "id":173,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/lu8.png",
+                 "type":"lucen glaze"
+                }, 
+                {
+                 "id":174,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/lu9.png",
+                 "type":"lucen glaze"
+                }, 
+                {
+                 "id":175,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/lu13.png",
+                 "type":"lucen glaze"
+                }, 
+                {
+                 "id":176,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/lu14.png",
+                 "type":"lucen glaze"
+                }, 
+                {
+                 "id":177,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/lu15.png",
+                 "type":"lucen glaze"
+                }, 
+                {
+                 "id":178,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/lu16.png",
+                 "type":"lucen glaze"
+                }, 
+                {
+                 "id":179,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/lu17.png",
+                 "type":"lucen glaze"
+                }, 
+                {
+                 "id":180,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/lu18.png",
+                 "type":"lucen glaze"
+                }, 
+                {
+                 "id":205,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/Sky Spike.png",
+                 "type":"spike"
+                }, 
+                {
+                 "id":388,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/Ice Spike.png",
+                 "type":"spike"
+                }, 
+                {
+                 "id":0,
+                 "image":"LEVEL EDITOR FILES UPDATED-20230508T035334Z-001\/bubble_480.png",
+                 "properties":[
+                        {
+                         "name":"radius",
+                         "type":"float",
+                         "value":1
+                        }],
+                 "type":"bubble"
+                }],
+         "tilewidth":256
+        }, 
+        {
+         "firstgid":390,
+         "source":"..\/Desktop\/levelvstuff\/Downloads\/tiled assets v2\/finalTiles.tsx"
+        }],
+ "tilewidth":64,
+ "type":"map",
+ "version":"1.10",
+ "width":64
+}
