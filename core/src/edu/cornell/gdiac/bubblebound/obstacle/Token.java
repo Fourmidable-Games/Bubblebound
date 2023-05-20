@@ -7,6 +7,7 @@ public class Token extends WheelObstacle{
     private FilmStrip filmstrip;
     protected int ii = 0;
     protected int counter1 = 0;
+    private int level;
     protected final int delay1 = 3; // adjust this value to change the delay
     public void initialize(FilmStrip f) {
         filmstrip = f;
@@ -22,15 +23,19 @@ public class Token extends WheelObstacle{
         }
     }
     private int BUBBLE_LIMIT;
-    public Token(Vector2 location, int bubble_limit){
+    public Token(Vector2 location, int bubble_limit, int level_to_place){
         super(location.x,location.y,0.5f);
         BUBBLE_LIMIT = bubble_limit;
+        level = level_to_place;
     }
 
     public int getBubbleLimitValue(){
         return BUBBLE_LIMIT;
     }
 
+    public int getLevel(){
+        return level;
+    }
 
 
 

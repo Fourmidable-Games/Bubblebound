@@ -149,7 +149,7 @@ public class PlatformController implements ContactListener, Screen {
 	/** Physics constants for initialization */
 	private JsonValue constants;
 
-	private int BUBBLE_LIMIT = 2;
+	private int BUBBLE_LIMIT = 0;
 	private int constructRopeNextCycle;
 
 	private int bubbles_left = 0;
@@ -314,13 +314,17 @@ public class PlatformController implements ContactListener, Screen {
 
 	private List<Border> borders = new ArrayList<>();
 
-	private Token level6Token;
+	private Token level5Token;
 
-	private Token level12Token;
+	private Token level10Token;
+
+	private Token level15Token;
 
 
-	private boolean level6TokenCollected = false;
-	private boolean level12TokenCollected = false;
+	private boolean level5TokenCollected = false;
+
+	private boolean level10TokenCollected = false;
+	private boolean level15TokenCollected = false;
 
 
 
@@ -681,6 +685,9 @@ public class PlatformController implements ContactListener, Screen {
 
 		currLevel = targetLevel;
 
+		BUBBLE_LIMIT = (currLevel - 1) / 5;
+		bubbles_left = BUBBLE_LIMIT;
+
 		avatar = needToInitializeSpawn ? Level2.getPlayer(Door.SpawnDirection.RIGHT) : Level2.getPlayerAtLocation(avatarSpawnLocation, avatarSpawnDirection);
 //		//////System.out.println("PRESPAWN LOC: "+ avatar.getPosition());
 		if(needToInitializeSpawn) {
@@ -822,35 +829,68 @@ public class PlatformController implements ContactListener, Screen {
 
 		world.setGravity( new Vector2(0,defaults.getFloat("gravity",0)) );
 
-		if(currLevel == 6 && !level6TokenCollected){
+		if(currLevel == 5 && !level5TokenCollected){
+			Vector2 location = new Vector2();
+			for(Door d: doors){
+				if(currLevel<d.getTargetLevelID()){
+					location = d.getPlayerSpawnLocation();
+					break;
+				}
+			}
+			level5Token = new Token(location, 1, 5);
 
-			level6Token = new Token(new Vector2(55,12), 1);
-
-			level6Token.setName("token6");
-			level6Token.setBodyType(BodyDef.BodyType.StaticBody);
-			level6Token.setSensor(true);
-			level6Token.setDrawScale(scale);
-			level6Token.setTexture(tokenStrip);
-			level6Token.initialize(tokenStrip);
+			level5Token.setName("token5");
+			level5Token.setBodyType(BodyDef.BodyType.StaticBody);
+			level5Token.setSensor(true);
+			level5Token.setDrawScale(scale);
+			level5Token.setTexture(tokenStrip);
+			level5Token.initialize(tokenStrip);
 
 //			//////System.out.println("ADDING TOKEN" + level6Token.getPosition());
 
-			addObject(level6Token);
+			addObject(level5Token);
 		}
 
-		if(currLevel == 12 && !level12TokenCollected){
+		if(currLevel == 10 && !level10TokenCollected){
+			Vector2 location = new Vector2();
+			for(Door d: doors){
+				if(currLevel<d.getTargetLevelID()){
+					location = d.getPlayerSpawnLocation();
+					break;
+				}
+			}
+			level10Token = new Token(location, 1,	10);
 
-			level12Token = new Token(new Vector2(36,22), 1);
-
-			level12Token.setName("token12");
-			level12Token.setBodyType(BodyDef.BodyType.StaticBody);
-			level12Token.setSensor(true);
-			level12Token.setDrawScale(scale);
-			level12Token.setTexture(tokenStrip);
-			level12Token.initialize(tokenStrip);
+			level10Token.setName("token10");
+			level10Token.setBodyType(BodyDef.BodyType.StaticBody);
+			level10Token.setSensor(true);
+			level10Token.setDrawScale(scale);
+			level10Token.setTexture(tokenStrip);
+			level10Token.initialize(tokenStrip);
 //			//////System.out.println("ADDING TOKEN" + level12Token.getPosition());
 
-			addObject(level12Token);
+			addObject(level10Token);
+		}
+
+		if(currLevel == 15 && !level15TokenCollected){
+			Vector2 location = new Vector2();
+			for(Door d: doors){
+				if(currLevel<d.getTargetLevelID()){
+					location = d.getPlayerSpawnLocation();
+					break;
+				}
+			}
+			level15Token = new Token(location, 1,15);
+
+			level15Token.setName("token15");
+			level15Token.setBodyType(BodyDef.BodyType.StaticBody);
+			level15Token.setSensor(true);
+			level15Token.setDrawScale(scale);
+			level15Token.setTexture(tokenStrip);
+			level15Token.initialize(tokenStrip);
+//			//////System.out.println("ADDING TOKEN" + level12Token.getPosition());
+
+			addObject(level15Token);
 		}
 
 
@@ -1046,8 +1086,9 @@ public class PlatformController implements ContactListener, Screen {
 
 			rope.updateJoint();
 		}
-        if (level6Token != null)level6Token.update();
-		if (level12Token != null) level12Token.update();
+        if (level5Token != null) level5Token.update();
+		if (level10Token != null) level10Token.update();
+		if(level15Token != null) level15Token.update();
 	}
 
 	private void updateMouse(){
@@ -1154,12 +1195,12 @@ public class PlatformController implements ContactListener, Screen {
 		}
 		if(bubbles_left <BUBBLE_LIMIT){
 			canvas.draw(bubblecooldownStrip,Color.WHITE,ox, oy, current_bubble_pos.x,current_bubble_pos.y,0, sx, sy);
-			curr_bubble ++;
+			curr_bubble++;
 			current_bubble_pos.add(1.25f * scale.x,0);
 		}
 		while(curr_bubble <= BUBBLE_LIMIT){
 			canvas.draw(emptyBubbleCooldown,Color.WHITE,ox, oy, current_bubble_pos.x,current_bubble_pos.y,0, sx, sy);
-			curr_bubble ++;
+			curr_bubble++;
 			current_bubble_pos.add(1.25f * scale.x,0);
 		}
 
@@ -1849,7 +1890,6 @@ public class PlatformController implements ContactListener, Screen {
 				int temp_id = door.getTargetLevelID();
 				if(temp_id > currLevel) {
 					doored = true;
-
 					//////////System.out.println("COLLISION WITH " + door.getName());
 					nextLevelID = door.getTargetLevelID();
 					//////////System.out.println("Next Level: " + nextLevelID);
@@ -1857,36 +1897,33 @@ public class PlatformController implements ContactListener, Screen {
 
 			}
 
-			if ((bd1 == avatar   && bd2.getName().contains("token6")) ||
-					(bd1.getName().contains("token6") && bd2 == avatar)){
+			if ((bd1 == avatar   && bd2.getName().contains("token")) ||
+					(bd1.getName().contains("token") && bd2 == avatar)){
 				Token token = (bd1 == avatar) ? (Token)bd2: (Token)bd1;
-				int old_bubble_limit = BUBBLE_LIMIT;
 
-				BUBBLE_LIMIT = token.getBubbleLimitValue();
-				bubbles_left = bubbles_left + (BUBBLE_LIMIT-old_bubble_limit);
+				BUBBLE_LIMIT++;
+				bubbles_left++;
 				if (bd1 == avatar){
 					bd2.markRemoved(true);
 				}else{
 					bd1.markRemoved(true);
 				}
-				level6TokenCollected = true;
-				level6Token = null;
-			}
-
-			if ((bd1 == avatar   && bd2.getName().contains("token12")) ||
-					(bd1.getName().contains("token12") && bd2 == avatar)){
-				Token token = (bd1 == avatar) ? (Token)bd2: (Token)bd1;
-				int old_bubble_limit = BUBBLE_LIMIT;
-
-				BUBBLE_LIMIT = 2;
-				bubbles_left = 2;
-				if (bd1 == avatar){
-					bd2.markRemoved(true);
-				}else{
-					bd1.markRemoved(true);
+				switch(token.getLevel()){
+					case 5:
+						level5TokenCollected = true;
+						level5Token = null;
+						break;
+					case 10:
+						level10TokenCollected = true;
+						level10Token = null;
+						break;
+					case 15:
+						level15TokenCollected = true;
+						level15Token = null;
+						break;
+					default:
+						break;
 				}
-				level12TokenCollected = true;
-				level12Token = null;
 			}
 
 			if ((bd1 == avatar && bd2.getName().equals("gas")) || (bd1.getName().equals("gas") && bd2 == avatar)){
@@ -2614,8 +2651,10 @@ public class PlatformController implements ContactListener, Screen {
 		for(PoisonGas pg : poisons){
 			pg.draw(canvas);
 		}
-		if(level6Token != null){level6Token.draw(canvas);}
-		if(level12Token != null){level12Token.draw(canvas);}
+		if(currLevel == 5 && level5Token != null){level5Token.draw(canvas);}
+		if(currLevel == 10 && level10Token != null){level10Token.draw(canvas);}
+		if(currLevel == 15 && level15Token != null){level15Token.draw(canvas);}
+
 		if (currLevel == 1) {
 		}
 		drawCrosshair();
