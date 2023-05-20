@@ -19,6 +19,7 @@ import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.physics.box2d.*;
 
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import edu.cornell.gdiac.assets.AssetDirectory;
 import edu.cornell.gdiac.bubblebound.obstacle.BoxObstacle;
 import edu.cornell.gdiac.bubblebound.obstacle.Obstacle;
@@ -48,6 +49,7 @@ public class PlatformController implements ContactListener, Screen {
 	protected FilmStrip swingStrip;
 	protected Texture idleText;
 	private Vector2 crosshairLoc;
+	private FitViewport fitViewport;
 
 	public int[] keyboard_bindings = InputController.getInstance().buttons;
 
@@ -1025,6 +1027,8 @@ public class PlatformController implements ContactListener, Screen {
 	private int wait = 0;
 
 	public void update(float dt) {
+		create();
+		fitViewport.update(canvas.getWidth(), canvas.getHeight());
 		if(InputController.getInstance().didBubble()) {
 			System.out.println(InputController.getInstance().didBubble());
 		}
@@ -2401,6 +2405,7 @@ public class PlatformController implements ContactListener, Screen {
 	}
 
 	public void drawPrimaryBackground(TextureRegion bg){
+//		create();
 		Vector2 temp = cameraCoords.cpy();
 
 		temp.x -= canvas.getWidth() / 2f;
@@ -2413,6 +2418,8 @@ public class PlatformController implements ContactListener, Screen {
 	}
 
 	public void drawSecondaryBackground(Texture bg, Zone z){
+//		create();
+		fitViewport.update(canvas.getWidth(), canvas.getHeight());
 		Vector2 temp = cameraCoords.cpy();
 		temp.x -= canvas.getWidth() / 2f;
 		temp.y -= canvas.getHeight() / 2f;
@@ -2445,6 +2452,8 @@ public class PlatformController implements ContactListener, Screen {
 	int delay = 0;
 
 	public void drawPause(){
+		create();
+		fitViewport.update(canvas.getWidth(), canvas.getHeight());
 		Gdx.graphics.setCursor(defaultCursor);
 		level1MusicCave.resume(level1MusicCaveID);
 		level1MusicSunset.resume(level1MusicSunsetID);
@@ -2532,6 +2541,8 @@ public class PlatformController implements ContactListener, Screen {
 	public boolean quit = false;
 
 	private void drawCrosshair(){
+//		create();
+		fitViewport.update(canvas.getWidth(), canvas.getHeight());
 		float crosshair_width = crosshair.getRegionWidth();
 		float crosshair_height = crosshair.getRegionHeight();
 
@@ -2557,10 +2568,13 @@ public class PlatformController implements ContactListener, Screen {
 
 		//TODO: parallaxing and stuff kinda relies on pixel size not ideal for diff screen sizes
 
+		create();
+
+		fitViewport.update(canvas.getWidth(), canvas.getHeight());
+
+
 
 		canvas.begin();
-
-
 
 		drawPrimaryBackground(skybackground);
 		for(Zone z: zones){ //draws the backgrounds of the zones
@@ -2617,11 +2631,14 @@ public class PlatformController implements ContactListener, Screen {
 		}
 		drawCrosshair();
 
+		fitViewport.update(canvas.getWidth(), canvas.getHeight());
 
 		canvas.resetColor();
 		canvas.end();
 
 		// Draw life bar
+
+//		create();
 
 
 		canvas.shape.setProjectionMatrix(canvas.camera.combined);
@@ -2645,6 +2662,9 @@ public class PlatformController implements ContactListener, Screen {
 
 
 		canvas.end();
+//		create();
+
+		fitViewport.update(canvas.getWidth(), canvas.getHeight());
 
 		if (debug) {
 			canvas.beginDebug();
@@ -2670,6 +2690,8 @@ public class PlatformController implements ContactListener, Screen {
 			drawFilter();
 			canvas.end();
 		}
+
+		fitViewport.update(canvas.getWidth(), canvas.getHeight());
 
 	}
 
@@ -2736,7 +2758,10 @@ public class PlatformController implements ContactListener, Screen {
 	 *
 	 * @param delta Number of seconds since last animation frame
 	 */
+
 	public void render(float delta) {
+		create();
+		fitViewport.update(canvas.getWidth(), canvas.getHeight());
 
 		if(pause_state){
 			drawPause();
@@ -2747,6 +2772,25 @@ public class PlatformController implements ContactListener, Screen {
 			}
 			draw(delta);
 		}
+
+	}
+
+
+	public void render2(Texture texture, float x, float y) {
+
+		ScreenUtils.clear(Color.BLACK);
+		fitViewport.apply();
+		canvas.begin();
+		canvas.draw(texture, x, y);
+		canvas.end();
+
+	}
+
+
+	public void create() {
+		ScreenUtils.clear(Color.BLACK);
+		fitViewport = new FitViewport(canvas.getWidth(), canvas.getHeight());
+		fitViewport.update(canvas.getWidth(), canvas.getHeight(), true);
 	}
 
 	/**
