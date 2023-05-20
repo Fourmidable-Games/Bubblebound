@@ -13,8 +13,7 @@ task run(dependsOn: classes, type: JavaExec) {
     standardInput = System.in
     workingDir = project.assetsDir
     ignoreExitValue = true
-
-    if (OperatingSystem.current() == OperatingSystem.MAC_OS) {
+    if (OperatingSystem.current().isMacOsX()) {
         // Required to run on macOS
         jvmArgs += "-XstartOnFirstThread"
     }

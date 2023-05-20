@@ -628,6 +628,8 @@ public class PlatformController implements ContactListener, Screen {
 	 * Lays out the game geography.
 	 */
 	private void populateLevel(String jsonPath) {
+		System.out.println("canvas width " + canvas.getWidth());
+		System.out.println("canvas height" + canvas.getHeight());
 		setSounds();
 
 
@@ -1026,11 +1028,14 @@ public class PlatformController implements ContactListener, Screen {
 	private int wait = 0;
 
 	public void update(float dt) {
+		if(InputController.getInstance().didBubble()) {
+			System.out.println(InputController.getInstance().didBubble());
+		}
 		updateBubbles();
 		updateSpike();
 		updateEnemies();
 		moveZones();
-		updateSounds();
+
 		updateCamera(avatar.getX()*scale.x, avatar.getY()*scale.y);
 		updateMouse();
 		updateObjectGravs();
@@ -1039,6 +1044,7 @@ public class PlatformController implements ContactListener, Screen {
 		updateBorders();
 		updateDoors();
 		updateAvatar();
+		updateSounds();
 		if (rope != null && rope.getJointLength()>=2){
 
 			rope.updateJoint();
@@ -1338,11 +1344,12 @@ public class PlatformController implements ContactListener, Screen {
 		if(InputController.getInstance().isFiniteBubbles()){
 			if(avatar.isGrounded() && InputController.getInstance().isReloadBubblesOnGround()){
 				if(bubbles_left < BUBBLE_LIMIT){
-					if(bubble_regen_timer <=0){
+					bubbles_left++;
+					/*if(bubble_regen_timer <=0){
 						bubbles_left++;
 						bubble_regen_timer = bubble_regen_timer_max;
 					}
-					bubble_regen_timer--;
+					bubble_regen_timer--;*/
 				}
 			}else{
 				bubble_regen_timer = bubble_regen_timer_max;
@@ -1399,6 +1406,7 @@ public class PlatformController implements ContactListener, Screen {
 				avatar.setGrappling(true);
 				avatar.setGrappledBubble(closest);
 				avatar.setGrappledBubbleDist(avatar.getPosition().dst(closest.getPosition()));
+				InputController.getInstance().avatar_grappling = true;
 				rope = createGrapple(closest);
 				shootRopeSoundId = playSound(shootRopeSound, shootRopeSoundId, soundvolume);
 			}
@@ -1448,12 +1456,12 @@ public class PlatformController implements ContactListener, Screen {
 
 	public void updateSounds(){
 		if(avatar.getGravZone() == 1){
-			level1MusicSunset.setVolume(level1MusicSunsetID,volume * 1f);
+			level1MusicSunset.setVolume(level1MusicSunsetID,volume * 0.2f);
 			level1MusicCave.setVolume(level1MusicCaveID,0.0f);
 		}
 		if(avatar.getGravZone() == -1){
 			level1MusicSunset.setVolume(level1MusicSunsetID,0.0f);
-			level1MusicCave.setVolume(level1MusicCaveID,volume * 1f);
+			level1MusicCave.setVolume(level1MusicCaveID,volume * 0.2f);
 		}
 		if (avatar.justJumped()) {
 			//jumpSound.setVolume(jumpId,soundvolume * 2f);
@@ -1521,6 +1529,7 @@ public class PlatformController implements ContactListener, Screen {
 	}
 
 	public void destructRope() {
+		InputController.getInstance().avatar_grappling = false;
 		if(rope != null) {
 			rope.markRemoved(true);
 			avatar.setLinearVelocity(new Vector2(avatar.getLinearVelocity().scl(ROPE_LAUNCH_SPEED.x).x, avatar.getLinearVelocity().scl(ROPE_LAUNCH_SPEED.y).y));
@@ -1818,8 +1827,8 @@ public class PlatformController implements ContactListener, Screen {
 			}
 
 			// See if we have landed on the ground.
-			if ((avatar.getSensorName().equals(fd2) && avatar != bd1 && !bd1.getName().equals("bubble") && !bd1.getName().contains("plank") && !bd1.getName().equals("lucenglazesensor") && !bd1.getName().contains("gas") && !bd1.isSensor()) ||
-					(avatar.getSensorName().equals(fd1) && avatar != bd2 && !bd2.getName().equals("bubble") && !bd2.getName().contains("plank") && !bd2.getName().equals("lucenglazesensor") && !bd2.getName().contains("gas") && !bd2.isSensor())) {
+			if ((avatar.getSensorName().equals(fd2) && avatar != bd1 && !bd1.getName().equals("bubble") && !bd1.getName().contains("plank") && !bd1.getName().contains("sundropBullet") && !bd1.getName().equals("lucenglazesensor") && !bd1.getName().contains("gas") && !bd1.isSensor()) ||
+					(avatar.getSensorName().equals(fd1) && avatar != bd2 && !bd2.getName().equals("bubble") && !bd2.getName().contains("plank") && !bd1.getName().contains("sundropBullet") && !bd2.getName().equals("lucenglazesensor") && !bd2.getName().contains("gas") && !bd2.isSensor())) {
 
 				avatar.setGrounded(true);
 				sensorFixtures.add(avatar == bd1 ? fix2 : fix1); // Could have more than one ground
@@ -1839,12 +1848,15 @@ public class PlatformController implements ContactListener, Screen {
 			if (((bd1 == avatar   && bd2.getName().contains("door")) ||
 					(bd1.getName().contains("door") && bd2 == avatar))) {
 
-				doored = true;
 				Door door = (bd1 == avatar) ? (Door)bd2: (Door)bd1;
+				int temp_id = door.getTargetLevelID();
+				if(temp_id > currLevel) {
+					doored = true;
 
-				//////////System.out.println("COLLISION WITH " + door.getName());
-				nextLevelID = door.getTargetLevelID();
-				//////////System.out.println("Next Level: " + nextLevelID);
+					//////////System.out.println("COLLISION WITH " + door.getName());
+					nextLevelID = door.getTargetLevelID();
+					//////////System.out.println("Next Level: " + nextLevelID);
+				}
 
 			}
 

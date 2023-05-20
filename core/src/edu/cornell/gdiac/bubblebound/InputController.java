@@ -50,7 +50,7 @@ public class InputController {
 	// Fields to manage buttons
 	/** Whether the reset button was pressed. */
 	private boolean resetPressed;
-
+	private boolean bubbleHeld;
 	private boolean doorPressed;
 	private boolean doorPrevious;
 	private boolean healthRestorePressed;
@@ -65,15 +65,19 @@ public class InputController {
 	private boolean prevPrevious;
 	/** Whether the primary action button was pressed. */
 	private boolean primePressed;
+
+	private boolean searching_for_bubble;
+
+	private boolean attached_to_bubble;
 	private boolean primeUpsideDownPressed;
 	private boolean primePrevious;
+	private boolean tertiaryPrevious;
 	private boolean primeUpsideDownPrevious;
 	/** Whether the secondary action button was pressed. */
 	private boolean secondPressed;
 	private boolean secondPrevious;
 	/** Whether the teritiary action button was pressed. */
 	private boolean tertiaryPressed;
-	private boolean tertiaryPrevious;
 	/** Whether the debug toggle was pressed. */
 	private boolean debugPressed;
 	private boolean debugPrevious;
@@ -84,12 +88,18 @@ public class InputController {
 	private boolean bubblePressed;
 	private boolean bubblePrevious;
 	private boolean prevClicked;
+	private boolean attachCycle;
+	private boolean detachCycle;
 
 
 	public int[] buttons = {Input.Keys.UP, Input.Keys.W, Input.Keys.DOWN, Input.Keys.S, Input.Keys.LEFT, Input.Keys.A, Input.Keys.RIGHT, Input.Keys.D, Input.Keys.J, Input.Keys.K};
 
 	public float[] audio_levels ={1.0f,1.0f};
+
+	public boolean avatar_grappling = false;
 	public boolean mouse = true;
+
+	//public Array<boolean> unlockedLevels = [true, false, false, false, false, false, false, false false, false, false, false, false false, false, false, false, false false, false]
 
 
 	public enum ControlMapping{
@@ -192,8 +202,7 @@ public class InputController {
 	 *
 	 * @return true if the secondary action button was pressed.
 	 */
-	public boolean didTertiary() { return tertiaryPressed; }
-
+	public boolean didTertiary() { return tertiaryPressed && !tertiaryPrevious;}
 	/**
 	 * Returns true if the reset button was pressed.
 	 *
@@ -243,7 +252,34 @@ public class InputController {
 		return exitPressed && !exitPrevious;
 	}
 
-	public boolean didBubble(){return bubblePressed && !bubblePrevious; }
+	public boolean didBubbleReleaseNoDetach(){
+		if(!bubblePressed){
+			return false;
+		}
+		if(bubblePressed && searching_for_bubble && !avatar_grappling){
+			return true;
+		}
+		if(bubblePressed && searching_for_bubble && avatar_grappling){
+			return false;
+		}
+		if(bubblePressed && !searching_for_bubble && avatar_grappling){
+			return true;
+		}
+
+		return false;
+
+	}
+
+	public boolean didBubbleReleaseDetach(){
+		if(bubblePressed && !avatar_grappling) return true;
+		if(bubblePressed && avatar_grappling) return false;
+		if(!bubblePressed && avatar_grappling) return true;
+		return false;
+	}
+
+	public boolean didBubble(){
+		return didBubbleReleaseDetach();
+	}
 
 	public boolean isMouseControlls(){return controlMapping == ControlMapping.MOUSE; }
 
@@ -290,6 +326,7 @@ public class InputController {
 		// Copy state from last animation frame
 		// Helps us ignore buttons that are held down
 		primePrevious  = primePressed;
+		tertiaryPrevious = tertiaryPressed;
 		primeUpsideDownPrevious = primeUpsideDownPressed;
 		secondPrevious = secondPressed;
 		resetPrevious  = resetPressed;
@@ -379,6 +416,7 @@ public class InputController {
 	 * @param secondary true if the keyboard should give priority to a gamepad
 	 */
 	private void readKeyboard(Rectangle bounds, Vector2 scale, boolean secondary) {
+
 		// Give priority to gamepad results
 		resetPressed = (secondary && resetPressed) || (Gdx.input.isKeyPressed(Input.Keys.R));
 		doorPressed = (secondary && doorPressed) || (Gdx.input.isKeyPressed(Input.Keys.E));
@@ -406,10 +444,74 @@ public class InputController {
 		if(!mouse){
 			temp = Input.Buttons.RIGHT;
 		}
+//		if(controlMapping == ControlMapping.KEYBOARD){
+//			bubblePressed = (secondary && bubblePressed) || (Gdx.input.isKeyPressed(buttons[8]));
+//			if(Gdx.input.isKeyJustPressed(buttons[8]) && !avatar_grappling){
+//				searching_for_bubble = true;
+//				attachCycle = true;
+//				detachCycle = false;
+//			}else if(Gdx.input.isKeyJustPressed(buttons[8]) && avatar_grappling){
+//				searching_for_bubble = false;
+//				attachCycle = false;
+//				detachCycle = true;
+//			}
+//
+//			if(!bubblePressed){
+//				attachCycle = false;
+//				detachCycle = false;
+//				searching_for_bubble = false;
+//			}
+//		}else {
+//			bubblePressed = (secondary && bubblePressed) || (Gdx.input.isButtonPressed(temp)); //TODO:::::::
+//			if(Gdx.input.isButtonJustPressed(temp) && !avatar_grappling){
+//				searching_for_bubble = true;
+//				attachCycle = true;
+//				detachCycle = false;
+//			}else if(Gdx.input.isButtonJustPressed(temp) && avatar_grappling){
+//				searching_for_bubble = false;
+//				attachCycle = false;
+//				detachCycle = true;
+//			}
+//
+//			if(!bubblePressed){
+//				attachCycle = false;
+//				detachCycle = false;
+//				searching_for_bubble = false;
+//			}
+//		}
+
 		if(controlMapping == ControlMapping.KEYBOARD){
-			bubblePressed = (secondary && bubblePressed) || (Gdx.input.isKeyJustPressed(buttons[8]));
+			bubblePressed = (secondary && bubblePressed) || (Gdx.input.isKeyPressed(buttons[8]));
+			if(Gdx.input.isKeyJustPressed(buttons[8]) && !avatar_grappling){
+				searching_for_bubble = true;
+				attachCycle = true;
+				detachCycle = false;
+			}else if(Gdx.input.isKeyJustPressed(buttons[8]) && avatar_grappling){
+				searching_for_bubble = false;
+				attachCycle = false;
+				detachCycle = true;
+			}
+
+			if(!bubblePressed){
+				searching_for_bubble = false;
+			}
 		}else {
-			bubblePressed = (secondary && bubblePressed) || (Gdx.input.isButtonJustPressed(temp)); //TODO:::::::
+			bubblePressed = (secondary && bubblePressed) || (Gdx.input.isButtonPressed(temp)); //TODO:::::::
+			if(Gdx.input.isButtonJustPressed(temp) && !avatar_grappling){
+				searching_for_bubble = true;
+				attachCycle = true;
+				detachCycle = false;
+			}else if(Gdx.input.isButtonJustPressed(temp) && avatar_grappling){
+				searching_for_bubble = false;
+				attachCycle = false;
+				detachCycle = true;
+			}
+
+			if(!bubblePressed){
+				attachCycle = false;
+				detachCycle = false;
+				searching_for_bubble = false;
+			}
 		}
 
 

@@ -157,6 +157,7 @@ public class ProjEnemy extends BoxObstacle{
         int[][] offsets = {{0,1}, {1,0}, {0,-1}, {-1,0}};
         int[] offset = offsets[pe.getRotation()];
         Bullet bullet = new Bullet(pe.getX() + offset[0], pe.getY() + offset[1], radius);
+        bullet.setName("sundropBullet");
         bullet.setGravityScale(0f);
         bullet.setDrawScale(scale);
 

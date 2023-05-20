@@ -24,7 +24,8 @@ allprojects {
         box2DLightsVersion = '1.5'
         ashleyVersion = '1.7.4'
         aiVersion = '1.8.2'
-        gdxControllersVersion = '2.2.1'
+        gdxControllersVersion = '2.2.3'
+        lwjglVersion = '3.3.1'
     }
 
     repositories {
@@ -49,7 +50,6 @@ project(":desktop") {
         api "com.badlogicgames.gdx-controllers:gdx-controllers-desktop:$gdxControllersVersion"
         api "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
         api "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
-        api "com.badlogicgames.gdx:gdx-lwjgl3-glfw-awt-macos:$gdxVersion"
         implementation files("../dependencies/soundlib.jar")
         implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.3'
         api 'com.google.code.gson:gson:2.10.1'
