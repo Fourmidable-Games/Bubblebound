@@ -441,6 +441,8 @@ public class PlatformController implements ContactListener, Screen {
 		bubbleText = directory.getEntry( "shared:bubble2", Texture.class );
 		bubbleText2 = directory.getEntry( "shared:bubblerange", Texture.class );
 		displayFont = directory.getEntry( "shared:retro" ,BitmapFont.class);
+		System.out.println(displayFont);
+		System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 		skybackground = new TextureRegion(directory.getEntry("background:sky", Texture.class));
 		icebackground = directory.getEntry("background:ice", Texture.class);
 		paperfilter = directory.getEntry("platform:paperfilter", Texture.class);
@@ -2227,10 +2229,8 @@ public class PlatformController implements ContactListener, Screen {
 			avatar.restoreHealth();
 		}
 		if (switchLevel){
-			float[] times = InputController.getInstance().times;
-			InputController.getInstance().times[currLevel - 1] = timer;
-			for(int i = 0; i < times.length; i++){
-				System.out.println(i + "  " + times[i]);
+			if(input.times[currLevel - 1] > timer || input.times[currLevel - 1] == 0) {
+				InputController.getInstance().times[currLevel - 1] = timer;
 			}
 			switchLevel = false;
 			reset(targetLevel, true);
@@ -2536,7 +2536,7 @@ public class PlatformController implements ContactListener, Screen {
 
 
 	private void drawTimer(){
-		displayFont.setColor(Color.WHITE);
+		displayFont.setColor(Color.RED);
 		displayFont.getData().scaleX = scale.x / 90;
 		displayFont.getData().scaleY = scale.y / 90;
 		int minutes = (int) timer / 60;
@@ -2551,7 +2551,7 @@ public class PlatformController implements ContactListener, Screen {
 		}
 		canvas.begin(); // DO NOT SCALE
 
-		canvas.drawText(time, displayFont, cameraCoords.x - (canvas.getWidth() / 12f), cameraCoords.y + (canvas.getHeight() * 5/ 12f));
+		canvas.drawText(time, displayFont, cameraCoords.x - scale.x, cameraCoords.y + (canvas.getHeight()/2f) - scale.y);
 		canvas.end();
 
 	}
