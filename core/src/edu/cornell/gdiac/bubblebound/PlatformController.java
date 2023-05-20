@@ -2678,14 +2678,14 @@ public class PlatformController implements ContactListener, Screen {
 
 	public void drawPhases(){
 		if(currLevel == 5){
-			canvas.draw(phase2Text, new Color(1,1,1,0.5f),phase2Text.getRegionWidth()/2,phase2Text.getRegionHeight()/2,phase2Loc.x*scale.x,phase2Loc.y*scale.y,0,0.35f,0.35f);
+			canvas.draw(phase2Text, new Color(1,1,1,0.75f),phase2Text.getRegionWidth()/2,phase2Text.getRegionHeight()/2,phase2Loc.x*scale.x,phase2Loc.y*scale.y,0,0.35f,0.35f);
 		}
 		if(currLevel == 10){
 			System.out.println("DRAWING phase3 at " + phase3Loc);
-			canvas.draw(phase3Text,  new Color(1,1,1,0.5f),phase2Text.getRegionWidth()/2,phase2Text.getRegionHeight()/2,phase3Loc.x*scale.x,phase3Loc.y*scale.y,0,0.35f,0.35f);
+			canvas.draw(phase3Text,  new Color(1,1,1,0.75f),phase2Text.getRegionWidth()/2,phase2Text.getRegionHeight()/2,phase3Loc.x*scale.x,phase3Loc.y*scale.y,0,0.35f,0.35f);
 		}
 		if(currLevel == 15){
-			canvas.draw(phase4Text,  new Color(1,1,1,0.5f),phase2Text.getRegionWidth()/2,phase2Text.getRegionHeight()/2,phase4Loc.x*scale.x,phase4Loc.y*scale.y,0,0.35f,0.35f);
+			canvas.draw(phase4Text,  new Color(1,1,1,0.75f),phase2Text.getRegionWidth()/2,phase2Text.getRegionHeight()/2,phase4Loc.x*scale.x,phase4Loc.y*scale.y,0,0.35f,0.35f);
 		}
 	}
 
