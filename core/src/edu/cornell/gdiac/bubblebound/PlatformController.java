@@ -626,6 +626,8 @@ public class PlatformController implements ContactListener, Screen {
 	 * Lays out the game geography.
 	 */
 	private void populateLevel(String jsonPath) {
+		System.out.println("canvas width " + canvas.getWidth());
+		System.out.println("canvas height" + canvas.getHeight());
 		setSounds();
 
 
