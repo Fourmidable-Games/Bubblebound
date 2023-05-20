@@ -285,8 +285,8 @@ public class BoxObstacle extends SimpleObstacle {
 
 	@Override
 	public void draw(GameCanvas canvas) {
-//		System.out.println("width" + canvas.getWidth() + "height" + canvas.getHeight());
-//		System.out.println("sx" + sx + "   sy" + sy);
+
+
 		if (isRope == true) {
 			if(drawtimer >= draworder){
 				float sx2 = drawScale.x / 64f;
@@ -323,6 +323,7 @@ public class BoxObstacle extends SimpleObstacle {
 
 
 	public void drawOutline(GameCanvas canvas) {
+
 		if (texture != null) {
 			canvas.draw(texture, Color.BLACK, origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.y, getAngle(), bsx, bsy);
 		}

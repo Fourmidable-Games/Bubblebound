@@ -903,7 +903,7 @@
                                 {
                                  "name":"direction",
                                  "type":"string",
-                                 "value":"left"
+                                 "value":"right"
                                 }, 
                                 {
                                  "name":"targetLevel",
