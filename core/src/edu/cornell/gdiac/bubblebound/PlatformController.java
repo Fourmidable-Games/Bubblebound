@@ -92,7 +92,8 @@ public class PlatformController implements ContactListener, Screen {
 
 	private TextureRegion barrierTexture;
 
-	private TextureRegion poisonTexture;
+	private Texture poisonTexture;
+	private FilmStrip poisonStrip;
 	private Texture lucenTexture;
 	private FilmStrip lucenStrip;
 
@@ -149,7 +150,7 @@ public class PlatformController implements ContactListener, Screen {
 	/** Physics constants for initialization */
 	private JsonValue constants;
 
-	private int BUBBLE_LIMIT = 2;
+	private int BUBBLE_LIMIT = 0;
 	private int constructRopeNextCycle;
 
 	private int bubbles_left = 0;
@@ -314,13 +315,17 @@ public class PlatformController implements ContactListener, Screen {
 
 	private List<Border> borders = new ArrayList<>();
 
-	private Token level6Token;
+	private Token level5Token;
 
-	private Token level12Token;
+	private Token level10Token;
+
+	private Token level15Token;
 
 
-	private boolean level6TokenCollected = false;
-	private boolean level12TokenCollected = false;
+	private boolean level5TokenCollected = false;
+
+	private boolean level10TokenCollected = false;
+	private boolean level15TokenCollected = false;
 
 
 
@@ -403,7 +408,8 @@ public class PlatformController implements ContactListener, Screen {
 		bulletTexture = new TextureRegion(directory.getEntry("platform:bullet",Texture.class));
 		bridgeTexture = new TextureRegion(directory.getEntry("platform:rope",Texture.class));
 		barrierTexture = new TextureRegion(directory.getEntry("platform:barrier",Texture.class));
-		poisonTexture = new TextureRegion(directory.getEntry("platform:gas", Texture.class));
+		poisonTexture = directory.getEntry("platform:gas", Texture.class);
+		poisonStrip = new FilmStrip(poisonTexture, 2, 5, 10);
 		lucenTexture = directory.getEntry("platform:activatedlucen", Texture.class);
 		lucenStrip = new FilmStrip(lucenTexture, 1, 18, 18);
 		dormantlucen = new TextureRegion(directory.getEntry("platform:dormantlucen",Texture.class));
@@ -441,6 +447,8 @@ public class PlatformController implements ContactListener, Screen {
 		bubbleText = directory.getEntry( "shared:bubble2", Texture.class );
 		bubbleText2 = directory.getEntry( "shared:bubblerange", Texture.class );
 		displayFont = directory.getEntry( "shared:retro" ,BitmapFont.class);
+		System.out.println(displayFont);
+		System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 		skybackground = new TextureRegion(directory.getEntry("background:sky", Texture.class));
 		icebackground = directory.getEntry("background:ice", Texture.class);
 		paperfilter = directory.getEntry("platform:paperfilter", Texture.class);
@@ -561,7 +569,10 @@ public class PlatformController implements ContactListener, Screen {
 	 *
 	 * This method disposes of the world and creates a new one.
 	 */
-	public void reset(int targetLevelID) {
+	public void reset(int targetLevelID, boolean start) {
+		if(start){
+			timer = 0;
+		}
 		Gdx.graphics.setCursor(emptyCursor);
 		death_count = 0;
 		doored = false;
@@ -681,6 +692,9 @@ public class PlatformController implements ContactListener, Screen {
 
 		currLevel = targetLevel;
 
+		BUBBLE_LIMIT = (currLevel - 1) / 5;
+		bubbles_left = BUBBLE_LIMIT;
+
 		avatar = needToInitializeSpawn ? Level2.getPlayer(Door.SpawnDirection.RIGHT) : Level2.getPlayerAtLocation(avatarSpawnLocation, avatarSpawnDirection);
 //		//////System.out.println("PRESPAWN LOC: "+ avatar.getPosition());
 		if(needToInitializeSpawn) {
@@ -771,32 +785,31 @@ public class PlatformController implements ContactListener, Screen {
 
 //
 //
-//		ButtonPrompt bp = new ButtonPrompt(2, 8, jumpBP, 0, 1);
-//		//ButtonPrompt bp2 = new ButtonPrompt(5, 5, jumpBP, 8);
-//		bp.setScale(scale);
-//		bp.setMouse(leftMouse, rightMouse);
-//		bp.setLetters(letters);
-//		prompts.add(bp);
+		ButtonPrompt bp = new ButtonPrompt(2, 8, jumpBP, 0, 1);
+		bp.setScale(scale);
+		bp.setMouse(leftMouse, rightMouse);
+		bp.setLetters(letters);
+    	prompts.add(bp);
 //
-//		ButtonPrompt bp2 = new ButtonPrompt(5, 8, jumpBP, 2, 3); //jump down
-//		bp2.setScale(scale);
-//		bp2.setMouse(leftMouse, rightMouse);
-//		bp2.setLetters(letters);
-//		prompts.add(bp2);
+		ButtonPrompt bp2 = new ButtonPrompt(5, 8, jumpBP, 2, 3); //jump down
+		bp2.setScale(scale);
+		bp2.setMouse(leftMouse, rightMouse);
+		bp2.setLetters(letters);
+		prompts.add(bp2);
 //
-//		ButtonPrompt bp3 = new ButtonPrompt(8, 8, leftBP, 4, 5);
-//		bp3.setScale(scale);
-//		bp3.setMouse(leftMouse, rightMouse);
-//		bp3.setLetters(letters);
-//		prompts.add(bp3);
+		ButtonPrompt bp3 = new ButtonPrompt(8, 8, leftBP, 4, 5);
+		bp3.setScale(scale);
+		bp3.setMouse(leftMouse, rightMouse);
+		bp3.setLetters(letters);
+		prompts.add(bp3);
 ////
-//		ButtonPrompt bp4 = new ButtonPrompt(11, 8, rightBP, 6, 7);
-//		bp4.setScale(scale);
-//		bp4.setMouse(leftMouse, rightMouse);
-//		bp4.setLetters(letters);
-//		prompts.add(bp4);
+		ButtonPrompt bp4 = new ButtonPrompt(11, 8, rightBP, 6, 7);
+		bp4.setScale(scale);
+		bp4.setMouse(leftMouse, rightMouse);
+		bp4.setLetters(letters);
+		prompts.add(bp4);
 
-		ButtonPrompt bp5 = new ButtonPrompt(14, 8, grappleBP, 8);
+		ButtonPrompt bp5 = new ButtonPrompt(14, 8, grappleBP, 8);//grapple
 		bp5.setScale(scale);
 		bp5.setMouse(leftMouse, rightMouse);
 		bp5.setLetters(letters);
@@ -818,39 +831,74 @@ public class PlatformController implements ContactListener, Screen {
 
 
 
+
+
 		JsonValue defaults = constants.get("defaults");
 
 		world.setGravity( new Vector2(0,defaults.getFloat("gravity",0)) );
 
-		if(currLevel == 6 && !level6TokenCollected){
+		if(currLevel == 5 && !level5TokenCollected){
+			Vector2 location = new Vector2();
+			for(Door d: doors){
+				if(currLevel<d.getTargetLevelID()){
+					location = d.getPlayerSpawnLocation();
+					break;
+				}
+			}
+			level5Token = new Token(location, 1, 5);
 
-			level6Token = new Token(new Vector2(55,12), 1);
-
-			level6Token.setName("token6");
-			level6Token.setBodyType(BodyDef.BodyType.StaticBody);
-			level6Token.setSensor(true);
-			level6Token.setDrawScale(scale);
-			level6Token.setTexture(tokenStrip);
-			level6Token.initialize(tokenStrip);
+			level5Token.setName("token5");
+			level5Token.setBodyType(BodyDef.BodyType.StaticBody);
+			level5Token.setSensor(true);
+			level5Token.setDrawScale(scale);
+			level5Token.setTexture(tokenStrip);
+			level5Token.initialize(tokenStrip);
 
 //			//////System.out.println("ADDING TOKEN" + level6Token.getPosition());
 
-			addObject(level6Token);
+			addObject(level5Token);
 		}
 
-		if(currLevel == 12 && !level12TokenCollected){
+		if(currLevel == 10 && !level10TokenCollected){
+			Vector2 location = new Vector2();
+			for(Door d: doors){
+				if(currLevel<d.getTargetLevelID()){
+					location = d.getPlayerSpawnLocation();
+					break;
+				}
+			}
+			level10Token = new Token(location, 1,	10);
 
-			level12Token = new Token(new Vector2(36,22), 1);
-
-			level12Token.setName("token12");
-			level12Token.setBodyType(BodyDef.BodyType.StaticBody);
-			level12Token.setSensor(true);
-			level12Token.setDrawScale(scale);
-			level12Token.setTexture(tokenStrip);
-			level12Token.initialize(tokenStrip);
+			level10Token.setName("token10");
+			level10Token.setBodyType(BodyDef.BodyType.StaticBody);
+			level10Token.setSensor(true);
+			level10Token.setDrawScale(scale);
+			level10Token.setTexture(tokenStrip);
+			level10Token.initialize(tokenStrip);
 //			//////System.out.println("ADDING TOKEN" + level12Token.getPosition());
 
-			addObject(level12Token);
+			addObject(level10Token);
+		}
+
+		if(currLevel == 15 && !level15TokenCollected){
+			Vector2 location = new Vector2();
+			for(Door d: doors){
+				if(currLevel<d.getTargetLevelID()){
+					location = d.getPlayerSpawnLocation();
+					break;
+				}
+			}
+			level15Token = new Token(location, 1,15);
+
+			level15Token.setName("token15");
+			level15Token.setBodyType(BodyDef.BodyType.StaticBody);
+			level15Token.setSensor(true);
+			level15Token.setDrawScale(scale);
+			level15Token.setTexture(tokenStrip);
+			level15Token.initialize(tokenStrip);
+//			//////System.out.println("ADDING TOKEN" + level12Token.getPosition());
+
+			addObject(level15Token);
 		}
 
 
@@ -917,7 +965,7 @@ public class PlatformController implements ContactListener, Screen {
 		PoisonGas gas = new PoisonGas(x,y);
 		gas.setFade(fade);
 		gas.setDrawScale(scale);
-		gas.setTexture(poisonTexture);
+		//gas.setTexture(poisonStrip);
 		addObject(gas);
 		poisons.add(gas);
 	}
@@ -953,7 +1001,7 @@ public class PlatformController implements ContactListener, Screen {
 		lg.setRotation(rotation);
 		lg.setDrawScale(scale);
 		lg.setTexture(lucenStrip);
-		lg.initialize(lucenStrip);
+		lg.initialize(lucenStrip, poisonStrip);
 		lg.setTexture2(dormantlucen);
 		addObject(lg);
 		return lg;
@@ -973,7 +1021,7 @@ public class PlatformController implements ContactListener, Screen {
 		wo2.setDensity(10000f);
 		wo2.setTexture(bubble);
 		wo2.setTexture(bubble);
-		wo2.initialize(bubble, bubble2);
+		wo2.initialize(bubble.copy(), bubble2.copy());
 		bubbles.add(wo2);
 		addQueuedObject(wo2);
 		return wo2;
@@ -1025,6 +1073,9 @@ public class PlatformController implements ContactListener, Screen {
 	private int wait = 0;
 
 	public void update(float dt) {
+		if(InputController.getInstance().didBubble()) {
+			System.out.println(InputController.getInstance().didBubble());
+		}
 		updateBubbles();
 		updateSpike();
 		updateEnemies();
@@ -1043,8 +1094,9 @@ public class PlatformController implements ContactListener, Screen {
 
 			rope.updateJoint();
 		}
-        if (level6Token != null)level6Token.update();
-		if (level12Token != null) level12Token.update();
+        if (level5Token != null) level5Token.update();
+		if (level10Token != null) level10Token.update();
+		if(level15Token != null) level15Token.update();
 	}
 
 	private void updateMouse(){
@@ -1151,12 +1203,12 @@ public class PlatformController implements ContactListener, Screen {
 		}
 		if(bubbles_left <BUBBLE_LIMIT){
 			canvas.draw(bubblecooldownStrip,Color.WHITE,ox, oy, current_bubble_pos.x,current_bubble_pos.y,0, sx, sy);
-			curr_bubble ++;
+			curr_bubble++;
 			current_bubble_pos.add(1.25f * scale.x,0);
 		}
 		while(curr_bubble <= BUBBLE_LIMIT){
 			canvas.draw(emptyBubbleCooldown,Color.WHITE,ox, oy, current_bubble_pos.x,current_bubble_pos.y,0, sx, sy);
-			curr_bubble ++;
+			curr_bubble++;
 			current_bubble_pos.add(1.25f * scale.x,0);
 		}
 
@@ -1400,6 +1452,7 @@ public class PlatformController implements ContactListener, Screen {
 				avatar.setGrappling(true);
 				avatar.setGrappledBubble(closest);
 				avatar.setGrappledBubbleDist(avatar.getPosition().dst(closest.getPosition()));
+				InputController.getInstance().avatar_grappling = true;
 				rope = createGrapple(closest);
 				shootRopeSoundId = playSound(shootRopeSound, shootRopeSoundId, soundvolume);
 			}
@@ -1411,8 +1464,8 @@ public class PlatformController implements ContactListener, Screen {
 		avatar.applyForce(ropeDir);
 		life = avatar.getLife();//update health bar
 
-		avatar.initialize(dude, swingStrip, idleStrip, jumpStrip, fallStrip,
-				topStrip, upStrip, downStrip, fallingStrip);
+		//avatar.initialize(dude, swingStrip, idleStrip, jumpStrip, fallStrip,
+				//topStrip, upStrip, downStrip, fallingStrip);
 
 		if(avatar.isGrounded()) oldY = avatar.getY();
 
@@ -1522,6 +1575,7 @@ public class PlatformController implements ContactListener, Screen {
 	}
 
 	public void destructRope() {
+		InputController.getInstance().avatar_grappling = false;
 		if(rope != null) {
 			rope.markRemoved(true);
 			avatar.setLinearVelocity(new Vector2(avatar.getLinearVelocity().scl(ROPE_LAUNCH_SPEED.x).x, avatar.getLinearVelocity().scl(ROPE_LAUNCH_SPEED.y).y));
@@ -1842,45 +1896,44 @@ public class PlatformController implements ContactListener, Screen {
 			if (((bd1 == avatar   && bd2.getName().contains("door")) ||
 					(bd1.getName().contains("door") && bd2 == avatar))) {
 
-				doored = true;
 				Door door = (bd1 == avatar) ? (Door)bd2: (Door)bd1;
-
-				//////////System.out.println("COLLISION WITH " + door.getName());
-				nextLevelID = door.getTargetLevelID();
-				//////////System.out.println("Next Level: " + nextLevelID);
+				int temp_id = door.getTargetLevelID();
+				if(temp_id > currLevel) {
+					doored = true;
+					//////////System.out.println("COLLISION WITH " + door.getName());
+					nextLevelID = door.getTargetLevelID();
+					//////////System.out.println("Next Level: " + nextLevelID);
+				}
 
 			}
 
-			if ((bd1 == avatar   && bd2.getName().contains("token6")) ||
-					(bd1.getName().contains("token6") && bd2 == avatar)){
+			if ((bd1 == avatar   && bd2.getName().contains("token")) ||
+					(bd1.getName().contains("token") && bd2 == avatar)){
 				Token token = (bd1 == avatar) ? (Token)bd2: (Token)bd1;
-				int old_bubble_limit = BUBBLE_LIMIT;
 
-				BUBBLE_LIMIT = token.getBubbleLimitValue();
-				bubbles_left = bubbles_left + (BUBBLE_LIMIT-old_bubble_limit);
+				BUBBLE_LIMIT++;
+				bubbles_left++;
 				if (bd1 == avatar){
 					bd2.markRemoved(true);
 				}else{
 					bd1.markRemoved(true);
 				}
-				level6TokenCollected = true;
-				level6Token = null;
-			}
-
-			if ((bd1 == avatar   && bd2.getName().contains("token12")) ||
-					(bd1.getName().contains("token12") && bd2 == avatar)){
-				Token token = (bd1 == avatar) ? (Token)bd2: (Token)bd1;
-				int old_bubble_limit = BUBBLE_LIMIT;
-
-				BUBBLE_LIMIT = 2;
-				bubbles_left = 2;
-				if (bd1 == avatar){
-					bd2.markRemoved(true);
-				}else{
-					bd1.markRemoved(true);
+				switch(token.getLevel()){
+					case 5:
+						level5TokenCollected = true;
+						level5Token = null;
+						break;
+					case 10:
+						level10TokenCollected = true;
+						level10Token = null;
+						break;
+					case 15:
+						level15TokenCollected = true;
+						level15Token = null;
+						break;
+					default:
+						break;
 				}
-				level12TokenCollected = true;
-				level12Token = null;
 			}
 
 			if ((bd1 == avatar && bd2.getName().equals("gas")) || (bd1.getName().equals("gas") && bd2 == avatar)){
@@ -2177,8 +2230,8 @@ public class PlatformController implements ContactListener, Screen {
 	 * @return true if the object is in bounds.
 	 */
 	public boolean inBounds(Obstacle obj) {
-		boolean horiz = (bounds.x <= obj.getX() && obj.getX() <= bounds.x+bounds.width);
-		boolean vert  = (bounds.y <= obj.getY() && obj.getY() <= bounds.y+bounds.height);
+		boolean horiz = (bounds.x - 5 <= obj.getX() && obj.getX() <= bounds.x+bounds.width + 5);
+		boolean vert  = (bounds.y - 5 <= obj.getY() && obj.getY() <= bounds.y+bounds.height + 5);
 		return horiz && vert;
 	}
 	public boolean pause_state = false;
@@ -2220,19 +2273,21 @@ public class PlatformController implements ContactListener, Screen {
 		// Handle resets
 		if (input.didReset()) {
 
-			reset(currLevel);
+			reset(currLevel, false);
 		}
 
 		if (input.didHealthRestore()){
 			avatar.restoreHealth();
 		}
 		if (switchLevel){
-
+			if(input.times[currLevel - 1] > timer || input.times[currLevel - 1] == 0) {
+				InputController.getInstance().times[currLevel - 1] = timer;
+			}
 			switchLevel = false;
-			reset(targetLevel);
+			reset(targetLevel, true);
 		}
 		if(failed){
-			reset(currLevel);
+			reset(currLevel, false);
 		}
 		if(quit){
 			listener.exitScreen(this, EXIT_QUIT);
@@ -2251,7 +2306,7 @@ public class PlatformController implements ContactListener, Screen {
 			countdown--;
 		} else if (countdown == 0) {
 			if (failed) {
-				reset(currLevel);
+				reset(currLevel, false);
 			} else if (complete) {
 				pause();
 				listener.exitScreen(this, EXIT_NEXT);
@@ -2531,6 +2586,26 @@ public class PlatformController implements ContactListener, Screen {
 	}
 
 
+	private void drawTimer(){
+		displayFont.setColor(Color.RED);
+		displayFont.getData().scaleX = scale.x / 90;
+		displayFont.getData().scaleY = scale.y / 90;
+		int minutes = (int) timer / 60;
+		String time = String.format("%.02f", timer % 60);
+		if(minutes > 0) {
+
+			if(timer % 60 < 10){
+				time = minutes + ":0" + time;
+			}else{
+				time = minutes + ":" + time;
+			}
+		}
+		canvas.begin(); // DO NOT SCALE
+
+		canvas.drawText(time, displayFont, cameraCoords.x - scale.x, cameraCoords.y + (canvas.getHeight()/2f) - scale.y);
+		canvas.end();
+
+	}
 
 	public boolean quit = false;
 
@@ -2611,11 +2686,13 @@ public class PlatformController implements ContactListener, Screen {
 		for(Bubble b: bubbles){
 			b.draw(canvas);
 		}
-		for(PoisonGas pg : poisons){
-			pg.draw(canvas);
+		for(LucenglazeSensor lg : lucens){
+			lg.lucen.drawPoison(canvas);
 		}
-		if(level6Token != null){level6Token.draw(canvas);}
-		if(level12Token != null){level12Token.draw(canvas);}
+		if(currLevel == 5 && level5Token != null){level5Token.draw(canvas);}
+		if(currLevel == 10 && level10Token != null){level10Token.draw(canvas);}
+		if(currLevel == 15 && level15Token != null){level15Token.draw(canvas);}
+
 		if (currLevel == 1) {
 		}
 		drawCrosshair();
@@ -2623,7 +2700,7 @@ public class PlatformController implements ContactListener, Screen {
 
 		canvas.resetColor();
 		canvas.end();
-
+		drawTimer();
 		// Draw life bar
 
 
@@ -2635,7 +2712,6 @@ public class PlatformController implements ContactListener, Screen {
 
 		// Draw energy bar label
 		displayFont.setColor(Color.WHITE);
-		displayFont.getData().setScale(0.4f);
 		canvas.begin(); // DO NOT SCALE
 		String additional_part = (BUBBLE_LIMIT == 0) ? "None" : "";
 		if(assetsLoaded){
@@ -2731,6 +2807,11 @@ public class PlatformController implements ContactListener, Screen {
 		// IGNORE FOR NOW
 	}
 
+	float timer = 0;
+	public void updateTimer(float delta){
+		timer += delta;
+	}
+
 	/**
 	 * Called when the Screen should render itself.
 	 *
@@ -2745,6 +2826,7 @@ public class PlatformController implements ContactListener, Screen {
 			drawPause();
 		}else if (active) {
 			if (preUpdate(delta)) {
+				updateTimer(delta);
 				update(delta); // This is the one that must be defined.
 				postUpdate(delta);
 			}

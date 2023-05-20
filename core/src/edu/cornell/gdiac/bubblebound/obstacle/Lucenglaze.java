@@ -14,7 +14,7 @@ public class Lucenglaze extends BoxObstacle{
     public int rotation = 1;
     private TextureRegion dormant;
     private FilmStrip filmstrip;
-
+    private FilmStrip filmstrip2;
 
     public Lucenglaze(float x, float y){
         super(x, y, 1, 1);
@@ -27,18 +27,28 @@ public class Lucenglaze extends BoxObstacle{
     protected int ii = 0;
     protected int counter1 = 0;
     protected final int delay1 = 3; // adjust this value to change the delay
-    public void initialize(FilmStrip f) {
+    public void initialize(FilmStrip f, FilmStrip f2) {
         filmstrip = f;
+        filmstrip2 = f2;
         if (counter1 == 0) {
             filmstrip.setFrame(0);
+            filmstrip2.setFrame(0);
         }
     }
+    int counter_idle = 0;
+    int delay_idle = 6;
     public void update() {
         if(filmstrip != null) {
             if(counter1 == 0) {
                 int temp = ii++ / 1;
                 filmstrip.setFrame(temp % 18);
+
             }
+            if (counter_idle == 0) {
+                int temp = ii / 5;
+                filmstrip2.setFrame(temp % 10);
+            }
+            counter_idle = (counter_idle + 1) % delay_idle;
             counter1 = (counter1 + 1) % delay1;
         }
     }
@@ -49,32 +59,33 @@ public class Lucenglaze extends BoxObstacle{
     public void setRotation(int r){
         rotation = r;
     }
+
+    float angle = 0;
     @Override
     public void draw(GameCanvas canvas){
         if(texture != null){
 
             float ox = origin.x;
             float oy = origin.y;
-            float angle = 0;
             switch (rotation){
                 case 0:
-                    ox += 1.5;
-                    oy += 0.5;
+//                    ox += 1.5;
+//                    oy += 0.5;
                     angle = 0;
                     break;
                 case 1:
-                    ox += 0.5;
-                    oy += 1.5;
+//                    ox += 0.5;
+//                    oy += 1.5;
                     angle = -90;
                     break;
                 case 2:
-                    ox+=2.5;
-                    oy+=1.5;
+//                    ox+=2.5;
+//                    oy+=1.5;
                     angle = 180;
                     break;
                 case 3:
-                    ox += 1.5;
-                    oy += 2.5;
+//                    ox += 1.5;
+//                    oy += 2.5;
                     angle = 90;
                     break;
                 default:
@@ -87,6 +98,14 @@ public class Lucenglaze extends BoxObstacle{
             canvas.draw(temp, Color.WHITE, ox, oy, getX() * drawScale.x, getY() * drawScale.y, (float)Math.toRadians(angle), sx, sy);
         }
 
+    }
+
+    public void drawPoison(GameCanvas canvas){
+        if(!triggered) return;
+        float sx = drawScale.x / 64f;
+        float sy = drawScale.y / 64f;
+        System.out.println("hello" + filmstrip);
+        canvas.draw(filmstrip2, Color.WHITE, origin.x, origin.y, (getX() + 1) * drawScale.x, getY() * drawScale.y, (float)Math.toRadians(angle), sx, sy);
     }
 
 }

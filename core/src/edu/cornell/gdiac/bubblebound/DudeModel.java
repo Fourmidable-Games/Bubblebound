@@ -502,7 +502,6 @@ public class DudeModel extends CapsuleObstacle {
 	 */
 	int counter_idle = 0;
 	int delay_idle = 1;
-	private boolean jumpAnimate = true;
 	public void update() {
 		playerController.update();
 		if (animate) {
