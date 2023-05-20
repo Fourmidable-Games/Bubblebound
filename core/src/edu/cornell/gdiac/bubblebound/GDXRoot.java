@@ -48,6 +48,8 @@ public class GDXRoot extends Game implements ScreenListener {
 	private PlatformController controller;
 	public Cursor defaultCursor;
 
+	public boolean profMode;
+
 
 	
 	/**
@@ -56,7 +58,9 @@ public class GDXRoot extends Game implements ScreenListener {
 	 * This method configures the asset manager, but does not load any assets
 	 * or assign any screen.
 	 */
-	public GDXRoot() { }
+	public GDXRoot() {
+		profMode = true;
+	}
 
 	/** 
 	 * Called when the Application is first created.
@@ -65,6 +69,7 @@ public class GDXRoot extends Game implements ScreenListener {
 	 * the asynchronous loader for all other assets.
 	 */
 	public void create() {
+
 
 
 
@@ -180,6 +185,7 @@ public class GDXRoot extends Game implements ScreenListener {
 
 				directory = loading.getLvlselect();
 				levelselect = new LevelSelectMode(canvas, 1);
+				levelselect.setProfMode(profMode);
 				levelselect.setDefaultCursor(defaultCursor);
 				levelselect.gatherAssets(directory);
 				levelselect.setScreenListener(this);
