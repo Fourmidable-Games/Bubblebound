@@ -225,6 +225,8 @@ public class PlatformController implements ContactListener, Screen {
 	protected Texture detachswingingBP;
 	protected Texture movegravititesBP;
 	protected Texture placegrappleBP;
+
+	protected Texture grappleplaceBP;
 	protected Texture momentumBP;
 	protected Texture rangeBP;
 	protected Texture portalBP;
@@ -522,6 +524,7 @@ public class PlatformController implements ContactListener, Screen {
 		detachswingingBP = directory.getEntry("detachswingingBP", Texture.class);
 		movegravititesBP = directory.getEntry("movegravitiesBP", Texture.class);
 		placegrappleBP = directory.getEntry("placegrappleBP", Texture.class);
+		grappleplaceBP = directory.getEntry("grappleplaceBP", Texture.class);
 		momentumBP = directory.getEntry("momentumBP", Texture.class);
 		rangeBP = directory.getEntry("rangeBP", Texture.class);
 		portalBP = directory.getEntry("portalBP", Texture.class);
@@ -664,8 +667,7 @@ public class PlatformController implements ContactListener, Screen {
 		setSounds();
 
 
-
-		LevelEditorV2 Level2 = new LevelEditorV2(playerController,jsonPath);
+		LevelEditorV2 Level2 = new LevelEditorV2(playerController, jsonPath);
 		Level2.readTileTextures(textures, spikeTextureList);
 		Level2.readJson();
 		List<BoxObstacle> BoxList = Level2.getBoxes();
@@ -680,12 +682,12 @@ public class PlatformController implements ContactListener, Screen {
 		setParallax(skybackground);
 
 
-		float dwidth  = goalStrip.getRegionWidth()/scale.x;
-		float dheight = goalStrip.getRegionHeight()/scale.y;
+		float dwidth = goalStrip.getRegionWidth() / scale.x;
+		float dheight = goalStrip.getRegionHeight() / scale.y;
 //		////////System.out.println("currLevel: " + currLevel);
 //		////////System.out.println("targetLevel: " + targetLevel);
 		// Add level goal
-		for(int i = 0; i < doors.size(); i++){
+		for (int i = 0; i < doors.size(); i++) {
 			Door door = doors.get(i);
 			door.initialize(goalStrip);
 			door.setBodyType(BodyDef.BodyType.StaticBody);
@@ -695,7 +697,7 @@ public class PlatformController implements ContactListener, Screen {
 			door.setName("door_" + targetLevel + "_to_" + door.getTargetLevelID());
 			door.isGoal = true;
 			addObject(door);
-			if(door.getTargetLevelID() == currLevel){
+			if (door.getTargetLevelID() == currLevel) {
 //				////////System.out.println("TARGET DOOR FOUND!");
 				avatarSpawnLocation = door.getPlayerSpawnLocation();
 				avatarSpawnDirection = door.getSpawnDirection();
@@ -708,10 +710,6 @@ public class PlatformController implements ContactListener, Screen {
 		}
 
 
-
-
-
-
 		currLevel = targetLevel;
 
 		BUBBLE_LIMIT = (currLevel - 1) / 5;
@@ -719,7 +717,7 @@ public class PlatformController implements ContactListener, Screen {
 
 		avatar = needToInitializeSpawn ? Level2.getPlayer(Door.SpawnDirection.RIGHT) : Level2.getPlayerAtLocation(avatarSpawnLocation, avatarSpawnDirection);
 //		////////System.out.println("PRESPAWN LOC: "+ avatar.getPosition());
-		if(needToInitializeSpawn) {
+		if (needToInitializeSpawn) {
 			avatarSpawnLocation = avatar.getPosition();
 			avatarSpawnDirection = Door.SpawnDirection.RIGHT;
 			needToInitializeSpawn = false;
@@ -772,15 +770,13 @@ public class PlatformController implements ContactListener, Screen {
 			Bubble wo = bubbleList.get(i);
 
 
-
-
 			wo.setName("Bubble");
 			wo.setBodyType(BodyDef.BodyType.DynamicBody);
 			wo.setStatic(true);
 			wo.setDrawScale(scale);
 			wo.setDensity(1000f);
 			wo.setTexture(bubble);
-			wo.initialize(bubble,bubble2);
+			wo.initialize(bubble, bubble2);
 			bubbles.add(wo);
 			addObject(wo);
 		}
@@ -800,14 +796,13 @@ public class PlatformController implements ContactListener, Screen {
 		}
 
 		for (int i = 0; i < projEnemyData.size(); i++) {
-			createProjEnemy(projEnemyData.get(i).get(0),projEnemyData.get(i).get(1), Math.round(projEnemyData.get(i).get(2)));
+			createProjEnemy(projEnemyData.get(i).get(0), projEnemyData.get(i).get(1), Math.round(projEnemyData.get(i).get(2)));
 		}
 
 
-
 //
 //
-		if(currLevel == 1) {
+		if (currLevel == 1) {
 			ButtonPrompt bp = new ButtonPrompt(19, 14, jumpBP, 0, 1);
 			bp.setScale(scale);
 			bp.setMouse(leftMouse, rightMouse);
@@ -815,7 +810,7 @@ public class PlatformController implements ContactListener, Screen {
 			prompts.add(bp);
 		}
 //
-		if(currLevel == 2) {
+		if (currLevel == 2) {
 			ButtonPrompt bp2 = new ButtonPrompt(10, 12, jumpBP, 2, 3); //jump down
 			bp2.setScale(scale);
 			bp2.setMouse(leftMouse, rightMouse);
@@ -823,7 +818,7 @@ public class PlatformController implements ContactListener, Screen {
 			prompts.add(bp2);
 		}
 //
-		if(currLevel == 1) {
+		if (currLevel == 1) {
 			ButtonPrompt bp3 = new ButtonPrompt(3.5f, 11, leftBP, 4, 5);
 			bp3.setScale(scale);
 			bp3.setMouse(leftMouse, rightMouse);
@@ -831,86 +826,117 @@ public class PlatformController implements ContactListener, Screen {
 			prompts.add(bp3);
 		}
 ////
-		if(currLevel == 1) {
+		if (currLevel == 1) {
 			ButtonPrompt bp4 = new ButtonPrompt(7.5f, 11, rightBP, 6, 7);
 			bp4.setScale(scale);
 			bp4.setMouse(leftMouse, rightMouse);
 			bp4.setLetters(letters);
 			prompts.add(bp4);
 		}
+		if (currLevel == 3) {
+			ButtonPrompt bp5 = new ButtonPrompt(4, 14, grappleBP, 8);//grapple
+			bp5.setScale(scale);
+			bp5.setMouse(leftMouse, rightMouse);
+			bp5.setLetters(letters);
+			prompts.add(bp5);
+		}
+		if (currLevel == 3) {
+			ButtonPrompt bp6 = new ButtonPrompt(11, 14, detachBP, 8);
+			bp6.setScale(scale);
+			bp6.setMouse(leftMouse, rightMouse);
+			bp6.setLetters(letters);
+			prompts.add(bp6);
+		}
+		if (currLevel == 6) {
+			ButtonPrompt bp7 = new ButtonPrompt(11, 26, placeBP, 9);
+			bp7.setScale(scale);
+			bp7.setMouse(leftMouse, rightMouse);
+			bp7.setLetters(letters);
+			prompts.add(bp7);
+		}
 
-		ButtonPrompt bp5 = new ButtonPrompt(14, 8, grappleBP, 8);//grapple
-		bp5.setScale(scale);
-		bp5.setMouse(leftMouse, rightMouse);
-		bp5.setLetters(letters);
-		prompts.add(bp5);
+		if (currLevel == 1) {
+			ButtonPrompt bp8 = new ButtonPrompt(47, 12, restartBP);
+			bp8.setScale(scale);
+			bp8.setMouse(leftMouse, rightMouse);
+			bp8.setLetters(letters);
+			prompts.add(bp8);
+		}
 
-		ButtonPrompt bp6 = new ButtonPrompt(17, 8, detachBP, 8);
-		bp6.setScale(scale);
-		bp6.setMouse(leftMouse, rightMouse);
-		bp6.setLetters(letters);
-		prompts.add(bp6);
+		if (currLevel == 3){
+			ButtonPrompt bp9 = new ButtonPrompt(20.5f, 24, toggleBP);
+			bp9.setScale(scale);
+			bp9.setMouse(leftMouse, rightMouse);
+			bp9.setLetters(letters);
+			prompts.add(bp9);
+		}
 
-		ButtonPrompt bp7 = new ButtonPrompt(20, 8, placeBP, 9);
-		bp7.setScale(scale);
-		bp7.setMouse(leftMouse, rightMouse);
-		bp7.setLetters(letters);
-		prompts.add(bp7);
+		if(currLevel == 2) {
+			ButtonPrompt bp10 = new ButtonPrompt(6, 12, pauseBP);
+			bp10.setScale(scale);
+			bp10.setMouse(leftMouse, rightMouse);
+			bp10.setLetters(letters);
+			prompts.add(bp10);
+		}
 
-		ButtonPrompt bp8 = new ButtonPrompt(23, 8, restartBP);
-		bp8.setScale(scale);
-		bp8.setMouse(leftMouse, rightMouse);
-		bp8.setLetters(letters);
-		prompts.add(bp8);
+		if(currLevel == 3) {
+			ButtonPrompt bp11 = new ButtonPrompt(11, 17, detachswingingBP); //deatch while swinging to gain height
+			bp11.setScale(scale);
+			bp11.setMouse(leftMouse, rightMouse);
+			bp11.setLetters(letters);
+			prompts.add(bp11);
+		}
 
-		ButtonPrompt bp9 = new ButtonPrompt(26, 8, toggleBP);
-		bp9.setScale(scale);
-		bp9.setMouse(leftMouse, rightMouse);
-		bp9.setLetters(letters);
-		prompts.add(bp9);
+		if(currLevel == 5) {
+			ButtonPrompt bp12 = new ButtonPrompt(3, 27, movegravititesBP); //move between gravities to fall down
+			bp12.setScale(scale);
+			bp12.setMouse(leftMouse, rightMouse);
+			bp12.setLetters(letters);
+			prompts.add(bp12);
+		}
 
-		ButtonPrompt bp10 = new ButtonPrompt(2, 13, pauseBP);
-		bp10.setScale(scale);
-		bp10.setMouse(leftMouse, rightMouse);
-		bp10.setLetters(letters);
-		prompts.add(bp10);
+		if(currLevel == 3) {
+			ButtonPrompt bp13 = new ButtonPrompt(7.5f, 18, momentumBP, 5, 7); //gain momentum by going left/right
+			bp13.setScale(scale);
+			bp13.setMouse(leftMouse, rightMouse);
+			bp13.setLetters(letters);
+			prompts.add(bp13);
+		}
 
-		ButtonPrompt bp11 = new ButtonPrompt(5, 13, detachswingingBP); //deatch while swinging to gain height
-		bp11.setScale(scale);
-		bp11.setMouse(leftMouse, rightMouse);
-		bp11.setLetters(letters);
-		prompts.add(bp11);
+		if(currLevel == 6) {
+			ButtonPrompt bp14 = new ButtonPrompt(17.5f, 21, placegrappleBP, 9, 8); //in air place then grapple
+			bp14.setScale(scale);
+			bp14.setMouse(leftMouse, rightMouse);
+			bp14.setLetters(letters);
+			prompts.add(bp14);
+		}
 
-		ButtonPrompt bp12 = new ButtonPrompt(8, 13, movegravititesBP); //move between gravities to fall down
-		bp12.setScale(scale);
-		bp12.setMouse(leftMouse, rightMouse);
-		bp12.setLetters(letters);
-		prompts.add(bp12);
 
-		ButtonPrompt bp13 = new ButtonPrompt(11, 13, momentumBP, 5, 7); //gain momentum by going left/right
-		bp13.setScale(scale);
-		bp13.setMouse(leftMouse, rightMouse);
-		bp13.setLetters(letters);
-		prompts.add(bp13);
 
-		ButtonPrompt bp14 = new ButtonPrompt(14, 13, placegrappleBP, 9, 8); //in air place then grapple
-		bp14.setScale(scale);
-		bp14.setMouse(leftMouse, rightMouse);
-		bp14.setLetters(letters);
-		prompts.add(bp14);
 
-		ButtonPrompt bp15 = new ButtonPrompt(17, 13, rangeBP); //get in range of bubbles to attach
-		bp15.setScale(scale);
-		bp15.setMouse(leftMouse, rightMouse);
-		bp15.setLetters(letters);
-		prompts.add(bp15);
+		if(currLevel == 3) {
+			ButtonPrompt bp15 = new ButtonPrompt(4, 17, rangeBP); //get in range of bubbles to attach
+			bp15.setScale(scale);
+			bp15.setMouse(leftMouse, rightMouse);
+			bp15.setLetters(letters);
+			prompts.add(bp15);
+		}
 
-		ButtonPrompt bp16 = new ButtonPrompt(20, 13, portalBP); //find portals
-		bp16.setScale(scale);
-		bp16.setMouse(leftMouse, rightMouse);
-		bp16.setLetters(letters);
-		prompts.add(bp16);
+		if(currLevel == 1) {
+			ButtonPrompt bp16 = new ButtonPrompt(34, 12, portalBP); //find portals
+			bp16.setScale(scale);
+			bp16.setMouse(leftMouse, rightMouse);
+			bp16.setLetters(letters);
+			prompts.add(bp16);
+		}
 
+		if(currLevel == 7) {
+			ButtonPrompt bp17 = new ButtonPrompt(13, 26, grappleplaceBP, 9, 8); //in air place then grapple
+			bp17.setScale(scale);
+			bp17.setMouse(leftMouse, rightMouse);
+			bp17.setLetters(letters);
+			prompts.add(bp17);
+		}
 
 
 

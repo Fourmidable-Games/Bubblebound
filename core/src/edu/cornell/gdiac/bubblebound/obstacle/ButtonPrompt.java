@@ -98,53 +98,81 @@ public class ButtonPrompt  {
         int[] buttons = input.buttons;
         canvas.draw(buttonTexture, Color.WHITE, 0, buttonTexture.getHeight(),x, y, 0, sx, sy);
         if(two){
+            System.out.println("TWO");
             float sx2 = sx;
             float sy2 = sy;
             Texture one = letters[getTexture(buttons[mapping1])];
             if(mapping1 == 8 && input.isMouseControlls()){
+                System.out.println("mapping1 8");
+
                 if(input.mouse){
+                    System.out.println("one left");
+
                     one = left;
                 }else{
+                    System.out.println("one right");
+
                     one = right;
                 }
                 sx2 /= 1.7;
                 sy2 /= 1.7;
             }
             if(mapping1 == 9 && input.isMouseControlls()){
+                System.out.println("mapping1 9");
+
                 if(input.mouse){
+                    System.out.println("one right");
+
                     one = right;
                 }else{
+                    System.out.println("one left");
+
                     one = left;
                 }
                 sx2 /= 1.7;
                 sy2 /= 1.7;
             }
             //canvas.draw(one, Color.WHITE, one.getWidth()/2f, one.getHeight()/2f, x + (85 * sx), y - (132 * sy), 0,2 * sx, 2 * sy);
-            canvas.draw(one, Color.WHITE, one.getWidth()/2f, one.getHeight()/2f, x + (86 * sx), y - (175 * sy), 0,1.5f * sx2, 1.5f * sy2);
+            if(one == left || one == right){
+                canvas.draw(one, Color.WHITE, one.getWidth()/2f, one.getHeight()/2f, x + (86 * sx), y - (190 * sy), 0,1.5f * sx2, 1.5f * sy2);
 
+            }else{
+                canvas.draw(one, Color.WHITE, one.getWidth()/2f, one.getHeight()/2f, x + (86 * sx), y - (175 * sy), 0,1.5f * sx2, 1.5f * sy2);
+
+            }
 
             float sx3 = sx;
             float sy3 = sy;
             Texture two = letters[getTexture(buttons[mapping2])];
             if(mapping2 == 8 && input.isMouseControlls()){
                 if(input.mouse){
-                    two = right;
-                }else{
                     two = left;
+                }else{
+
+                    two = right;
                 }
                 sx3 /= 1.7;
                 sy3 /= 1.7;
             }
             if(mapping2 == 9 && input.isMouseControlls()){
+
                 if(input.mouse){
-                    two = left;
-                }else{
+
                     two = right;
+                }else{
+
+                    two = left;
                 }
                 sx3 /= 1.7;
                 sy3 /= 1.7;
             }
-            canvas.draw(two, Color.WHITE, two.getWidth()/2f, two.getHeight()/2f, x + (264 * sx), y - (175 * sy), 0,1.5f * sx3, 1.5f * sy3);
+
+            if(two == left || two == right){
+                canvas.draw(two, Color.WHITE, two.getWidth()/2f, two.getHeight()/2f, x + (264 * sx), y - (190 * sy), 0,1.5f * sx3, 1.5f * sy3);
+            }else{
+                canvas.draw(two, Color.WHITE, two.getWidth()/2f, two.getHeight()/2f, x + (264 * sx), y - (175 * sy), 0,1.5f * sx3, 1.5f * sy3);
+
+            }
 
         }else if(noButtons) {
 

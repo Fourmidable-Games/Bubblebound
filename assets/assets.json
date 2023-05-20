@@ -1300,6 +1300,7 @@
       "detachswingingBP" : "shared/detachswingingBP.png",
       "movegravitiesBP" : "shared/movegravitiesBP.png",
       "placegrappleBP" : "shared/placegrappleBP.png",
+      "grappleplaceBP" : "shared/grappleplaceBP.png",
       "rangeBP" : "shared/rangeBP.png",
       "portalBP" : "shared/portalBP.png",
       "momentumBP" : "shared/momentumBP.png",
