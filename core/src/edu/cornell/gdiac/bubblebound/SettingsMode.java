@@ -169,9 +169,9 @@ public class SettingsMode implements Screen, InputProcessor, ControllerListener 
         private List<List<Integer>> whitelisted_pairs = Arrays.asList(jump_with_arrows_pair,jump_with_letters_pair);
 
 
-        public static float masterVolume = 1.0f;
-        public static float musicVolume = 1.0f;
-        public static float soundVolume = 1.0f;
+        public static float masterVolume = 1;
+        public static float musicVolume = 0.75f;
+        public static float soundVolume = 0.75f;
         public int controls = 0; //0 is mouse, 1 is keyboard
         public float getMusicVolume(){
             return InputController.getInstance().audio_levels[0];
@@ -183,6 +183,7 @@ public class SettingsMode implements Screen, InputProcessor, ControllerListener 
 
        private Texture background;
        private Texture backButton;
+       private Texture resetButton;
        private Texture clickedButton;
        private Texture unclickedButton;
        private Texture leftClick;
@@ -204,6 +205,7 @@ public class SettingsMode implements Screen, InputProcessor, ControllerListener 
        private float music_volume = 0;
        public float[] audio_levels;
         Vector2 backButtonPos;
+        Vector2 resetButtonPos;
         Vector2 masterSoundBarPos;
         Vector2 soundBarPos;
         Vector2 musicBarPos;
@@ -260,6 +262,7 @@ public class SettingsMode implements Screen, InputProcessor, ControllerListener 
 //            loadingMusic.setLooping(loadingMusicId, true);
             //loadingMusic.play();
             backButton = internal.getEntry("backbutton", Texture.class);
+            resetButton = internal.getEntry("reset", Texture.class);
             unclickedButton = internal.getEntry("unclickedbutton", Texture.class);
             clickedButton = internal.getEntry("clickedbutton", Texture.class);
             leftClick = internal.getEntry("leftclick", Texture.class);
@@ -290,6 +293,7 @@ public class SettingsMode implements Screen, InputProcessor, ControllerListener 
 
 
             backButtonPos = createPos(84, 41);
+            resetButtonPos = createPos(800, 41);
             masterSoundBarPos = createPos(485, 187);
             musicBarPos = createPos(485, 271);
             soundBarPos = createPos(485, 356);
@@ -317,10 +321,13 @@ public class SettingsMode implements Screen, InputProcessor, ControllerListener 
             InputController input = InputController.getInstance();
             int[] temp = {Input.Keys.UP, Input.Keys.W, Input.Keys.DOWN, Input.Keys.S, Input.Keys.LEFT, Input.Keys.A, Input.Keys.RIGHT, Input.Keys.D, Input.Keys.J, Input.Keys.K};
             input.buttons = temp;
+            inputs = temp;
             input.times = new float[20];
-            masterVolume = 0.8f;
-            musicVolume = 0.8f;
-            soundVolume = 0.8f;
+            masterVolume = 1;
+            musicVolume = 0.75f;
+            soundVolume = 0.75f;
+            float[] temp_audio_levels = {music_volume*masterVolume, soundVolume*masterVolume};
+            input.audio_levels = temp_audio_levels;
             input.mouse = true;
             input.controlMapping = InputController.ControlMapping.MOUSE;
         }
@@ -489,6 +496,8 @@ public class SettingsMode implements Screen, InputProcessor, ControllerListener 
 
             canvas.draw(backButton, Color.WHITE, 0, backButton.getHeight(),
                     backButtonPos.x, backButtonPos.y, 0, scale.x, scale.y);
+
+            canvas.draw(resetButton, Color.WHITE, 0, resetButton.getHeight(), resetButtonPos.x, resetButtonPos.y,0,scale.x,scale.y);
 
             float temp = masterSoundBarPos.x + (masterVolume * slider.getWidth() * scale.x) - (slidercircle.getWidth() * scale.x /  2f);
             canvas.draw(slider, Color.WHITE, 0, slider.getHeight(),
@@ -712,6 +721,10 @@ public class SettingsMode implements Screen, InputProcessor, ControllerListener 
             if(pressedButton(screenX, screenY, backButton, backButtonPos)){
                 //////////System.out.println("BACKK");
                 pressState = 1;
+            }
+            if(pressedButton(screenX, screenY, resetButton, resetButtonPos)){
+                //////////System.out.println("BACKK");
+                reset();
             }
             if(pressedSlider(screenX, screenY, slider, masterSoundBarPos)){
                 masterSoundSliderActive = true;

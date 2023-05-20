@@ -48,7 +48,8 @@
     "input36" : "Letters/6.png",
     "input37" : "Letters/7.png",
     "input38" : "Letters/8.png",
-    "input39" : "Letters/9.png"
+    "input39" : "Letters/9.png",
+    "reset" : "shared/settingsreset.png",
   },
   "sounds":{
     "menuscreen": "extra/menuscreen.wav"
