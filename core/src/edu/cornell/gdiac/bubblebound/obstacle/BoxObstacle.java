@@ -301,8 +301,8 @@ public class BoxObstacle extends SimpleObstacle {
 		float boarderFactor = 1.1f;
 		float sx = drawScale.x * boarderFactor/ 64f;
 		float sy = drawScale.y * boarderFactor/ 64f;
-		sx = Math.round(32 * sx) / 32f; //roudns to x.x
-		sy = Math.round(32 * sy) / 32f;
+		sx = Math.round(64 * sx) / 64f; //roudns to x.x
+		sy = Math.round(64 * sy) / 64f;
 		if (texture != null) {
 			canvas.draw(texture, Color.BLACK, origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.y, getAngle(), sx, sy);
 		}
