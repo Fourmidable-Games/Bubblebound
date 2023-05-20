@@ -124,7 +124,6 @@ public class ButtonPrompt  {
 
 
             }else{
-                System.out.println("BBBBBBBBB");
                 Texture t = letters[getTexture(buttons[mapping1])];
                 canvas.draw(t, Color.WHITE, t.getWidth()/ 2f, t.getHeight() / 2f, x + (175 * sx), y - (175 * sy), 0, 1.5f * sx, 1.5f * sy);
             }
