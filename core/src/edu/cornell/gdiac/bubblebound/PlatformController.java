@@ -92,7 +92,8 @@ public class PlatformController implements ContactListener, Screen {
 
 	private TextureRegion barrierTexture;
 
-	private TextureRegion poisonTexture;
+	private Texture poisonTexture;
+	private FilmStrip poisonStrip;
 	private Texture lucenTexture;
 	private FilmStrip lucenStrip;
 
@@ -403,7 +404,8 @@ public class PlatformController implements ContactListener, Screen {
 		bulletTexture = new TextureRegion(directory.getEntry("platform:bullet",Texture.class));
 		bridgeTexture = new TextureRegion(directory.getEntry("platform:rope",Texture.class));
 		barrierTexture = new TextureRegion(directory.getEntry("platform:barrier",Texture.class));
-		poisonTexture = new TextureRegion(directory.getEntry("platform:gas", Texture.class));
+		poisonTexture = directory.getEntry("platform:gas", Texture.class);
+		poisonStrip = new FilmStrip(poisonTexture, 2, 5, 10);
 		lucenTexture = directory.getEntry("platform:activatedlucen", Texture.class);
 		lucenStrip = new FilmStrip(lucenTexture, 1, 18, 18);
 		dormantlucen = new TextureRegion(directory.getEntry("platform:dormantlucen",Texture.class));
@@ -769,32 +771,31 @@ public class PlatformController implements ContactListener, Screen {
 
 //
 //
-//		ButtonPrompt bp = new ButtonPrompt(2, 8, jumpBP, 0, 1);
-//		//ButtonPrompt bp2 = new ButtonPrompt(5, 5, jumpBP, 8);
-//		bp.setScale(scale);
-//		bp.setMouse(leftMouse, rightMouse);
-//		bp.setLetters(letters);
-//		prompts.add(bp);
+		ButtonPrompt bp = new ButtonPrompt(2, 8, jumpBP, 0, 1);
+		bp.setScale(scale);
+		bp.setMouse(leftMouse, rightMouse);
+		bp.setLetters(letters);
+    	prompts.add(bp);
 //
-//		ButtonPrompt bp2 = new ButtonPrompt(5, 8, jumpBP, 2, 3); //jump down
-//		bp2.setScale(scale);
-//		bp2.setMouse(leftMouse, rightMouse);
-//		bp2.setLetters(letters);
-//		prompts.add(bp2);
+		ButtonPrompt bp2 = new ButtonPrompt(5, 8, jumpBP, 2, 3); //jump down
+		bp2.setScale(scale);
+		bp2.setMouse(leftMouse, rightMouse);
+		bp2.setLetters(letters);
+		prompts.add(bp2);
 //
-//		ButtonPrompt bp3 = new ButtonPrompt(8, 8, leftBP, 4, 5);
-//		bp3.setScale(scale);
-//		bp3.setMouse(leftMouse, rightMouse);
-//		bp3.setLetters(letters);
-//		prompts.add(bp3);
+		ButtonPrompt bp3 = new ButtonPrompt(8, 8, leftBP, 4, 5);
+		bp3.setScale(scale);
+		bp3.setMouse(leftMouse, rightMouse);
+		bp3.setLetters(letters);
+		prompts.add(bp3);
 ////
-//		ButtonPrompt bp4 = new ButtonPrompt(11, 8, rightBP, 6, 7);
-//		bp4.setScale(scale);
-//		bp4.setMouse(leftMouse, rightMouse);
-//		bp4.setLetters(letters);
-//		prompts.add(bp4);
+		ButtonPrompt bp4 = new ButtonPrompt(11, 8, rightBP, 6, 7);
+		bp4.setScale(scale);
+		bp4.setMouse(leftMouse, rightMouse);
+		bp4.setLetters(letters);
+		prompts.add(bp4);
 
-		ButtonPrompt bp5 = new ButtonPrompt(14, 8, grappleBP, 8);
+		ButtonPrompt bp5 = new ButtonPrompt(14, 8, grappleBP, 8);//grapple
 		bp5.setScale(scale);
 		bp5.setMouse(leftMouse, rightMouse);
 		bp5.setLetters(letters);
@@ -811,6 +812,8 @@ public class PlatformController implements ContactListener, Screen {
 		bp7.setMouse(leftMouse, rightMouse);
 		bp7.setLetters(letters);
 		prompts.add(bp7);
+
+
 
 
 
@@ -915,7 +918,7 @@ public class PlatformController implements ContactListener, Screen {
 		PoisonGas gas = new PoisonGas(x,y);
 		gas.setFade(fade);
 		gas.setDrawScale(scale);
-		gas.setTexture(poisonTexture);
+		//gas.setTexture(poisonStrip);
 		addObject(gas);
 		poisons.add(gas);
 	}
@@ -951,7 +954,7 @@ public class PlatformController implements ContactListener, Screen {
 		lg.setRotation(rotation);
 		lg.setDrawScale(scale);
 		lg.setTexture(lucenStrip);
-		lg.initialize(lucenStrip);
+		lg.initialize(lucenStrip, poisonStrip);
 		lg.setTexture2(dormantlucen);
 		addObject(lg);
 		return lg;
@@ -971,7 +974,7 @@ public class PlatformController implements ContactListener, Screen {
 		wo2.setDensity(10000f);
 		wo2.setTexture(bubble);
 		wo2.setTexture(bubble);
-		wo2.initialize(bubble, bubble2);
+		wo2.initialize(bubble.copy(), bubble2.copy());
 		bubbles.add(wo2);
 		addQueuedObject(wo2);
 		return wo2;
@@ -1407,8 +1410,8 @@ public class PlatformController implements ContactListener, Screen {
 		avatar.applyForce(ropeDir);
 		life = avatar.getLife();//update health bar
 
-		avatar.initialize(dude, swingStrip, idleStrip, jumpStrip, fallStrip,
-				topStrip, upStrip, downStrip, fallingStrip);
+		//avatar.initialize(dude, swingStrip, idleStrip, jumpStrip, fallStrip,
+				//topStrip, upStrip, downStrip, fallingStrip);
 
 		if(avatar.isGrounded()) oldY = avatar.getY();
 
@@ -2599,8 +2602,8 @@ public class PlatformController implements ContactListener, Screen {
 		for(Bubble b: bubbles){
 			b.draw(canvas);
 		}
-		for(PoisonGas pg : poisons){
-			pg.draw(canvas);
+		for(LucenglazeSensor lg : lucens){
+			lg.lucen.drawPoison(canvas);
 		}
 		if(level6Token != null){level6Token.draw(canvas);}
 		if(level12Token != null){level12Token.draw(canvas);}
