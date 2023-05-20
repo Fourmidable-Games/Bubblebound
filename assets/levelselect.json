@@ -34,6 +34,14 @@
     "level4-3" : "levelselect/Level4-3.png",
     "level4-4" : "levelselect/Level4-4.png",
     "level4-5" : "levelselect/Level4-5.png"
+  },
 
+    "fonts": {
+      "shared:retro": {
+        "file": "shared/RetroGame.ttf",
+        "size": 64
+      }
     }
+
+
 }
