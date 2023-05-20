@@ -189,18 +189,6 @@
                         {
                          "gid":544,
                          "height":64,
-                         "id":748,
-                         "name":"",
-                         "rotation":0,
-                         "type":"",
-                         "visible":true,
-                         "width":63,
-                         "x":2368,
-                         "y":1984
-                        }, 
-                        {
-                         "gid":544,
-                         "height":64,
                          "id":749,
                          "name":"",
                          "rotation":0,
@@ -267,7 +255,19 @@
                  "draworder":"topdown",
                  "id":13,
                  "name":"lucen glaze",
-                 "objects":[],
+                 "objects":[
+                        {
+                         "gid":556,
+                         "height":64,
+                         "id":753,
+                         "name":"",
+                         "rotation":180,
+                         "type":"",
+                         "visible":true,
+                         "width":64,
+                         "x":2048,
+                         "y":896
+                        }],
                  "opacity":1,
                  "type":"objectgroup",
                  "visible":true,
@@ -496,7 +496,7 @@
          "y":0
         }],
  "nextlayerid":22,
- "nextobjectid":753,
+ "nextobjectid":754,
  "orientation":"orthogonal",
  "properties":[
         {
