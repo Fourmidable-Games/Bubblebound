@@ -465,16 +465,16 @@ public class LoadingMode implements Screen, InputProcessor, ControllerListener {
 				width-scale.x*(statusBkgRight.getRegionWidth()+statusBkgLeft.getRegionWidth()),
 				scale.y*statusBkgMiddle.getRegionHeight());
 
-		canvas.draw(statusFrgLeft,   Color.WHITE,centerX-width/2, centerY-adj,
+		canvas.draw(statusFrgLeft,   Color.YELLOW,centerX-width/2, centerY-adj,
 				scale.x*statusFrgLeft.getRegionWidth(), scale.y*statusFrgLeft.getRegionHeight());
 		if (progress > 0) {
-			float span = progress*(width-scale.x*(statusFrgLeft.getRegionWidth()+statusFrgRight.getRegionWidth()))/2.0f;
-			canvas.draw(statusFrgRight,  Color.WHITE,centerX-width/2+scale.x*statusFrgLeft.getRegionWidth()+span, centerY-adj,
+			float span = progress*(width-scale.x*(statusFrgLeft.getRegionWidth()+statusFrgRight.getRegionWidth()));
+			canvas.draw(statusFrgRight,  Color.YELLOW,centerX-width/2+scale.x*statusFrgLeft.getRegionWidth()+span, centerY-adj,
 					scale.x*statusFrgRight.getRegionWidth(), scale.y*statusFrgRight.getRegionHeight());
-			canvas.draw(statusFrgMiddle, Color.WHITE,centerX-width/2+scale.x*statusFrgLeft.getRegionWidth(), centerY-adj,
+			canvas.draw(statusFrgMiddle, Color.YELLOW,centerX-width/2+scale.x*statusFrgLeft.getRegionWidth(), centerY-adj,
 					span, scale.y*statusFrgMiddle.getRegionHeight());
 		} else {
-			canvas.draw(statusFrgRight,  Color.WHITE,centerX-width/2+scale.x*statusFrgLeft.getRegionWidth(), centerY-adj,
+			canvas.draw(statusFrgRight,  Color.YELLOW,centerX-width/2+scale.x*statusFrgLeft.getRegionWidth(), centerY-adj,
 					scale.x*statusFrgRight.getRegionWidth(), scale.y*statusFrgRight.getRegionHeight());
 		}
 	}
