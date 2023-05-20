@@ -262,7 +262,7 @@ public class PlatformController implements ContactListener, Screen {
 	/** The default value of gravity (going down) */
 	protected static final float DEFAULT_GRAVITY = -4.9f;
 
-	private final int MAX_LEVELS = 17;
+	private final int MAX_LEVELS = 20;
 
 	private int currLevel;
 
@@ -1646,12 +1646,12 @@ public class PlatformController implements ContactListener, Screen {
 
 	public void updateSounds(){
 		if(avatar.getGravZone() == 1){
-			level1MusicSunset.setVolume(level1MusicSunsetID,volume * 0.2f);
+			level1MusicSunset.setVolume(level1MusicSunsetID,volume * 0.4f);
 			level1MusicCave.setVolume(level1MusicCaveID,0.0f);
 		}
 		if(avatar.getGravZone() == -1){
 			level1MusicSunset.setVolume(level1MusicSunsetID,0.0f);
-			level1MusicCave.setVolume(level1MusicCaveID,volume * 0.2f);
+			level1MusicCave.setVolume(level1MusicCaveID,volume * 0.4f);
 		}
 		if (avatar.justJumped()) {
 			//jumpSound.setVolume(jumpId,soundvolume * 2f);
@@ -1798,53 +1798,56 @@ public class PlatformController implements ContactListener, Screen {
 
 
 	public Vector2 canBubble2(Vector2 p){
-
-		if(canBubble(p)){
-			return p;
-		}
-		float dst = 2;
-
-		Vector2 bp = null;
-		Vector2 point = new Vector2(p);
-		point.x -= 1; //if something on the left
-
-		if(!canBubble(point)){ //checks if something on left
-			bp = checkBubbleHorizontal(p.cpy(), dst); //finds spot on right
-			if(bp != null){
-				return bp;
+		try {
+			if (canBubble(p)) {
+				return p;
 			}
-		}
+			float dst = 2;
 
-		point.set(p);
-		point.x += 1;
+			Vector2 bp = null;
+			Vector2 point = new Vector2(p);
+			point.x -= 1; //if something on the left
 
-		if(!canBubble(point)){ //check if something on right
-			bp = checkBubbleHorizontal(p.cpy(), -dst); //finds spot on left
-			if(bp != null){
-				return bp;
+			if (!canBubble(point)) { //checks if something on left
+				bp = checkBubbleHorizontal(p.cpy(), dst); //finds spot on right
+				if (bp != null) {
+					return bp;
+				}
 			}
-		}
 
-		point.set(p);
-		point.y -= 1;
+			point.set(p);
+			point.x += 1;
 
-		if(!canBubble(point)) { //checks bottom
-			bp = checkBubbleVertical(p.cpy(), dst); //finds spot on top
-			if(bp != null){
-				return bp;
+			if (!canBubble(point)) { //check if something on right
+				bp = checkBubbleHorizontal(p.cpy(), -dst); //finds spot on left
+				if (bp != null) {
+					return bp;
+				}
 			}
-		}
 
-		point.set(p);
-		point.y += 1;
+			point.set(p);
+			point.y -= 1;
 
-		if(!canBubble(point)) { //checks top
-			bp = checkBubbleVertical(p.cpy(), -dst); //finds spot on bottom
-			if(bp != null){
-				return bp;
+			if (!canBubble(point)) { //checks bottom
+				bp = checkBubbleVertical(p.cpy(), dst); //finds spot on top
+				if (bp != null) {
+					return bp;
+				}
 			}
+
+			point.set(p);
+			point.y += 1;
+
+			if (!canBubble(point)) { //checks top
+				bp = checkBubbleVertical(p.cpy(), -dst); //finds spot on bottom
+				if (bp != null) {
+					return bp;
+				}
+			}
+			return null;
+		}catch(Exception e){
+			return null;
 		}
-		return null;
 	}
 
 
@@ -2776,8 +2779,10 @@ public class PlatformController implements ContactListener, Screen {
 	}
 
 	public boolean pressedButton(int screenX, int screenY, Texture texture, Vector2 button_pos){
-		float button_w = texture.getWidth() * scale.x;
-		float button_h = texture.getHeight() * scale.y;
+		float sx = (float)canvas.getWidth()/pauseScreen.getWidth();
+		float sy = (float)canvas.getHeight()/pauseScreen.getHeight();
+		float button_w = texture.getWidth() * sx;
+		float button_h = texture.getHeight() * sy;
 		//////////System.out.println(button_center);
 		screenY = canvas.getHeight() - screenY;
 		if(screenX >= button_pos.x && screenX <= button_pos.x + button_w){
@@ -3060,7 +3065,6 @@ public class PlatformController implements ContactListener, Screen {
 			System.out.println(delta);
 		}
 		if(pause_state){
-			System.out.println("paused");
 			drawPause();
 		}else if (active) {
 			if (preUpdate(delta)) {

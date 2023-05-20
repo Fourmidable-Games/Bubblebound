@@ -108,7 +108,7 @@ public class InputController {
 		KEYBOARD,
 		CONTROLLER
 	}
-	private ControlMapping controlMapping = ControlMapping.MOUSE;
+	public ControlMapping controlMapping = ControlMapping.MOUSE;
 
 	/**Whether the player can only use a finite amount of bubbles */
 	private boolean finiteBubblesPressed = true;

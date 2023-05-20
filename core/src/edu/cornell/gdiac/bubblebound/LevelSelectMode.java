@@ -51,7 +51,7 @@ public class LevelSelectMode implements Screen, InputProcessor, ControllerListen
     /** Right cap to the status forground (colored region) */
     private TextureRegion statusFrgRight;
 
-    private boolean prof_mode;
+    private static boolean prof_mode = false;
 
 
     /** Default budget for asset loader (do nothing but load 60 fps) */
@@ -151,6 +151,7 @@ public class LevelSelectMode implements Screen, InputProcessor, ControllerListen
         ////////System.out.println("AAAAAAAAAAAAAAAA");
         background = directory.getEntry( "phase0background", Texture.class );
         background.setFilter( Texture.TextureFilter.Linear, Texture.TextureFilter.Linear );
+        profbutton = directory.getEntry("button", Texture.class);
         for(int i = 0; i < 4; i++){
             for(int j = 0; j < 5; j++){
                 phaseLevels[i][j] = directory.getEntry("level" + (i+1) + "-" + (j+1), Texture.class);
@@ -187,7 +188,12 @@ public class LevelSelectMode implements Screen, InputProcessor, ControllerListen
 
     private Texture backButton;
     private Texture phasebackground;
+    private Texture profbutton;
+
+    private Vector2 profbuttonpos;
+    private Vector2 resetbuttonpos;
     Vector2 backButtonPos;
+
 
     private Vector2 createPos(int x, int y){
         return new Vector2(x * scale.x, canvas.getHeight() - (y*scale.y));
@@ -240,6 +246,9 @@ public class LevelSelectMode implements Screen, InputProcessor, ControllerListen
         phasesPos[1] = createPos(529 + xoffset, 490 + yoffset);
         phasesPos[2] = createPos(986 + xoffset, 83 + yoffset);
         phasesPos[3] = createPos(1443 + xoffset, 490 + yoffset);
+
+        profbuttonpos = createPos(1700, 50);
+
 
         //xoffset = phaseLevels[0][0].getWidth() / 2;
         //yoffset = phaseLevels[0][0].getHeight() / 2;
@@ -341,7 +350,15 @@ public class LevelSelectMode implements Screen, InputProcessor, ControllerListen
         canvas.draw(phasebackgrounds[phase], Color.WHITE, 0, 0, 0, 0, 0, sx, sy);
         canvas.draw(backButton, Color.WHITE, 0, backButton.getHeight(),
                 backButtonPos.x, backButtonPos.y, 0, scale.x, scale.y);
-
+        canvas.draw(profbutton, Color.WHITE, 0, profbutton.getHeight(), profbuttonpos.x, profbuttonpos.y, 0, sx, sy);
+        displayFont.getData().setScale(0.5f * scale.x);
+        canvas.drawText("switch to", displayFont, profbuttonpos.x + (25 * sx), profbuttonpos.y - (20 * sy));
+        displayFont.getData().setScale(0.6f * scale.x);
+        if(prof_mode){
+            canvas.drawText("USER", displayFont, profbuttonpos.x + (55 * sx), profbuttonpos.y - (55 * sy));
+        }else {
+            canvas.drawText("PROF", displayFont, profbuttonpos.x + (55 * sx), profbuttonpos.y - (55 * sy));
+        }
         if(phase == 0) {
             for (int i = 0; i < phasesPos.length; i++) {
                 Texture text = (i == hovered) ? lightphases[i] : phases[i];
@@ -609,6 +626,9 @@ public class LevelSelectMode implements Screen, InputProcessor, ControllerListen
             }else{
                 phase = 0;
             }
+        }
+        if(pressedButton(screenX, screenY, profbutton, profbuttonpos)){
+            prof_mode = !prof_mode;
         }
         if(phase == 0){
             for(int i = 0; i < phasesPos.length; i++){
