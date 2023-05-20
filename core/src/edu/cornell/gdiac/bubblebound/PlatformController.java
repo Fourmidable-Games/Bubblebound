@@ -2218,7 +2218,11 @@ public class PlatformController implements ContactListener, Screen {
 			avatar.restoreHealth();
 		}
 		if (switchLevel){
-
+			float[] times = InputController.getInstance().times;
+			InputController.getInstance().times[currLevel - 1] = timer;
+			for(int i = 0; i < times.length; i++){
+				System.out.println(i + "  " + times[i]);
+			}
 			switchLevel = false;
 			reset(targetLevel, true);
 		}

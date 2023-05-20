@@ -88,6 +88,7 @@ public class InputController {
 
 	public int[] buttons = {Input.Keys.UP, Input.Keys.W, Input.Keys.DOWN, Input.Keys.S, Input.Keys.LEFT, Input.Keys.A, Input.Keys.RIGHT, Input.Keys.D, Input.Keys.J, Input.Keys.K};
 
+	public float[] times = new float[20];
 	public float[] audio_levels ={1.0f,1.0f};
 	public boolean mouse = true;
 
@@ -272,6 +273,7 @@ public class InputController {
 		} else {
 			xbox = null;
 		}
+
 		crosshair = new Vector2();
 		crosscache = new Vector2();
 	}
