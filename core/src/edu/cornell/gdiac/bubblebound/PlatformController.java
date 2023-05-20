@@ -931,7 +931,7 @@ public class PlatformController implements ContactListener, Screen {
 		}
 
 		if(currLevel == 7) {
-			ButtonPrompt bp17 = new ButtonPrompt(13, 26, grappleplaceBP, 9, 8); //in air place then grapple
+			ButtonPrompt bp17 = new ButtonPrompt(13, 26, grappleplaceBP, 8, 9); //in air place then grapple
 			bp17.setScale(scale);
 			bp17.setMouse(leftMouse, rightMouse);
 			bp17.setLetters(letters);
@@ -2881,6 +2881,9 @@ public class PlatformController implements ContactListener, Screen {
 			}
 		}
 		boolean drawTileOutlines = true;
+		for (ButtonPrompt b: prompts) {
+			b.draw(canvas);
+		}
 		if(drawTileOutlines == true) {
 			for (BoxObstacle b : platforms) {
 				b.drawOutline(canvas);
@@ -2889,10 +2892,7 @@ public class PlatformController implements ContactListener, Screen {
 		for(BoxObstacle b: platforms){
 			b.draw(canvas);
 		}
-		for(Door d: doors){
-			d.draw(canvas);
-		}
-		drawPhases();
+
 
 		for(Border b: borders){
 			b.draw(canvas);
@@ -2909,14 +2909,19 @@ public class PlatformController implements ContactListener, Screen {
 		for(Spike s : spikelist){
 			s.draw(canvas);
 		}
-		if(rope != null){
-			rope.draw(canvas);
+
+		for(Door d: doors){
+			d.draw(canvas);
 		}
+		drawPhases();
+
 		for(Bullet b: bullets){
 			b.draw(canvas);
 		}
-		for (ButtonPrompt b: prompts) {
-			b.draw(canvas);
+
+
+		if(rope != null){
+			rope.draw(canvas);
 		}
 		if(avatar != null){
 			avatar.draw(canvas);
