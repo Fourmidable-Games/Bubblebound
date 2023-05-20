@@ -222,6 +222,13 @@ public class PlatformController implements ContactListener, Screen {
 	protected Texture leftMouse;
 	protected Texture rightMouse;
 
+	protected Texture detachswingingBP;
+	protected Texture movegravititesBP;
+	protected Texture placegrappleBP;
+	protected Texture momentumBP;
+	protected Texture rangeBP;
+	protected Texture portalBP;
+
 	protected Texture pauseScreen;
 	protected Texture playButton;
 	protected Texture quitButton;
@@ -512,7 +519,12 @@ public class PlatformController implements ContactListener, Screen {
 		detachBP = directory.getEntry("detachBP", Texture.class);
 		leftMouse = directory.getEntry("leftmouse", Texture.class);
 		rightMouse = directory.getEntry("rightmouse", Texture.class);
-
+		detachswingingBP = directory.getEntry("detachswingingBP", Texture.class);
+		movegravititesBP = directory.getEntry("movegravitiesBP", Texture.class);
+		placegrappleBP = directory.getEntry("placegrappleBP", Texture.class);
+		momentumBP = directory.getEntry("momentumBP", Texture.class);
+		rangeBP = directory.getEntry("rangeBP", Texture.class);
+		portalBP = directory.getEntry("portalBP", Texture.class);
 
 
 		spikeTextureList.add(spikeStrip);
@@ -837,7 +849,59 @@ public class PlatformController implements ContactListener, Screen {
 		bp7.setLetters(letters);
 		prompts.add(bp7);
 
+		ButtonPrompt bp8 = new ButtonPrompt(23, 8, restartBP);
+		bp8.setScale(scale);
+		bp8.setMouse(leftMouse, rightMouse);
+		bp8.setLetters(letters);
+		prompts.add(bp8);
 
+		ButtonPrompt bp9 = new ButtonPrompt(26, 8, toggleBP);
+		bp9.setScale(scale);
+		bp9.setMouse(leftMouse, rightMouse);
+		bp9.setLetters(letters);
+		prompts.add(bp9);
+
+		ButtonPrompt bp10 = new ButtonPrompt(2, 13, pauseBP);
+		bp10.setScale(scale);
+		bp10.setMouse(leftMouse, rightMouse);
+		bp10.setLetters(letters);
+		prompts.add(bp10);
+
+		ButtonPrompt bp11 = new ButtonPrompt(5, 13, detachswingingBP); //deatch while swinging to gain height
+		bp11.setScale(scale);
+		bp11.setMouse(leftMouse, rightMouse);
+		bp11.setLetters(letters);
+		prompts.add(bp11);
+
+		ButtonPrompt bp12 = new ButtonPrompt(8, 13, movegravititesBP); //move between gravities to fall down
+		bp12.setScale(scale);
+		bp12.setMouse(leftMouse, rightMouse);
+		bp12.setLetters(letters);
+		prompts.add(bp12);
+
+		ButtonPrompt bp13 = new ButtonPrompt(11, 13, momentumBP, 5, 7); //gain momentum by going left/right
+		bp13.setScale(scale);
+		bp13.setMouse(leftMouse, rightMouse);
+		bp13.setLetters(letters);
+		prompts.add(bp13);
+
+		ButtonPrompt bp14 = new ButtonPrompt(14, 13, placegrappleBP, 9, 8); //in air place then grapple
+		bp14.setScale(scale);
+		bp14.setMouse(leftMouse, rightMouse);
+		bp14.setLetters(letters);
+		prompts.add(bp14);
+
+		ButtonPrompt bp15 = new ButtonPrompt(17, 13, rangeBP); //get in range of bubbles to attach
+		bp15.setScale(scale);
+		bp15.setMouse(leftMouse, rightMouse);
+		bp15.setLetters(letters);
+		prompts.add(bp15);
+
+		ButtonPrompt bp16 = new ButtonPrompt(20, 13, portalBP); //find portals
+		bp16.setScale(scale);
+		bp16.setMouse(leftMouse, rightMouse);
+		bp16.setLetters(letters);
+		prompts.add(bp16);
 
 
 
