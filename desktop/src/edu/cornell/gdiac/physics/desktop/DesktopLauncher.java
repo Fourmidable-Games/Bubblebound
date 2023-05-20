@@ -13,10 +13,14 @@
 package edu.cornell.gdiac.physics.desktop;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Graphics;
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.badlogic.gdx.utils.SharedLibraryLoader;
 import edu.cornell.gdiac.backend.GDXApp;
 import edu.cornell.gdiac.backend.GDXAppSettings;
 import edu.cornell.gdiac.bubblebound.GDXRoot;
+//import lwjgl3.Lwjgl3ApplicationConfiguration;
 
 /**
  * The main class of the game.
@@ -36,35 +40,34 @@ public class DesktopLauncher {
 	 */
 	public static void main (String[] arg) {
 
-		if (SharedLibraryLoader.isMac && Gdx.app == null) {
-			org.lwjgl.system.Configuration.GLFW_LIBRARY_NAME.set("glfw_async");
+
+		String os_version = System.getProperty("os.name");
+
+		if (os_version.contains("mac")){
+			System.out.println("STARTING MAC VERSION!");
+			Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
+			config.setForegroundFPS(60);
+			config.setTitle("libgdx4m1");
+
+			final Graphics.Monitor[] monitors = Lwjgl3ApplicationConfiguration.getMonitors();
+			final Graphics.DisplayMode primaryMode = Lwjgl3ApplicationConfiguration.getDisplayMode(monitors[0]);
+			config.setFullscreenMode(primaryMode);
+
+			new Lwjgl3Application(new GDXRoot(), config);
 		}
+		else{
+			System.out.println("STARTING NON MAC VERSION!");
 
-		GDXAppSettings config = new GDXAppSettings();
+			GDXAppSettings config = new GDXAppSettings();
 
+			config.width  = 1024;
+			config.height = 576;
 
-		config.width  = 1024;
-		config.height = 576;
+			config.fullscreen = true;
+			config.resizable = false;
 
-		if (SharedLibraryLoader.isMac && Gdx.app == null) {
-			org.lwjgl.system.Configuration.GLFW_LIBRARY_NAME.set("glfw_async");
-		}
+			new GDXApp(new GDXRoot(), config);
 
-
-
-		config.fullscreen = true;
-
-
-		config.resizable = false;
-
-		if (SharedLibraryLoader.isMac && Gdx.app == null) {
-			org.lwjgl.system.Configuration.GLFW_LIBRARY_NAME.set("glfw_async");
-		}
-
-		new GDXApp(new GDXRoot(), config);
-
-		if (SharedLibraryLoader.isMac && Gdx.app == null) {
-			org.lwjgl.system.Configuration.GLFW_LIBRARY_NAME.set("glfw_async");
 		}
 	}
 }
