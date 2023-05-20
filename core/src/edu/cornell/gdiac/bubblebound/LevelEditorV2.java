@@ -544,7 +544,9 @@ public class LevelEditorV2 {
 //                                if (k-arrayOffset >= 219) {
 //                                    flip = true;
 //                                }
-
+                                if (flower == true) {
+                                    wo.setSensor(true);
+                                }
 
                                 if (!flip) {
                                     if(k == 642){
