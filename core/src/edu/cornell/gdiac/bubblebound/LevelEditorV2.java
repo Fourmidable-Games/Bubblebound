@@ -536,9 +536,7 @@ public class LevelEditorV2 {
                                     arrayOffset = 332-1;
                                 }
 
-                                if (k-arrayOffset <0) {
-                                    flip = true;
-                                }
+
 
 
 //                                if (k-arrayOffset >= 219) {
