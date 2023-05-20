@@ -1025,6 +1025,9 @@ public class PlatformController implements ContactListener, Screen {
 	private int wait = 0;
 
 	public void update(float dt) {
+		if(InputController.getInstance().didBubble()) {
+			System.out.println(InputController.getInstance().didBubble());
+		}
 		updateBubbles();
 		updateSpike();
 		updateEnemies();
@@ -1400,6 +1403,7 @@ public class PlatformController implements ContactListener, Screen {
 				avatar.setGrappling(true);
 				avatar.setGrappledBubble(closest);
 				avatar.setGrappledBubbleDist(avatar.getPosition().dst(closest.getPosition()));
+				InputController.getInstance().avatar_grappling = true;
 				rope = createGrapple(closest);
 				shootRopeSoundId = playSound(shootRopeSound, shootRopeSoundId, soundvolume);
 			}
@@ -1522,6 +1526,7 @@ public class PlatformController implements ContactListener, Screen {
 	}
 
 	public void destructRope() {
+		InputController.getInstance().avatar_grappling = false;
 		if(rope != null) {
 			rope.markRemoved(true);
 			avatar.setLinearVelocity(new Vector2(avatar.getLinearVelocity().scl(ROPE_LAUNCH_SPEED.x).x, avatar.getLinearVelocity().scl(ROPE_LAUNCH_SPEED.y).y));
