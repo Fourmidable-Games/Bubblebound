@@ -264,6 +264,12 @@ public class BoxObstacle extends SimpleObstacle {
 	public void draw(GameCanvas canvas) {
 		float sx = drawScale.x / 64f;
 		float sy = drawScale.y / 64f;
+//		sx = Math.round(10 * sx) / 10f; //roudns to x.x
+//		sy = Math.round(10 * sy) / 10f;
+//		sx = sy;
+//		System.out.println("sx" + sx + "   " + "sy" + sy);
+//		System.out.println("width" + canvas.getWidth() + "height" + canvas.getHeight());
+
 		if (isRope == true) {
 			if(drawtimer >= draworder){
 				sx *= 2;
@@ -280,7 +286,7 @@ public class BoxObstacle extends SimpleObstacle {
 				canvas.draw(texture, Color.WHITE, origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.y, getAngle(), sx, sy);
 
 			}
-					}
+		}
 
 
 		else if (texture != null) {
@@ -301,7 +307,7 @@ public class BoxObstacle extends SimpleObstacle {
 		sx = Math.round(10 * sx) / 10f; //roudns to x.x
 		sy = Math.round(10 * sy) / 10f;
 		if (texture != null) {
-			canvas.draw(texture, Color.BLACK, origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.y, getAngle(), sx, sy);
+			//canvas.draw(texture, Color.BLACK, origin.x, origin.y, getX() * drawScale.x, getY() * drawScale.y, getAngle(), sx, sy);
 		}
 
 

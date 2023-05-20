@@ -150,7 +150,7 @@ public class GDXRoot extends Game implements ScreenListener {
 		}else{
 			controller.setCurrLevel(currlevel - 1);
 		}
-		controller.reset(currlevel);
+		controller.reset(currlevel, true);
 	}
 
 

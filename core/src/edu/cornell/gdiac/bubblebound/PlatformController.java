@@ -559,7 +559,10 @@ public class PlatformController implements ContactListener, Screen {
 	 *
 	 * This method disposes of the world and creates a new one.
 	 */
-	public void reset(int targetLevelID) {
+	public void reset(int targetLevelID, boolean start) {
+		if(start){
+			timer = 0;
+		}
 		Gdx.graphics.setCursor(emptyCursor);
 		death_count = 0;
 		doored = false;
@@ -2178,8 +2181,8 @@ public class PlatformController implements ContactListener, Screen {
 	 * @return true if the object is in bounds.
 	 */
 	public boolean inBounds(Obstacle obj) {
-		boolean horiz = (bounds.x <= obj.getX() && obj.getX() <= bounds.x+bounds.width);
-		boolean vert  = (bounds.y <= obj.getY() && obj.getY() <= bounds.y+bounds.height);
+		boolean horiz = (bounds.x - 5 <= obj.getX() && obj.getX() <= bounds.x+bounds.width + 5);
+		boolean vert  = (bounds.y - 5 <= obj.getY() && obj.getY() <= bounds.y+bounds.height + 5);
 		return horiz && vert;
 	}
 	public boolean pause_state = false;
@@ -2221,7 +2224,7 @@ public class PlatformController implements ContactListener, Screen {
 		// Handle resets
 		if (input.didReset()) {
 
-			reset(currLevel);
+			reset(currLevel, false);
 		}
 
 		if (input.didHealthRestore()){
@@ -2230,10 +2233,10 @@ public class PlatformController implements ContactListener, Screen {
 		if (switchLevel){
 
 			switchLevel = false;
-			reset(targetLevel);
+			reset(targetLevel, true);
 		}
 		if(failed){
-			reset(currLevel);
+			reset(currLevel, false);
 		}
 		if(quit){
 			listener.exitScreen(this, EXIT_QUIT);
@@ -2252,7 +2255,7 @@ public class PlatformController implements ContactListener, Screen {
 			countdown--;
 		} else if (countdown == 0) {
 			if (failed) {
-				reset(currLevel);
+				reset(currLevel, false);
 			} else if (complete) {
 				pause();
 				listener.exitScreen(this, EXIT_NEXT);
@@ -2532,6 +2535,26 @@ public class PlatformController implements ContactListener, Screen {
 	}
 
 
+	private void drawTimer(){
+		displayFont.setColor(Color.WHITE);
+		displayFont.getData().scaleX = scale.x / 90;
+		displayFont.getData().scaleY = scale.y / 90;
+		int minutes = (int) timer / 60;
+		String time = String.format("%.02f", timer % 60);
+		if(minutes > 0) {
+
+			if(timer % 60 < 10){
+				time = minutes + ":0" + time;
+			}else{
+				time = minutes + ":" + time;
+			}
+		}
+		canvas.begin(); // DO NOT SCALE
+
+		canvas.drawText(time, displayFont, cameraCoords.x - (canvas.getWidth() / 12f), cameraCoords.y + (canvas.getHeight() * 5/ 12f));
+		canvas.end();
+
+	}
 
 	public boolean quit = false;
 
@@ -2615,6 +2638,7 @@ public class PlatformController implements ContactListener, Screen {
 		for(PoisonGas pg : poisons){
 			pg.draw(canvas);
 		}
+
 		if(level6Token != null){level6Token.draw(canvas);}
 		if(level12Token != null){level12Token.draw(canvas);}
 		if (currLevel == 1) {
@@ -2624,7 +2648,7 @@ public class PlatformController implements ContactListener, Screen {
 
 		canvas.resetColor();
 		canvas.end();
-
+		drawTimer();
 		// Draw life bar
 
 
@@ -2636,7 +2660,6 @@ public class PlatformController implements ContactListener, Screen {
 
 		// Draw energy bar label
 		displayFont.setColor(Color.WHITE);
-		displayFont.getData().setScale(0.4f);
 		canvas.begin(); // DO NOT SCALE
 		String additional_part = (BUBBLE_LIMIT == 0) ? "None" : "";
 		if(assetsLoaded){
@@ -2732,6 +2755,11 @@ public class PlatformController implements ContactListener, Screen {
 		// IGNORE FOR NOW
 	}
 
+	float timer = 0;
+	public void updateTimer(float delta){
+		timer += delta;
+	}
+
 	/**
 	 * Called when the Screen should render itself.
 	 *
@@ -2746,6 +2774,7 @@ public class PlatformController implements ContactListener, Screen {
 			drawPause();
 		}else if (active) {
 			if (preUpdate(delta)) {
+				updateTimer(delta);
 				update(delta); // This is the one that must be defined.
 				postUpdate(delta);
 			}
