@@ -249,7 +249,7 @@ public class PlatformController implements ContactListener, Screen {
 	/** The default value of gravity (going down) */
 	protected static final float DEFAULT_GRAVITY = -4.9f;
 
-	private final int MAX_LEVELS = 17;
+	private final int MAX_LEVELS = 20;
 
 	private int currLevel;
 
